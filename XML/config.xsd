@@ -1,0 +1,280 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+  <xs:element name="configuration">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="WSUsername" type="xs:string" />
+        <xs:element name="WSPassword" type="xs:string" />
+        <xs:element name="WSPasswordEncrypted" type="xs:boolean" default="false"/>
+        <xs:element name="ServicesEnabled" type="xs:boolean" />
+        <xs:element name="ServerPort" type="xs:int" />
+        <xs:element name="motion_WSActivity_iSpy" type="xs:string" />
+        <xs:element name="Enable_Error_Reporting" type="xs:boolean" />
+        <xs:element name="Enable_Update_Check" type="xs:boolean" />
+        <xs:element name="Password_Protect_Password" type="xs:string" />
+        <xs:element name="Enable_Password_Protect" type="xs:boolean" />
+        <xs:element name="Password_Protect_Startup" type="xs:boolean" />
+        <xs:element name="MJPEGURL" type="xs:string" />
+        <xs:element name="AVIFileName" type="xs:string" />
+        <xs:element name="RecentJPGList" type="xs:string" />
+        <xs:element name="RecentMJPGList" type="xs:string" />
+        <xs:element name="RecentFileList" type="xs:string" />
+        <xs:element name="Subscribed" type="xs:boolean" />
+        <xs:element name="JPEGURL" type="xs:string" />
+        <xs:element name="ActivityColor" type="xs:string" />
+        <xs:element name="NoActivityColor" type="xs:string" />
+        <xs:element name="TrackingColor" type="xs:string" />
+        <xs:element name="FloorPlanHighlightColor" type="xs:string"/>
+        <xs:element name="VolumeLevelColor" type="xs:string" />
+        <xs:element name="MaxRecordingThreads" type="xs:int" default="4"/>
+        <xs:element name="MainColor" type="xs:string" />
+        <xs:element name="AreaColor" type="xs:string" />
+        <xs:element name="BackColor" type="xs:string" />
+        <xs:element name="MaxMediaFolderSizeMB" type="xs:int" />
+        <xs:element name="DeleteFilesOlderThanDays" type="xs:int" />
+        <xs:element name="ServerAddress" type="xs:string" />
+        <xs:element name="Enabled_ShowGettingStarted" type="xs:boolean" />
+        <xs:element name="Opacity" type="xs:int" />
+        <xs:element name="LANPort" type="xs:int" />
+        <xs:element name="Enable_Storage_Management" type="xs:boolean" />
+        <xs:element name="FFMPEG_Camera" type="xs:string" />
+        <xs:element name="FFMPEG_Microphone" type="xs:string" />
+        <xs:element name="TimestampColor" type="xs:string" />
+        <xs:element name="BorderHighlightColor" type="xs:string" />
+        <xs:element name="BorderDefaultColor" type="xs:string" />
+        <xs:element name="UseUPNP" type="xs:boolean" default="true"/>
+        <xs:element name="YouTubeUsername" type="xs:string" />
+        <xs:element name="YouTubePassword" type="xs:string" />
+        <xs:element name="YouTubeAccount" type="xs:string" />
+        <xs:element name="YouTubeKey" type="xs:string" />
+        <xs:element name="YouTubeCategories" type="xs:string" />
+        <xs:element name="YouTubeDefaultCategory" type="xs:string" />
+        <xs:element name="YouTubeToken" type="xs:string" />
+        <xs:element name="CompressorOptions" type="xs:string" />
+        <xs:element name="LogFFMPEGCommands" type="xs:boolean" />
+        <xs:element name="BalloonTips" type="xs:boolean" />
+        <xs:element name="TrayIconText" type="xs:string" />
+        <xs:element name="AutoLayout" type="xs:boolean" />
+        <xs:element name="UpnpDevice" type="xs:string" />
+        <xs:element name="IPMode" type="xs:string" />
+        <xs:element name="IPv4Address" type="xs:string" />
+        <xs:element name="IPv6Address" type="xs:string" />
+        <xs:element name="SpecificIP" type="xs:boolean" default="false"/>
+        <xs:element name="DHCPReroute" type="xs:boolean" default="true"/>
+        <xs:element name="MediaDirectory" type="xs:string" default="NotSet" />
+        <xs:element name="FFMPEG_SingleProcess" type="xs:boolean" />
+        <xs:element name="Loopback" type="xs:boolean" />
+        <xs:element name="ServerReceiveTimeout" type="xs:int" />
+        <xs:element name="IPCameraTimeout" type="xs:int" />
+        <xs:element name="ServerName" type="xs:string" />
+        <xs:element name="UploadedVideos" type="xs:string" />
+        <xs:element name="Language" type="xs:string" />
+        <xs:element name="RecentVLCList" type="xs:string" />
+        <xs:element name="VLCURL" type="xs:string" />
+        <xs:element name="AutoSchedule" type="xs:boolean" />
+        <xs:element name="Fullscreen" type="xs:boolean" />
+        <xs:element name="ShowStatus" type="xs:boolean" />
+        <xs:element name="ShowToolbar" type="xs:boolean" />
+        <xs:element name="ShowFileMenu" type="xs:boolean" />
+        <xs:element name="AlwaysOnTop" type="xs:boolean" />
+        <xs:element name="LogFileSizeKB" type="xs:int" />
+        <xs:element name="CPUMax" type="xs:int" default="90"/>
+        <xs:element name="AllowedIPList" type="xs:string" default=""/>
+        <xs:element name="Reseller" type="xs:string" default=""/>
+        <xs:element name="CreateAlertWindows" type="xs:boolean" default="true"/>
+        <xs:element name="MaxRedrawRate" type="xs:int" default="10"/>
+        <xs:element name="PreviewItems" type="xs:int" default="100"/>
+        <xs:element name="ShowOverlayControls" type="xs:boolean" default="true"/>
+        <xs:element name="ShowMediaPanel" type="xs:boolean" default="true"/>
+        <xs:element name="Priority" type="xs:int" default="3"/>
+        <xs:element name="Monitor" type="xs:boolean" default="true"/>
+        <xs:element name="RunTimes" type="xs:int" default="0"/>
+        <xs:element name="ScreensaverWakeup" type="xs:boolean" default="false"/>
+        <xs:element name="Vendor" type="xs:string" default=""/>
+        <xs:element name="TalkMic" type="xs:string" default=""/>
+        <xs:element name="PlaybackMode" type="xs:int" default="0"/>
+        <xs:element name="JPEGQuality" type="xs:int" default="75"/>
+        <xs:element name="StopSavingOnStorageLimit" type="xs:boolean" default="false"/>
+        <xs:element name="ViewController" type="xs:boolean" default="true"/>
+        <xs:element name="LayoutMode" type="xs:int" default="0"/>
+        <xs:element name="ShowPTZController" type="xs:boolean" default="false"/>
+        <xs:element name="BigButtons" type="xs:boolean" default="false"/>
+        <xs:element name="LockLayout" type="xs:boolean" default="false"/>
+        <xs:element name="MediaPanelSize" type="xs:string" default=""/>
+        <xs:element name="MinimiseOnClose" type="xs:boolean" default="false"/>
+        <xs:element name="IPv6Disabled" type="xs:boolean" default="false"/>
+        <xs:element name="DeleteToRecycleBin" type="xs:boolean" default="false"/>
+        <xs:element name="SpeechRecognition" type="xs:boolean" default="false"/>
+        <xs:element name="DefaultManufacturer" type="xs:string"/>
+        <xs:element name="AppendLinkText" type="xs:string"/>
+        <xs:element name="StartupForm" type="xs:string" default="iSpy"/>
+        <xs:element name="TrayOnMinimise" type="xs:boolean" default="true"/>
+        <xs:element name="EnableGZip" type="xs:boolean" default="true"/>
+        <xs:element name="FeatureSet" type="xs:long" default="0"/>
+        <xs:element name="MJPEGStreamInterval" type="xs:int" default="100"/>
+        <xs:element name="AlertOnDisconnect" type="xs:string" default=""/>
+        <xs:element name="AlertOnReconnect" type="xs:string" default=""/>
+        <xs:element name="StartupMode" type="xs:int" default="0"/>
+        <xs:element name="DisconnectNotificationDelay" type="xs:int" default="60"/>
+        <xs:element name="Archive" type="xs:string" default=""/>
+        <xs:element name="MailAlertSubject" type="xs:string" default="[EVENT]: [SERVER] [OBJECTNAME]"/>
+        <xs:element name="MailAlertBody" type="xs:string" default="[EVENT] at [DATE] [TIME]: [SERVER] [OBJECTNAME] [RECORDED] [PLUGIN]"/>
+        <xs:element name="SMSAlert" type="xs:string" default="[EVENT] at [DATE] [TIME]: [SERVER] [OBJECTNAME] [RECORDED] [PLUGIN]"/>
+        <xs:element name="SMTPFromAddress" type="xs:string" default=""/>
+        <xs:element name="SMTPUsername" type="xs:string" default=""/>
+        <xs:element name="SMTPPassword" type="xs:string" default=""/>
+        <xs:element name="SMTPServer" type="xs:string" default=""/>
+        <xs:element name="SMTPPort" type="xs:int" default="25"/>
+        <xs:element name="UseSMTP" type="xs:boolean" default="false"/>
+        <xs:element name="SMTPSSL" type="xs:boolean" default="false"/>
+        <xs:element name="DefaultRecordOnAlert" type="xs:boolean" default="false"/>
+        <xs:element name="DefaultRecordOnDetect" type="xs:boolean" default="true"/>
+        <xs:element name="FirstRun" type="xs:boolean" default="true"/>
+        <xs:element name="DeviceDriverDefault" type="xs:string" default=""/>
+        <xs:element name="SSLCertificate" type="xs:string" default=""/>
+        <xs:element name="SSLClientRequired" type="xs:boolean" default="false"/>
+        <xs:element name="SSLIgnoreErrors" type="xs:boolean" default="true"/>
+        <xs:element name="SSLCheckRevocation" type="xs:boolean" default="true"/>
+        <xs:element name="SSLEnabled" type="xs:boolean" default="false"/>
+        <xs:element name="GoogleDriveConfig" type="xs:string" default=""/>
+        <xs:element name="DropBoxConfig" type="xs:string" default=""/>
+        <xs:element name="OpenGrabs" type="xs:boolean" default="true"/>
+        <xs:element name="TextSentences" type="xs:string" default=""/>
+        <xs:element name="VLCFileCache" type="xs:int" default="3000"/>
+        <xs:element name="Referers" type="xs:string" default=""/>
+        <xs:element name="EncryptCode" type="xs:string" default=""/>
+        <xs:element name="PortMapperMode" type="xs:int" default="2"/>
+        <xsd:element name="Logging">
+          <xsd:complexType>
+            <xsd:attribute name="FileSize" type="xsd:int" default="100" />
+            <xsd:attribute name="Enabled" type="xsd:boolean" default="true" />
+            <xsd:attribute name="KeepDays" type="xsd:int" default="7" />
+          </xsd:complexType>
+        </xsd:element>
+        <xs:element name="FTPServers">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="Server">
+                <xs:complexType>
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                  <xs:attribute name="server" type="xs:string" use="required" />
+                  <xs:attribute name="username" use="required">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:whiteSpace value="preserve"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
+                  <xs:attribute name="password" use="required">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:whiteSpace value="preserve"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
+                  <xs:attribute name="port" type="xs:int" default="21"/>
+                  <xs:attribute name="usepassive" type="xs:boolean" default="false"/>
+                  <xs:attribute name="sftp" type="xs:boolean" default="false"/>
+                  <xs:attribute name="rename" type="xs:boolean" default="false"/>
+                  <xs:attribute name="ident" type="xs:string" default=""/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="GridViews">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="Grid">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="GridItem">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="Item">
+                            <xs:complexType>
+                              <xs:attribute name="TypeID" type="xs:int" use="required" />
+                              <xs:attribute name="ObjectID" type="xs:int" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="GridIndex" type="xs:int" use="required" />
+                        <xs:attribute name="CycleDelay" type="xs:int" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                  <xs:attribute name="Rows" type="xs:int" default="1" />
+                  <xs:attribute name="Columns" type="xs:int" default="1" />
+                  <xs:attribute name="FullScreen" type="xs:boolean" default="true"/>
+                  <xs:attribute name="AlwaysOnTop" type="xs:boolean" default="false"/>
+                  <xs:attribute name="Framerate" type="xs:int" default="5"/>
+                  <xs:attribute name="Display" type="xs:string" default=""/>
+                  <xs:attribute name="ModeIndex" type="xs:int" default="0" />
+                  <xs:attribute name="ModeConfig" type="xs:string" default="" />
+                  <xs:attribute name="Fill" type="xs:boolean" default="true" />
+                  <xs:attribute name="ShowAtStartup" type="xs:boolean" default="false" />
+                  <xs:attribute name="Overlays" type="xs:boolean" default="true" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Joystick">
+          <xs:complexType>
+            <xs:attribute name="id" type="xs:string" default="" />
+            <xs:attribute name="XAxis" type="xs:int" default="0" />
+            <xs:attribute name="CenterXAxis" type="xs:int" default="0" />
+            <xs:attribute name="InvertXAxis" type="xs:boolean" default="false" />
+            <xs:attribute name="YAxis" type="xs:int" default="0" />
+            <xs:attribute name="CenterYAxis" type="xs:int" default="0" />
+            <xs:attribute name="InvertYAxis" type="xs:boolean" default="false" />
+            <xs:attribute name="ZAxis" type="xs:int" default="0" />
+            <xs:attribute name="CenterZAxis" type="xs:int" default="0" />
+            <xs:attribute name="InvertZAxis" type="xs:boolean" default="false" />
+            <xs:attribute name="Record" type="xs:int" default="0" />
+            <xs:attribute name="Snapshot" type="xs:int" default="0" />
+            <xs:attribute name="Listen" type="xs:int" default="0" />
+            <xs:attribute name="Talk" type="xs:int" default="0" />
+            <xs:attribute name="Play" type="xs:int" default="0" />
+            <xs:attribute name="Stop" type="xs:int" default="0" />
+            <xs:attribute name="Next" type="xs:int" default="0" />
+            <xs:attribute name="Previous" type="xs:int" default="0" />
+            <xs:attribute name="MaxMin" type="xs:int" default="0" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="MediaDirectories">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="Directory">
+                <xs:complexType>
+                  <xs:attribute name="Entry" type="xs:string" default="NotSet" />
+                  <xs:attribute name="Enable_Storage_Management" type="xs:boolean" default="false" />
+                  <xs:attribute name="StopSavingOnStorageLimit" type="xs:boolean" default="false"/>
+                  <xs:attribute name="StopSavingFlag" type="xs:boolean" default="false"/>
+                  <xs:attribute name="MaxMediaFolderSizeMB" type="xs:int" default="200" />
+                  <xs:attribute name="DeleteFilesOlderThanDays" type="xs:int" default="0"/>
+                  <xs:attribute name="ID" type="xs:int" default="0"/>
+                  <xs:attribute name="archive" type="xs:boolean" default="false" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xsd:element name="Permissions">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="group">
+                <xsd:complexType>
+                  <xsd:attribute name="name" type="xsd:string" use="required" />
+                  <xsd:attribute name="featureset" type="xsd:long" use="required" />
+                  <xsd:attribute name="password" type="xsd:string" use="required" />
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

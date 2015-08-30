@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="Files">
+        <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="File">
+                <xs:complexType>
+                        <xs:attribute name="Filename" type="xs:string" use="required" />
+                        <xs:attribute name="SizeBytes" type="xs:long" use="required" />
+                        <xs:attribute name="CreatedDateTicks" type="xs:long" use="required" />
+                        <xs:attribute name="MaxAlarm" type="xs:double" use="required" />
+                        <xs:attribute name="DurationSeconds" type="xs:int" use="required" />
+                        <xs:attribute name="IsTimelapse" type="xs:boolean" use="required" />
+                        <xs:attribute name="IsMergeFile" type="xs:boolean" use="optional" />
+                        <xs:attribute name="AlertData" type="xs:string" use="required" />
+                        <xs:attribute name="TriggerLevel" type="xs:double" use="required" />
+                        <xs:attribute name="TriggerLevelMax" type="xs:double" use="optional" />
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

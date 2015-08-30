@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <WSUsername />
+  <WSPassword />
+  <ServicesEnabled>false</ServicesEnabled>
+  <ServerPort>8080</ServerPort>
+  <motion_WSActivity_iSpy>http://www.ispyconnect.com/webservices/ispy.asmx</motion_WSActivity_iSpy>
+  <Enable_Error_Reporting>false</Enable_Error_Reporting>
+  <Enable_Update_Check>true</Enable_Update_Check>
+  <Password_Protect_Password />
+  <Enable_Password_Protect>false</Enable_Password_Protect>
+  <MJPEGURL />
+  <AVIFileName />
+  <RecentJPGList />
+  <RecentMJPGList />
+  <RecentFileList />
+  <NextCameraID>1</NextCameraID>
+  <NextMicrophoneID>0</NextMicrophoneID>
+  <Subscribed>false</Subscribed>
+  <JPEGURL />
+  <ActivityColor>255,0,0</ActivityColor>
+  <NoActivityColor>101,132,139</NoActivityColor>
+  <TrackingColor>41,176,211</TrackingColor>
+  <VolumeLevelColor>41,176,211</VolumeLevelColor>
+  <FloorPlanHighlightColor>0,217,0</FloorPlanHighlightColor>
+  <MaxRecordingThreads>20</MaxRecordingThreads>
+  <MainColor>153,153,153</MainColor>
+  <AreaColor>255,255,255</AreaColor>
+  <BackColor>64,64,64</BackColor>
+  <MaxMediaFolderSizeMB>400</MaxMediaFolderSizeMB>
+  <DeleteFilesOlderThanDays>3</DeleteFilesOlderThanDays>
+  <ServerAddress>www.ispyconnect.com</ServerAddress>
+  <Enabled_ShowGettingStarted>true</Enabled_ShowGettingStarted>
+  <Opacity>100</Opacity>
+  <LANPort>8080</LANPort>
+  <Enable_Storage_Management>false</Enable_Storage_Management>
+  <FFMPEG_Camera>NotUsed</FFMPEG_Camera>
+  <FFMPEG_Microphone>NotUsed</FFMPEG_Microphone>
+  <TimestampColor>255,255,255</TimestampColor>
+  <BorderHighlightColor>255,255,255</BorderHighlightColor>
+  <BorderDefaultColor>0,0,0</BorderDefaultColor>
+  <UseUPNP>true</UseUPNP>
+  <NextFloorPlanID>0</NextFloorPlanID>
+  <YouTubeUsername />
+  <YouTubePassword />
+  <YouTubeAccount />
+  <YouTubeKey>AI39si79eKzxBxjX3A-JmPMdqF1p0poMDvWAUplpZrZdTgdTzJO4w0Om8AOzjNIG7a8ECGREepBe1cPtqkU9YQ-0yUfg73-tOg</YouTubeKey>
+  <YouTubeCategories>Film,Autos,Music,Animals,Sports,Travel,Games,Comedy,People,News,Entertainment,Education,Howto,Nonprofit,Tech</YouTubeCategories>
+  <YouTubeDefaultCategory>People</YouTubeDefaultCategory>
+  <CompressorOptions>NotUsed</CompressorOptions>
+  <NextCommandID>5</NextCommandID>
+  <LogFFMPEGCommands>false</LogFFMPEGCommands>
+  <BalloonTips>true</BalloonTips>
+  <TrayIconText>iSpy</TrayIconText>
+  <AutoLayout>false</AutoLayout>
+  <UpnpDevice />
+  <IPMode>IPv4</IPMode>
+  <IPv4Address></IPv4Address>
+  <IPv6Address />
+  <DHCPReroute>true</DHCPReroute>
+  <MediaDirectory>NotSet</MediaDirectory>
+  <MediaDirectories>
+    <Directory>NotSet</Directory>
+  </MediaDirectories>
+  <FFMPEG_SingleProcess>true</FFMPEG_SingleProcess>
+  <Loopback>false</Loopback>
+  <ServerReceiveTimeout>1500</ServerReceiveTimeout>
+  <IPCameraTimeout>20000</IPCameraTimeout>
+  <ServerName>NotSet</ServerName>
+  <UploadedVideos />
+  <Language>en</Language>
+  <RecentVLCList />
+  <VLCURL />
+  <AutoSchedule>true</AutoSchedule>
+  <Fullscreen>false</Fullscreen>
+  <ShowStatus>true</ShowStatus>
+  <ShowToolbar>true</ShowToolbar>
+  <ShowFileMenu>true</ShowFileMenu>
+  <AlwaysOnTop>false</AlwaysOnTop>
+  <LogFileSizeKB>100</LogFileSizeKB>
+  <CPUMax>90</CPUMax>
+  <AllowedIPList></AllowedIPList>
+  <Reseller></Reseller>
+  <CreateAlertWindows>true</CreateAlertWindows>
+  <MaxRedrawRate>20</MaxRedrawRate>
+  <PreviewItems>100</PreviewItems>
+  <ShowOverlayControls>true</ShowOverlayControls>
+  <ShowMediaPanel>true</ShowMediaPanel>
+  <Priority>3</Priority>
+  <Monitor>true</Monitor>
+  <RunTimes>0</RunTimes>
+  <ScreensaverWakeup>false</ScreensaverWakeup>
+  <Vendor></Vendor>
+  <TalkMic></TalkMic>
+  <PlaybackMode>1</PlaybackMode>
+  <JPEGQuality>90</JPEGQuality>
+  <StopSavingOnStorageLimit>false</StopSavingOnStorageLimit>
+  <ViewController>false</ViewController>
+  <LayoutMode>0</LayoutMode>
+  <ShowPTZController>false</ShowPTZController>
+  <BigButtons>false</BigButtons>
+  <LockLayout>false</LockLayout>
+  <MediaPanelSize></MediaPanelSize>
+  <WebServer>http://www.ispyconnect.com</WebServer>
+  <IPv6_Support_Disabled>true</IPv6_Support_Disabled>
+  <SpeechRecognition>false</SpeechRecognition>
+  <DefaultManufacturer></DefaultManufacturer>
+  <AppendLinkText>http://www.ispyconnect.com/watch_new.aspx</AppendLinkText>
+  <GridViews></GridViews>
+  <Joystick></Joystick>
+  <StartupForm>iSpy</StartupForm>
+  <FeatureSet>0</FeatureSet>
+  <EnableGZip>true</EnableGZip>
+  <Archive></Archive>
+  <MailAlertSubject>[EVENT]: [OBJECTNAME]</MailAlertSubject>
+  <MailAlertBody>[EVENT]: [OBJECTNAME] [RECORDED] [PLUGIN]</MailAlertBody>
+  <SMSAlert>[EVENT]: [OBJECTNAME] [RECORDED] [PLUGIN]</SMSAlert>
+  <DeviceDriverDefault></DeviceDriverDefault>
+  <SSLCertificate></SSLCertificate>
+  <SSLClientRequired>false</SSLClientRequired>
+  <SSLIgnoreErrors>true</SSLIgnoreErrors>
+  <SSLCheckRevocation>false</SSLCheckRevocation>
+  <SSLEnabled>false</SSLEnabled>
+  <GoogleDriveConfig></GoogleDriveConfig>
+  <DropBoxConfig></DropBoxConfig>
+  <FTPServers></FTPServers>
+  <OpenGrabs>true</OpenGrabs>
+  <TextSentences></TextSentences>
+  <VLCFileCache>3000</VLCFileCache>
+  <Referers></Referers>
+  <EncryptCode></EncryptCode>
+  <Logging FileSize="100" Enabled="true" KeepDays="7"></Logging>
+  <Permissions>
+    <group name="Admin" featureset="1" password=""/>
+  </Permissions>
+</configuration>

@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Files>
+  <File Filename="blah" SizeBytes="0" CreatedDateTicks="100020" MaxAlarm="20" DurationSeconds="0" IsTimelapse="false" AlertData="0,0,0,20,0,0,0" TriggerLevel="20" MaxTriggerLevel="100" IsMergeFile="False"/>
+  <File Filename="blah" SizeBytes="0" CreatedDateTicks="100020" MaxAlarm="20" DurationSeconds="0" IsTimelapse="false" AlertData="0,0,0,20,0,0,0" TriggerLevel="20" MaxTriggerLevel="100"/>
+</Files>

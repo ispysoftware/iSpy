@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="iSpyApplication.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="iSpy_iSpyWS_iSpy" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://www.ispyconnect.com/webservices/iSpy.asmx</Value>
+    </Setting>
+    <Setting Name="iSpy_Reporting_Reporting" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://www.ispyconnect.com/webservices/reporting.asmx</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

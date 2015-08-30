@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="LogApplicationException">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ProductID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Source" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="HelpLink" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="StackTrace" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ExceptionIdent" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LogApplicationExceptionResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="LogUsage">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ProductID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="UsageReport" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LogUsageResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="AddCamera">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="make" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="model" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="prefix" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="source" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="url" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cookies" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="flags" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="port" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddCameraResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="AddCamera2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="make" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="model" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="prefix" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="source" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="url" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cookies" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="flags" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="port" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddCamera2Response">
+        <s:complexType />
+      </s:element>
+      <s:element name="SendFeedback">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Feedback" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="FromEmail" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendFeedbackResponse">
+        <s:complexType />
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="LogApplicationExceptionSoapIn">
+    <wsdl:part name="parameters" element="tns:LogApplicationException" />
+  </wsdl:message>
+  <wsdl:message name="LogApplicationExceptionSoapOut">
+    <wsdl:part name="parameters" element="tns:LogApplicationExceptionResponse" />
+  </wsdl:message>
+  <wsdl:message name="LogUsageSoapIn">
+    <wsdl:part name="parameters" element="tns:LogUsage" />
+  </wsdl:message>
+  <wsdl:message name="LogUsageSoapOut">
+    <wsdl:part name="parameters" element="tns:LogUsageResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddCameraSoapIn">
+    <wsdl:part name="parameters" element="tns:AddCamera" />
+  </wsdl:message>
+  <wsdl:message name="AddCameraSoapOut">
+    <wsdl:part name="parameters" element="tns:AddCameraResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddCamera2SoapIn">
+    <wsdl:part name="parameters" element="tns:AddCamera2" />
+  </wsdl:message>
+  <wsdl:message name="AddCamera2SoapOut">
+    <wsdl:part name="parameters" element="tns:AddCamera2Response" />
+  </wsdl:message>
+  <wsdl:message name="SendFeedbackSoapIn">
+    <wsdl:part name="parameters" element="tns:SendFeedback" />
+  </wsdl:message>
+  <wsdl:message name="SendFeedbackSoapOut">
+    <wsdl:part name="parameters" element="tns:SendFeedbackResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ReportingSoap">
+    <wsdl:operation name="LogApplicationException">
+      <wsdl:input message="tns:LogApplicationExceptionSoapIn" />
+      <wsdl:output message="tns:LogApplicationExceptionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LogUsage">
+      <wsdl:input message="tns:LogUsageSoapIn" />
+      <wsdl:output message="tns:LogUsageSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddCamera">
+      <wsdl:input message="tns:AddCameraSoapIn" />
+      <wsdl:output message="tns:AddCameraSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddCamera2">
+      <wsdl:input message="tns:AddCamera2SoapIn" />
+      <wsdl:output message="tns:AddCamera2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendFeedback">
+      <wsdl:input message="tns:SendFeedbackSoapIn" />
+      <wsdl:output message="tns:SendFeedbackSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ReportingSoap" type="tns:ReportingSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="LogApplicationException">
+      <soap:operation soapAction="http://tempuri.org/LogApplicationException" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LogUsage">
+      <soap:operation soapAction="http://tempuri.org/LogUsage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddCamera">
+      <soap:operation soapAction="http://tempuri.org/AddCamera" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddCamera2">
+      <soap:operation soapAction="http://tempuri.org/AddCamera2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendFeedback">
+      <soap:operation soapAction="http://tempuri.org/SendFeedback" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ReportingSoap12" type="tns:ReportingSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="LogApplicationException">
+      <soap12:operation soapAction="http://tempuri.org/LogApplicationException" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LogUsage">
+      <soap12:operation soapAction="http://tempuri.org/LogUsage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddCamera">
+      <soap12:operation soapAction="http://tempuri.org/AddCamera" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddCamera2">
+      <soap12:operation soapAction="http://tempuri.org/AddCamera2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendFeedback">
+      <soap12:operation soapAction="http://tempuri.org/SendFeedback" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Reporting">
+    <wsdl:port name="ReportingSoap" binding="tns:ReportingSoap">
+      <soap:address location="http://www.ispyconnect.com/webservices/reporting.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ReportingSoap12" binding="tns:ReportingSoap12">
+      <soap12:address location="http://www.ispyconnect.com/webservices/reporting.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

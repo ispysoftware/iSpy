@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
+  <?include "config.wxi"?>
+  <Product Id="*" Name="iSpy" Language="1033" Version="6.4.2.0" Manufacturer="DeveloperInABox" UpgradeCode="B70B8F0F-48E1-4149-AD58-636704EA8215">
+    <Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" Manufacturer="DeveloperInABox" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of iSpy is already installed." AllowDowngrades="no" />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Feature Id="ProductFeature" Title="iSpy" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="XML" />
+      <ComponentGroupRef Id="ispyserver" />
+      <ComponentGroupRef Id="backgrounds" />
+      <ComponentGroupRef Id="plugins" />
+      <ComponentGroupRef Id="sounds" />
+      <ComponentGroupRef Id="webserverroot" />
+      <ComponentGroupRef Id="data" />
+      <ComponentRef Id="ApplicationShortcut" />
+      <ComponentRef Id="ApplicationShortcutReset" />
+      <ComponentRef Id="ApplicationShortcutSilent" />
+      <ComponentRef Id="ApplicationShortcutDesktop" />
+    </Feature>
+    <Feature Id="VCRedist" Title="Visual C++ 10.0 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
+      <MergeRef Id="VCRedist" />
+    </Feature>
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\license.rtf" />
+    <WixVariable Id="WixUIBannerBmp" Value="$(var.ProjectDir)\banner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="$(var.ProjectDir)\dialog.bmp" />
+    <UI>
+      <UIRef Id="WixUI_InstallDir" />
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg" Order="2">1</Publish>
+      <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="2">1</Publish>
+      <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
+    </UI>
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch iSpy" />
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1" />
+    <Property Id="WixShellExecTarget" Value="[#iSpy.exe]" />
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
+    <PropertyRef Id="WIX_IS_NETFRAMEWORK_40_OR_LATER_INSTALLED" />
+    <Condition Message="This application requires .NET Framework 4. Please install the .NET Framework then run this installer again.">
+      <![CDATA[Installed OR WIX_IS_NETFRAMEWORK_40_OR_LATER_INSTALLED]]>
+    </Condition>
+    <Icon Id="icon.ico" SourceFile="$(var.OutputDir)\ispy.ico" />
+    <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="iSpy" />
+      </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop"></Directory>
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="ParentFolder" Name="iSpy">
+          <Directory Id="INSTALLFOLDER" Name="iSpy">
+            <Directory Id="XML" Name="XML" />
+            <Directory Id="WebServerRoot" Name="WebServerRoot">
+              <Directory Id="Data" Name="data" />
+            </Directory>
+            <Directory Id="Sounds" Name="Sounds" />
+            <Directory Id="Plugins" Name="Plugins" />
+            <Directory Id="iSpyServer" Name="iSpyServer" />
+            <Directory Id="Backgrounds" Name="Backgrounds" />
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="{181C0827-C961-4A54-B4F5-BB1A51524619}">
+        <Shortcut Id="ApplicationStartMenuShortcut" Name="iSpy" Description="iSpy Video Surveillance Software" Target="[INSTALLFOLDER]iSpy.exe" WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\iSpy" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+      <Component Id="ApplicationShortcutReset" Guid="{FF2D2AA8-170F-4243-9998-1BCEF8BD069C}">
+        <Shortcut Id="ApplicationStartMenuShortcutReset" Name="iSpy Reset" Description="iSpy Video Surveillance Software" Target="[INSTALLFOLDER]iSpy.exe" WorkingDirectory="INSTALLFOLDER" Arguments="-reset" />
+        <RegistryValue Root="HKCU" Key="Software\iSpy" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+      <Component Id="ApplicationShortcutSilent" Guid="{FB2CB201-4939-4724-88CD-70ECF59247BE}">
+        <Shortcut Id="ApplicationStartMenuShortcutSilent" Name="iSpy Silent Start" Description="iSpy Video Surveillance Software" Target="[INSTALLFOLDER]iSpy.exe" WorkingDirectory="INSTALLFOLDER" Arguments="-silent" />
+        <RegistryValue Root="HKCU" Key="Software\iSpy" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="ApplicationShortcutDesktop" Guid="{360F5BA0-D29A-4D16-AD53-3946A9E29E19}">
+        <Shortcut Id="ApplicationDesktopShortcut" Name="iSpy" Description="iSpy Video Surveillance Software" Target="[INSTALLFOLDER]iSpy.exe" WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\iSpy" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="TARGETDIR">
+      <Merge Id="VCRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\Microsoft_VC100_CRT_x86.msm" DiskId="1" Language="0" />
+    </DirectoryRef>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="Component1" Guid="{A116D898-9B17-4F63-9F04-13134CEB94CD}">
+        <File Id="AForge.dll" Source="$(var.OutputDir)\AForge.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component2" Guid="{B42323C9-6BD2-401D-8CA7-EC560B48F175}">
+        <File Id="AForge.Imaging.dll" Source="$(var.OutputDir)\AForge.Imaging.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component4" Guid="{067D3A42-18C9-45BE-B211-ADD4A4D3B753}">
+        <File Id="AForge.Math.dll" Source="$(var.OutputDir)\AForge.Math.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component9" Guid="{18D43303-F6F9-4226-A84E-D9BCB6DB5030}">
+        <File Id="avcodec56.dll" Source="$(var.OutputDir)\avcodec-56.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component10" Guid="{920D9C2C-4F53-40C4-89F1-5CF2DBE5A5B8}">
+        <File Id="avdevice56.dll" Source="$(var.OutputDir)\avdevice-56.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component11" Guid="{6B16AD6E-12DE-475C-9736-9A0BA39073D6}">
+        <File Id="avfilter5.dll" Source="$(var.OutputDir)\avfilter-5.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component12" Guid="{19AD3C2B-5303-42CC-A657-EE843A85A472}">
+        <File Id="avformat56.dll" Source="$(var.OutputDir)\avformat-56.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component13" Guid="{DCA89F21-D790-428C-832D-C3D4914739A8}">
+        <File Id="avutil54.dll" Source="$(var.OutputDir)\avutil-54.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component14" Guid="{F9E67635-6FC1-47F5-BE05-E31E0D625D75}">
+        <File Id="DropNet.dll" Source="$(var.OutputDir)\DropNet.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component15" Guid="{30C799E8-EB65-4F9A-9333-554745F39F56}">
+        <File Id="ffmpeg.exe" Source="$(var.OutputDir)\ffmpeg.exe" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component16" Guid="{719617F9-24EE-4765-8762-A7C29D316B4D}">
+        <File Id="ffplay.exe" Source="$(var.OutputDir)\ffplay.exe" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component17" Guid="{8F9395D9-9BC6-4C31-BF3C-3D53721580BF}">
+        <File Id="ffprobe.exe" Source="$(var.OutputDir)\ffprobe.exe" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component18" Guid="{F4EAFFF8-965C-4C7E-AF53-F4C54B64DE1B}">
+        <File Id="FSharp.Core.dll" Source="$(var.OutputDir)\FSharp.Core.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component20" Guid="{4DAFEDE5-43EB-4B6C-8BDA-2BF292436EF3}">
+        <File Id="Google.Apis.Auth.dll" Source="$(var.OutputDir)\Google.Apis.Auth.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component22" Guid="{151C8CA9-5B6E-4489-BDF3-07F68C18A74C}">
+        <File Id="Google.Apis.Auth.PlatformServices.dll" Source="$(var.OutputDir)\Google.Apis.Auth.PlatformServices.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component26" Guid="{EAD292D2-99A4-4169-8179-4A28A95AE953}">
+        <File Id="Google.Apis.Core.dll" Source="$(var.OutputDir)\Google.Apis.Core.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component29" Guid="{1E1FFBAB-39B3-4EE1-A2F2-9C125AC4CBFE}">
+        <File Id="Google.Apis.dll" Source="$(var.OutputDir)\Google.Apis.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component30" Guid="{78E03150-3F42-4E1D-94F5-B8852CD08C32}">
+        <File Id="Google.Apis.Drive.v2.dll" Source="$(var.OutputDir)\Google.Apis.Drive.v2.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component34" Guid="{370712A3-70B1-4214-B2BB-DA47F43EC5E0}">
+        <File Id="Google.Apis.PlatformServices.dll" Source="$(var.OutputDir)\Google.Apis.PlatformServices.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component38" Guid="{A2155A0F-59A0-4F73-A6F3-18E78B46783D}">
+        <File Id="Google.Apis.YouTube.v3.dll" Source="$(var.OutputDir)\Google.Apis.YouTube.v3.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component41" Guid="{802133EE-1DA2-4903-9789-20C6C52901D4}">
+        <File Id="iSpy.exe" Source="$(var.OutputDir)\iSpy.exe" KeyPath="yes" Checksum="yes" />
+        <File Id="ispy.ico" Source="$(var.OutputDir)\ispy.ico" Checksum="yes" />
+        <ProgId Id="iSpyFileType" Description="iSpy Object List" Icon="ispy.ico">
+          <Extension Id="ispy" ContentType="text/xml">
+            <Verb Id="open" Command="Open" TargetFile="iSpy.exe" Argument="open %1" />
+          </Extension>
+        </ProgId>
+      </Component>
+      <Component Id="Component42" Guid="{7DF379D0-E0B6-42EE-81DD-F4FB67C6A2C4}">
+        <File Id="iSpy.exe.config" Source="$(var.OutputDir)\iSpy.exe.config" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component44" Guid="{78F424B0-62FB-4550-B9E5-6AC67541A046}">
+        <File Id="iSpy.Video.FFMPEG.dll" Source="$(var.OutputDir)\iSpy.Video.FFMPEG.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component47" Guid="{96BC8461-FAF2-4F5A-9E72-204F34E0AB4E}">
+        <File Id="iSpy.XmlSerializers.dll" Source="$(var.OutputDir)\iSpy.XmlSerializers.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component49" Guid="{EC5AE26F-E0FF-41AF-A767-FE70728F6C9C}">
+        <File Id="libmp3lame.32.dll" Source="$(var.OutputDir)\libmp3lame.32.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component50" Guid="{F8EC62D7-8F5E-4B84-A1E0-91C3C94D6334}">
+        <File Id="log4net.dll" Source="$(var.OutputDir)\log4net.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component52" Guid="{F1FDADED-CFB5-463B-B9E7-CE02FD1A153F}">
+        <File Id="Microsoft.Kinect.dll" Source="$(var.OutputDir)\Microsoft.Kinect.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component53" Guid="{E78E9C67-9EC2-4A1B-878D-7C4ACFA94B96}">
+        <File Id="Microsoft.Threading.Tasks.dll" Source="$(var.OutputDir)\Microsoft.Threading.Tasks.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component54" Guid="{7119800D-E490-40B4-9E9A-EFF383B2EC23}">
+        <File Id="Microsoft.Threading.Tasks.Extensions.Desktop.dll" Source="$(var.OutputDir)\Microsoft.Threading.Tasks.Extensions.Desktop.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component56" Guid="{0B72D32E-14DE-4997-BABE-C06DDD3407DA}">
+        <File Id="Microsoft.Threading.Tasks.Extensions.dll" Source="$(var.OutputDir)\Microsoft.Threading.Tasks.Extensions.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component59" Guid="{B43A858D-68F7-4ECA-88A4-2E371DB8892E}">
+        <File Id="NAudio.dll" Source="$(var.OutputDir)\NAudio.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component60" Guid="{EF69316C-64BB-416A-99B6-F6DA7158CE83}">
+        <File Id="NAudio.Lame.dll" Source="$(var.OutputDir)\NAudio.Lame.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component62" Guid="{B3FEB8A2-CFDD-4728-B926-28B9B8391E43}">
+        <File Id="Newtonsoft.Json.dll" Source="$(var.OutputDir)\Newtonsoft.Json.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component64" Guid="{C6955176-B7C9-4497-AF1A-2A85DAFE34EC}">
+        <File Id="NSpeex.dll" Source="$(var.OutputDir)\NSpeex.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component65" Guid="{9E00C77C-EE12-4F75-BB9A-D9F07627B18F}">
+        <File Id="nVLC.Declarations.dll" Source="$(var.OutputDir)\nVLC.Declarations.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component66" Guid="{A99009E0-B622-485E-9DBA-02B3F4CDFB1E}">
+        <File Id="nVLC.Implementation.dll" Source="$(var.OutputDir)\nVLC.Implementation.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component67" Guid="{2CE70BBE-48E5-499F-9109-F9BAB35C16F1}">
+        <File Id="nVLC.LibVlcWrapper.dll" Source="$(var.OutputDir)\nVLC.LibVlcWrapper.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component68" Guid="{81DCF55D-0D8C-4449-A2AE-E76671CE8B1C}">
+        <File Id="onvif.discovery.dll" Source="$(var.OutputDir)\onvif.discovery.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component69" Guid="{08B82D92-52CE-41D8-994D-B181DFF8B103}">
+        <File Id="onvif.services.dll" Source="$(var.OutputDir)\onvif.services.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component70" Guid="{D90C4986-AE57-4DE6-91E6-001BBF1B2135}">
+        <File Id="onvif.session.dll" Source="$(var.OutputDir)\onvif.session.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component71" Guid="{5A04EC38-AE4C-4E01-98AF-37B577083110}">
+        <File Id="onvif.utils.dll" Source="$(var.OutputDir)\onvif.utils.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component72" Guid="{1DDD9335-862A-4395-AE01-4E10288B9AC9}">
+        <File Id="postproc53.dll" Source="$(var.OutputDir)\postproc-53.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component73" Guid="{6B1C9858-607F-4F1C-B61D-A220D2A7581A}">
+        <File Id="Renci.SshNet.dll" Source="$(var.OutputDir)\Renci.SshNet.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component74" Guid="{0F8638C0-B3C3-45C9-9C61-42128E0FC375}">
+        <File Id="Renderers.dll" Source="$(var.OutputDir)\Renderers.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component75" Guid="{5B8F6261-EDA5-43E9-8A2B-7D345A27777C}">
+        <File Id="RestSharp.dll" Source="$(var.OutputDir)\RestSharp.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component77" Guid="{AB955C17-FD58-4F13-AD76-0833B85E01E9}">
+        <File Id="SharpDX.DirectInput.dll" Source="$(var.OutputDir)\SharpDX.DirectInput.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component79" Guid="{18AA1BCB-2EEB-4234-A5F5-A9C5E7A543B8}">
+        <File Id="SharpDX.dll" Source="$(var.OutputDir)\SharpDX.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component81" Guid="{44B7CDF3-8D34-40FE-9A59-C7A268CA6B08}">
+        <File Id="swresample1.dll" Source="$(var.OutputDir)\swresample-1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component82" Guid="{C23B1DE6-7CF6-4EC8-B4B2-9C64D1F33E7C}">
+        <File Id="swscale3.dll" Source="$(var.OutputDir)\swscale-3.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component83" Guid="{3D9C2168-BF25-4EE9-B813-9C27061DC74E}">
+        <File Id="System.IO.dll" Source="$(var.OutputDir)\System.IO.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component85" Guid="{8114FA26-623B-41A2-BF39-51AA832F9CD1}">
+        <File Id="System.Net.Http.dll" Source="$(var.OutputDir)\System.Net.Http.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component86" Guid="{E2090ED0-639C-415D-BB9E-090FDDA5B65D}">
+        <File Id="System.Net.Http.Extensions.dll" Source="$(var.OutputDir)\System.Net.Http.Extensions.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component88" Guid="{B5FE01D3-A983-46B4-B84A-123B2721A40E}">
+        <File Id="System.Net.Http.Primitives.dll" Source="$(var.OutputDir)\System.Net.Http.Primitives.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component90" Guid="{365BF5AD-262A-4277-A82A-EA8BC633CAE7}">
+        <File Id="System.Net.Http.WebRequest.dll" Source="$(var.OutputDir)\System.Net.Http.WebRequest.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component93" Guid="{8E2653CA-BDA7-45F8-8112-2BDB9894A6B9}">
+        <File Id="System.Reactive.Core.dll" Source="$(var.OutputDir)\System.Reactive.Core.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component94" Guid="{068CC207-7CBB-4B28-8075-EEBF12AC464D}">
+        <File Id="System.Reactive.Interfaces.dll" Source="$(var.OutputDir)\System.Reactive.Interfaces.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component95" Guid="{CE688B84-6A9E-42F1-83FD-36DB556519B3}">
+        <File Id="System.Reactive.Linq.dll" Source="$(var.OutputDir)\System.Reactive.Linq.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component96" Guid="{800514B1-3A27-43A1-97FC-A7E57BB04D59}">
+        <File Id="System.Runtime.dll" Source="$(var.OutputDir)\System.Runtime.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component98" Guid="{7C7C8477-4B99-4CAB-9218-5A6C1E909F60}">
+        <File Id="System.Threading.Tasks.dll" Source="$(var.OutputDir)\System.Threading.Tasks.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component100" Guid="{0CA5C6CA-EC27-4D75-B7FF-71D67C4A026C}">
+        <File Id="utils.common.dll" Source="$(var.OutputDir)\utils.common.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component101" Guid="{F6557BFC-A1F1-4480-A420-12AEA23EB843}">
+        <File Id="utils.diagnostics.dll" Source="$(var.OutputDir)\utils.diagnostics.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component102" Guid="{79C4F929-2C71-4450-A10C-56F2B0DC8F6F}">
+        <File Id="utils.fsharp.dll" Source="$(var.OutputDir)\utils.fsharp.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component103" Guid="{E525BAE8-D11A-424D-AA13-438EF420EC4A}">
+        <File Id="Windows7ToolStripRenderer.dll" Source="$(var.OutputDir)\Windows7ToolStripRenderer.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component104" Guid="{CDA41693-3A51-454C-8884-4862F78FD30B}">
+        <File Id="xiApi.NET.dll" Source="$(var.OutputDir)\xiApi.NET.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component105" Guid="{9480F521-D2CE-48FC-A968-3000AE00B3A1}">
+        <File Id="Zlib.Portable.dll" Source="$(var.OutputDir)\Zlib.Portable.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component106" Guid="{6D8ED581-1448-4044-9E13-8D090CB76155}">
+        <File Id="Zlib.Portable.xml" Source="$(var.OutputDir)\Zlib.Portable.xml" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Monitor" Guid="{C7362D48-A9F1-45FE-8997-19A5D1A0A0EE}">
+        <File Id="ispymonitor" Source="$(var.SourceCodeDir)\Supporting\iSpyMonitor.exe" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </ComponentGroup>
+    <ComponentGroup Id="XML" Directory="XML">
+      <Component Id="Component126" Guid="{A0F95EA8-82BD-4A4D-A3BE-EF4C4F2F4A70}">
+        <File Id="config.xml" Source="$(var.OutputDir)\XML\config.xml" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component127" Guid="{2A6EBCE8-E9CB-449F-8925-F1EE592EE19D}">
+        <File Id="Log.txt" Source="$(var.OutputDir)\XML\Log.txt" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component128" Guid="{A8B99C11-50E8-49F5-8E62-3147EA42F282}">
+        <File Id="objects.xml" Source="$(var.OutputDir)\XML\objects.xml" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component129" Guid="{57595D4E-1D70-4417-BF1E-FCE93A905C43}">
+        <File Id="PTZ2.xml" Source="$(var.OutputDir)\XML\PTZ2.xml" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component130" Guid="{2432A930-A795-4549-996B-9031E2E8DBC7}">
+        <File Id="Sources.xml" Source="$(var.OutputDir)\XML\Sources.xml" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component131" Guid="{83A17F2D-28D5-4F4F-B564-9479264E6304}">
+        <File Id="Translations.xml" Source="$(var.OutputDir)\XML\Translations.xml" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </ComponentGroup>
+    <ComponentGroup Id="ispyserver" Directory="iSpyServer">
+      <Component Id="iSpyServer" Guid="{229F5A08-9D87-4E89-8738-4086E4335065}">
+        <File Id="ispyserver" Source="$(var.SourceCodeDir)\Supporting\iSpyServerSetup.msi" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </ComponentGroup>
+    <ComponentGroup Id="backgrounds" Directory="Backgrounds">
+      <Component Id="Component107" Guid="{12C58405-9C09-4735-B922-9D1FA14F940B}">
+        <File Id="demo_mask.png" Source="$(var.OutputDir)\backgrounds\demo_mask.png" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component108" Guid="{A6047927-5B89-4362-B814-8762DA422DE9}">
+        <File Id="FloorPlan_House.jpg" Source="$(var.OutputDir)\backgrounds\FloorPlan_House.jpg" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component109" Guid="{046CB9B7-0E7C-42E6-83B7-66015BEC20AA}">
+        <File Id="FloorPlan_House2.jpg" Source="$(var.OutputDir)\backgrounds\FloorPlan_House2.jpg" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component110" Guid="{33CF1933-58D8-4D65-BA32-69B36090D9A2}">
+        <File Id="FloorPlan_Planet.jpg" Source="$(var.OutputDir)\backgrounds\FloorPlan_Planet.jpg" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </ComponentGroup>
+    <ComponentGroup Id="plugins" Directory="Plugins">
+    </ComponentGroup>
+    <ComponentGroup Id="sounds" Directory="Sounds">
+      <Component Id="Component111" Guid="{482370EA-1ED3-4F52-B283-1D0DD80E1FE4}">
+        <File Id="airhorn.wav" Source="$(var.OutputDir)\sounds\airhorn.wav" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component112" Guid="{AAA2E3D2-ADA2-40E4-9F2E-10EB99FD8A31}">
+        <File Id="alarm.wav" Source="$(var.OutputDir)\sounds\alarm.wav" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component113" Guid="{D149455E-31D6-4942-856F-88A182CB25CA}">
+        <File Id="alsationxsiberian_bark.wav" Source="$(var.OutputDir)\sounds\alsationxsiberian_bark.wav" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component114" Guid="{FBB3F7F5-EE7B-433F-BA53-C5A5016C6E21}">
+        <File Id="alsation_bark.wav" Source="$(var.OutputDir)\sounds\alsation_bark.wav" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component115" Guid="{58044720-95F5-44C2-B0D5-2142E31B1CDC}">
+        <File Id="cairnterrierbark.wav" Source="$(var.OutputDir)\sounds\cairnterrierbark.wav" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component116" Guid="{7D0233DD-D187-4939-9491-751E6013A491}">
+        <File Id="doorbell.wav" Source="$(var.OutputDir)\sounds\doorbell.wav" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component117" Guid="{06B896C0-C2E6-43ED-A948-A5377C04A831}">
+        <File Id="police.wav" Source="$(var.OutputDir)\sounds\police.wav" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component118" Guid="{BA82FBFC-BBFF-4D8F-89C4-403E5A5D4DB2}">
+        <File Id="pop.wav" Source="$(var.OutputDir)\sounds\pop.wav" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component119" Guid="{091E2CE1-1D23-4F48-85F0-C358B943FAC0}">
+        <File Id="rottweiler_bark.wav" Source="$(var.OutputDir)\sounds\rottweiler_bark.wav" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component120" Guid="{D2F2EBD7-6B8B-41D1-954A-A3C188B1D512}">
+        <File Id="spanielgrowlbark.wav" Source="$(var.OutputDir)\sounds\spanielgrowlbark.wav" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component121" Guid="{8163E91E-154C-4203-A9B3-33E40877A790}">
+        <File Id="wiggle.wav" Source="$(var.OutputDir)\sounds\wiggle.wav" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </ComponentGroup>
+    <ComponentGroup Id="webserverroot" Directory="WebServerRoot">
+      <Component Id="Component122" Guid="{B0889EBC-468E-4D58-8338-17EA104D8E55}">
+        <File Id="crossdomain.xml" Source="$(var.OutputDir)\webserverroot\crossdomain.xml" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component123" Guid="{3D501BF5-9D7C-4558-9746-23C2B81921BD}">
+        <File Id="favicon.ico" Source="$(var.OutputDir)\webserverroot\favicon.ico" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component125" Guid="{8000A2F5-44ED-4F25-8E93-A9EA72F625D6}">
+        <File Id="notfound.jpg" Source="$(var.OutputDir)\webserverroot\notfound.jpg" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </ComponentGroup>
+    <ComponentGroup Id="data" Directory="Data">
+      <Component Id="Component132" Guid="{B6E9DCDB-D525-4357-85B6-2D692D9030C5}">
+        <File Id="mime.dat" Source="$(var.OutputDir)\webserverroot\data\mime.dat" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+
+</Wix>
