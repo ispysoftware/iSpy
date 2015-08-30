@@ -177,10 +177,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>DLLS\AForge.Math.dll</HintPath>
     </Reference>
-    <Reference Include="BouncyCastle.Crypto">
-      <HintPath>packages\BouncyCastle.1.7.0\lib\Net40-Client\BouncyCastle.Crypto.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="DropNet">
       <HintPath>..\packages\DropNet.1.10.23.0\lib\net40\DropNet.dll</HintPath>
     </Reference>
@@ -1148,7 +1144,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="chk.png" />
-    <Content Include="Copyright.txt" />
     <None Include="packages.config" />
     <None Include="Resources\cam_connecting.png" />
     <None Include="Resources\cam_offline.png" />

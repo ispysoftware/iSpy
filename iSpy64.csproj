@@ -191,32 +191,32 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="FSharp.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Google.Apis, Version=1.8.2.23762, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Google.Apis.1.8.2\lib\net40\Google.Apis.dll</HintPath>
+    <Reference Include="Google.Apis, Version=1.9.0.26011, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.1.9.0\lib\net40\Google.Apis.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Google.Apis.Auth, Version=1.8.2.23763, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Google.Apis.Auth.1.8.2\lib\net40\Google.Apis.Auth.dll</HintPath>
+    <Reference Include="Google.Apis.Auth, Version=1.9.0.26011, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.Auth.1.9.0\lib\net40\Google.Apis.Auth.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.8.2.23773, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Google.Apis.Auth.1.8.2\lib\net40\Google.Apis.Auth.PlatformServices.dll</HintPath>
+    <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.9.0.26016, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.Auth.1.9.0\lib\net40\Google.Apis.Auth.PlatformServices.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Google.Apis.Core, Version=1.8.2.23761, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Google.Apis.Core.1.8.2\lib\portable-net4+sl4+wp71+win8\Google.Apis.Core.dll</HintPath>
+    <Reference Include="Google.Apis.Core, Version=1.9.0.26010, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.Core.1.9.0\lib\portable-net40+sl50+win+wpa81+wp80\Google.Apis.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Google.Apis.Drive.v2, Version=1.8.1.144, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Google.Apis.Drive.v2.1.8.1.1440\lib\portable-net4+sl4+wp71+win8\Google.Apis.Drive.v2.dll</HintPath>
+    <Reference Include="Google.Apis.Drive.v2, Version=1.9.0.176, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.Drive.v2.1.9.0.1760\lib\portable-net40+sl50+win+wpa81+wp80\Google.Apis.Drive.v2.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Google.Apis.PlatformServices, Version=1.8.2.23765, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Google.Apis.1.8.2\lib\net40\Google.Apis.PlatformServices.dll</HintPath>
+    <Reference Include="Google.Apis.PlatformServices, Version=1.9.0.26013, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.1.9.0\lib\net40\Google.Apis.PlatformServices.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Google.Apis.YouTube.v3, Version=1.8.1.116, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Google.Apis.YouTube.v3.1.8.1.1160\lib\portable-net4+sl4+wp71+win8\Google.Apis.YouTube.v3.dll</HintPath>
+    <Reference Include="Google.Apis.YouTube.v3, Version=1.9.0.141, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.YouTube.v3.1.9.0.1410\lib\portable-net40+sl50+win+wpa81+wp80\Google.Apis.YouTube.v3.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Interop.NATUPNPLib">
@@ -262,12 +262,12 @@
       <HintPath>..\packages\NAudio.1.7\lib\net35\NAudio.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NAudio.Lame, Version=1.0.2.33669, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.Lame.1.0.2\lib\net20\NAudio.Lame.dll</HintPath>
+    <Reference Include="NAudio.Lame">
+      <HintPath>packages\NAudio.Lame.1.0.3\lib\net20\NAudio.Lame.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>packages\Newtonsoft.Json.7.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NSpeex">
@@ -330,20 +330,20 @@
     </Reference>
     <Reference Include="System.Management" />
     <Reference Include="System.Net" />
-    <Reference Include="System.Net.Http, Version=2.2.20.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.Net.Http.2.2.20\lib\net40\System.Net.Http.dll</HintPath>
+    <Reference Include="System.Net.Http, Version=2.2.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Net.Http.2.2.22\lib\net40\System.Net.Http.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net.Http.Extensions, Version=2.2.20.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.Net.Http.2.2.20\lib\net40\System.Net.Http.Extensions.dll</HintPath>
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Net.Http.2.2.22\lib\net40\System.Net.Http.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net.Http.Primitives, Version=2.2.20.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.Net.Http.2.2.20\lib\net40\System.Net.Http.Primitives.dll</HintPath>
+    <Reference Include="System.Net.Http.Primitives, Version=2.2.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Net.Http.2.2.22\lib\net40\System.Net.Http.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net.Http.WebRequest, Version=2.2.20.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.Net.Http.2.2.20\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    <Reference Include="System.Net.Http.WebRequest, Version=2.2.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Net.Http.2.2.22\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Core">
@@ -355,14 +355,14 @@
     <Reference Include="System.Reactive.Linq">
       <HintPath>Onvif\System.Reactive.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime, Version=2.6.9.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.1.1.9\lib\net40\System.Runtime.dll</HintPath>
+    <Reference Include="System.Runtime">
+      <HintPath>packages\Microsoft.Bcl.1.1.10\lib\net40\System.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Speech" />
-    <Reference Include="System.Threading.Tasks, Version=2.6.9.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.1.1.9\lib\net40\System.Threading.Tasks.dll</HintPath>
+    <Reference Include="System.Threading.Tasks">
+      <HintPath>packages\Microsoft.Bcl.1.1.10\lib\net40\System.Threading.Tasks.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Services" />
@@ -1150,14 +1150,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="chk.png" />
-    <Content Include="Copyright.txt" />
     <Content Include="DLLS\AForge.dll" />
     <Content Include="DLLS\AForge.Imaging.dll" />
     <Content Include="DLLS\AForge.Math.dll" />
     <Content Include="DLLS\Interop.NATUPNPLib.dll" />
     <Content Include="DLLS\Interop.NETCONLib.dll" />
     <Content Include="DLLS\Interop.NetFwTypeLib.dll" />
-    <Content Include="DLLS\Interop.NETWORKLIST.dll" />
     <Content Include="DLLS\Microsoft.Kinect.dll" />
     <Content Include="DLLS\NSpeex.dll" />
     <Content Include="DLLS\nVLC.Declarations.dll" />
