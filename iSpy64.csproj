@@ -191,36 +191,48 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="FSharp.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Google.Apis, Version=1.9.0.26011, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.1.9.0\lib\net40\Google.Apis.dll</HintPath>
+    <Reference Include="Google.Apis, Version=1.8.2.23762, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.1.8.2\lib\net40\Google.Apis.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Google.Apis.Auth, Version=1.9.0.26011, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.Auth.1.9.0\lib\net40\Google.Apis.Auth.dll</HintPath>
+    <Reference Include="Google.Apis.Auth, Version=1.8.2.23763, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.Auth.1.8.2\lib\net40\Google.Apis.Auth.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.9.0.26016, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.Auth.1.9.0\lib\net40\Google.Apis.Auth.PlatformServices.dll</HintPath>
+    <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.8.2.23773, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.Auth.1.8.2\lib\net40\Google.Apis.Auth.PlatformServices.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Google.Apis.Core, Version=1.9.0.26010, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.Core.1.9.0\lib\portable-net40+sl50+win+wpa81+wp80\Google.Apis.Core.dll</HintPath>
+    <Reference Include="Google.Apis.Core, Version=1.8.2.23761, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.Core.1.8.2\lib\portable-net4+sl4+wp71+win8\Google.Apis.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Google.Apis.Drive.v2, Version=1.9.0.167, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.Drive.v2.1.9.0.1670\lib\portable-net40+sl50+win+wpa81+wp80\Google.Apis.Drive.v2.dll</HintPath>
+    <Reference Include="Google.Apis.Drive.v2, Version=1.8.1.144, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.Drive.v2.1.8.1.1440\lib\portable-net4+sl4+wp71+win8\Google.Apis.Drive.v2.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Google.Apis.PlatformServices, Version=1.9.0.26013, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.1.9.0\lib\net40\Google.Apis.PlatformServices.dll</HintPath>
+    <Reference Include="Google.Apis.PlatformServices, Version=1.8.2.23765, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.1.8.2\lib\net40\Google.Apis.PlatformServices.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Google.Apis.YouTube.v3, Version=1.9.0.134, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Google.Apis.YouTube.v3.1.9.0.1340\lib\portable-net40+sl50+win+wpa81+wp80\Google.Apis.YouTube.v3.dll</HintPath>
+    <Reference Include="Google.Apis.YouTube.v3, Version=1.8.1.116, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.YouTube.v3.1.8.1.1160\lib\portable-net4+sl4+wp71+win8\Google.Apis.YouTube.v3.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Interop.NATUPNPLib">
+      <HintPath>DLLS\Interop.NATUPNPLib.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.NETCONLib">
+      <HintPath>DLLS\Interop.NETCONLib.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.NetFwTypeLib">
       <HintPath>DLLS\Interop.NetFwTypeLib.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.NETWORKLIST">
+      <HintPath>DLLS\x64\Interop.NETWORKLIST.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="iSpy.Video.FFMPEG">
@@ -318,20 +330,20 @@
     </Reference>
     <Reference Include="System.Management" />
     <Reference Include="System.Net" />
-    <Reference Include="System.Net.Http, Version=2.2.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.22\lib\net40\System.Net.Http.dll</HintPath>
+    <Reference Include="System.Net.Http, Version=2.2.20.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Net.Http.2.2.20\lib\net40\System.Net.Http.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net.Http.Extensions, Version=2.2.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.22\lib\net40\System.Net.Http.Extensions.dll</HintPath>
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.20.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Net.Http.2.2.20\lib\net40\System.Net.Http.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net.Http.Primitives, Version=2.2.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.22\lib\net40\System.Net.Http.Primitives.dll</HintPath>
+    <Reference Include="System.Net.Http.Primitives, Version=2.2.20.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Net.Http.2.2.20\lib\net40\System.Net.Http.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net.Http.WebRequest, Version=2.2.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.22\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    <Reference Include="System.Net.Http.WebRequest, Version=2.2.20.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Net.Http.2.2.20\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Core">
@@ -1139,6 +1151,23 @@
     </Content>
     <None Include="chk.png" />
     <Content Include="Copyright.txt" />
+    <Content Include="DLLS\AForge.dll" />
+    <Content Include="DLLS\AForge.Imaging.dll" />
+    <Content Include="DLLS\AForge.Math.dll" />
+    <Content Include="DLLS\Interop.NATUPNPLib.dll" />
+    <Content Include="DLLS\Interop.NETCONLib.dll" />
+    <Content Include="DLLS\Interop.NetFwTypeLib.dll" />
+    <Content Include="DLLS\Interop.NETWORKLIST.dll" />
+    <Content Include="DLLS\Microsoft.Kinect.dll" />
+    <Content Include="DLLS\NSpeex.dll" />
+    <Content Include="DLLS\nVLC.Declarations.dll" />
+    <Content Include="DLLS\nVLC.Implementation.dll" />
+    <Content Include="DLLS\nVLC.LibVlcWrapper.dll" />
+    <Content Include="DLLS\Renci.SshNet.dll" />
+    <Content Include="DLLS\Renderers.dll" />
+    <Content Include="DLLS\Windows7ToolStripRenderer.dll" />
+    <Content Include="DLLS\x64\Interop.NETWORKLIST.dll" />
+    <Content Include="DLLS\xiApi.NET.dll" />
     <Content Include="libmp3lame.64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1749,7 +1778,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\x86\" />
-    <Folder Include="DLLS\" />
     <Folder Include="Onvif\" />
     <Folder Include="WebServerRoot\Media\Audio\" />
     <Folder Include="WebServerRoot\Media\Video\" />
@@ -1757,39 +1785,10 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="NATUPNPLib">
-      <Guid>{1C565858-F302-471E-B409-F180AA4ABEC6}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="NETCONLib">
-      <Guid>{43E734CA-043D-4A70-9A2C-A8F254063D91}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="NETWORKLIST">
-      <Guid>{DCB00D01-570F-4A9B-8D69-199FDBA5723B}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
-</PreBuildEvent>
+    </PreBuildEvent>
     <PostBuildEvent>xcopy "$(ProjectDir)Supporting\x64\*.*" "$(ProjectDir)$(OutDir)" /Y
 if NOT %25ComputerName%25 == DevPC GOTO end
 call "$(SolutionDir)signing\iSpyApplication64.bat"
