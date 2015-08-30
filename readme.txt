@@ -1,5 +1,6 @@
-﻿To build the setup project, edit the config.wxi file and change the path to the source and project directories
-Changes to the aforge framework can be downloaded here:
+﻿To build the setup project, edit the config.wxi file and change the paths to the source and project directories
+The 32 bit and 64 bit solutions require Visual Studio 2015 to build
+Also VS2010 merge modules must be installed
+(C:\Program Files (x86)\Common Files\Merge Modules\Microsoft_VC100_CRT_x86.msm)
 
-http://hosting.ispyconnect.com/aforgesources.zip
 
