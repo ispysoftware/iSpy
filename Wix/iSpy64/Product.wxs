@@ -16,6 +16,7 @@
       <ComponentGroupRef Id="sounds" />
       <ComponentGroupRef Id="webserverroot" />
       <ComponentGroupRef Id="data" />
+      <ComponentGroupRef Id="vlc64"/>
       <ComponentRef Id="ApplicationShortcut" />
       <ComponentRef Id="ApplicationShortcutReset" />
       <ComponentRef Id="ApplicationShortcutSilent" />
@@ -63,6 +64,7 @@
             <Directory Id="Plugins" Name="Plugins" />
             <Directory Id="iSpyServer" Name="iSpyServer" />
             <Directory Id="Backgrounds" Name="Backgrounds" />
+            <Directory Id="VLC64" Name="VLC64" />
           </Directory>
         </Directory>
       </Directory>
@@ -394,6 +396,11 @@
     <ComponentGroup Id="data" Directory="Data">
       <Component Win64="yes" Id="Component132" Guid="{E216B6CF-E7BB-490F-80F7-00EEBFCE4C35}">
         <File Id="mime.dat" Source="$(var.OutputDir)\webserverroot\data\mime.dat" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </ComponentGroup>
+    <ComponentGroup Id="vlc64" Directory="VLC64">
+      <Component Win64="yes" Id="Component133" Guid="{1292fcac-862f-4a3c-be6e-f42af2565cc1}">
+        <File Id="vlc_readme.txt" Source="$(var.OutputDir)\VLC64\readme.txt" KeyPath="yes" Checksum="yes" />
       </Component>
     </ComponentGroup>
   </Fragment>
