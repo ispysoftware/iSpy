@@ -5806,4 +5806,49 @@ copy or delete as many lines as you need.-->
       <Command Name="Set Preset 7">param.cgi?cmd=preset&amp;-act=set&amp;-status=1&amp;-number=6</Command>
     </ExtendedCommands>
   </Camera>
+  <Camera id="212">
+    <Makes>
+      <Make Name="HooToo" Model="HIP-211HDP" />
+    </Makes>
+    <CommandURL></CommandURL>
+    <Commands>
+      <Center>/cgi-bin/hi3510/ptzgotopoint.cgi?&amp;-chn=0&amp;-point=0</Center>
+      <Left>/cgi-bin/hi3510/ptzctrl.cgi?&amp;-chn=0&amp;-act=left&amp;-speed=10</Left>
+      <LeftUp>/cgi-bin/hi3510/ptzctrl.cgi?&amp;-chn=0&amp;-act=upleft&amp;-speed=10</LeftUp>
+      <Right>/cgi-bin/hi3510/ptzctrl.cgi?&amp;-chn=0&amp;-act=right&amp;-speed=10</Right>
+      <RightUp>/cgi-bin/hi3510/ptzctrl.cgi?&amp;-chn=0&amp;-act=upright&amp;-speed=10</RightUp>
+      <Up>/cgi-bin/hi3510/ptzctrl.cgi?&amp;-chn=0?&amp;-act=up&amp;-speed=10</Up>
+      <Down>/cgi-bin/hi3510/ptzctrl.cgi?&amp;-chn=0&amp;-act=down&amp;-speed=10</Down>
+      <LeftDown>/cgi-bin/hi3510/ptzctrl.cgi?&amp;-chn=0&amp;-act=downleft&amp;-speed=10</LeftDown>
+      <RightDown>/cgi-bin/hi3510/ptzctrl.cgi?&amp;-chn=0&amp;-act=downright&amp;-speed=10</RightDown>
+      <Stop>/cgi-bin/hi3510/ptzstop.cgi?&amp;-chn=0&amp;-speed=0</Stop>
+      <ZoomIn></ZoomIn>
+      <ZoomOut></ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="GO Home">/cgi-bin/hi3510/ptzgotopoint.cgi?&amp;-chn=0&amp;-point=0</Command>
+      <Command Name="GO Preset 1">/cgi-bin/hi3510/ptzgotopoint.cgi?&amp;-chn=0&amp;-point=1</Command>
+      <Command Name="GO Preset 2">/cgi-bin/hi3510/ptzgotopoint.cgi?&amp;-chn=0&amp;-point=2</Command>
+      <Command Name="GO Preset 3">/cgi-bin/hi3510/ptzgotopoint.cgi?&amp;-chn=0&amp;-point=3</Command>
+      <Command Name="GO Preset 4">/cgi-bin/hi3510/ptzgotopoint.cgi?&amp;-chn=0&amp;-point=4</Command>
+      <Command Name="GO Preset 5">/cgi-bin/hi3510/ptzgotopoint.cgi?&amp;-chn=0&amp;-point=5</Command>
+      <Command Name="GO Preset 6">/cgi-bin/hi3510/ptzgotopoint.cgi?&amp;-chn=0&amp;-point=6</Command>
+      <Command Name="GO Preset 7">/cgi-bin/hi3510/ptzgotopoint.cgi?&amp;-chn=0&amp;-point=7</Command>
+      <Command Name="GO Preset 8">/cgi-bin/hi3510/ptzgotopoint.cgi?&amp;-chn=0&amp;-point=8</Command>
+      <Command Name="Set Preset 1">/cgi-bin/hi3510/ptzsetpoint.cgi?&amp;-chn=0&amp;-point=1</Command>
+      <Command Name="Set Preset 2">/cgi-bin/hi3510/ptzsetpoint.cgi?&amp;-chn=0&amp;-point=2</Command>
+      <Command Name="Set Preset 3">/cgi-bin/hi3510/ptzsetpoint.cgi?&amp;-chn=0&amp;-point=3</Command>
+      <Command Name="Set Preset 4">/cgi-bin/hi3510/ptzsetpoint.cgi?&amp;-chn=0&amp;-point=4</Command>
+      <Command Name="Set Preset 5">/cgi-bin/hi3510/ptzsetpoint.cgi?&amp;-chn=0&amp;-point=5</Command>
+      <Command Name="Set Preset 6">/cgi-bin/hi3510/ptzsetpoint.cgi?&amp;-chn=0&amp;-point=6</Command>
+      <Command Name="Set Preset 7">/cgi-bin/hi3510/ptzsetpoint.cgi?&amp;-chn=0&amp;-point=7</Command>
+      <Command Name="Set Preset 8">/cgi-bin/hi3510/ptzsetpoint.cgi?&amp;-chn=0&amp;-point=8</Command>
+      <Command Name="Start Tour 1">/cgi-bin/hi3510/ptzstarttour.cgi?&amp;-tour=0</Command>
+      <Command Name="Start Tour 2">/cgi-bin/hi3510/ptzstarttour.cgi?&amp;-tour=1</Command>
+      <Command Name="Start Tour 3">/cgi-bin/hi3510/ptzstarttour.cgi?&amp;-tour=2</Command>
+      <Command Name="Start Tour 4">/cgi-bin/hi3510/ptzstarttour.cgi?&amp;-tour=3</Command>
+      <Command Name="H Patrol">/cgi-bin/hi3510/ptzctrl.cgi?&amp;-step=0&amp;-speed=10&amp;-act=hscan</Command>
+      <Command Name="V Patrol">/cgi-bin/hi3510/ptzctrl.cgi?&amp;-step=0&amp;-speed=10&amp;-act=vscan</Command>
+    </ExtendedCommands>
+  </Camera>
 </PTZSettings2>
