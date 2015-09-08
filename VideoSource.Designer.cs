@@ -1,3 +1,5 @@
+using iSpyApplication.Controls;
+
 namespace iSpyApplication
 {
     partial class VideoSource
@@ -85,7 +87,7 @@ namespace iSpyApplication
             this.tlpVLC = new System.Windows.Forms.TableLayoutPanel();
             this.label21 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
-            this.txtVLCArgs = new ClipboardTextBoxExample.ClipboardTextBox();
+            this.txtVLCArgs = new ClipboardTextBox();
             this.label18 = new System.Windows.Forms.Label();
             this.flowLayoutPanel11 = new System.Windows.Forms.FlowLayoutPanel();
             this.cmbVLCURL = new System.Windows.Forms.ComboBox();
@@ -911,7 +913,7 @@ namespace iSpyApplication
             this.txtVLCArgs.Name = "txtVLCArgs";
             this.txtVLCArgs.Size = new System.Drawing.Size(294, 84);
             this.txtVLCArgs.TabIndex = 61;
-            this.txtVLCArgs.PastedText += new ClipboardTextBoxExample.ClipboardTextBox.ClipboardEventHandler(this.txtVLCArgs_PastedText);
+            this.txtVLCArgs.PastedText += new ClipboardTextBox.ClipboardEventHandler(this.txtVLCArgs_PastedText);
             // 
             // label18
             // 
@@ -2282,7 +2284,7 @@ namespace iSpyApplication
         private System.Windows.Forms.TextBox txtCustomURL;
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.ComboBox ddlCustomProvider;
-        private ClipboardTextBoxExample.ClipboardTextBox txtVLCArgs;
+        private ClipboardTextBox txtVLCArgs;
         private System.Windows.Forms.LinkLabel linkLabel5;
         private System.Windows.Forms.NumericUpDown numBorderTimeout;
         private System.Windows.Forms.Label label45;

@@ -17,8 +17,6 @@
       <ComponentGroupRef Id="webserverroot" />
       <ComponentGroupRef Id="data" />
       <ComponentRef Id="ApplicationShortcut" />
-      <ComponentRef Id="ApplicationShortcutReset" />
-      <ComponentRef Id="ApplicationShortcutSilent" />
       <ComponentRef Id="ApplicationShortcutDesktop" />
     </Feature>
     <Feature Id="VCRedist" Title="Visual C++ 10.0 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
@@ -73,15 +71,10 @@
     <DirectoryRef Id="ApplicationProgramsFolder">
       <Component Id="ApplicationShortcut" Guid="{181C0827-C961-4A54-B4F5-BB1A51524619}">
         <Shortcut Id="ApplicationStartMenuShortcut" Name="iSpy" Description="iSpy Video Surveillance Software" Target="[INSTALLFOLDER]iSpy.exe" WorkingDirectory="INSTALLFOLDER" />
+        <Shortcut Id="SilentStart" Name="iSpy Silent Start" Description="iSpy Video Surveillance Software" Target="[INSTALLFOLDER]iSpy.exe" WorkingDirectory="INSTALLFOLDER" Arguments="-silent" />
+        <Shortcut Id="ResetProduct" Name="iSpy Reset" Description="iSpy Video Surveillance Software" Target="[INSTALLFOLDER]iSpy.exe" WorkingDirectory="INSTALLFOLDER" Arguments="-reset" />
+        <Shortcut Id="UninstallProduct" Name="Uninstall iSpy" Description="Uninstalls iSpy" Target="[SystemFolder]msiexec.exe" Arguments="/x [ProductCode]"/>
         <RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
-        <RegistryValue Root="HKCU" Key="Software\iSpy" Name="installed" Type="integer" Value="1" KeyPath="yes" />
-      </Component>
-      <Component Id="ApplicationShortcutReset" Guid="{FF2D2AA8-170F-4243-9998-1BCEF8BD069C}">
-        <Shortcut Id="ApplicationStartMenuShortcutReset" Name="iSpy Reset" Description="iSpy Video Surveillance Software" Target="[INSTALLFOLDER]iSpy.exe" WorkingDirectory="INSTALLFOLDER" Arguments="-reset" />
-        <RegistryValue Root="HKCU" Key="Software\iSpy" Name="installed" Type="integer" Value="1" KeyPath="yes" />
-      </Component>
-      <Component Id="ApplicationShortcutSilent" Guid="{FB2CB201-4939-4724-88CD-70ECF59247BE}">
-        <Shortcut Id="ApplicationStartMenuShortcutSilent" Name="iSpy Silent Start" Description="iSpy Video Surveillance Software" Target="[INSTALLFOLDER]iSpy.exe" WorkingDirectory="INSTALLFOLDER" Arguments="-silent" />
         <RegistryValue Root="HKCU" Key="Software\iSpy" Name="installed" Type="integer" Value="1" KeyPath="yes" />
       </Component>
     </DirectoryRef>
@@ -89,7 +82,7 @@
       <Component Id="ApplicationShortcutDesktop" Guid="{360F5BA0-D29A-4D16-AD53-3946A9E29E19}">
         <Shortcut Id="ApplicationDesktopShortcut" Name="iSpy" Description="iSpy Video Surveillance Software" Target="[INSTALLFOLDER]iSpy.exe" WorkingDirectory="INSTALLFOLDER" />
         <RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall" />
-        <RegistryValue Root="HKCU" Key="Software\iSpy" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+        <RegistryValue Root="HKCU" Key="Software\iSpy" Name="desktopsc" Type="integer" Value="1" KeyPath="yes" />
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="TARGETDIR">

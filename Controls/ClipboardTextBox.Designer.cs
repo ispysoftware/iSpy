@@ -1,4 +1,4 @@
-namespace ClipboardTextBoxExample
+namespace iSpyApplication.Controls
 {
     partial class ClipboardTextBox
     {

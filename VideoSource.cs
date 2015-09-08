@@ -1589,7 +1589,7 @@ namespace iSpyApplication
 
         }
 
-        private void txtVLCArgs_PastedText(object sender, ClipboardTextBoxExample.ClipboardEventArgs e)
+        private void txtVLCArgs_PastedText(object sender, ClipboardEventArgs e)
         {
             //reformat VLC local arguments to input arguments
             Clipboard.SetText(e.ClipboardText.Trim().Replace(":", Environment.NewLine+"-").Trim());
