@@ -56,7 +56,8 @@
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -187,36 +188,39 @@
       <HintPath>DLLS\AForge.Math.dll</HintPath>
     </Reference>
     <Reference Include="DropNet">
-      <HintPath>..\packages\DropNet.1.10.23.0\lib\net40\DropNet.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\DropNet.1.10.23.0\lib\net40\DropNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FSharp.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="FSharp.Core, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\FSharp.Core.4.0.0.1\lib\net40\FSharp.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Google.Apis, Version=1.9.0.26011, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Google.Apis.1.9.0\lib\net40\Google.Apis.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Google.Apis.1.9.0\lib\net40\Google.Apis.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Google.Apis.Auth, Version=1.9.0.26011, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Google.Apis.Auth.1.9.0\lib\net40\Google.Apis.Auth.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Google.Apis.Auth.1.9.0\lib\net40\Google.Apis.Auth.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.9.0.26016, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Google.Apis.Auth.1.9.0\lib\net40\Google.Apis.Auth.PlatformServices.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Google.Apis.Auth.1.9.0\lib\net40\Google.Apis.Auth.PlatformServices.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Google.Apis.Core, Version=1.9.0.26010, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Google.Apis.Core.1.9.0\lib\portable-net40+sl50+win+wpa81+wp80\Google.Apis.Core.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Google.Apis.Core.1.9.0\lib\portable-net40+sl50+win+wpa81+wp80\Google.Apis.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Google.Apis.Drive.v2, Version=1.9.0.176, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Google.Apis.Drive.v2.1.9.0.1760\lib\portable-net40+sl50+win+wpa81+wp80\Google.Apis.Drive.v2.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Google.Apis.Drive.v2.1.9.0.1760\lib\portable-net40+sl50+win+wpa81+wp80\Google.Apis.Drive.v2.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Google.Apis.PlatformServices, Version=1.9.0.26013, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Google.Apis.1.9.0\lib\net40\Google.Apis.PlatformServices.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Google.Apis.1.9.0\lib\net40\Google.Apis.PlatformServices.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Google.Apis.YouTube.v3, Version=1.9.0.141, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Google.Apis.YouTube.v3.1.9.0.1410\lib\portable-net40+sl50+win+wpa81+wp80\Google.Apis.YouTube.v3.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Google.Apis.YouTube.v3.1.9.0.1410\lib\portable-net40+sl50+win+wpa81+wp80\Google.Apis.YouTube.v3.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Interop.NATUPNPLib">
@@ -239,7 +243,7 @@
       <HintPath>Supporting\x64\iSpy.Video.FFMPEG.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Kinect, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=AMD64">
@@ -247,27 +251,27 @@
       <HintPath>C:\Program Files\Microsoft SDKs\Kinect\v1.8\Assemblies\Microsoft.Kinect.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks.Extensions, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop, Version=1.0.168.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NAudio, Version=1.7.0.15, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.1.7\lib\net35\NAudio.dll</HintPath>
+    <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\NAudio.1.7.3\lib\net35\NAudio.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NAudio.Lame">
-      <HintPath>packages\NAudio.Lame.1.0.3\lib\net20\NAudio.Lame.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\NAudio.Lame.1.0.3\lib\net20\NAudio.Lame.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>packages\Newtonsoft.Json.7.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Newtonsoft.Json.7.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NSpeex">
@@ -300,16 +304,14 @@
     <Reference Include="Renderers">
       <HintPath>DLLS\Renderers.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp">
-      <HintPath>..\packages\RestSharp.105.0.1\lib\net4\RestSharp.dll</HintPath>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\RestSharp.105.2.3\lib\net4\RestSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SharpDX, Version=2.6.3.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="SharpDX">
       <HintPath>$(SharpDXPackageBinDir)\SharpDX.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX.DirectInput, Version=2.6.3.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="SharpDX.DirectInput">
       <HintPath>$(SharpDXPackageBinDir)\SharpDX.DirectInput.dll</HintPath>
     </Reference>
     <Reference Include="System">
@@ -324,26 +326,22 @@
       <Name>System.Drawing</Name>
     </Reference>
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="System.IO, Version=2.6.9.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.1.1.9\lib\net40\System.IO.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Management" />
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http, Version=2.2.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.Net.Http.2.2.22\lib\net40\System.Net.Http.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Microsoft.Net.Http.2.2.22\lib\net40\System.Net.Http.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http.Extensions, Version=2.2.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.Net.Http.2.2.22\lib\net40\System.Net.Http.Extensions.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Microsoft.Net.Http.2.2.22\lib\net40\System.Net.Http.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http.Primitives, Version=2.2.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.Net.Http.2.2.22\lib\net40\System.Net.Http.Primitives.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Microsoft.Net.Http.2.2.22\lib\net40\System.Net.Http.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest, Version=2.2.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.Net.Http.2.2.22\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Microsoft.Net.Http.2.2.22\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Core">
@@ -356,13 +354,13 @@
       <HintPath>Onvif\System.Reactive.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime">
-      <HintPath>packages\Microsoft.Bcl.1.1.10\lib\net40\System.Runtime.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Microsoft.Bcl.1.1.10\lib\net40\System.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Speech" />
     <Reference Include="System.Threading.Tasks">
-      <HintPath>packages\Microsoft.Bcl.1.1.10\lib\net40\System.Threading.Tasks.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Microsoft.Bcl.1.1.10\lib\net40\System.Threading.Tasks.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Services" />
@@ -388,8 +386,8 @@
     <Reference Include="xiApi.NET">
       <HintPath>DLLS\xiApi.NET.dll</HintPath>
     </Reference>
-    <Reference Include="Zlib.Portable, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Zlib.Portable.1.10.0\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
+    <Reference Include="Zlib.Portable, Version=1.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\Zlib.Portable.1.11.0\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -1794,18 +1792,19 @@ call "$(SolutionDir)signing\iSpyApplication64.bat"
 
 </PostBuildEvent>
   </PropertyGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-    <Error Condition="!Exists('..\packages\SharpDX.2.6.3\build\SharpDX.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SharpDX.2.6.3\build\SharpDX.targets'))" />
-  </Target>
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
     <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
     <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
   </Target>
   <Import Project="..\packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('..\packages\SharpDX.2.6.3\build\SharpDX.targets')" />
+  <Import Project="packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('packages\SharpDX.2.6.3\build\SharpDX.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\SharpDX.2.6.3\build\SharpDX.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\SharpDX.2.6.3\build\SharpDX.targets'))" />
+    <Error Condition="!Exists('packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+  </Target>
+  <Import Project="packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
 </Project>
