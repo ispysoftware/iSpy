@@ -9,7 +9,7 @@ namespace iSpyApplication
         const int SysCommand = 0x0112;
         const int MouseeventfMove = 0x0001;
 
-        const uint EsContinuous = 0x80000000;
+        public const uint EsContinuous = 0x80000000;
         public const uint EsSystemRequired = 0x00000001;
 
 
