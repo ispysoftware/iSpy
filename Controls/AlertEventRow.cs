@@ -56,6 +56,10 @@ namespace iSpyApplication.Controls
                     t = LocRm.GetString("Maximise");
                     pbEdit.Visible = false;
                     break;
+                case "MO":
+                    t = LocRm.GetString("SwitchMonitorOn");
+                    pbEdit.Visible = false;
+                    break;
                 case "TA":
                     {
                         string[] op = param1.Split(',');

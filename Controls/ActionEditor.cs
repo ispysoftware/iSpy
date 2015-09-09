@@ -23,6 +23,7 @@ namespace iSpyApplication.Controls
                 "M|Maximise",
                 "SOO|SwitchObjectOn",
                 "SOF|SwitchObjectOff",
+                "MO|SwitchMonitorOn",
                 "TA|TriggerAlertOn",
                 "E|SendEmail[1]",
                 "SMS|SendSMS[SUBSCRIBER]",
@@ -82,7 +83,7 @@ namespace iSpyApplication.Controls
 
             var oae = MainForm.Actions.Where(p => p.mode == Mode && p.objectid == Oid && p.objecttypeid == Otid).ToList();
 
-            if (oae.Count() * AlertEventRow.Height >= flpActions.Height)
+            if (oae.Count * AlertEventRow.Height >= flpActions.Height)
                 w = flpActions.Width - vertScrollWidth - 2;
             foreach (var e in oae)
             {
@@ -181,6 +182,7 @@ namespace iSpyApplication.Controls
                 case "SW":
                 case "B":
                 case "M":
+                case "MO":
                     config = new [] {"","","",""};
                     break;
                 case "TA":
@@ -244,8 +246,7 @@ namespace iSpyApplication.Controls
             
             if (!MainForm.Conf.Subscribed && oa.Restricted)
             {
-                if (LoginRequested!=null)
-                    LoginRequested(this, EventArgs.Empty);
+                LoginRequested?.Invoke(this, EventArgs.Empty);
                 return;
             }
             bool cancel;

@@ -169,7 +169,7 @@ internal static class Program
             var ffmpegSetup = new Init();
             ffmpegSetup.Initialise();
 
-            _previousExecutionState = NativeCalls.SetThreadExecutionState(NativeCalls.ES_CONTINUOUS | NativeCalls.ES_SYSTEM_REQUIRED);
+            _previousExecutionState = NativeCalls.SetThreadExecutionState(NativeCalls.EsContinuous | NativeCalls.EsSystemRequired);
             
             AppIdle = new WinFormsAppIdleHandler {Enabled = false};
             var mf = new MainForm(silentstartup, command);

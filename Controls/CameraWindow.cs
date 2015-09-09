@@ -3729,6 +3729,11 @@ namespace iSpyApplication.Controls
                             }
                         }
                         break;
+                    case "MO":
+                    {
+                        NativeCalls.MonitorOn();
+                    }
+                        break;
 
                 }
             }
