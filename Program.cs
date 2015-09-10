@@ -103,12 +103,19 @@ internal static class Program
                 EnsureInstall(true);
             else
             {
-                var o = Registry.CurrentUser.OpenSubKey(@"Software\ispy",true);
-                if (o?.GetValue("firstrun") != null)
+                try
                 {
-                    o.DeleteValue("firstrun");
-                    //copy over updated static files on first run of new version
-                    EnsureInstall(false);
+                    var o = Registry.CurrentUser.OpenSubKey(@"Software\ispy",true);
+                    if (o?.GetValue("firstrun") != null)
+                    {
+                        o.DeleteValue("firstrun");
+                        //copy over updated static files on first run of new install
+                        EnsureInstall(false);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MainForm.LogExceptionToFile(ex, "startup");
                 }
             }
 
