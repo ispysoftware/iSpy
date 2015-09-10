@@ -36,13 +36,13 @@ namespace iSpyApplication
 
         private void RenderResources()
         {
-            _lblVersion.Text = string.Format("iSpy v{0}", Application.ProductVersion);
-            if (Program.Platform != "x86")
-                _lblVersion.Text = string.Format("iSpy 64 v{0}", Application.ProductVersion);
+            _lblVersion.Text = string.Format("{0}{1} v{2}", 
+                Application.ProductName, Program.Platform != "x86" ? " 64" : "",
+                Application.ProductVersion);
 
             Helper.SetTitle(this);
 
-            _lblCopyright.Text = "Copyright " + Helper.Now.Year;
+            _lblCopyright.Text = "Copyright 2011-" + Helper.Now.Year;
 
             linkLabel1.Visible = false;
 
