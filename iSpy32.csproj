@@ -1801,9 +1801,9 @@
     <PreBuildEvent>
     </PreBuildEvent>
     <PostBuildEvent>xcopy "$(ProjectDir)Supporting\x86\*.*" "$(ProjectDir)$(OutDir)" /Y
-if NOT %25ComputerName%25 == DevPC GOTO end
+if NOT %25ComputerName%25 == DEVPC GOTO end
 REM signing certificate is not part of the solution
-call "$(SolutionDir)signing\iSpyApplication.bat"
+call "D:\projects\ispy\signing\iSpy.bat"
 :end
 </PostBuildEvent>
   </PropertyGroup>

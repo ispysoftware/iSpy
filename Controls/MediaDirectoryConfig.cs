@@ -25,6 +25,12 @@ namespace iSpyApplication.Controls
             Text = LocRm.GetString("MediaDirectoryConfiguration");
         }
 
+        public override sealed string Text
+        {
+            get { return base.Text; }
+            set { base.Text = value; }
+        }
+
         private void chkStorage_CheckedChanged(object sender, EventArgs e)
         {
             gbStorage.Enabled = chkStorage.Checked;
@@ -39,6 +45,7 @@ namespace iSpyApplication.Controls
                 Config.MaxMediaFolderSizeMB = (int) txtMaxMediaSize.Value;
                 Config.DeleteFilesOlderThanDays = (int) txtDaysDelete.Value;
                 Config.StopSavingOnStorageLimit = chkStopRecording.Checked;
+                Config.archive = chkArchive.Checked;
                 if (!Config.Enable_Storage_Management)
                     Config.StopSavingFlag = false;
                 DialogResult = DialogResult.OK;
@@ -58,7 +65,7 @@ namespace iSpyApplication.Controls
             txtMaxMediaSize.Value = Config.MaxMediaFolderSizeMB;
             txtDaysDelete.Value = Config.DeleteFilesOlderThanDays;
             chkStopRecording.Checked = Config.StopSavingOnStorageLimit;
-            
+            chkArchive.Checked = Config.archive;
         }
 
         private void button1_Click(object sender, EventArgs e)

@@ -46,7 +46,9 @@
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <PropertyGroup>
-    <PostBuildEvent>call "D:\Projects\iSpy\signing\Wix_iSpy64Setup.bat"</PostBuildEvent>
+    <PostBuildEvent>if NOT %25ComputerName%25 == DEVPC GOTO end
+call "D:\Projects\iSpy\signing\Wix_iSpy64Setup.bat"
+:end</PostBuildEvent>
   </PropertyGroup>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.

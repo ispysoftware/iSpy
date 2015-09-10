@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -210,10 +211,24 @@ namespace iSpyApplication
             _currentSet = TranslationSets.FirstOrDefault(p => p.CultureCode == lang);
             if (_currentSet != null)
             {
+                
                 foreach (TranslationsTranslationSetTranslation tran in _currentSet.Translation)
                 {
-                    Res.Add(tran.Token, tran.Value.Replace("&amp;", "&").Replace("&lt;", "<").Replace("&gt;", ">").Replace("，", ",").Replace("#39;", "'"));
+                    try
+                    {
+                        Res.Add(tran.Token,
+                        tran.Value.Replace("&amp;", "&")
+                            .Replace("&lt;", "<")
+                            .Replace("&gt;", ">")
+                            .Replace("，", ",")
+                            .Replace("#39;", "'"));
+                    }
+                    catch (Exception ex)
+                    {
+                        MainForm.LogErrorToFile("Translation: "+tran.Token+": "+ex.Message);
+                    }
                 }
+                
             }
 
             _inited = true;

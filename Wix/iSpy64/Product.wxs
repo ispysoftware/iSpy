@@ -77,7 +77,8 @@
         <Shortcut Id="SilentStart" Name="iSpy (64 bit) Silent Start" Description="iSpy Video Surveillance Software" Target="[INSTALLFOLDER]iSpy.exe" WorkingDirectory="INSTALLFOLDER" Arguments="-silent" />
         <Shortcut Id="UninstallProduct" Name="Uninstall iSpy (64 bit)" Description="Uninstalls iSpy" Target="[SystemFolder]msiexec.exe" Arguments="/x [ProductCode]"/>
         <RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
-        <RegistryValue Root="HKCU" Key="Software\iSpy64" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+        <RegistryValue Root="HKCU" Key="Software\iSpy" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+        <RegistryValue Root="HKCU" Key="Software\iSpy" Name="firstrun" Type="integer" Value="1" KeyPath="no" />
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="DesktopFolder">

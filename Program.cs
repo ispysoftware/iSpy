@@ -101,13 +101,23 @@ internal static class Program
                        !File.Exists(AppDataPath + @"XML\config.xml"));
             if (ei)
                 EnsureInstall(true);
+            else
+            {
+                var o = Registry.CurrentUser.OpenSubKey(@"Software\ispy",true);
+                if (o?.GetValue("firstrun") != null)
+                {
+                    o.DeleteValue("firstrun");
+                    //copy over updated static files on first run of new version
+                    EnsureInstall(false);
+                }
+            }
 
             bool silentstartup = false;
 
             string command = "";
             if (args.Length > 0)
             {
-                if (args[0].ToLower().Trim() == "-reset" && !ei)
+                if (args[0].ToLower().Trim() == " - reset" && !ei)
                 {
                     if (firstInstance)
                     {
@@ -136,7 +146,7 @@ internal static class Program
 
             if (!firstInstance)
             {
-                if (!String.IsNullOrEmpty(command))
+                if (!string.IsNullOrEmpty(command))
                 {
                     File.WriteAllText(AppDataPath + "external_command.txt", command);
                     Thread.Sleep(1000);
@@ -295,7 +305,8 @@ internal static class Program
         Directory.SetCurrentDirectory(AppPath);
 
         //reset layout position
-        Registry.CurrentUser.DeleteSubKey(@"Software\ispy\startup",false);
+        if (reset)
+            Registry.CurrentUser.DeleteSubKey(@"Software\ispy\startup",false);
 
     }
 

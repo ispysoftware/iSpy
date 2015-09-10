@@ -1791,8 +1791,8 @@
     <PreBuildEvent>
     </PreBuildEvent>
     <PostBuildEvent>xcopy "$(ProjectDir)Supporting\x64\*.*" "$(ProjectDir)$(OutDir)" /Y
-if NOT %25ComputerName%25 == DevPC GOTO end
-call "$(SolutionDir)signing\iSpyApplication64.bat"
+if NOT %25ComputerName%25 == DEVPC GOTO end
+call "D:\projects\ispy\signing\iSpy64.bat"
 :end
 
 </PostBuildEvent>
