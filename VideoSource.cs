@@ -1402,24 +1402,28 @@ namespace iSpyApplication
                 string precfg = NV("video");
                 foreach (VideoCapabilities capabilty in videoCapabilities)
                 {
-                    //do not put a comma in this description!
-                    string item = string.Format(VideoFormatString, capabilty.FrameSize.Width, Math.Abs(capabilty.FrameSize.Height), capabilty.AverageFrameRate, capabilty.BitCount);
-
-                    if (!videoResolutionsCombo.Items.Contains(item))
+                    if (capabilty!=null)
                     {
-                        if (String.IsNullOrEmpty(precfg) && _captureSize == capabilty.FrameSize)
+                        //do not put a comma in this description!
+                        string item = string.Format(VideoFormatString, capabilty.FrameSize.Width,
+                            Math.Abs(capabilty.FrameSize.Height), capabilty.AverageFrameRate, capabilty.BitCount);
+
+                        if (!videoResolutionsCombo.Items.Contains(item))
                         {
-                            videoResolutionIndex = videoResolutionsCombo.Items.Count;
-                        }
-                        if (item == precfg)
-                            videoResolutionIndex = videoResolutionsCombo.Items.Count;
-                        
-                        videoResolutionsCombo.Items.Add(item);
-                    }
+                            if (string.IsNullOrEmpty(precfg) && _captureSize == capabilty.FrameSize)
+                            {
+                                videoResolutionIndex = videoResolutionsCombo.Items.Count;
+                            }
+                            if (item == precfg)
+                                videoResolutionIndex = videoResolutionsCombo.Items.Count;
 
-                    if (!_videoCapabilitiesDictionary.ContainsKey(item))
-                    {
-                        _videoCapabilitiesDictionary.Add(item, capabilty);
+                            videoResolutionsCombo.Items.Add(item);
+                        }
+
+                        if (!_videoCapabilitiesDictionary.ContainsKey(item))
+                        {
+                            _videoCapabilitiesDictionary.Add(item, capabilty);
+                        }
                     }
                 }
 
@@ -1446,11 +1450,12 @@ namespace iSpyApplication
                     int snapshotResolutionIndex = 0;
 
                     precfg = NV("snapshots");
-                    
+
                     foreach (VideoCapabilities capabilty in snapshotCapabilities)
                     {
                         //do not put a comma in this description!
-                        string item = string.Format(SnapshotFormatString, capabilty.FrameSize.Width, Math.Abs(capabilty.FrameSize.Height), capabilty.AverageFrameRate, capabilty.BitCount);
+                        string item = string.Format(SnapshotFormatString, capabilty.FrameSize.Width,
+                            Math.Abs(capabilty.FrameSize.Height), capabilty.AverageFrameRate, capabilty.BitCount);
 
                         if (!snapshotResolutionsCombo.Items.Contains(item))
                         {
@@ -1483,8 +1488,8 @@ namespace iSpyApplication
                         rdoCaptureSnapshots.Enabled = true;
                     }
 
-                    snapshotResolutionsCombo.SelectedIndex = snapshotResolutionIndex;                   
-                }             
+                    snapshotResolutionsCombo.SelectedIndex = snapshotResolutionIndex;
+                }
 
                 // get video inputs
                 _availableVideoInputs = _videoCaptureDevice.AvailableCrossbarVideoInputs;
@@ -1510,9 +1515,9 @@ namespace iSpyApplication
                 }
                 else
                 {
-                    videoInputsCombo.Items.Insert(0,LocRm.GetString("PleaseSelect"));
+                    videoInputsCombo.Items.Insert(0, LocRm.GetString("PleaseSelect"));
                     videoInputsCombo.Enabled = true;
-                    videoInputsCombo.SelectedIndex = videoInputIndex+1;
+                    videoInputsCombo.SelectedIndex = videoInputIndex + 1;
                 }
 
                 if (!_loaded)
@@ -1528,6 +1533,10 @@ namespace iSpyApplication
                     rdoCaptureSnapshots.Checked = !rdoCaptureVideo.Checked;
                 }
 
+            }
+            catch (Exception ex)
+            {
+                MainForm.LogExceptionToFile(ex);
             }
             finally
             {

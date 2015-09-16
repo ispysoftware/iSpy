@@ -1475,9 +1475,10 @@ namespace iSpyApplication.Sources.Video
                         }
                     }
                 }
-                catch
+                catch(Exception ex)
                 {
                     // ignored
+                    MainForm.LogExceptionToFile(ex,"SetResolution");
                 }
             }
 
@@ -1504,8 +1505,9 @@ namespace iSpyApplication.Sources.Video
                 {
                     streamConfig = (IAMStreamConfig) streamConfigObject;
                 }
-                catch ( InvalidCastException )
+                catch ( InvalidCastException ex)
                 {
+                    MainForm.LogExceptionToFile(ex, "GetPinCapabilities");
                 }
 
                 if ( streamConfig != null )
@@ -1517,9 +1519,10 @@ namespace iSpyApplication.Sources.Video
                             // get all video capabilities
                             capabilities = iSpyPRO.DirectShow.VideoCapabilities.FromStreamConfig( streamConfig );
                         }
-                        catch
+                        catch(Exception ex)
                         {
-                            // ignored
+                            MainForm.LogExceptionToFile(ex, "Device Caps");
+
                         }
                     }
 
