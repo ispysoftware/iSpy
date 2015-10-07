@@ -21,6 +21,7 @@
               <xs:element name="CommandURL" type="xs:string" />
               <xs:element minOccurs="0" name="port" type="xs:int" />
               <xs:element minOccurs="0" name="POST" type="xs:boolean" />
+              <xs:element name="Method" type="xs:string" default="GET" />
               <xs:element minOccurs="0" name="Cookies" type="xs:string" />
               <xs:element name="Commands">
                 <xs:complexType>

@@ -1642,27 +1642,29 @@ namespace iSpyApplication
                 _request.CookieContainer = myContainer;
             }
 
-            if (ptz.POST)
+            switch (ptz.Method)
             {
-               
-                var i = url.IndexOf("?", StringComparison.Ordinal);
-                if (i>-1 && i<url.Length)
-                {
-                    var encoding = new ASCIIEncoding();
-                    string postData = url.Substring(i + 1);
-                    byte[] data = encoding.GetBytes(postData);
-
-                    _request.Method = "POST";
-                    _request.ContentType = "application/x-www-form-urlencoded";
-                    _request.ContentLength = data.Length;
-
-                    using (Stream stream = _request.GetRequestStream())
+                case "PUT":
+                case "POST":
+                    var i = url.IndexOf("?", StringComparison.Ordinal);
+                    if (i > -1 && i < url.Length)
                     {
-                        stream.Write(data, 0, data.Length);
-                    }    
-                }
-            }
+                        var encoding = new ASCIIEncoding();
+                        string postData = url.Substring(i + 1);
+                        byte[] data = encoding.GetBytes(postData);
 
+                        _request.Method = ptz.Method;
+                        _request.ContentType = "application/x-www-form-urlencoded";
+                        _request.ContentLength = data.Length;
+
+                        using (Stream stream = _request.GetRequestStream())
+                        {
+                            stream.Write(data, 0, data.Length);
+                        }
+                    }
+                    break;
+            }
+            
 
             var myRequestState = new RequestState {Request = _request};
             _request.BeginGetResponse(FinishPTZRequest, myRequestState);

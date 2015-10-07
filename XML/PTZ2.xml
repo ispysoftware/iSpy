@@ -4501,7 +4501,7 @@
       <Make Name="Digitus" Model="DN-16036" />
     </Makes>
     <CommandURL>/cgi-bin/cmd.cgi</CommandURL>
-    <POST>true</POST>
+    <Method>POST</Method>
     <Commands>
       <Center></Center>
       <Left>opType=set&amp;cmd=ptz&amp;ptz_cmd=3&amp;protocol=1&amp;band=2400&amp;speed=60&amp;addr=1</Left>
@@ -4670,10 +4670,9 @@
       <Make Name="TRENDnet" Model="TV-IP501" />
       <Make Name="TRENDnet" Model="TV-IP600W" />
       <Make Name="TRENDnet" Model="TV-IP851WIC" />
-
     </Makes>
     <CommandURL>/PANTILTCONTROL.CGI</CommandURL>
-    <POST>true</POST>
+    <Method>POST</Method>
     <Commands>
       <Center>PanSingleMoveDegree=1&amp;TiltSingleMoveDegree=1&amp;PanTiltSingleMove=4</Center>
       <Left>PanSingleMoveDegree=1&amp;TiltSingleMoveDegree=1&amp;PanTiltSingleMove=3</Left>
@@ -5025,7 +5024,7 @@ copy or delete as many lines as you need.-->
       <Make Name="DLink" Model="DCS-5020L Series" />
     </Makes>
     <CommandURL>/PANTILTCONTROL.CGI</CommandURL>
-    <POST>true</POST>
+    <Method>POST</Method>
     <Commands>
       <Center>PanTiltPresetPositionMove=0</Center>
       <Left>PanSingleMoveDegree=1&amp;TiltSingleMoveDegree=1&amp;PanTiltSingleMove=3</Left>
@@ -5626,7 +5625,7 @@ copy or delete as many lines as you need.-->
       <Make Name="Pelco" Model="Esprit" />
     </Makes>
     <CommandURL>/control/</CommandURL>
-    <POST>true</POST>
+    <Method>POST</Method>
     <Commands>
       <Center>ScriptControl-1?&lt;s:Envelope xmlns:s=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:ns1=&quot;urn:schemas-pelco-com:service:ScriptControl:1&quot;&gt;&lt;s:Body&gt;&lt;ns1:ExecuteScript&gt;&lt;scriptName&gt;PRESET1&lt;/scriptName&gt;&lt;/ns1:ExecuteScript&gt;&lt;/s:Body&gt;&lt;/s:Envelope&gt;</Center>
       <Left>PositioningControl-1?&lt;s:Envelope xmlns:s=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:ns1=&quot;urn:schemas-pelco-com:service:PositioningControl:1&quot;&gt;&lt;s:Body&gt;&lt;ns1:SetVelocity&gt;&lt;velocity&gt;&lt;rotation&gt;&lt;x&gt;-9000&lt;/x&gt;&lt;/rotation&gt;&lt;/velocity&gt;&lt;/ns1:SetVelocity&gt;&lt;/s:Body&gt;&lt;/s:Envelope&gt;</Left>
