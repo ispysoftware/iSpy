@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using iSpyApplication.Controls;
 
 namespace iSpyApplication
 {
@@ -10,6 +11,7 @@ namespace iSpyApplication
         public decimal Offset = 0;
         public Color TimestampForeColor;
         public Color TimestampBackColor;
+        public string TagsNV;
         public bool TimestampShowBack;
         public SerializableFont CustomFont;
 
@@ -27,8 +29,9 @@ namespace iSpyApplication
             label7.Text = LocRm.GetString("Font");
             label2.Text = LocRm.GetString("ForeColor");
             label6.Text = LocRm.GetString("BackColor");
+            button5.Text = LocRm.GetString("Edit");
             chkTimestampBack.Text = LocRm.GetString("ShowBackground");
-
+            label5.Text = LocRm.GetString("Tags");
             button1.Text = LocRm.GetString("OK");
         }
 
@@ -80,6 +83,30 @@ namespace iSpyApplication
                 TimestampForeColor = cd.Color;
             }
             cd.Dispose();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            using (TagConfigure tc = new TagConfigure {TagsNV = TagsNV, Owner = this})
+            {
+                if (tc.ShowDialog() == DialogResult.OK)
+                {
+                    TagsNV = tc.TagsNV;
+                }
+            }
+        }
+
+        private void button5_Click_1(object sender, EventArgs e)
+        {
+            using (TagEditor te = new TagEditor())
+            {
+                te.ShowDialog(this);
+            }
         }
     }
 }

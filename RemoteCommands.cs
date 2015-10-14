@@ -98,7 +98,7 @@ namespace iSpyApplication
         {
             if (MessageBox.Show(LocRm.GetString("AreYouSure"), LocRm.GetString("Confirm"), MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.Cancel)
                 return;
-            MainForm.InitRemoteCommands();
+            MainForm.RemoteCommands = MainForm.GenerateRemoteCommands().ToList();
             RenderCommands();
         }
 

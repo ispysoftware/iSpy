@@ -431,6 +431,30 @@
     <Compile Include="Controls\PictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\TagEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\TagEditor.Designer.cs">
+      <DependentUpon>TagEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TagEntry.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\TagEntry.Designer.cs">
+      <DependentUpon>TagEntry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Importer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Importer.Designer.cs">
+      <DependentUpon>Importer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TagConfigure.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TagConfigure.Designer.cs">
+      <DependentUpon>TagConfigure.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\ConnectionFactory.cs" />
     <Compile Include="Controls\ActionEditor.cs">
       <SubType>UserControl</SubType>
@@ -1458,6 +1482,12 @@
     <EmbeddedResource Include="Controls\ServerEventRow.resx">
       <DependentUpon>ServerEventRow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TagEditor.resx">
+      <DependentUpon>TagEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TagEntry.resx">
+      <DependentUpon>TagEntry.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextToSpeech.resx">
       <DependentUpon>TextToSpeech.cs</DependentUpon>
     </EmbeddedResource>
@@ -1469,6 +1499,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GridViewManager.resx">
       <DependentUpon>GridViewManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Importer.resx">
+      <DependentUpon>Importer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Kinect\ConfigureTripWires.resx">
       <DependentUpon>ConfigureTripWires.cs</DependentUpon>
@@ -1544,6 +1577,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SSLConfig.resx">
       <DependentUpon>SSLConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TagConfigure.resx">
+      <DependentUpon>TagConfigure.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Utilities\ScreenArea.resx">
       <DependentUpon>ScreenArea.cs</DependentUpon>

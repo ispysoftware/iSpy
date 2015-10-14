@@ -252,7 +252,7 @@ namespace iSpyApplication
                 if (String.IsNullOrEmpty(_conf.BorderDefaultColor))
                     _conf.BorderDefaultColor = "0,0,0";
 
-                if (String.IsNullOrEmpty(_conf.StartupForm))
+                if (string.IsNullOrEmpty(_conf.StartupForm))
                     _conf.StartupForm = "iSpy";
 
                 if (_conf.GridViews == null)
@@ -261,7 +261,7 @@ namespace iSpyApplication
                 if (_conf.Joystick == null)
                     _conf.Joystick = new configurationJoystick();
 
-                if (String.IsNullOrEmpty(_conf.AppendLinkText))
+                if (string.IsNullOrEmpty(_conf.AppendLinkText))
                     _conf.AppendLinkText = "<br/>ispyconnect.com";
 
                 if (_conf.FeatureSet < 1)
@@ -278,7 +278,7 @@ namespace iSpyApplication
                     _conf.IPv6Disabled = !(Socket.OSSupportsIPv6);
                 }
                 
-                if (String.IsNullOrEmpty(_conf.EncryptCode))
+                if (string.IsNullOrEmpty(_conf.EncryptCode))
                 {
                     _conf.EncryptCode = Guid.NewGuid().ToString();
                 }
@@ -305,7 +305,7 @@ namespace iSpyApplication
                                     };
                 }
 
-                if (!String.IsNullOrEmpty(_conf.WSPassword) && _conf.WSPasswordEncrypted)
+                if (!string.IsNullOrEmpty(_conf.WSPassword) && _conf.WSPasswordEncrypted)
                     _conf.WSPassword = EncDec.DecryptData(_conf.WSPassword, "582df37b-b7cc-43f7-a442-30a2b188a888");
 
                 return _conf;
@@ -639,7 +639,35 @@ namespace iSpyApplication
             return "[" + ip + "]";
         }
 
+
         private static void LoadObjects(string path)
+        {
+            try
+            {
+                var o = GetObjects(path);
+                _cameras = o.cameras.ToList();
+                _microphones = o.microphones.ToList();
+                _floorplans = o.floorplans.ToList();
+                _remotecommands = o.remotecommands.ToList();
+                _actions = o.actions.entries.ToList();
+            }
+            catch (Exception ex)
+            {
+                LogExceptionToFile(ex);
+                MessageBox.Show(LocRm.GetString("ConfigurationChanged"), LocRm.GetString("Error"));
+                _cameras = new List<objectsCamera>();
+                _microphones = new List<objectsMicrophone>();
+                _remotecommands = GenerateRemoteCommands().ToList();
+                _actions = new List<objectsActionsEntry>();
+                _floorplans = new List<objectsFloorplan>();
+            }
+
+            Filter.CheckedCameraIDs = new List<int>();
+            Filter.CheckedMicIDs = new List<int>();
+            Filter.Filtered = false;
+        }
+
+        public static objects GetObjects(string path)
         {
             var c = new objects();
             try
@@ -663,587 +691,577 @@ namespace iSpyApplication
                 switch (MessageBox.Show($"Error loading file ({ex.Message}) Try again?", "Error", MessageBoxButtons.YesNo))
                 {
                     case DialogResult.Yes:
-                        LoadObjects(path);
-                        return;
+                        return GetObjects(path);
                 }
             }
-            try
+            
+            if (c.cameras==null)
+                c.cameras = new objectsCamera[] {};
+
+            bool addActions = c.actions?.entries == null;
+            if (addActions)
+                c.actions = new objectsActions {entries = new objectsActionsEntry[] {}};
+
+
+            if (c.cameras.Select(oc => oc.settings.desktopresizewidth).Any(rw => rw == 0))
             {
-                _cameras = c.cameras?.ToList() ?? new List<objectsCamera>();
-                bool addActions = c.actions == null;
-                _actions = addActions ? new List<objectsActionsEntry>() : c.actions.entries.ToList();
+                throw new Exception("err_old_config");
+            }
 
+            if (c.microphones==null)
+                c.microphones = new objectsMicrophone[] {};
+            if (c.floorplans == null)
+                c.floorplans = new objectsFloorplan[] {};
 
-                if (_cameras.Select(oc => oc.settings.desktopresizewidth).Any(rw => rw == 0))
+            if (c.remotecommands == null)
+                c.remotecommands = new objectsCommand[] {};
+
+            if (c.remotecommands.Length == 0)
+            {
+                c.remotecommands = GenerateRemoteCommands();
+            }
+
+            bool bVlc = VlcHelper.VlcInstalled;
+
+            bool bAlertVlc = false;
+            int camid = 0;
+            string path2;
+            //load non clones first
+            c.cameras = c.cameras.ToList().OrderByDescending(p => p.settings.sourceindex != 10).ToArray();
+            c.microphones = c.microphones.ToList().OrderByDescending(p => p.settings.typeindex != 5).ToArray();
+
+            foreach (objectsCamera cam in c.cameras)
+            {
+                if (cam.id >= camid)
+                    camid = cam.id + 1;
+
+                path2 = Helper.GetMediaDirectory(cam.settings.directoryIndex) + "video\\" + cam.directory + "\\";
+                if (cam.settings.sourceindex == 5 && !bVlc)
                 {
-                    throw new Exception("err_old_config");
+                    bAlertVlc = true;
                 }
-
-                _microphones = c.microphones?.ToList() ?? new List<objectsMicrophone>();
-
-                _floorplans = c.floorplans?.ToList() ?? new List<objectsFloorplan>();
-
-                _remotecommands = c.remotecommands?.ToList() ?? new List<objectsCommand>();
-
-                if (_remotecommands.Count == 0)
+                if (cam.settings.youtube == null)
                 {
-                    InitRemoteCommands();
-                }
-
-                bool bVlc = VlcHelper.VlcInstalled;
-
-                bool bAlertVlc = false;
-                int camid = 0;
-                string path2;
-                //load non clones first
-                _cameras = _cameras.OrderByDescending(p => p.settings.sourceindex != 10).ToList();
-                _microphones = _microphones.OrderByDescending(p => p.settings.typeindex != 5).ToList();
-
-                foreach (objectsCamera cam in _cameras)
-                {
-                    if (cam.id >= camid)
-                        camid = cam.id + 1;
-
-                    path2 = Helper.GetMediaDirectory(2, cam.id) + "video\\" + cam.directory + "\\";
-                    if (cam.settings.sourceindex == 5 && !bVlc)
-                    {
-                        bAlertVlc = true;
-                    }
-                    if (cam.settings.youtube == null)
-                    {
-                        cam.settings.youtube = new objectsCameraSettingsYoutube
-                                {
-                                    category = Conf.YouTubeDefaultCategory,
-                                    tags = "iSpy, Motion Detection, Surveillance",
-                                    @public = true
-                                };
-                    }
-                    if (cam.ptzschedule == null)
-                    {
-                        cam.ptzschedule = new objectsCameraPtzschedule
-                                {
-                                    active = false,
-                                    entries = new objectsCameraPtzscheduleEntry[] {}
-                                };
-                    }
-                    if (cam.settings.storagemanagement == null)
-                    {
-                        cam.settings.storagemanagement = new objectsCameraSettingsStoragemanagement
-                                {
-                                    enabled = false,
-                                    maxage = 72,
-                                    maxsize = 1024
-
-                                };
-                    }
-                    bool migrate = false;
-                    if (cam.alertevents == null)
-                    {
-                        cam.alertevents = new objectsCameraAlertevents();
-                        migrate = true;
-                    }
-                    
-                    if (cam.settings.cloudprovider==null)
-                        cam.settings.cloudprovider = new objectsCameraSettingsCloudprovider();
-
-                    if (cam.alertevents.entries == null)
-                        cam.alertevents.entries = new objectsCameraAlerteventsEntry[] {};
-
-                    if (migrate)
-                    {
-                        var l = new List<objectsCameraAlerteventsEntry>();
-                        if (!String.IsNullOrEmpty(cam.alerts.executefile))
-                        {
-                            l.Add(new objectsCameraAlerteventsEntry
-                                  {
-                                      type = "Exe",
-                                      param1 = cam.alerts.executefile,
-                                      param2 = cam.alerts.arguments
-                                  });
-                        }
-                        if (cam.notifications.sendemail)
-                        {
-                            l.Add(new objectsCameraAlerteventsEntry
-                                  {
-                                      type = "E",
-                                      param1 = cam.settings.emailaddress,
-                                      param2 = "True"
-                                  });
-                        }
-                        if (cam.notifications.sendsms)
-                        {
-                            l.Add(new objectsCameraAlerteventsEntry {type = "SMS", param1 = cam.settings.smsnumber});
-                        }
-                        if (cam.alerts.maximise)
-                        {
-                            l.Add(new objectsCameraAlerteventsEntry {type = "M"});
-                        }
-                        if (!String.IsNullOrEmpty(cam.alerts.playsound))
-                        {
-                            l.Add(new objectsCameraAlerteventsEntry {type = "S", param1 = cam.alerts.playsound});
-                        }
-
-                        string[] alertOptions = cam.alerts.alertoptions.Split(','); //beep,restore
-
-                        if (Convert.ToBoolean(alertOptions[0]))
-                            l.Add(new objectsCameraAlerteventsEntry {type = "B"});
-                        if (Convert.ToBoolean(alertOptions[1]))
-                            l.Add(new objectsCameraAlerteventsEntry {type = "SW"});
-
-                        if (cam.notifications.sendtwitter)
-                        {
-                            l.Add(new objectsCameraAlerteventsEntry {type = "TM"});
-                        }
-
-                        if (!String.IsNullOrEmpty(cam.alerts.trigger))
-                        {
-                            l.Add(new objectsCameraAlerteventsEntry {type = "TA", param1 = cam.alerts.trigger});
-                        }
-                        cam.alertevents.entries = l.ToArray();
-
-                    }
-                    
-                    if (addActions)
-                    {
-                        _actions.AddRange(cam.alertevents.entries.Select(a => new objectsActionsEntry
-                                                                       {
-                                                                           mode = "alert", 
-                                                                           objectid = cam.id, 
-                                                                           objecttypeid = 2,
-                                                                           type = a.type,
-                                                                           param1 = a.param1, 
-                                                                           param2 = a.param2, 
-                                                                           param3 = a.param3, 
-                                                                           param4 = a.param4
-                                                                       }));
-                        if (!String.IsNullOrEmpty(cam.settings.emailondisconnect))
-                        {
-                            _actions.Add(new objectsActionsEntry
+                    cam.settings.youtube = new objectsCameraSettingsYoutube
                             {
-                                mode = "disconnect",
-                                objectid = cam.id,
-                                objecttypeid = 2,
-                                type = "E",
-                                param1 = cam.settings.emailondisconnect,
-                                param2 = "False"
-                            });
-                        }
-                    }
+                                category = Conf.YouTubeDefaultCategory,
+                                tags = "iSpy, Motion Detection, Surveillance",
+                                @public = true
+                            };
+                }
+                if (cam.ptzschedule == null)
+                {
+                    cam.ptzschedule = new objectsCameraPtzschedule
+                            {
+                                active = false,
+                                entries = new objectsCameraPtzscheduleEntry[] {}
+                            };
+                }
+                if (cam.settings.storagemanagement == null)
+                {
+                    cam.settings.storagemanagement = new objectsCameraSettingsStoragemanagement
+                            {
+                                enabled = false,
+                                maxage = 72,
+                                maxsize = 1024
+
+                            };
+                }
+                bool migrate = false;
+                if (cam.alertevents == null)
+                {
+                    cam.alertevents = new objectsCameraAlertevents();
+                    migrate = true;
+                }
                     
-                    cam.newrecordingcount = 0;
-                    if (cam.settings.maxframerate == 0)
-                        cam.settings.maxframerate = 10;
-                    if (cam.settings.maxframeraterecord == 0)
-                        cam.settings.maxframeraterecord = 10;
-                    if (cam.settings.timestampfontsize == 0)
-                        cam.settings.timestampfontsize = 10;
-                    if (cam.recorder.timelapsesave == 0)
-                        cam.recorder.timelapsesave = 60;
+                if (cam.settings.cloudprovider==null)
+                    cam.settings.cloudprovider = new objectsCameraSettingsCloudprovider();
 
-                    if (cam.x < 0)
-                        cam.x = 0;
-                    if (cam.y < 0)
-                        cam.y = 0;
+                if (cam.alertevents.entries == null)
+                    cam.alertevents.entries = new objectsCameraAlerteventsEntry[] {};
 
-                    if (cam.detector.minwidth == 0)
+                if (migrate)
+                {
+                    var l = new List<objectsCameraAlerteventsEntry>();
+                    if (!String.IsNullOrEmpty(cam.alerts.executefile))
                     {
-                        cam.detector.minwidth = 20;
-                        cam.detector.minheight = 20;
-                        cam.detector.highlight = true;
-                        cam.settings.reconnectinterval = 0;
+                        l.Add(new objectsCameraAlerteventsEntry
+                                {
+                                    type = "Exe",
+                                    param1 = cam.alerts.executefile,
+                                    param2 = cam.alerts.arguments
+                                });
                     }
-                    if (cam.settings.accessgroups == null)
-                        cam.settings.accessgroups = "";
-                    if (cam.settings.ptztimetohome == 0)
-                        cam.settings.ptztimetohome = 100;
-                    if (cam.settings.ptzautohomedelay == 0)
-                        cam.settings.ptzautohomedelay = 30;
-                    if (cam.settings.ptzurlbase == null)
-                        cam.settings.ptzurlbase = "";
-                    if (cam.settings.audioport <= 0)
-                        cam.settings.audioport = 80;
-                    if (cam.ftp.intervalnew < 0)
-                        cam.ftp.intervalnew = cam.ftp.interval;
-
-                    if (cam.ftp.server.Length>10)
+                    if (cam.notifications.sendemail)
                     {
-                        var ftp = Conf.FTPServers.FirstOrDefault(p => p.name == cam.ftp.server && p.username==cam.ftp.username);
-                        if (ftp == null)
+                        l.Add(new objectsCameraAlerteventsEntry
+                                {
+                                    type = "E",
+                                    param1 = cam.settings.emailaddress,
+                                    param2 = "True"
+                                });
+                    }
+                    if (cam.notifications.sendsms)
+                    {
+                        l.Add(new objectsCameraAlerteventsEntry {type = "SMS", param1 = cam.settings.smsnumber});
+                    }
+                    if (cam.alerts.maximise)
+                    {
+                        l.Add(new objectsCameraAlerteventsEntry {type = "M"});
+                    }
+                    if (!String.IsNullOrEmpty(cam.alerts.playsound))
+                    {
+                        l.Add(new objectsCameraAlerteventsEntry {type = "S", param1 = cam.alerts.playsound});
+                    }
+
+                    string[] alertOptions = cam.alerts.alertoptions.Split(','); //beep,restore
+
+                    if (Convert.ToBoolean(alertOptions[0]))
+                        l.Add(new objectsCameraAlerteventsEntry {type = "B"});
+                    if (Convert.ToBoolean(alertOptions[1]))
+                        l.Add(new objectsCameraAlerteventsEntry {type = "SW"});
+
+                    if (cam.notifications.sendtwitter)
+                    {
+                        l.Add(new objectsCameraAlerteventsEntry {type = "TM"});
+                    }
+
+                    if (!String.IsNullOrEmpty(cam.alerts.trigger))
+                    {
+                        l.Add(new objectsCameraAlerteventsEntry {type = "TA", param1 = cam.alerts.trigger});
+                    }
+                    cam.alertevents.entries = l.ToArray();
+
+                }
+                    
+                if (addActions)
+                {
+                    var l = c.actions.entries.ToList();
+                    l.AddRange(cam.alertevents.entries.Select(a => new objectsActionsEntry
+                                                                    {
+                                                                        mode = "alert", 
+                                                                        objectid = cam.id, 
+                                                                        objecttypeid = 2,
+                                                                        type = a.type,
+                                                                        param1 = a.param1, 
+                                                                        param2 = a.param2, 
+                                                                        param3 = a.param3, 
+                                                                        param4 = a.param4
+                                                                    }));
+                    if (!string.IsNullOrEmpty(cam.settings.emailondisconnect))
+                    {
+                        l.Add(new objectsActionsEntry
                         {
-                            ftp = new configurationServer
-                                  {
-                                      ident = Guid.NewGuid().ToString(),
-                                      name=cam.ftp.server,
-                                      password = cam.ftp.password,
-                                      port = cam.ftp.port,
-                                      rename = cam.ftp.rename,
-                                      server = cam.ftp.server,
-                                      usepassive = cam.ftp.usepassive,
-                                      username = cam.ftp.username
-                                  };
-                            var l = Conf.FTPServers.ToList();
-                            l.Add(ftp);
-                            Conf.FTPServers = l.ToArray();
-                            cam.ftp.ident = ftp.ident;
-                            cam.ftp.server = "";
-                        }
+                            mode = "disconnect",
+                            objectid = cam.id,
+                            objecttypeid = 2,
+                            type = "E",
+                            param1 = cam.settings.emailondisconnect,
+                            param2 = "False"
+                        });
                     }
+                    c.actions.entries = l.ToArray();
+                }
+                    
+                cam.newrecordingcount = 0;
+                if (cam.settings.maxframerate == 0)
+                    cam.settings.maxframerate = 10;
+                if (cam.settings.maxframeraterecord == 0)
+                    cam.settings.maxframeraterecord = 10;
+                if (cam.settings.timestampfontsize == 0)
+                    cam.settings.timestampfontsize = 10;
+                if (cam.recorder.timelapsesave == 0)
+                    cam.recorder.timelapsesave = 60;
 
-                    if (Conf.MediaDirectories.FirstOrDefault(p => p.ID == cam.settings.directoryIndex) == null)
-                        cam.settings.directoryIndex = Conf.MediaDirectories.First().ID;
+                if (cam.x < 0)
+                    cam.x = 0;
+                if (cam.y < 0)
+                    cam.y = 0;
 
-                    if (String.IsNullOrEmpty(cam.settings.emailondisconnect))
+                if (cam.detector.minwidth == 0)
+                {
+                    cam.detector.minwidth = 20;
+                    cam.detector.minheight = 20;
+                    cam.detector.highlight = true;
+                    cam.settings.reconnectinterval = 0;
+                }
+                if (cam.settings.accessgroups == null)
+                    cam.settings.accessgroups = "";
+                if (cam.settings.ptztimetohome == 0)
+                    cam.settings.ptztimetohome = 100;
+                if (cam.settings.ptzautohomedelay == 0)
+                    cam.settings.ptzautohomedelay = 30;
+                if (cam.settings.ptzurlbase == null)
+                    cam.settings.ptzurlbase = "";
+                if (cam.settings.audioport <= 0)
+                    cam.settings.audioport = 80;
+                if (cam.ftp.intervalnew < 0)
+                    cam.ftp.intervalnew = cam.ftp.interval;
+
+                if (cam.ftp.server.Length>10)
+                {
+                    var ftp = Conf.FTPServers.FirstOrDefault(p => p.name == cam.ftp.server && p.username==cam.ftp.username);
+                    if (ftp == null)
                     {
-                        if (cam.settings.notifyondisconnect)
-                        {
-                            cam.settings.emailondisconnect = cam.settings.emailaddress;
-                        }
+                        ftp = new configurationServer
+                                {
+                                    ident = Guid.NewGuid().ToString(),
+                                    name=cam.ftp.server,
+                                    password = cam.ftp.password,
+                                    port = cam.ftp.port,
+                                    rename = cam.ftp.rename,
+                                    server = cam.ftp.server,
+                                    usepassive = cam.ftp.usepassive,
+                                    username = cam.ftp.username
+                                };
+                        var l = Conf.FTPServers.ToList();
+                        l.Add(ftp);
+                        Conf.FTPServers = l.ToArray();
+                        cam.ftp.ident = ftp.ident;
+                        cam.ftp.server = "";
                     }
+                }
 
-                    cam.detector.type = cam.detector.type.Replace("Modelling", "Modeling");//fix typo
+                if (Conf.MediaDirectories.FirstOrDefault(p => p.ID == cam.settings.directoryIndex) == null)
+                    cam.settings.directoryIndex = Conf.MediaDirectories.First().ID;
 
-                    if (cam.recorder.quality == 0)
-                        cam.recorder.quality = 8;
-                    if (cam.recorder.timelapseframerate == 0)
-                        cam.recorder.timelapseframerate = 5;
-
-                    if (cam.detector.movementintervalnew < 0)
-                        cam.detector.movementintervalnew = cam.detector.movementinterval;
-
-                    if (cam.detector.nomovementintervalnew < 0)
-                        cam.detector.nomovementintervalnew = cam.detector.nomovementinterval;
-
-                    if (cam.directory == null)
-                        throw new Exception("err_old_config");
-
-                    if (String.IsNullOrEmpty(cam.settings.ptzpelcoconfig))
-                        cam.settings.ptzpelcoconfig = "COM1|9600|8|One|Odd|1";
-
-                    if (cam.savelocal == null)
+                if (String.IsNullOrEmpty(cam.settings.emailondisconnect))
+                {
+                    if (cam.settings.notifyondisconnect)
                     {
-                        cam.savelocal = new objectsCameraSavelocal
-                                        {
-                                            counter = cam.ftp.counter,
-                                            countermax = cam.ftp.countermax,
-                                            mode = cam.ftp.mode,
-                                            enabled = cam.ftp.savelocal,
-                                            filename = cam.ftp.localfilename,
-                                            intervalnew = cam.ftp.intervalnew,
-                                            minimumdelay = cam.ftp.minimumdelay,
-                                            quality = cam.ftp.quality,
-                                            text = cam.ftp.text
-
-                                        };
+                        cam.settings.emailondisconnect = cam.settings.emailaddress;
                     }
+                }
 
-                    if (cam.alerts.processmode == null)
-                        cam.alerts.processmode = "continuous";
-                    if (cam.alerts.pluginconfig == null)
-                        cam.alerts.pluginconfig = "";
-                    if (cam.ftp.quality == 0)
-                        cam.ftp.quality = 75;
+                cam.detector.type = cam.detector.type.Replace("Modelling", "Modeling");//fix typo
 
-                    if (cam.ftp.countermax == 0)
-                        cam.ftp.countermax = 20;
+                if (cam.recorder.quality == 0)
+                    cam.recorder.quality = 8;
+                if (cam.recorder.timelapseframerate == 0)
+                    cam.recorder.timelapseframerate = 5;
 
-                    if (cam.settings.audiousername == null)
+                if (cam.detector.movementintervalnew < 0)
+                    cam.detector.movementintervalnew = cam.detector.movementinterval;
+
+                if (cam.detector.nomovementintervalnew < 0)
+                    cam.detector.nomovementintervalnew = cam.detector.nomovementinterval;
+
+                if (cam.directory == null)
+                    throw new Exception("err_old_config");
+
+                if (String.IsNullOrEmpty(cam.settings.ptzpelcoconfig))
+                    cam.settings.ptzpelcoconfig = "COM1|9600|8|One|Odd|1";
+
+                if (cam.savelocal == null)
+                {
+                    cam.savelocal = new objectsCameraSavelocal
+                                    {
+                                        counter = cam.ftp.counter,
+                                        countermax = cam.ftp.countermax,
+                                        mode = cam.ftp.mode,
+                                        enabled = cam.ftp.savelocal,
+                                        filename = cam.ftp.localfilename,
+                                        intervalnew = cam.ftp.intervalnew,
+                                        minimumdelay = cam.ftp.minimumdelay,
+                                        quality = cam.ftp.quality,
+                                        text = cam.ftp.text
+
+                                    };
+                }
+
+                if (cam.alerts.processmode == null)
+                    cam.alerts.processmode = "continuous";
+                if (cam.alerts.pluginconfig == null)
+                    cam.alerts.pluginconfig = "";
+                if (cam.ftp.quality == 0)
+                    cam.ftp.quality = 75;
+
+                if (cam.ftp.countermax == 0)
+                    cam.ftp.countermax = 20;
+
+                if (cam.settings.audiousername == null)
+                {
+                    cam.settings.audiousername = "";
+                    cam.settings.audiopassword = "";
+                }
+
+                if (String.IsNullOrEmpty(cam.settings.timestampforecolor) || cam.settings.timestampforecolor == "0")
+                {
+                    cam.settings.timestampforecolor = "255,255,255";
+                }
+
+                if (String.IsNullOrEmpty(cam.settings.timestampbackcolor) || cam.settings.timestampbackcolor == "0")
+                {
+                    cam.settings.timestampbackcolor = "70,70,70";
+                }
+
+                if (Math.Abs(cam.detector.minsensitivity - 0) < double.Epsilon)
+                {
+                    cam.detector.maxsensitivity = 100;
+                    //fix for old setting conversion
+                    cam.detector.minsensitivity = 100 - cam.detector.sensitivity;
+
+                    if (Math.Abs(cam.detector.minsensitivity - 100) < double.Epsilon)
                     {
-                        cam.settings.audiousername = "";
-                        cam.settings.audiopassword = "";
-                    }
-
-                    if (String.IsNullOrEmpty(cam.settings.timestampforecolor) || cam.settings.timestampforecolor == "0")
-                    {
-                        cam.settings.timestampforecolor = "255,255,255";
-                    }
-
-                    if (String.IsNullOrEmpty(cam.settings.timestampbackcolor) || cam.settings.timestampbackcolor == "0")
-                    {
-                        cam.settings.timestampbackcolor = "70,70,70";
-                    }
-
-                    if (Math.Abs(cam.detector.minsensitivity - 0) < double.Epsilon)
-                    {
-                        cam.detector.maxsensitivity = 100;
-                        //fix for old setting conversion
-                        cam.detector.minsensitivity = 100 - cam.detector.sensitivity;
-
-                        if (Math.Abs(cam.detector.minsensitivity - 100) < double.Epsilon)
-                        {
-                            cam.detector.minsensitivity = 20;
-                        }
-                    }
-
-                    if (cam.detector.minsensitivity > cam.detector.maxsensitivity)
-                    {
-                        //reset
-                        cam.detector.maxsensitivity = 100;
                         cam.detector.minsensitivity = 20;
                     }
-
-                    if (!Directory.Exists(path2))
-                    {
-                        try
-                        {
-                            Directory.CreateDirectory(path2);
-                        }
-                        catch (IOException e)
-                        {
-                            LogExceptionToFile(e);
-                        }
-                    }
-
-                    if (String.IsNullOrEmpty(cam.ftp.localfilename))
-                    {
-                        cam.ftp.localfilename = "{0:yyyy-MM-dd_HH-mm-ss_fff}.jpg";
-                    }
-
-                    if (String.IsNullOrEmpty(cam.settings.audiomodel))
-                        cam.settings.audiomodel = "None";
-
-                    if (String.IsNullOrEmpty(cam.settings.timestampfont))
-                    {
-                        cam.settings.timestampfont = FontXmlConverter.ConvertToString(Drawfont);
-                        cam.settings.timestampshowback = true;
-                    }
-
-
-                    path2 = Helper.GetMediaDirectory(2, cam.id) + "video\\" + cam.directory + "\\thumbs\\";
-                    if (!Directory.Exists(path2))
-                    {
-                        try
-                        {
-                            Directory.CreateDirectory(path2);
-                        }
-                        catch
-                        {
-                            // ignored
-                        }
-                    }
-
-                    path2 = Helper.GetMediaDirectory(2, cam.id) + "video\\" + cam.directory + "\\grabs\\";
-                    if (!Directory.Exists(path2))
-                    {
-                        try
-                        {
-                            Directory.CreateDirectory(path2);
-                        }
-                        catch
-                        {
-                            // ignored
-                        }
-                    }
-                    if (cam.alerts.trigger == null)
-                        cam.alerts.trigger = "";
-
-                    if (String.IsNullOrEmpty(cam.rotateMode))
-                    {
-                        cam.rotateMode = "RotateNoneFlipNone";
-                        if (cam.rotate90)
-                        {
-                            cam.rotateMode = RotateFlipType.Rotate90FlipNone.ToString();
-                        }
-                        if (cam.flipx)
-                        {
-                            cam.rotateMode = RotateFlipType.RotateNoneFlipX.ToString();
-                        }
-                        if (cam.flipy)
-                        {
-                            cam.rotateMode = RotateFlipType.RotateNoneFlipY.ToString();
-                        }
-                        if (cam.flipx && cam.flipy)
-                        {
-                            cam.rotateMode = RotateFlipType.RotateNoneFlipXY.ToString();
-                        }
-                    }
-                    if (cam.settings.pip == null)
-                    {
-                        cam.settings.pip = new objectsCameraSettingsPip {enabled = false, config = ""};
-                    }
                 }
-                int micid = 0;
-                foreach (objectsMicrophone mic in _microphones)
+
+                if (cam.detector.minsensitivity > cam.detector.maxsensitivity)
                 {
-                    if (mic.id >= micid)
-                        micid = mic.id + 1;
-                    if (mic.directory == null)
-                        throw new Exception("err_old_config");
-                    mic.newrecordingcount = 0;
-                    path2 = Helper.GetMediaDirectory(1, mic.id) + "audio\\" + mic.directory + "\\";
-                    if (!Directory.Exists(path2))
+                    //reset
+                    cam.detector.maxsensitivity = 100;
+                    cam.detector.minsensitivity = 20;
+                }
+
+                if (!Directory.Exists(path2))
+                {
+                    try
+                    {
                         Directory.CreateDirectory(path2);
-
-                    if (mic.settings.accessgroups == null)
-                        mic.settings.accessgroups = "";
-
-                    if (mic.settings.storagemanagement == null)
-                    {
-                        mic.settings.storagemanagement = new objectsMicrophoneSettingsStoragemanagement
-                        {
-                            enabled = false,
-                            maxage = 72,
-                            maxsize = 1024
-
-                        };
                     }
-                    if (Math.Abs(mic.detector.minsensitivity - (-1)) < double.Epsilon)
+                    catch (IOException e)
                     {
-                        mic.detector.minsensitivity = mic.detector.sensitivity;
-                        mic.detector.maxsensitivity = 100;
+                        LogExceptionToFile(e);
                     }
-                    if (mic.detector.minsensitivity > mic.detector.maxsensitivity)
-                    {
-                        //reset
-                        mic.detector.maxsensitivity = 100;
-                        mic.detector.minsensitivity = 20;
-                    }
-
-                    if (Conf.MediaDirectories.FirstOrDefault(p => p.ID == mic.settings.directoryIndex) == null)
-                        mic.settings.directoryIndex = Conf.MediaDirectories.First().ID;
-
-                    bool migrate = false;
-                    if (mic.alertevents == null)
-                    {
-                        mic.alertevents = new objectsMicrophoneAlertevents();
-                        migrate = true;
-                    }
-                    if (mic.alertevents.entries == null)
-                    {
-                        mic.alertevents.entries = new objectsMicrophoneAlerteventsEntry[] { };
-                    }
-
-                    if (migrate)
-                    {
-                        var l = new List<objectsMicrophoneAlerteventsEntry>();
-                        if (!string.IsNullOrEmpty(mic.alerts.executefile))
-                        {
-                            l.Add(new objectsMicrophoneAlerteventsEntry { type = "Exe", param1 = mic.alerts.executefile, param2 = mic.alerts.arguments });
-                        }
-                        if (mic.notifications.sendemail)
-                        {
-                            l.Add(new objectsMicrophoneAlerteventsEntry { type = "E", param1 = mic.settings.emailaddress, param2 = "True" });
-                        }
-                        if (mic.notifications.sendsms)
-                        {
-                            l.Add(new objectsMicrophoneAlerteventsEntry { type = "SMS", param1 = mic.settings.smsnumber });
-                        }
-
-                        string[] alertOptions = mic.alerts.alertoptions.Split(','); //beep,restore
-
-                        if (Convert.ToBoolean(alertOptions[0]))
-                            l.Add(new objectsMicrophoneAlerteventsEntry { type = "B" });
-                        if (Convert.ToBoolean(alertOptions[1]))
-                            l.Add(new objectsMicrophoneAlerteventsEntry { type = "SW" });
-
-                        if (mic.notifications.sendtwitter)
-                        {
-                            l.Add(new objectsMicrophoneAlerteventsEntry { type = "TM" });
-                        }
-
-                        if (!string.IsNullOrEmpty(mic.alerts.trigger))
-                        {
-                            l.Add(new objectsMicrophoneAlerteventsEntry { type = "TA", param1 = mic.alerts.trigger });
-                        }
-                        mic.alertevents = new objectsMicrophoneAlertevents() {entries = l.ToArray()};
-                    }
-
-                    if (string.IsNullOrEmpty(mic.settings.emailondisconnect))
-                    {
-                        if (mic.settings.notifyondisconnect)
-                        {
-                            mic.settings.emailondisconnect = mic.settings.emailaddress;
-                        }
-                    }
-
-                    if (addActions)
-                    {
-                        _actions.AddRange(mic.alertevents.entries.Select(a => new objectsActionsEntry
-                        {
-                            mode = "alert",
-                            objectid = mic.id,
-                            objecttypeid = 1,
-                            type = a.type,
-                            param1 = a.param1,
-                            param2 = a.param2,
-                            param3 = a.param3,
-                            param4 = a.param4
-                        }));
-                        if (!String.IsNullOrEmpty(mic.settings.emailondisconnect))
-                        {
-                            _actions.Add(new objectsActionsEntry
-                                  {
-                                      mode = "disconnect",
-                                      objectid = mic.id,
-                                      objecttypeid = 1,
-                                      type = "E",
-                                      param1 = mic.settings.emailondisconnect,
-                                      param2 = "False"
-                                  });
-                        }
-                    }
-
-                    if (mic.x < 0)
-                        mic.x = 0;
-                    if (mic.y < 0)
-                        mic.y = 0;
-
-                    if (mic.settings.gain <= 0)
-                        mic.settings.gain = 1;
-
-                    if (mic.alerts.trigger == null)
-                        mic.alerts.trigger = "";
                 }
-                int fpid = 0;
-                foreach (objectsFloorplan ofp in _floorplans)
+
+                if (String.IsNullOrEmpty(cam.ftp.localfilename))
                 {
-                    if (ofp.id >= fpid)
-                        fpid = ofp.id + 1;
-
-                    if (ofp.x < 0)
-                        ofp.x = 0;
-                    if (ofp.y < 0)
-                        ofp.y = 0;
-                    if (ofp.accessgroups == null)
-                        ofp.accessgroups = "";
+                    cam.ftp.localfilename = "{0:yyyy-MM-dd_HH-mm-ss_fff}.jpg";
                 }
-                int rcid = 0;
-                foreach (objectsCommand ocmd in _remotecommands)
+
+                if (String.IsNullOrEmpty(cam.settings.audiomodel))
+                    cam.settings.audiomodel = "None";
+
+                if (String.IsNullOrEmpty(cam.settings.timestampfont))
                 {
-                    if (ocmd.id >= rcid)
-                        rcid = ocmd.id + 1;
+                    cam.settings.timestampfont = FontXmlConverter.ConvertToString(Drawfont);
+                    cam.settings.timestampshowback = true;
                 }
 
-
-
-                if (bAlertVlc)
+                path2 = Helper.GetMediaDirectory(cam.settings.directoryIndex) + "video\\" + cam.directory + "\\thumbs\\";
+                if (!Directory.Exists(path2))
                 {
-                    MessageBox.Show(Program.Platform == "x64"
-                        ? LocRm.GetString("InstallVLCx64")
-                            .Replace("[DIR]", Environment.NewLine + Program.AppPath + "VLC64" + Environment.NewLine)
-                        : LocRm.GetString("InstallVLCx86"));
-                    OpenUrl(Program.Platform == "x64" ? VLCx64 : VLCx86);
+                    try
+                    {
+                        Directory.CreateDirectory(path2);
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
                 }
-                SaveConfig();
-                NeedsSync = true;
-                LogMessageToFile("Loaded " + _cameras.Count + " cameras, " + _microphones.Count + " mics and " + _floorplans.Count + " floorplans");
+
+                path2 = Helper.GetMediaDirectory(cam.settings.directoryIndex) + "video\\" + cam.directory + "\\grabs\\";
+                if (!Directory.Exists(path2))
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(path2);
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+                if (cam.alerts.trigger == null)
+                    cam.alerts.trigger = "";
+
+                if (String.IsNullOrEmpty(cam.rotateMode))
+                {
+                    cam.rotateMode = "RotateNoneFlipNone";
+                    if (cam.rotate90)
+                    {
+                        cam.rotateMode = RotateFlipType.Rotate90FlipNone.ToString();
+                    }
+                    if (cam.flipx)
+                    {
+                        cam.rotateMode = RotateFlipType.RotateNoneFlipX.ToString();
+                    }
+                    if (cam.flipy)
+                    {
+                        cam.rotateMode = RotateFlipType.RotateNoneFlipY.ToString();
+                    }
+                    if (cam.flipx && cam.flipy)
+                    {
+                        cam.rotateMode = RotateFlipType.RotateNoneFlipXY.ToString();
+                    }
+                }
+                if (cam.settings.pip == null)
+                {
+                    cam.settings.pip = new objectsCameraSettingsPip {enabled = false, config = ""};
+                }
             }
-            catch (Exception ex)
+            int micid = 0;
+            foreach (objectsMicrophone mic in c.microphones)
             {
-                LogExceptionToFile(ex);
-                MessageBox.Show(LocRm.GetString("ConfigurationChanged"), LocRm.GetString("Error"));
-                _cameras = new List<objectsCamera>();
-                _microphones = new List<objectsMicrophone>();
-                _remotecommands = new List<objectsCommand>();
-                _actions = new List<objectsActionsEntry>();
-                _floorplans = new List<objectsFloorplan>();
+                if (mic.id >= micid)
+                    micid = mic.id + 1;
+                if (mic.directory == null)
+                    throw new Exception("err_old_config");
+                mic.newrecordingcount = 0;
+                path2 = Helper.GetMediaDirectory(mic.settings.directoryIndex) + "audio\\" + mic.directory + "\\";
+                if (!Directory.Exists(path2))
+                    Directory.CreateDirectory(path2);
 
-                InitRemoteCommands();
-                
+                if (mic.settings.accessgroups == null)
+                    mic.settings.accessgroups = "";
+
+                if (mic.settings.storagemanagement == null)
+                {
+                    mic.settings.storagemanagement = new objectsMicrophoneSettingsStoragemanagement
+                    {
+                        enabled = false,
+                        maxage = 72,
+                        maxsize = 1024
+
+                    };
+                }
+                if (Math.Abs(mic.detector.minsensitivity - (-1)) < double.Epsilon)
+                {
+                    mic.detector.minsensitivity = mic.detector.sensitivity;
+                    mic.detector.maxsensitivity = 100;
+                }
+                if (mic.detector.minsensitivity > mic.detector.maxsensitivity)
+                {
+                    //reset
+                    mic.detector.maxsensitivity = 100;
+                    mic.detector.minsensitivity = 20;
+                }
+
+                if (Conf.MediaDirectories.FirstOrDefault(p => p.ID == mic.settings.directoryIndex) == null)
+                    mic.settings.directoryIndex = Conf.MediaDirectories.First().ID;
+
+                bool migrate = false;
+                if (mic.alertevents == null)
+                {
+                    mic.alertevents = new objectsMicrophoneAlertevents();
+                    migrate = true;
+                }
+                if (mic.alertevents.entries == null)
+                {
+                    mic.alertevents.entries = new objectsMicrophoneAlerteventsEntry[] { };
+                }
+
+                if (migrate)
+                {
+                    var l = new List<objectsMicrophoneAlerteventsEntry>();
+                    if (!string.IsNullOrEmpty(mic.alerts.executefile))
+                    {
+                        l.Add(new objectsMicrophoneAlerteventsEntry { type = "Exe", param1 = mic.alerts.executefile, param2 = mic.alerts.arguments });
+                    }
+                    if (mic.notifications.sendemail)
+                    {
+                        l.Add(new objectsMicrophoneAlerteventsEntry { type = "E", param1 = mic.settings.emailaddress, param2 = "True" });
+                    }
+                    if (mic.notifications.sendsms)
+                    {
+                        l.Add(new objectsMicrophoneAlerteventsEntry { type = "SMS", param1 = mic.settings.smsnumber });
+                    }
+
+                    string[] alertOptions = mic.alerts.alertoptions.Split(','); //beep,restore
+
+                    if (Convert.ToBoolean(alertOptions[0]))
+                        l.Add(new objectsMicrophoneAlerteventsEntry { type = "B" });
+                    if (Convert.ToBoolean(alertOptions[1]))
+                        l.Add(new objectsMicrophoneAlerteventsEntry { type = "SW" });
+
+                    if (mic.notifications.sendtwitter)
+                    {
+                        l.Add(new objectsMicrophoneAlerteventsEntry { type = "TM" });
+                    }
+
+                    if (!string.IsNullOrEmpty(mic.alerts.trigger))
+                    {
+                        l.Add(new objectsMicrophoneAlerteventsEntry { type = "TA", param1 = mic.alerts.trigger });
+                    }
+                    mic.alertevents = new objectsMicrophoneAlertevents() {entries = l.ToArray()};
+                }
+
+                if (string.IsNullOrEmpty(mic.settings.emailondisconnect))
+                {
+                    if (mic.settings.notifyondisconnect)
+                    {
+                        mic.settings.emailondisconnect = mic.settings.emailaddress;
+                    }
+                }
+
+                if (addActions)
+                {
+                    var l = c.actions.entries.ToList();
+                    l.AddRange(mic.alertevents.entries.Select(a => new objectsActionsEntry
+                    {
+                        mode = "alert",
+                        objectid = mic.id,
+                        objecttypeid = 1,
+                        type = a.type,
+                        param1 = a.param1,
+                        param2 = a.param2,
+                        param3 = a.param3,
+                        param4 = a.param4
+                    }));
+                    if (!String.IsNullOrEmpty(mic.settings.emailondisconnect))
+                    {
+                        l.Add(new objectsActionsEntry
+                                {
+                                    mode = "disconnect",
+                                    objectid = mic.id,
+                                    objecttypeid = 1,
+                                    type = "E",
+                                    param1 = mic.settings.emailondisconnect,
+                                    param2 = "False"
+                                });
+                    }
+                    c.actions.entries = l.ToArray();
+                }
+
+                if (mic.x < 0)
+                    mic.x = 0;
+                if (mic.y < 0)
+                    mic.y = 0;
+
+                if (mic.settings.gain <= 0)
+                    mic.settings.gain = 1;
+
+                if (mic.alerts.trigger == null)
+                    mic.alerts.trigger = "";
+            }
+            int fpid = 0;
+            foreach (objectsFloorplan ofp in c.floorplans)
+            {
+                if (ofp.id >= fpid)
+                    fpid = ofp.id + 1;
+
+                if (ofp.x < 0)
+                    ofp.x = 0;
+                if (ofp.y < 0)
+                    ofp.y = 0;
+                if (ofp.accessgroups == null)
+                    ofp.accessgroups = "";
+            }
+            int rcid = 0;
+            foreach (objectsCommand ocmd in c.remotecommands)
+            {
+                if (ocmd.id >= rcid)
+                    rcid = ocmd.id + 1;
             }
 
-            Filter.CheckedCameraIDs = new List<int>();
-            Filter.CheckedMicIDs = new List<int>();
-            Filter.Filtered = false;
+
+
+            if (bAlertVlc)
+            {
+                MessageBox.Show(Program.Platform == "x64"
+                    ? LocRm.GetString("InstallVLCx64")
+                        .Replace("[DIR]", Environment.NewLine + Program.AppPath + "VLC64" + Environment.NewLine)
+                    : LocRm.GetString("InstallVLCx86"));
+                OpenUrl(Program.Platform == "x64" ? VLCx64 : VLCx86);
+            }
+            SaveConfig();
+            NeedsSync = true;
+            LogMessageToFile("Loaded " + c.cameras.Length + " cameras, " + c.microphones.Length + " mics and " + c.floorplans.Length + " floorplans");
+            return c;
+
         }
 
         internal static int NextCameraId
@@ -1836,7 +1854,7 @@ namespace iSpyApplication
             fpc.MouseMove += FloorPlanMouseMove;
         }
 
-        private void DisplayMicrophone(objectsMicrophone mic)
+        public void DisplayMicrophone(objectsMicrophone mic)
         {
             var micControl = new VolumeLevel(mic,this);
             SetMicrophoneEvents(micControl);
@@ -3523,7 +3541,7 @@ namespace iSpyApplication
 
         #region RestoreSavedCameras
 
-        private void DisplayCamera(objectsCamera cam)
+        public void DisplayCamera(objectsCamera cam)
         {
             var cameraControl = new CameraWindow(cam,this);
             SetCameraEvents(cameraControl);

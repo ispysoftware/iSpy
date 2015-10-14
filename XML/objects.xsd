@@ -70,6 +70,7 @@
                                                     <xs:element name="timestampbackcolor" type="xs:string" default=""/>
                                                     <xs:element name="timestampfont" type="xs:string" default=""/>
                                                     <xs:element name="timestampshowback" type="xs:boolean" default="true"/>
+                                                    <xs:element name="tagsnv" type="xs:string"/>
                                                     <xs:element name="desktoparea" type="xs:string"/>
                                                     <xs:element name="vlcargs" type="xs:string"/>
                                                     <xs:element name="ptzusername">

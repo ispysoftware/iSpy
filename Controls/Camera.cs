@@ -668,6 +668,34 @@ namespace iSpyApplication.Controls
             public Rectangle R;
         }
 
+        private string NV(string name)
+        {
+            if (string.IsNullOrEmpty(CW.Camobject.settings.tagsnv))
+                return "";
+            name = name.ToLower().Trim();
+            string[] settings = CW.Camobject.settings.tagsnv.Split(',');
+            foreach (string[] nv in settings.Select(s => s.Split('=')).Where(nv => nv[0].ToLower().Trim() == name))
+            {
+                return nv[1];
+            }
+            return "";
+        }
+
+        private Dictionary<string, string> _tags; 
+        internal Dictionary<string, string> Tags
+        {
+            get
+            {
+                if (_tags == null)
+                {
+                    _tags = Helper.GetDictionary(this.CW.Camobject.settings.tagsnv,';');
+
+                }
+                return _tags;
+            }
+            set { _tags = value; }
+        }
+
         private void AddTimestamp(Bitmap bmp)
         {
             if (CW.Camobject.settings.timestamplocation != 0 &&
@@ -682,6 +710,18 @@ namespace iSpyApplication.Controls
                     ts = ts.Replace("{REC}", CW.Recording ? "REC" : "");
                     var c = CW.Camera;
                     ts = ts.Replace("{LEVEL}", c?.MotionLevel.ToString("0.##") ?? "");
+
+                    if (MainForm.Tags.Count > 0)
+                    {
+                        var l = MainForm.Tags.ToList();
+                        foreach (var t in l)
+                        {
+                            string sval="";
+                            if (Tags.ContainsKey(t))
+                                sval = Tags[t];
+                            ts = ts.Replace(t, sval);
+                        }
+                    }
 
                     var timestamp = "Invalid Timestamp";
                     try

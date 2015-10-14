@@ -513,7 +513,10 @@ namespace iSpyApplication.Controls
                                 }
                                 break;
                             case 2:
-                                MainClass.EditMicrophone(Micobject);
+                                if (Helper.HasFeature(Enums.Features.Edit))
+                                {
+                                    MainClass.EditMicrophone(Micobject);
+                                }
                                 break;
                             case 3:
                                 if (Helper.HasFeature(Enums.Features.Access_Media))
@@ -1016,7 +1019,7 @@ namespace iSpyApplication.Controls
                     }
                     break;
                 case 2://settings
-                    rSrc = MainForm.REdit;
+                    rSrc = Helper.HasFeature(Enums.Features.Edit) ? MainForm.REdit : MainForm.REditOff;
                     break;
                 case 3://web
                     rSrc = Helper.HasFeature(Enums.Features.Access_Media) ? MainForm.RWeb : MainForm.RWebOff;

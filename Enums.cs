@@ -75,7 +75,10 @@ namespace iSpyApplication
             Settings =          134217728,
             Grid_Views =        268435456,
             Logs =              536870912,
-            Edit =              1073741824
+            Edit =              1073741824,
+            View_File_Menu =    8589934592,
+            View_Ispy_Links =   17179869184,
+            View_Status_Bar =   34359738368
         }
 
     }

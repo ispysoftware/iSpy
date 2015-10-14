@@ -2270,7 +2270,8 @@ namespace iSpyApplication
                              TimestampForeColor = CameraControl.Camobject.settings.timestampforecolor.ToColor(),
                              TimestampBackColor = CameraControl.Camobject.settings.timestampbackcolor.ToColor(),
                              CustomFont = FontXmlConverter.ConvertToFont(CameraControl.Camobject.settings.timestampfont),
-                             TimestampShowBack = CameraControl.Camobject.settings.timestampshowback
+                             TimestampShowBack = CameraControl.Camobject.settings.timestampshowback,
+                             TagsNV =  CameraControl.Camobject.settings.tagsnv
                          };
 
             if (ct.ShowDialog(this)== DialogResult.OK)
@@ -2281,11 +2282,14 @@ namespace iSpyApplication
                 CameraControl.Camobject.settings.timestampforecolor = ct.TimestampForeColor.ToRGBString();
                 CameraControl.Camobject.settings.timestampbackcolor = ct.TimestampBackColor.ToRGBString();
                 CameraControl.Camobject.settings.timestampshowback = ct.TimestampShowBack;
+                CameraControl.Camobject.settings.tagsnv = ct.TagsNV;
+                
 
                 if (CameraControl.Camera != null)
                 {
                     CameraControl.Camera.DrawFont = null;
                     CameraControl.Camera.ForeBrush = CameraControl.Camera.BackBrush = null;
+                    CameraControl.Camera.Tags = null;
                 }
             }
             ct.Dispose();

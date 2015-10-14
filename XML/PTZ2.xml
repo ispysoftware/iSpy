@@ -5850,4 +5850,23 @@ copy or delete as many lines as you need.-->
       <Command Name="V Patrol">/cgi-bin/hi3510/ptzctrl.cgi?&amp;-step=0&amp;-speed=10&amp;-act=vscan</Command>
     </ExtendedCommands>
   </Camera>
+  <Camera id="213">
+    <Makes>
+      <Make Name="Toshiba" Model="IK-WB15A" />
+      <Make Name="Toshiba" Model="IK-WB16A-W" />
+    </Makes>
+    <CommandURL>
+    </CommandURL>
+    <Commands>
+      <Center>/cgi-bin/camctrl/camctrl.cgi?move=home</Center>
+      <Left>/cgi-bin/camctrl/camctrl.cgi?move=left</Left>
+      <Right>/cgi-bin/camctrl/camctrl.cgi?move=right</Right>
+      <Up>/cgi-bin/camctrl/camctrl.cgi?move=up</Up>
+      <Down>/cgi-bin/camctrl/camctrl.cgi?move=down</Down>
+      <ZoomIn>/cgi-bin/camctrl/camctrl.cgi?zoom=tele</ZoomIn>
+      <ZoomOut>/cgi-bin/camctrl/camctrl.cgi?zoom=wide</ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+    </ExtendedCommands>
+  </Camera>
 </PTZSettings2>

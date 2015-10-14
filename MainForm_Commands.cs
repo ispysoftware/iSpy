@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Timers;
 using System.Windows.Forms;
 using iSpyApplication.Controls;
 using iSpyApplication.Joystick;
+using utils;
 
 namespace iSpyApplication
 {
@@ -364,17 +366,18 @@ namespace iSpyApplication
             LoadCommands();
         }
 
-        public static void InitRemoteCommands()
+        public static objectsCommand[] GenerateRemoteCommands()
         {
             //copy over 
-            _remotecommands.Clear();
+            var lcom = new List<objectsCommand>();
             var cmd = new objectsCommand
             {
                 command = "ispy ALLON",
                 id = 0,
                 name = "cmd_SwitchAllOn",
             };
-            _remotecommands.Add(cmd);
+
+            lcom.Add(cmd);
 
             cmd = new objectsCommand
             {
@@ -382,7 +385,7 @@ namespace iSpyApplication
                 id = 1,
                 name = "cmd_SwitchAllOff",
             };
-            _remotecommands.Add(cmd);
+            lcom.Add(cmd);
 
             cmd = new objectsCommand
             {
@@ -390,7 +393,7 @@ namespace iSpyApplication
                 id = 2,
                 name = "cmd_ApplySchedule",
             };
-            _remotecommands.Add(cmd);
+            lcom.Add(cmd);
 
             if (Helper.HasFeature(Enums.Features.Recording))
             {
@@ -400,7 +403,7 @@ namespace iSpyApplication
                           id = 3,
                           name = "cmd_RecordOnDetectAll",
                       };
-                _remotecommands.Add(cmd);
+                lcom.Add(cmd);
 
                 cmd = new objectsCommand
                       {
@@ -408,7 +411,7 @@ namespace iSpyApplication
                           id = 4,
                           name = "cmd_RecordOnAlertAll",
                       };
-                _remotecommands.Add(cmd);
+                lcom.Add(cmd);
 
                 cmd = new objectsCommand
                       {
@@ -416,7 +419,7 @@ namespace iSpyApplication
                           id = 5,
                           name = "cmd_RecordOffAll",
                       };
-                _remotecommands.Add(cmd);
+                lcom.Add(cmd);
 
                 cmd = new objectsCommand
                 {
@@ -424,7 +427,7 @@ namespace iSpyApplication
                     id = 8,
                     name = "cmd_RecordAll",
                 };
-                _remotecommands.Add(cmd);
+                lcom.Add(cmd);
 
                 cmd = new objectsCommand
                 {
@@ -432,7 +435,7 @@ namespace iSpyApplication
                     id = 9,
                     name = "cmd_RecordAllStop",
                 };
-                _remotecommands.Add(cmd);
+                lcom.Add(cmd);
             }
 
             cmd = new objectsCommand
@@ -441,7 +444,7 @@ namespace iSpyApplication
                 id = 6,
                 name = "cmd_AlertsOnAll",
             };
-            _remotecommands.Add(cmd);
+            lcom.Add(cmd);
 
             cmd = new objectsCommand
             {
@@ -449,7 +452,7 @@ namespace iSpyApplication
                 id = 7,
                 name = "cmd_AlertsOffAll",
             };
-            _remotecommands.Add(cmd);
+            lcom.Add(cmd);
 
             if (Helper.HasFeature(Enums.Features.Save_Frames))
             {
@@ -460,8 +463,9 @@ namespace iSpyApplication
                           id = 10,
                           name = "cmd_SnapshotAll",
                       };
-                _remotecommands.Add(cmd);
+                lcom.Add(cmd);
             }
+            return lcom.ToArray();
         }
 
         public void RunCommand(int commandIndex)
@@ -649,6 +653,20 @@ namespace iSpyApplication
                     if (fp!=null)
                         EditFloorplan(fp.Fpobject);
 
+                    break;
+                case "tags":
+                    if (cw != null)
+                    {
+                        using (TagConfigure tc = new TagConfigure { TagsNV = cw.Camobject.settings.tagsnv, Owner = this })
+                        {
+                            if (tc.ShowDialog() == DialogResult.OK)
+                            {
+                                cw.Camobject.settings.tagsnv = tc.TagsNV;
+                                if (cw.Camera!=null)
+                                    cw.Camera.Tags = null;
+                            }
+                        }
+                    }
                     break;
 
             }

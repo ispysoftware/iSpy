@@ -31,9 +31,9 @@ namespace iSpyApplication
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CheckPassword));
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblAccount = new System.Windows.Forms.Label();
             this.lblPassword = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.lblAccount = new System.Windows.Forms.Label();
             this.ddlAccount = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -67,10 +67,21 @@ namespace iSpyApplication
             this.tableLayoutPanel1.Size = new System.Drawing.Size(251, 116);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
+            // lblAccount
+            // 
+            this.lblAccount.AutoSize = true;
+            this.lblAccount.Location = new System.Drawing.Point(3, 6);
+            this.lblAccount.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
+            this.lblAccount.Name = "lblAccount";
+            this.lblAccount.Size = new System.Drawing.Size(47, 13);
+            this.lblAccount.TabIndex = 7;
+            this.lblAccount.Text = "Account";
+            // 
             // lblPassword
             // 
             this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(3, 31);
+            this.lblPassword.Location = new System.Drawing.Point(3, 37);
+            this.lblPassword.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(56, 13);
             this.lblPassword.TabIndex = 5;
@@ -87,15 +98,6 @@ namespace iSpyApplication
             this.button1.Text = "Unlock";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // lblAccount
-            // 
-            this.lblAccount.AutoSize = true;
-            this.lblAccount.Location = new System.Drawing.Point(3, 0);
-            this.lblAccount.Name = "lblAccount";
-            this.lblAccount.Size = new System.Drawing.Size(47, 13);
-            this.lblAccount.TabIndex = 7;
-            this.lblAccount.Text = "Account";
             // 
             // ddlAccount
             // 

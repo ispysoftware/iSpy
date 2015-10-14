@@ -488,7 +488,7 @@ namespace iSpyApplication
         
         private string NV(string name)
         {
-            if (String.IsNullOrEmpty(CameraControl.Camobject.settings.namevaluesettings))
+            if (string.IsNullOrEmpty(CameraControl.Camobject.settings.namevaluesettings))
                 return "";
             name = name.ToLower().Trim();
             string[] settings = CameraControl.Camobject.settings.namevaluesettings.Split(',');

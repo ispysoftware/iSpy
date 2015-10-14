@@ -96,11 +96,12 @@ namespace iSpyApplication
             // 
             // _lblCopyright
             // 
+            this._lblCopyright.Dock = System.Windows.Forms.DockStyle.Fill;
             this._lblCopyright.Location = new System.Drawing.Point(139, 22);
             this._lblCopyright.Name = "_lblCopyright";
-            this._lblCopyright.Size = new System.Drawing.Size(165, 16);
+            this._lblCopyright.Size = new System.Drawing.Size(199, 22);
             this._lblCopyright.TabIndex = 13;
-            this._lblCopyright.Text = "Copyright © 2011 iSpyConnect.com";
+            this._lblCopyright.Text = "Copyright © 2015 iSpyConnect.com";
             this._lblCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // _pictureBox1

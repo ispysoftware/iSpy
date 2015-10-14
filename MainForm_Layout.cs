@@ -10,7 +10,7 @@ namespace iSpyApplication
 {
     public partial class MainForm
     {
-        private void LayoutObjects(int w, int h)
+        public void LayoutObjects(int w, int h)
         {
             _pnlCameras.HorizontalScroll.Value = 0;
             _pnlCameras.VerticalScroll.Value = 0;
