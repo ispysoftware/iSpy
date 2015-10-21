@@ -3541,7 +3541,7 @@ namespace iSpyApplication
 
         #region RestoreSavedCameras
 
-        public void DisplayCamera(objectsCamera cam)
+        public void DisplayCamera(objectsCamera cam, bool enableOnDisplay = false)
         {
             var cameraControl = new CameraWindow(cam,this);
             SetCameraEvents(cameraControl);
@@ -3583,7 +3583,8 @@ namespace iSpyApplication
             {
                 LogExceptionToFile(ex);
             }
-
+            if (enableOnDisplay)
+                cameraControl.Enable();
             cameraControl.GetFiles();
         }
 

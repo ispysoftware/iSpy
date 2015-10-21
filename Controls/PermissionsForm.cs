@@ -32,9 +32,13 @@ namespace iSpyApplication.Controls
             var feats = Enum.GetValues(typeof(Enums.Features));
             foreach (var f in feats)
             {
-                var cb = new CheckBox { Text = f.ToString(), Tag = f, AutoSize = true };
-                if ((Convert.ToInt64(f) & group.featureset) == i)
-                    cb.Checked = true;
+                var cb = new CheckBox
+                         {
+                             Text = f.ToString(),
+                             Tag = f,
+                             AutoSize = true,
+                             Checked = ((1L & @group.featureset) != 0 || (((long) f & @group.featureset) != 0))
+                         };
                 fpFeatures.Controls.Add(cb);
                 i = i * 2;
             }

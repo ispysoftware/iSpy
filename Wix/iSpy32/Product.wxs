@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
   <?include "config.wxi"?>
-  <Product Id="*" Name="iSpy" Language="1033" Version="6.4.4.0" Manufacturer="DeveloperInABox" UpgradeCode="B70B8F0F-48E1-4149-AD58-636704EA8215">
+  <Product Id="*" Name="iSpy" Language="1033" Version="6.4.5.0" Manufacturer="DeveloperInABox" UpgradeCode="B70B8F0F-48E1-4149-AD58-636704EA8215">
     <Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" Manufacturer="DeveloperInABox" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of iSpy is already installed." AllowDowngrades="no" />
@@ -341,6 +341,9 @@
       </Component>
     </ComponentGroup>
     <ComponentGroup Id="plugins" Directory="Plugins">
+      <Component Id="CompPluginReadme" Guid="{fa170ca5-9487-4fac-8bcd-baa11c567e92}">
+        <File Id="plugin_readme.txt" Source="$(var.OutputDir)\Plugins\readme.txt" KeyPath="yes" Checksum="yes" />
+      </Component>
     </ComponentGroup>
     <ComponentGroup Id="sounds" Directory="Sounds">
       <Component Id="Component111" Guid="{482370EA-1ED3-4F52-B283-1D0DD80E1FE4}">

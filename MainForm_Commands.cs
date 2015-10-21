@@ -668,6 +668,13 @@ namespace iSpyApplication
                         }
                     }
                     break;
+                case "import":
+                    using (var imp = new Importer())
+                    {
+                        imp.ShowDialog(this);
+                    }
+                    break;
+
 
             }
         }

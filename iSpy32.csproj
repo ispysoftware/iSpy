@@ -1271,7 +1271,6 @@
     <None Include="Resources\icon_listenoff.png" />
     <None Include="Resources\icon_listenstop.png" />
     <None Include="Resources\icon_photo.png" />
-    <Content Include="Plugins\Demo.dll" />
     <None Include="Resources\ispylogo.png" />
     <None Include="Resources\ispy1.png" />
     <None Include="Resources\ipcam.png" />
