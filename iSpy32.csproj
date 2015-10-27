@@ -1304,7 +1304,9 @@
     <None Include="Resources\icons\25 JetAudio.png" />
     <None Include="Resources\icons\26 Custom.png" />
     <None Include="Resources\icons\27 Run.png" />
-    <Content Include="Plugins\readme.txt" />
+    <Content Include="Plugins\readme.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\icon_pointer.png" />
     <Content Include="readme.txt" />
     <Content Include="sounds\airhorn.wav">

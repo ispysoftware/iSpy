@@ -1644,7 +1644,7 @@ namespace iSpyApplication
 
             switch (ptz.Method)
             {
-                case "PUT":
+                
                 case "POST":
                     var i = url.IndexOf("?", StringComparison.Ordinal);
                     if (i > -1 && i < url.Length)
@@ -1663,6 +1663,10 @@ namespace iSpyApplication
                         }
                     }
                     break;
+                case "PUT":
+
+                    break;
+
             }
             
 

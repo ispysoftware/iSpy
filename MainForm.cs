@@ -4195,7 +4195,7 @@ namespace iSpyApplication
 
         private void videoFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AddCamera(2);
+            AddCamera(5);
         }
 
         private void saveToToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4352,14 +4352,10 @@ namespace iSpyApplication
 
         private void configurePluginToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var window = ContextTarget as CameraWindow;
-            if (window != null)
+            var cameraControl = ContextTarget as CameraWindow;
+            if (cameraControl?.Camera?.Plugin != null)
             {
-                CameraWindow cameraControl = window;
-                if (cameraControl.Camera != null && cameraControl.Camera.Plugin != null)
-                {
-                    cameraControl.ConfigurePlugin();
-                }
+                cameraControl.ConfigurePlugin();
             }
         }
 

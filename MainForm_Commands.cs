@@ -547,6 +547,21 @@ namespace iSpyApplication
 
         public void ProcessKey(string keycommand)
         {
+            //non-specific commands
+            switch (keycommand.ToLower())
+            {
+                case "standby":
+                case "back":
+                case "power":
+                    Close();
+                    return;
+                case "import":
+                    using (var imp = new Importer())
+                    {
+                        imp.ShowDialog(this);
+                    }
+                    return;
+            }
             int i;
             var c = GetActiveControl(out i);
             if (i == -1)
@@ -611,11 +626,6 @@ namespace iSpyApplication
                         Maximise(c);
                     }
                     break;
-                case "standby":
-                case "back":
-                case "power":
-                   Close();
-                    break;
                 case "delete":
                     if (cw != null)
                     {
@@ -668,14 +678,6 @@ namespace iSpyApplication
                         }
                     }
                     break;
-                case "import":
-                    using (var imp = new Importer())
-                    {
-                        imp.ShowDialog(this);
-                    }
-                    break;
-
-
             }
         }
     }

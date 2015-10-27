@@ -1,6 +1,7 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iSpy32", "iSpy32.csproj", "{F4799C73-DEE9-48F2-B626-32149CC30976}"
 EndProject
@@ -13,6 +14,8 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "iSpy32Setup", "Wix\iSpy32\i
 	ProjectSection(ProjectDependencies) = postProject
 		{F4799C73-DEE9-48F2-B626-32149CC30976} = {F4799C73-DEE9-48F2-B626-32149CC30976}
 	EndProjectSection
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Bootstrap32", "Wix\Bootstrap32\Bootstrap32.wixproj", "{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -128,9 +131,54 @@ Global
 		{4B65A69E-D1A7-47FC-AD92-12DC18F526CE}.SingleImage|x64.Build.0 = Release|x86
 		{4B65A69E-D1A7-47FC-AD92-12DC18F526CE}.SingleImage|x86.ActiveCfg = Release|x86
 		{4B65A69E-D1A7-47FC-AD92-12DC18F526CE}.SingleImage|x86.Build.0 = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.CD_ROM|Any CPU.ActiveCfg = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.CD_ROM|Any CPU.Build.0 = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.CD_ROM|Mixed Platforms.ActiveCfg = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.CD_ROM|Mixed Platforms.Build.0 = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.CD_ROM|Win32.ActiveCfg = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.CD_ROM|Win32.Build.0 = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.CD_ROM|x64.ActiveCfg = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.CD_ROM|x64.Build.0 = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.CD_ROM|x86.ActiveCfg = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.CD_ROM|x86.Build.0 = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.Debug|Win32.ActiveCfg = Debug|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.Debug|Win32.Build.0 = Debug|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.Debug|x64.ActiveCfg = Debug|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.Debug|x86.ActiveCfg = Debug|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.Debug|x86.Build.0 = Debug|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.DVD-5|Any CPU.ActiveCfg = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.DVD-5|Any CPU.Build.0 = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.DVD-5|Mixed Platforms.ActiveCfg = Debug|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.DVD-5|Mixed Platforms.Build.0 = Debug|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.DVD-5|Win32.ActiveCfg = Debug|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.DVD-5|Win32.Build.0 = Debug|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.DVD-5|x64.ActiveCfg = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.DVD-5|x64.Build.0 = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.DVD-5|x86.ActiveCfg = Debug|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.DVD-5|x86.Build.0 = Debug|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.Release|Any CPU.ActiveCfg = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.Release|Mixed Platforms.Build.0 = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.Release|Win32.ActiveCfg = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.Release|Win32.Build.0 = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.Release|x64.ActiveCfg = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.Release|x86.ActiveCfg = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.Release|x86.Build.0 = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.SingleImage|Any CPU.ActiveCfg = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.SingleImage|Any CPU.Build.0 = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.SingleImage|Mixed Platforms.ActiveCfg = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.SingleImage|Mixed Platforms.Build.0 = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.SingleImage|Win32.ActiveCfg = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.SingleImage|Win32.Build.0 = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.SingleImage|x64.ActiveCfg = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.SingleImage|x64.Build.0 = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.SingleImage|x86.ActiveCfg = Release|x86
+		{490E9A04-FCD5-44C4-BDD0-DC395CEB9984}.SingleImage|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
-

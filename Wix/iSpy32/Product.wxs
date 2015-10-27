@@ -90,7 +90,6 @@
       <Merge Id="VCRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\Microsoft_VC100_CRT_x86.msm" DiskId="1" Language="0" />
     </DirectoryRef>
   </Fragment>
-
   <Fragment>
     <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
       <Component Id="Component1" Guid="{A116D898-9B17-4F63-9F04-13134CEB94CD}">
@@ -397,6 +396,4 @@
       </Component>
     </ComponentGroup>
   </Fragment>
-
-
 </Wix>
