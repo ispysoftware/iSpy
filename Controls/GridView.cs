@@ -116,7 +116,7 @@ namespace iSpyApplication.Controls
                 case 2:
                     _cols = _rows = 1;
 
-                    if (!String.IsNullOrEmpty(Cg.ModeConfig))
+                    if (!string.IsNullOrEmpty(Cg.ModeConfig))
                     {
                         //add default camera
                         string[] cfg = Cg.ModeConfig.Split(',');
@@ -199,7 +199,7 @@ namespace iSpyApplication.Controls
             {
                 int del = 10;
                 bool sr = false;
-                if (!String.IsNullOrEmpty(Cg.ModeConfig))
+                if (!string.IsNullOrEmpty(Cg.ModeConfig))
                 {
                     var cfg = Cg.ModeConfig.Split(',');
                     if (cfg.Length > 0)

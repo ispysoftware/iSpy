@@ -298,7 +298,7 @@ namespace iSpyApplication
                 diag = "leftdown";
             }
 
-            if (String.IsNullOrEmpty(command)) //some PTZ cameras don't have diagonal controls, this fixes that
+            if (string.IsNullOrEmpty(command)) //some PTZ cameras don't have diagonal controls, this fixes that
             {
                 switch (diag)
                 {
@@ -355,9 +355,9 @@ namespace iSpyApplication
                         if (!d)
                         {
                            
-                            if (String.IsNullOrEmpty(ptz.Commands.ZoomIn))
+                            if (string.IsNullOrEmpty(ptz.Commands.ZoomIn))
                                 d = true;
-                            if (String.IsNullOrEmpty(ptz.Commands.ZoomOut))
+                            if (string.IsNullOrEmpty(ptz.Commands.ZoomOut))
                                 d = true;
                         }
                         return d;
@@ -523,12 +523,12 @@ namespace iSpyApplication
             {
                 if (command == Enums.PtzCommand.ZoomIn)
                 {
-                    if (String.IsNullOrEmpty(ptz.Commands.ZoomIn))
+                    if (string.IsNullOrEmpty(ptz.Commands.ZoomIn))
                         d = true;
                 }
                 if (command == Enums.PtzCommand.ZoomOut)
                 {
-                    if (String.IsNullOrEmpty(ptz.Commands.ZoomOut))
+                    if (string.IsNullOrEmpty(ptz.Commands.ZoomOut))
                         d = true;
                 }
             }
@@ -574,7 +574,7 @@ namespace iSpyApplication
                     case Enums.PtzCommand.Stop:
                         if (_previousCommand == Enums.PtzCommand.ZoomIn)
                         {
-                            if (!String.IsNullOrEmpty(ptz.Commands.ZoomInStop))
+                            if (!string.IsNullOrEmpty(ptz.Commands.ZoomInStop))
                             {
                                 SendPTZCommand(ptz.Commands.ZoomInStop, wait);
                                 break;
@@ -582,7 +582,7 @@ namespace iSpyApplication
                         }
                         if (_previousCommand == Enums.PtzCommand.ZoomOut)
                         {
-                            if (!String.IsNullOrEmpty(ptz.Commands.ZoomOutStop))
+                            if (!string.IsNullOrEmpty(ptz.Commands.ZoomOutStop))
                             {
                                 SendPTZCommand(ptz.Commands.ZoomOutStop, wait);
                                 break;
@@ -1412,7 +1412,7 @@ namespace iSpyApplication
 
         public void SendPTZCommand(string cmd, bool wait)
         {
-            if (String.IsNullOrEmpty(cmd))
+            if (string.IsNullOrEmpty(cmd))
                 return;
 
             if (_request != null)
@@ -1524,7 +1524,7 @@ namespace iSpyApplication
             }
             else
             {
-                if (!String.IsNullOrEmpty(cmd))
+                if (!string.IsNullOrEmpty(cmd))
                 {
                     if (!cmd.Contains("://"))
                     {
@@ -1552,7 +1552,7 @@ namespace iSpyApplication
             string un = _cameraControl.Camobject.settings.login;
             string pwd = _cameraControl.Camobject.settings.password;
 
-            if (!String.IsNullOrEmpty(_cameraControl.Camobject.settings.ptzusername))
+            if (!string.IsNullOrEmpty(_cameraControl.Camobject.settings.ptzusername))
             {
                 un = _cameraControl.Camobject.settings.ptzusername;
                 pwd = _cameraControl.Camobject.settings.ptzpassword;
@@ -1563,7 +1563,7 @@ namespace iSpyApplication
                 {
 
                     //get from url
-                    if (!String.IsNullOrEmpty(uri.UserInfo))
+                    if (!string.IsNullOrEmpty(uri.UserInfo))
                     {
                         string[] creds = uri.UserInfo.Split(':');
                         if (creds.Length >= 2)
@@ -1575,7 +1575,7 @@ namespace iSpyApplication
                 }
             }
 
-            if (!String.IsNullOrEmpty(ptz.AppendAuth))
+            if (!string.IsNullOrEmpty(ptz.AppendAuth))
             {
                 if (url.IndexOf("?", StringComparison.Ordinal) == -1)
                     url += "?" + ptz.AppendAuth;
@@ -1604,22 +1604,22 @@ namespace iSpyApplication
             // set login and password
 
             string authInfo = "";
-            if (!String.IsNullOrEmpty(un))
+            if (!string.IsNullOrEmpty(un))
             {
                 authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(Uri.EscapeDataString(un) + ":" + Uri.EscapeDataString(pwd)));
                 _request.Headers["Authorization"] = "Basic " + authInfo;
             }
             
             string ckies = _cameraControl.Camobject.settings.cookies ?? "";
-            if (!String.IsNullOrEmpty(ckies))
+            if (!string.IsNullOrEmpty(ckies))
             {
                 if (!ckies.EndsWith(";"))
                     ckies += ";";
             }
-            if (!String.IsNullOrEmpty(ptz.Cookies))
+            if (!string.IsNullOrEmpty(ptz.Cookies))
                 ckies += ptz.Cookies;
 
-            if (!String.IsNullOrEmpty(ckies))
+            if (!string.IsNullOrEmpty(ckies))
             {
                 ckies = ckies.Replace("[USERNAME]", un);
                 ckies = ckies.Replace("[PASSWORD]", pwd);
@@ -1629,7 +1629,7 @@ namespace iSpyApplication
                 string[] coll = ckies.Split(';');
                 foreach (var ckie in coll)
                 {
-                    if (!String.IsNullOrEmpty(ckie))
+                    if (!string.IsNullOrEmpty(ckie))
                     {
                         string[] nv = ckie.Split('=');
                         if (nv.Length == 2)

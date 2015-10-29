@@ -169,7 +169,7 @@ namespace iSpyApplication
                 return;
 
             PTZSettings2Camera ptz = MainForm.PTZs.SingleOrDefault(p => p.id == CameraControl.Camobject.ptz);
-            if (ptz != null && !String.IsNullOrEmpty(ptz.Commands.Stop))
+            if (ptz != null && !string.IsNullOrEmpty(ptz.Commands.Stop))
                 SendPtzCommand(ptz.Commands.Stop, true);
 
             if (CameraControl.PTZ.IsContinuous)

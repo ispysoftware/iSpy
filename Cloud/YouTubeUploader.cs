@@ -73,7 +73,7 @@ namespace iSpyApplication.Cloud
                 {
                     return _service;
                 }
-                if (!String.IsNullOrEmpty(MainForm.Conf.YouTubeToken))
+                if (!string.IsNullOrEmpty(MainForm.Conf.YouTubeToken))
                 {
                     var token = new TokenResponse { RefreshToken = MainForm.Conf.YouTubeToken };
 

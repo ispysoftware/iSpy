@@ -54,7 +54,7 @@
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBox1.Location = new System.Drawing.Point(113, 3);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(184, 20);
+            this.textBox1.Size = new System.Drawing.Size(184, 22);
             this.textBox1.TabIndex = 0;
             // 
             // lblTag
@@ -63,7 +63,7 @@
             this.lblTag.Location = new System.Drawing.Point(3, 6);
             this.lblTag.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
             this.lblTag.Name = "lblTag";
-            this.lblTag.Size = new System.Drawing.Size(35, 13);
+            this.lblTag.Size = new System.Drawing.Size(46, 17);
             this.lblTag.TabIndex = 1;
             this.lblTag.Text = "label1";
             // 

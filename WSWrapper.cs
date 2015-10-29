@@ -53,7 +53,7 @@ namespace iSpyApplication
                 if (_websitelive && !value)
                 {
                     //disconnected
-                    if (!String.IsNullOrEmpty(MainForm.Conf.AlertOnDisconnect))
+                    if (!string.IsNullOrEmpty(MainForm.Conf.AlertOnDisconnect))
                     {
                         try
                         {
@@ -67,7 +67,7 @@ namespace iSpyApplication
                 if (!_websitelive && value)
                 {
                     //reconnected
-                    if (!String.IsNullOrEmpty(MainForm.Conf.AlertOnReconnect))
+                    if (!string.IsNullOrEmpty(MainForm.Conf.AlertOnReconnect))
                     {
                         try
                         {

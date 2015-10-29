@@ -134,7 +134,7 @@ namespace iSpyApplication
             SaveSMTPSettings();
 
             MainForm.Conf.Archive = txtArchive.Text.Trim();
-            if (!String.IsNullOrEmpty(MainForm.Conf.Archive))
+            if (!string.IsNullOrEmpty(MainForm.Conf.Archive))
             {
                 if (!MainForm.Conf.Archive.EndsWith(@"\"))
                     MainForm.Conf.Archive += @"\";
@@ -1203,7 +1203,7 @@ namespace iSpyApplication
         private string GetFolder(string initialPath)
         {
             string f = "";
-            if (!String.IsNullOrEmpty(initialPath))
+            if (!string.IsNullOrEmpty(initialPath))
             {
                 try
                 {

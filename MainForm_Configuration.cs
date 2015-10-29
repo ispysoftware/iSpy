@@ -233,23 +233,23 @@ namespace iSpyApplication
                 if (_conf.JPEGQuality == 0)
                     _conf.JPEGQuality = 80;
 
-                if (String.IsNullOrEmpty(_conf.FloorPlanHighlightColor))
+                if (string.IsNullOrEmpty(_conf.FloorPlanHighlightColor))
                     _conf.FloorPlanHighlightColor = "0,217,0";
 
-                if (String.IsNullOrEmpty(_conf.YouTubeCategories))
+                if (string.IsNullOrEmpty(_conf.YouTubeCategories))
                 {
                     _conf.YouTubeCategories =
                         "Film,Autos,Music,Animals,Sports,Travel,Games,Comedy,People,News,Entertainment,Education,Howto,Nonprofit,Tech";
                 }
-                if (String.IsNullOrEmpty(_conf.BorderHighlightColor))
+                if (string.IsNullOrEmpty(_conf.BorderHighlightColor))
                 {
                     _conf.BorderHighlightColor = "255,0,0";
                 }
-                if (!String.IsNullOrEmpty(Resources.Vendor))
+                if (!string.IsNullOrEmpty(Resources.Vendor))
                 {
                     _conf.Vendor = Resources.Vendor;
                 }
-                if (String.IsNullOrEmpty(_conf.BorderDefaultColor))
+                if (string.IsNullOrEmpty(_conf.BorderDefaultColor))
                     _conf.BorderDefaultColor = "0,0,0";
 
                 if (string.IsNullOrEmpty(_conf.StartupForm))
@@ -515,7 +515,7 @@ namespace iSpyApplication
             {
                 lock (ThreadLock)
                 {
-                    if (!String.IsNullOrEmpty(_ipv4Address))
+                    if (!string.IsNullOrEmpty(_ipv4Address))
                         return _ipv4Address;
 
                     var ip = AddressListIPv4.FirstOrDefault(p => p.ToString() == Conf.IPv4Address);
@@ -580,7 +580,7 @@ namespace iSpyApplication
             {
                 lock (ThreadLock)
                 {
-                    if (!String.IsNullOrEmpty(_ipv6Address))
+                    if (!string.IsNullOrEmpty(_ipv6Address))
                         return _ipv6Address;
 
                     var ip = AddressListIPv6.FirstOrDefault(p => p.ToString() == Conf.IPv4Address);
@@ -783,7 +783,7 @@ namespace iSpyApplication
                 if (migrate)
                 {
                     var l = new List<objectsCameraAlerteventsEntry>();
-                    if (!String.IsNullOrEmpty(cam.alerts.executefile))
+                    if (!string.IsNullOrEmpty(cam.alerts.executefile))
                     {
                         l.Add(new objectsCameraAlerteventsEntry
                                 {
@@ -809,7 +809,7 @@ namespace iSpyApplication
                     {
                         l.Add(new objectsCameraAlerteventsEntry {type = "M"});
                     }
-                    if (!String.IsNullOrEmpty(cam.alerts.playsound))
+                    if (!string.IsNullOrEmpty(cam.alerts.playsound))
                     {
                         l.Add(new objectsCameraAlerteventsEntry {type = "S", param1 = cam.alerts.playsound});
                     }
@@ -826,7 +826,7 @@ namespace iSpyApplication
                         l.Add(new objectsCameraAlerteventsEntry {type = "TM"});
                     }
 
-                    if (!String.IsNullOrEmpty(cam.alerts.trigger))
+                    if (!string.IsNullOrEmpty(cam.alerts.trigger))
                     {
                         l.Add(new objectsCameraAlerteventsEntry {type = "TA", param1 = cam.alerts.trigger});
                     }
@@ -925,7 +925,7 @@ namespace iSpyApplication
                 if (Conf.MediaDirectories.FirstOrDefault(p => p.ID == cam.settings.directoryIndex) == null)
                     cam.settings.directoryIndex = Conf.MediaDirectories.First().ID;
 
-                if (String.IsNullOrEmpty(cam.settings.emailondisconnect))
+                if (string.IsNullOrEmpty(cam.settings.emailondisconnect))
                 {
                     if (cam.settings.notifyondisconnect)
                     {
@@ -949,7 +949,7 @@ namespace iSpyApplication
                 if (cam.directory == null)
                     throw new Exception("err_old_config");
 
-                if (String.IsNullOrEmpty(cam.settings.ptzpelcoconfig))
+                if (string.IsNullOrEmpty(cam.settings.ptzpelcoconfig))
                     cam.settings.ptzpelcoconfig = "COM1|9600|8|One|Odd|1";
 
                 if (cam.savelocal == null)
@@ -985,12 +985,12 @@ namespace iSpyApplication
                     cam.settings.audiopassword = "";
                 }
 
-                if (String.IsNullOrEmpty(cam.settings.timestampforecolor) || cam.settings.timestampforecolor == "0")
+                if (string.IsNullOrEmpty(cam.settings.timestampforecolor) || cam.settings.timestampforecolor == "0")
                 {
                     cam.settings.timestampforecolor = "255,255,255";
                 }
 
-                if (String.IsNullOrEmpty(cam.settings.timestampbackcolor) || cam.settings.timestampbackcolor == "0")
+                if (string.IsNullOrEmpty(cam.settings.timestampbackcolor) || cam.settings.timestampbackcolor == "0")
                 {
                     cam.settings.timestampbackcolor = "70,70,70";
                 }
@@ -1026,15 +1026,15 @@ namespace iSpyApplication
                     }
                 }
 
-                if (String.IsNullOrEmpty(cam.ftp.localfilename))
+                if (string.IsNullOrEmpty(cam.ftp.localfilename))
                 {
                     cam.ftp.localfilename = "{0:yyyy-MM-dd_HH-mm-ss_fff}.jpg";
                 }
 
-                if (String.IsNullOrEmpty(cam.settings.audiomodel))
+                if (string.IsNullOrEmpty(cam.settings.audiomodel))
                     cam.settings.audiomodel = "None";
 
-                if (String.IsNullOrEmpty(cam.settings.timestampfont))
+                if (string.IsNullOrEmpty(cam.settings.timestampfont))
                 {
                     cam.settings.timestampfont = FontXmlConverter.ConvertToString(Drawfont);
                     cam.settings.timestampshowback = true;
@@ -1068,7 +1068,7 @@ namespace iSpyApplication
                 if (cam.alerts.trigger == null)
                     cam.alerts.trigger = "";
 
-                if (String.IsNullOrEmpty(cam.rotateMode))
+                if (string.IsNullOrEmpty(cam.rotateMode))
                 {
                     cam.rotateMode = "RotateNoneFlipNone";
                     if (cam.rotate90)
@@ -1201,7 +1201,7 @@ namespace iSpyApplication
                         param3 = a.param3,
                         param4 = a.param4
                     }));
-                    if (!String.IsNullOrEmpty(mic.settings.emailondisconnect))
+                    if (!string.IsNullOrEmpty(mic.settings.emailondisconnect))
                     {
                         l.Add(new objectsActionsEntry
                                 {
@@ -2968,7 +2968,7 @@ namespace iSpyApplication
                         string pwd = _conf.WSPassword;
 
                         //save the encrypted form
-                        if (!String.IsNullOrEmpty(_conf.WSPassword))
+                        if (!string.IsNullOrEmpty(_conf.WSPassword))
                         {
 
                             _conf.WSPassword = EncDec.EncryptData(_conf.WSPassword, "582df37b-b7cc-43f7-a442-30a2b188a888");

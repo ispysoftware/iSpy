@@ -49,7 +49,7 @@ namespace iSpyApplication.Cloud
                     return _service;
                 }
                 _refreshToken = MainForm.Conf.GoogleDriveConfig;
-                if (!String.IsNullOrEmpty(_refreshToken))
+                if (!string.IsNullOrEmpty(_refreshToken))
                 {
                     var token = new TokenResponse { RefreshToken = _refreshToken };
                     var credential = new UserCredential(new GoogleAuthorizationCodeFlow(

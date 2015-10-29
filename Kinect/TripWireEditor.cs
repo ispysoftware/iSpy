@@ -60,7 +60,7 @@ namespace iSpyApplication.Kinect
         public void Init(string cfg)
         {
             TripWires.Clear();
-            if (!String.IsNullOrEmpty(cfg))
+            if (!string.IsNullOrEmpty(cfg))
             {
                 try
                 {
@@ -68,7 +68,7 @@ namespace iSpyApplication.Kinect
                     for (int i = 0; i < tw.Length; i++)
                     {
                         var twe = tw[i].Split(',');
-                        if (!String.IsNullOrEmpty(twe[0]))
+                        if (!string.IsNullOrEmpty(twe[0]))
                         {
                             var sp = new Point(Convert.ToInt32(twe[0]), Convert.ToInt32(twe[1]));
                             var ep = new Point(Convert.ToInt32(twe[2]), Convert.ToInt32(twe[3]));

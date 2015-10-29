@@ -594,7 +594,7 @@ namespace iSpyApplication
         {
             get
             {
-                if (!String.IsNullOrEmpty(_browser))
+                if (!string.IsNullOrEmpty(_browser))
                     return _browser;
 
                 _browser = string.Empty;
@@ -1068,7 +1068,7 @@ namespace iSpyApplication
             NetworkChange.NetworkAddressChanged += NetworkChangeNetworkAddressChanged;
             mediaPaneToolStripMenuItem.Checked = Conf.ShowMediaPanel;
             ShowHideMediaPane();
-            if (!String.IsNullOrEmpty(Conf.MediaPanelSize))
+            if (!string.IsNullOrEmpty(Conf.MediaPanelSize))
             {
                 string[] dd = Conf.MediaPanelSize.Split('x');
                 int d1 = Convert.ToInt32(dd[0]);
@@ -1120,7 +1120,7 @@ namespace iSpyApplication
                 bool setSecure = false;
                 foreach (string s in cfg)
                 {
-                    if (!String.IsNullOrEmpty(s))
+                    if (!string.IsNullOrEmpty(s))
                     {
                         string[] nv = s.Split('=');
 
@@ -1150,7 +1150,7 @@ namespace iSpyApplication
                                     }
                                     break;
                                 case "tags":
-                                    if (String.IsNullOrEmpty(Conf.Tags))
+                                    if (string.IsNullOrEmpty(Conf.Tags))
                                         Conf.Tags = nv[1].Trim();
                                     break;
                                 case "featureset":
@@ -1172,12 +1172,12 @@ namespace iSpyApplication
                                         var l = new List<configurationGroup>();
                                         foreach (var g in groups)
                                         {
-                                            if (!String.IsNullOrEmpty(g))
+                                            if (!string.IsNullOrEmpty(g))
                                             {
                                                 var g2 = g.Split(',');
                                                 if (g2.Length >= 3)
                                                 {
-                                                    if (!String.IsNullOrEmpty(g2[0]))
+                                                    if (!string.IsNullOrEmpty(g2[0]))
                                                     {
                                                         int perm;
                                                         if (int.TryParse(g2[2], out perm))
@@ -1414,7 +1414,7 @@ namespace iSpyApplication
                 if (iplisted)
                     return;
             }
-            if (!String.IsNullOrEmpty(Conf.WSUsername) && !String.IsNullOrEmpty(Conf.WSPassword))
+            if (!string.IsNullOrEmpty(Conf.WSUsername) && !string.IsNullOrEmpty(Conf.WSPassword))
             {
                 switch (Conf.IPMode)
                 {
@@ -2036,7 +2036,7 @@ namespace iSpyApplication
                 string[] commands = command.Trim('"').Split('|');
                 foreach (string command2 in commands)
                 {
-                    if (!String.IsNullOrEmpty(command2))
+                    if (!string.IsNullOrEmpty(command2))
                     {
                         LogMessageToFile("Running Command: " + command2);
                         if (InvokeRequired)
@@ -2207,7 +2207,7 @@ namespace iSpyApplication
                 _pnlCameras.BackColor = Conf.MainColor.ToColor();
                 notifyIcon1.Text = Conf.TrayIconText;
 
-                if (!String.IsNullOrEmpty(Conf.Joystick.id))
+                if (!string.IsNullOrEmpty(Conf.Joystick.id))
                 {
                     if (_jst == null)
                     {
@@ -2962,7 +2962,7 @@ namespace iSpyApplication
                 }
                 var ws = new Webservices();
                 ws.ShowDialog(this);
-                if (!String.IsNullOrEmpty(ws.EmailAddress))
+                if (!string.IsNullOrEmpty(ws.EmailAddress))
                     EmailAddress = ws.EmailAddress;
                 if (ws.DialogResult == DialogResult.Yes || ws.DialogResult == DialogResult.No)
                 {
@@ -4080,7 +4080,7 @@ namespace iSpyApplication
 
         public void TalkTo(CameraWindow cw, bool talk)
         {
-            if (String.IsNullOrEmpty(Conf.TalkMic))
+            if (string.IsNullOrEmpty(Conf.TalkMic))
                 return;
 
             if (_talkSource != null)
@@ -4233,7 +4233,7 @@ namespace iSpyApplication
             else
             {
                 
-                if (WsWrapper.WebsiteLive && !WsWrapper.LoginFailed && !String.IsNullOrEmpty(Conf.WSUsername))
+                if (WsWrapper.WebsiteLive && !WsWrapper.LoginFailed && !string.IsNullOrEmpty(Conf.WSUsername))
                 {
                     if (Conf.ServicesEnabled)
                     {

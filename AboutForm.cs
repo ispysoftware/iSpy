@@ -46,7 +46,7 @@ namespace iSpyApplication
 
             linkLabel1.Visible = false;
 
-            if (!String.IsNullOrEmpty(MainForm.Conf.Vendor))
+            if (!string.IsNullOrEmpty(MainForm.Conf.Vendor))
             {
                 linkLabel1.Visible = true;
                 try

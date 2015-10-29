@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Bundle Name="iSpy" Version="!(bind.packageVersion.iSpy)" Manufacturer="DeveloperInABox" UpgradeCode="d161dc3f-2545-45e7-bb15-41e65095c009" 
+  <Bundle Name="iSpy (64 bit)" Version="!(bind.packageVersion.iSpy)" Manufacturer="DeveloperInABox" UpgradeCode="646aac21-26ad-49c0-a3d7-84d5d6b90a8c"
     HelpUrl="http://www.ispyconnect.com/userguide.aspx"
     Copyright="Copyright© 2015, DeveloperInABox" IconSourceFile="ispy.ico"
     AboutUrl="http://www.ispyconnect.com/about.aspx" >
-    <Variable Name="InstallFolder" Type="string" Value="[ProgramFilesFolder]iSpy"/>
-
+    <Variable Name="InstallFolder" Type="string" Value="[ProgramFiles64Folder]iSpy"/>
     <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense">
       <bal:WixStandardBootstrapperApplication
         LogoFile="ispy.png"
@@ -13,15 +12,15 @@
         xmlns:bal="http://schemas.microsoft.com/wix/BalExtension" SuppressOptionsUI="no"/>
     </BootstrapperApplicationRef>
     <Variable Name="LaunchTarget" Value="[InstallFolder]\iSpy\iSpy.exe"/>
-		<Chain>
+    <Chain>
       <PackageGroupRef Id="NetFx40Web"/>
       <PackageGroupRef Id="WindowsInstaller45"/>
       <RollbackBoundary />
-      <MsiPackage Id="iSpy" SourceFile="$(var.iSpy32Setup.TargetPath)" DisplayInternalUI="no" Compressed="yes" Vital="yes">
+      <MsiPackage Id="iSpy" SourceFile="$(var.iSpy64Setup.TargetPath)" DisplayInternalUI="no" Compressed="yes" Vital="yes">
         <MsiProperty Name="INSTALLLOCATION" Value="[InstallFolder]" />
       </MsiPackage>
-		</Chain>
-	</Bundle>
+    </Chain>
+  </Bundle>
   <!-- Windows Installer 4.5 -->
   <Fragment>
     <PackageGroup Id="WindowsInstaller45">

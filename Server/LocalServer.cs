@@ -133,7 +133,7 @@ namespace iSpyApplication.Server
 
         public string StartServer()
         {
-            if (!String.IsNullOrEmpty(MainForm.Conf.SSLCertificate))
+            if (!string.IsNullOrEmpty(MainForm.Conf.SSLCertificate))
                 X509.LoadCertificate(MainForm.Conf.SSLCertificate);
 
             string message = "";
@@ -1070,7 +1070,7 @@ namespace iSpyApplication.Server
             if (AllowedReferers.Count>2)
             {
                 string referer = GetFromBuffer(sBuffer,"Referer");
-                if (!String.IsNullOrEmpty(referer))
+                if (!string.IsNullOrEmpty(referer))
                 {
                     bHasReferer = AllowedReferers.Any(r => Regex.IsMatch(referer, r));
                     //check referrer (if not empty)
@@ -1164,7 +1164,7 @@ namespace iSpyApplication.Server
 
         private bool CheckAccess(string group, string groups)
         {
-            if (!String.IsNullOrEmpty(groups))
+            if (!string.IsNullOrEmpty(groups))
             {
                 var g = groups.ToLower().Split(',');
                 if (g.Contains(group.ToLower()))
@@ -1199,7 +1199,7 @@ namespace iSpyApplication.Server
             string func = GetVar(sRequest, "jsfunc").Replace("%27","'");
             string fn = GetVar(sRequest, "fn");          
 
-            if (!String.IsNullOrEmpty(group))
+            if (!string.IsNullOrEmpty(group))
             {
                 resp = MainForm.Cameras.Where(cam => CheckAccess(@group, cam.settings.accessgroups)).Aggregate(resp, (current, cam) => DoCommand(sRequest, 2, current, cmd, cam.id, fn, ref func));
                 resp = MainForm.Microphones.Where(mic => CheckAccess(@group, mic.settings.accessgroups)).Aggregate(resp, (current, mic) => DoCommand(sRequest, 1, current, cmd, mic.id, fn, ref func));
@@ -3599,7 +3599,7 @@ namespace iSpyApplication.Server
                 {
                     if (useDefault)
                     {
-                        if (cameraids != MainForm.Conf.DeviceDriverDefault && !String.IsNullOrEmpty(MainForm.Conf.DeviceDriverDefault))
+                        if (cameraids != MainForm.Conf.DeviceDriverDefault && !string.IsNullOrEmpty(MainForm.Conf.DeviceDriverDefault))
                         {
                             cams = GetCameraWindows(MainForm.Conf.DeviceDriverDefault, ref w, ref h);
 
@@ -3750,7 +3750,7 @@ namespace iSpyApplication.Server
             }
             foreach (string c in camids)
             {
-                if (!String.IsNullOrEmpty(c))
+                if (!string.IsNullOrEmpty(c))
                 {
                     var cw = _parent.GetCameraWindow(Convert.ToInt32(c));
                     if (cw != null)

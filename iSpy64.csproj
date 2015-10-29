@@ -1183,7 +1183,6 @@
     <Content Include="DLLS\Interop.NATUPNPLib.dll" />
     <Content Include="DLLS\Interop.NETCONLib.dll" />
     <Content Include="DLLS\Interop.NetFwTypeLib.dll" />
-    <Content Include="DLLS\Interop.NETWORKLIST.dll" />
     <Content Include="DLLS\Microsoft.Kinect.dll" />
     <Content Include="DLLS\NSpeex.dll" />
     <Content Include="DLLS\nVLC.Declarations.dll" />

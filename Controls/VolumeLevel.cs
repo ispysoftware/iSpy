@@ -1483,7 +1483,7 @@ namespace iSpyApplication.Controls
             {
                 _stopWrite.Reset();
 
-                if (!String.IsNullOrEmpty(Micobject.recorder.trigger))
+                if (!string.IsNullOrEmpty(Micobject.recorder.trigger))
                 {
                     string[] tid = Micobject.recorder.trigger.Split(',');
                     switch (tid[0])
@@ -1683,7 +1683,7 @@ namespace iSpyApplication.Controls
                     ErrorHandler?.Invoke(ex.Message);
                 }
 
-                if (!String.IsNullOrEmpty(Micobject.recorder.trigger))
+                if (!string.IsNullOrEmpty(Micobject.recorder.trigger))
                 {
                     string[] tid = Micobject.recorder.trigger.Split(',');
                     switch (tid[0])
@@ -2009,7 +2009,7 @@ namespace iSpyApplication.Controls
 
                 if (AudioSource != null)
                 {
-                    WaveOut = !String.IsNullOrEmpty(Micobject.settings.deviceout)
+                    WaveOut = !string.IsNullOrEmpty(Micobject.settings.deviceout)
                         ? new DirectSoundOut(new Guid(Micobject.settings.deviceout), 100)
                         : new DirectSoundOut(100);
 

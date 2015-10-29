@@ -699,7 +699,7 @@ namespace iSpyApplication.Controls
         private void AddTimestamp(Bitmap bmp)
         {
             if (CW.Camobject.settings.timestamplocation != 0 &&
-                !String.IsNullOrEmpty(CW.Camobject.settings.timestampformatter))
+                !string.IsNullOrEmpty(CW.Camobject.settings.timestampformatter))
             {
                 using (Graphics gCam = Graphics.FromImage(bmp))
                 {

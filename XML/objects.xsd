@@ -113,7 +113,7 @@
                                                     <xs:element name="analyseduration" type="xs:int" default="2000"/>
                                                     <xs:element name="timeout" type="xs:int" default="8000"/>
                                                     <xs:element name="nobuffer" type="xs:boolean" default="false"/>
-                                                    <xs:element name="rtspmode" type="xs:int" default="0"/>
+                                                    <xs:element name="rtspmode" type="xs:int" default="1"/>
                                                     <xs:element name="procAmpConfig" type="xs:string" default=""/>
                                                     <xs:element name="messaging" type="xs:boolean" default="true"/>
                                                     <xs:element name="directoryIndex" type="xs:int" default="0"/>

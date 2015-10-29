@@ -4,13 +4,12 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>3.10</ProductVersion>
-    <ProjectGuid>490e9a04-fcd5-44c4-bdd0-dc395ceb9984</ProjectGuid>
+    <ProjectGuid>833f6888-a557-48a9-83a8-fa6d0bf691a3</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>iSpy32</OutputName>
+    <OutputName>iSpy64</OutputName>
     <OutputType>Bundle</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
-    <Name>Bootstrap32</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -35,8 +34,8 @@
     </WixExtension>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\iSpy32\iSpy32Setup.wixproj">
-      <Name>iSpy32Setup</Name>
+    <ProjectReference Include="..\iSpy64\iSpy64Setup.wixproj">
+      <Name>iSpy64Setup</Name>
       <Project>{4b65a69e-d1a7-47fc-ad92-12dc18f526ce}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
@@ -52,7 +51,7 @@
   <Import Project="$(WixTargetsPath)" />
   <PropertyGroup>
     <PostBuildEvent>if NOT %25ComputerName%25 == DEVPC GOTO end
-call "D:\Projects\iSpy\signing\Wix_iSpyBurn.bat"
+call "D:\Projects\iSpy\signing\Wix_iSpyBurn64.bat"
 
 :end</PostBuildEvent>
   </PropertyGroup>

@@ -474,9 +474,9 @@ namespace iSpyApplication
 
             if (oc != null)
             {
-                if (!String.IsNullOrEmpty(oc.command))
+                if (!string.IsNullOrEmpty(oc.command))
                     RunCommand(oc.command);
-                if (!String.IsNullOrEmpty(oc.emitshortcut))
+                if (!string.IsNullOrEmpty(oc.emitshortcut))
                 {
                     var converter = new KeysConverter();
                     var keys = converter.ConvertFromString(oc.emitshortcut);

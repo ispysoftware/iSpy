@@ -228,7 +228,7 @@ namespace iSpyApplication
                     if (r.IsEmpty)
                     {
                         var s = "320x240";
-                        if (!String.IsNullOrEmpty(cameraControl.Camobject.resolution))
+                        if (!string.IsNullOrEmpty(cameraControl.Camobject.resolution))
                             s = cameraControl.Camobject.resolution;
                         var wh = s.Split('x');
 

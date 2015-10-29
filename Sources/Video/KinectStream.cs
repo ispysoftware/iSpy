@@ -552,7 +552,7 @@ namespace iSpyApplication.Sources.Video
         public void InitTripWires(String cfg)
         {
             TripWires.Clear();
-            if (!String.IsNullOrEmpty(cfg))
+            if (!string.IsNullOrEmpty(cfg))
             {
                 try
                 {

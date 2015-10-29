@@ -78,7 +78,7 @@ namespace iSpyApplication.Controls
         private string GetFolder(string initialPath)
         {
             string f = "";
-            if (!String.IsNullOrEmpty(initialPath))
+            if (!string.IsNullOrEmpty(initialPath))
             {
                 try
                 {

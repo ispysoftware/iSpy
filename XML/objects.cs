@@ -685,7 +685,7 @@ public partial class objectsCameraSettings {
         this.analysedurationField = 2000;
         this.timeoutField = 8000;
         this.nobufferField = false;
-        this.rtspmodeField = 0;
+        this.rtspmodeField = 1;
         this.procAmpConfigField = "";
         this.messagingField = true;
         this.directoryIndexField = 0;

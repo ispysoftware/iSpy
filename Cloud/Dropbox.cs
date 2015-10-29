@@ -42,7 +42,7 @@ namespace iSpyApplication.Cloud
                 {
                     return _service;
                 }
-                if (String.IsNullOrEmpty(MainForm.Conf.DropBoxConfig))
+                if (string.IsNullOrEmpty(MainForm.Conf.DropBoxConfig))
                     _service = new DropNetClient("6k40bpqlz573mqt", "mx5bth2wj95mkd2");
                 else
                 {

@@ -776,7 +776,7 @@ namespace iSpyApplication.Controls
                 case MouseButtons.Middle:
                     PTZNavigate = false;
                     PTZSettings2Camera ptz = MainForm.PTZs.SingleOrDefault(p => p.id == Camobject.ptz);
-                    if (!String.IsNullOrEmpty(ptz?.Commands.Stop))
+                    if (!string.IsNullOrEmpty(ptz?.Commands.Stop))
                         PTZ.SendPTZCommand(ptz.Commands.Stop, true);
 
                     if (PTZ.IsContinuous)
@@ -1535,7 +1535,7 @@ namespace iSpyApplication.Controls
                     LastAutoTrackSent = DateTime.MinValue;
                     Calibrating = true;
                     _calibrateTarget = Camobject.settings.ptztimetohome;
-                    if (String.IsNullOrEmpty(Camobject.settings.ptzautohomecommand) ||
+                    if (string.IsNullOrEmpty(Camobject.settings.ptzautohomecommand) ||
                         Camobject.settings.ptzautohomecommand == "Center")
                         PTZ.SendPTZCommand(Enums.PtzCommand.Center);
                     else
@@ -2830,7 +2830,7 @@ namespace iSpyApplication.Controls
                 try
                 {
 
-                    if (!String.IsNullOrEmpty(Camobject.recorder.trigger))
+                    if (!string.IsNullOrEmpty(Camobject.recorder.trigger))
                     {
                         string[] tid = Camobject.recorder.trigger.Split(',');
                         switch (tid[0])
@@ -3093,7 +3093,7 @@ namespace iSpyApplication.Controls
                         ErrorHandler?.Invoke(ex.Message);
                     }
 
-                    if (!String.IsNullOrEmpty(Camobject.recorder.trigger))
+                    if (!string.IsNullOrEmpty(Camobject.recorder.trigger))
                     {
                         string[] tid = Camobject.recorder.trigger.Split(',');
                         switch (tid[0])
@@ -3240,7 +3240,7 @@ namespace iSpyApplication.Controls
                     var o = Camera.Plugin.GetType();
                     var m = o.GetMethod("MotionDetect");
                     var r = (string) m?.Invoke(Camera.Plugin, null);
-                    if (!String.IsNullOrEmpty(r))
+                    if (!string.IsNullOrEmpty(r))
                     {
                         ProcessAlertFromPlugin(r,"Motion Detected");
                     }
@@ -4251,7 +4251,7 @@ namespace iSpyApplication.Controls
                     break;
                 case 4:
                     Rectangle area = Rectangle.Empty;
-                    if (!String.IsNullOrEmpty(Camobject.settings.desktoparea))
+                    if (!string.IsNullOrEmpty(Camobject.settings.desktoparea))
                     {
                         var i = System.Array.ConvertAll(Camobject.settings.desktoparea.Split(','), int.Parse);
                         area = new Rectangle(i[0], i[1], i[2], i[3]);
@@ -4283,7 +4283,7 @@ namespace iSpyApplication.Controls
                     var tw = false;
                     try
                     {
-                        if (!String.IsNullOrEmpty(Nv(Camobject.settings.namevaluesettings, "TripWires")))
+                        if (!string.IsNullOrEmpty(Nv(Camobject.settings.namevaluesettings, "TripWires")))
                             tw = Convert.ToBoolean(Nv(Camobject.settings.namevaluesettings, "TripWires"));
                         var ks = new KinectStream(Nv(Camobject.settings.namevaluesettings, "UniqueKinectId"),
                             Convert.ToBoolean(Nv(Camobject.settings.namevaluesettings, "KinectSkeleton")), tw);
@@ -4524,7 +4524,7 @@ namespace iSpyApplication.Controls
         public void SetVideoSourceProperties()
         {
             var videoSource = Camera.VideoSource as VideoCaptureDevice;
-            if (videoSource != null && !String.IsNullOrEmpty(Camobject.settings.procAmpConfig) && videoSource.SupportsProperties && Nv("manual")!="false")
+            if (videoSource != null && !string.IsNullOrEmpty(Camobject.settings.procAmpConfig) && videoSource.SupportsProperties && Nv("manual")!="false")
             {
                 try
                 {
@@ -4595,7 +4595,7 @@ namespace iSpyApplication.Controls
 
         public string Nv(string csv, string name)
         {
-            if (String.IsNullOrEmpty(csv))
+            if (string.IsNullOrEmpty(csv))
                 return "";
             name = name.ToLower().Trim();
             string[] settings = csv.Split(',');
@@ -4921,7 +4921,7 @@ namespace iSpyApplication.Controls
                         try
                         {
                             string commands = c.GetValue(Camera.Plugin, null).ToString();
-                            if (!String.IsNullOrEmpty(commands))
+                            if (!string.IsNullOrEmpty(commands))
                             {
                                 return commands.Split(',').ToList();
                             }
@@ -4992,12 +4992,12 @@ namespace iSpyApplication.Controls
 
         private void ProcessAlertFromPlugin(string a, string description)
         {
-            if (!String.IsNullOrEmpty(a))
+            if (!string.IsNullOrEmpty(a))
             {
                 string[] actions = a.ToLower().Split(',');
                 foreach (var action in actions)
                 {
-                    if (!String.IsNullOrEmpty(action))
+                    if (!string.IsNullOrEmpty(action))
                     {
                         switch (action)
                         {

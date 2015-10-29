@@ -34,7 +34,7 @@ namespace iSpyApplication
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrEmpty(txtSSLCertificate.Text))
+            if (string.IsNullOrEmpty(txtSSLCertificate.Text))
                 chkEnableSSL.Checked = false;
             MainForm.Conf.SSLEnabled = chkEnableSSL.Checked;
             MainForm.Conf.SSLCertificate = txtSSLCertificate.Text;

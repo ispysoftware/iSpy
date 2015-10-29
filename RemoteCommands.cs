@@ -82,7 +82,7 @@ namespace iSpyApplication
                 if (oc != null)
                 {
                     string s = oc.command;
-                    if (!String.IsNullOrEmpty(oc.emitshortcut))
+                    if (!string.IsNullOrEmpty(oc.emitshortcut))
                     {
                         if (oc.emitshortcut != "")
                             s = oc.emitshortcut + " & " + oc.command;

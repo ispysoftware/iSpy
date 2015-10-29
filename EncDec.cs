@@ -24,7 +24,7 @@ namespace iSpyApplication
         /// </exception>
         public static string EncryptData(string data, string password)
         {
-            if (String.IsNullOrEmpty(data) || String.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(data) || string.IsNullOrEmpty(password))
                 return "";
             
             byte[] encBytes = EncryptData(Encoding.UTF8.GetBytes(data), password, PaddingMode.ISO10126);
@@ -44,7 +44,7 @@ namespace iSpyApplication
         /// </exception>
         public static string DecryptData(string data, string password)
         {
-            if (String.IsNullOrEmpty(data) || String.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(data) || string.IsNullOrEmpty(password))
                 return "";
             byte[] encBytes = Convert.FromBase64String(data);
             byte[] decBytes = DecryptData(encBytes, password, PaddingMode.ISO10126);

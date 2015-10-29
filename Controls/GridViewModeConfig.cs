@@ -29,7 +29,7 @@ namespace iSpyApplication.Controls
             int id = -1;
             int mi = 16;
             bool sr = false;
-            if (!String.IsNullOrEmpty(ModeConfig))
+            if (!string.IsNullOrEmpty(ModeConfig))
             {
                 string[] cfg = ModeConfig.Split(',');
                 if (cfg.Length >= 2)

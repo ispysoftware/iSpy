@@ -28,7 +28,7 @@ namespace iSpyApplication.Controls
         private void button1_Click(object sender, EventArgs e)
         {
 
-            if (GridName == null && (String.IsNullOrEmpty(txtName.Text.Trim()) || MainForm.Conf.GridViews.Any(p => p.name.ToLower() == txtName.Text.Trim().ToLower())))
+            if (GridName == null && (string.IsNullOrEmpty(txtName.Text.Trim()) || MainForm.Conf.GridViews.Any(p => p.name.ToLower() == txtName.Text.Trim().ToLower())))
             {
                 MessageBox.Show(this, LocRm.GetString("validate_uniquename"));
                 return;
@@ -66,7 +66,7 @@ namespace iSpyApplication.Controls
             chkFill.Checked = Fill;
             chkShowOnLoad.Checked = ShowAtStartup;
 
-            if (!String.IsNullOrEmpty(txtName.Text))
+            if (!string.IsNullOrEmpty(txtName.Text))
                 return;
             
             int i = 1;

@@ -45,8 +45,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.label5 = new System.Windows.Forms.Label();
-            this.button6 = new System.Windows.Forms.Button();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -59,9 +59,9 @@
             // 
             this.ddlTimestampLocation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlTimestampLocation.FormattingEnabled = true;
-            this.ddlTimestampLocation.Location = new System.Drawing.Point(68, 3);
+            this.ddlTimestampLocation.Location = new System.Drawing.Point(85, 3);
             this.ddlTimestampLocation.Name = "ddlTimestampLocation";
-            this.ddlTimestampLocation.Size = new System.Drawing.Size(132, 21);
+            this.ddlTimestampLocation.Size = new System.Drawing.Size(132, 24);
             this.ddlTimestampLocation.TabIndex = 65;
             // 
             // label1
@@ -70,7 +70,7 @@
             this.label1.Location = new System.Drawing.Point(3, 8);
             this.label1.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(48, 13);
+            this.label1.Size = new System.Drawing.Size(62, 17);
             this.label1.TabIndex = 66;
             this.label1.Text = "Location";
             // 
@@ -80,7 +80,7 @@
             this.button1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.button1.Location = new System.Drawing.Point(3, 3);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(32, 23);
+            this.button1.Size = new System.Drawing.Size(38, 27);
             this.button1.TabIndex = 69;
             this.button1.Text = "OK";
             this.button1.UseVisualStyleBackColor = true;
@@ -124,7 +124,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(68, 119);
+            this.button3.Location = new System.Drawing.Point(85, 123);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(32, 23);
             this.button3.TabIndex = 76;
@@ -135,10 +135,10 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 64);
+            this.label3.Location = new System.Drawing.Point(3, 68);
             this.label3.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 13);
+            this.label3.Size = new System.Drawing.Size(46, 17);
             this.label3.TabIndex = 70;
             this.label3.Text = "Offset";
             // 
@@ -147,7 +147,7 @@
             this.flowLayoutPanel1.Controls.Add(this.numOffset);
             this.flowLayoutPanel1.Controls.Add(this.label4);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(65, 56);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(82, 60);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(217, 31);
@@ -173,7 +173,7 @@
             0,
             -2147483648});
             this.numOffset.Name = "numOffset";
-            this.numOffset.Size = new System.Drawing.Size(75, 20);
+            this.numOffset.Size = new System.Drawing.Size(75, 22);
             this.numOffset.TabIndex = 71;
             this.numOffset.Value = new decimal(new int[] {
             1,
@@ -187,33 +187,33 @@
             this.label4.Location = new System.Drawing.Point(84, 6);
             this.label4.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(31, 13);
+            this.label4.Size = new System.Drawing.Size(39, 17);
             this.label4.TabIndex = 72;
             this.label4.Text = "GMT";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 124);
+            this.label6.Location = new System.Drawing.Point(3, 128);
             this.label6.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(59, 13);
+            this.label6.Size = new System.Drawing.Size(76, 17);
             this.label6.TabIndex = 74;
             this.label6.Text = "Back Color";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 35);
+            this.label7.Location = new System.Drawing.Point(3, 39);
             this.label7.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(28, 13);
+            this.label7.Size = new System.Drawing.Size(36, 17);
             this.label7.TabIndex = 77;
             this.label7.Text = "Font";
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(68, 30);
+            this.button4.Location = new System.Drawing.Point(85, 34);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(32, 23);
             this.button4.TabIndex = 78;
@@ -224,9 +224,9 @@
             // chkTimestampBack
             // 
             this.chkTimestampBack.AutoSize = true;
-            this.chkTimestampBack.Location = new System.Drawing.Point(68, 179);
+            this.chkTimestampBack.Location = new System.Drawing.Point(85, 183);
             this.chkTimestampBack.Name = "chkTimestampBack";
-            this.chkTimestampBack.Size = new System.Drawing.Size(114, 17);
+            this.chkTimestampBack.Size = new System.Drawing.Size(144, 21);
             this.chkTimestampBack.TabIndex = 79;
             this.chkTimestampBack.Text = "Show Background";
             this.chkTimestampBack.UseVisualStyleBackColor = true;
@@ -234,16 +234,16 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 95);
+            this.label2.Location = new System.Drawing.Point(3, 99);
             this.label2.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(55, 13);
+            this.label2.Size = new System.Drawing.Size(74, 17);
             this.label2.TabIndex = 80;
             this.label2.Text = "Fore Color";
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(68, 90);
+            this.button2.Location = new System.Drawing.Point(85, 94);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(32, 23);
             this.button2.TabIndex = 81;
@@ -255,7 +255,7 @@
             // 
             this.flowLayoutPanel2.Controls.Add(this.button1);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(65, 199);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(82, 207);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(217, 29);
@@ -264,12 +264,23 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 153);
+            this.label5.Location = new System.Drawing.Point(3, 157);
             this.label5.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(31, 13);
+            this.label5.Size = new System.Drawing.Size(40, 17);
             this.label5.TabIndex = 83;
             this.label5.Text = "Tags";
+            // 
+            // flowLayoutPanel3
+            // 
+            this.flowLayoutPanel3.Controls.Add(this.button6);
+            this.flowLayoutPanel3.Controls.Add(this.button5);
+            this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(82, 149);
+            this.flowLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(217, 31);
+            this.flowLayoutPanel3.TabIndex = 85;
             // 
             // button6
             // 
@@ -281,23 +292,12 @@
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
-            // flowLayoutPanel3
-            // 
-            this.flowLayoutPanel3.Controls.Add(this.button6);
-            this.flowLayoutPanel3.Controls.Add(this.button5);
-            this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(65, 145);
-            this.flowLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
-            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(217, 31);
-            this.flowLayoutPanel3.TabIndex = 85;
-            // 
             // button5
             // 
             this.button5.AutoSize = true;
             this.button5.Location = new System.Drawing.Point(41, 3);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(35, 23);
+            this.button5.Size = new System.Drawing.Size(42, 27);
             this.button5.TabIndex = 85;
             this.button5.Text = "Edit";
             this.button5.UseVisualStyleBackColor = true;

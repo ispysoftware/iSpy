@@ -582,7 +582,7 @@ namespace iSpyApplication.Controls
                 bool alert = false;
                 lock (this)
                 {
-                    if (RefreshImage || (_imgplan == null && !String.IsNullOrEmpty(Fpobject.image)))
+                    if (RefreshImage || (_imgplan == null && !string.IsNullOrEmpty(Fpobject.image)))
                     {
                         if (_imgplan!=null)
                         {

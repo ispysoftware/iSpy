@@ -99,13 +99,13 @@ namespace iSpyApplication
                 ttl += $" ({MainForm.Conf.WSUsername})";
             }
 
-            if (!String.IsNullOrEmpty(MainForm.Conf.Reseller))
+            if (!string.IsNullOrEmpty(MainForm.Conf.Reseller))
             {
                 ttl += $" Powered by {MainForm.Conf.Reseller.Split('|')[0]}";
             }
             else
             {
-                if (!String.IsNullOrEmpty(MainForm.Conf.Vendor))
+                if (!string.IsNullOrEmpty(MainForm.Conf.Vendor))
                 {
                     ttl += $" with {MainForm.Conf.Vendor}";
                 }
@@ -160,7 +160,7 @@ namespace iSpyApplication
         internal static bool ArchiveFile(string filename)
         {
 
-            if (!String.IsNullOrEmpty(MainForm.Conf.Archive) && Directory.Exists(MainForm.Conf.Archive))
+            if (!string.IsNullOrEmpty(MainForm.Conf.Archive) && Directory.Exists(MainForm.Conf.Archive))
             {
                 string fn = filename.Substring(filename.LastIndexOf("\\", StringComparison.Ordinal) + 1);
                 if (File.Exists(filename))
@@ -184,7 +184,7 @@ namespace iSpyApplication
         internal static bool ArchiveAndDelete(string filename)
         {
 
-            if (!String.IsNullOrEmpty(MainForm.Conf.Archive) && Directory.Exists(MainForm.Conf.Archive))
+            if (!string.IsNullOrEmpty(MainForm.Conf.Archive) && Directory.Exists(MainForm.Conf.Archive))
             {
                 string fn = filename.Substring(filename.LastIndexOf("\\", StringComparison.Ordinal) + 1);
                 if (File.Exists(filename))
@@ -345,7 +345,7 @@ namespace iSpyApplication
 
         public static bool CanAlert(string groupname, int resetInterval)
         {
-            if (String.IsNullOrEmpty(groupname) || resetInterval == 0)
+            if (string.IsNullOrEmpty(groupname) || resetInterval == 0)
                 return true;
 
             var ag = AlertGroups.FirstOrDefault(p => p.Name == groupname);
