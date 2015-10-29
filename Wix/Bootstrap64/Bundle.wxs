@@ -18,6 +18,7 @@
       <RollbackBoundary />
       <MsiPackage Id="iSpy" SourceFile="$(var.iSpy64Setup.TargetPath)" DisplayInternalUI="no" Compressed="yes" Vital="yes" Visible="yes">
         <MsiProperty Name="INSTALLLOCATION" Value="[InstallFolder]" />
+        <MsiProperty Name='CONFIGFILELOCATION' Value='[WixBundleOriginalSourceFolder]' />
       </MsiPackage>
     </Chain>
   </Bundle>

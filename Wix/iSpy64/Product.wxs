@@ -6,7 +6,23 @@
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of iSpy is already installed." AllowDowngrades="no" />
     <MediaTemplate EmbedCab="yes" />
+    
+    <Binary Id="WixCA.CA.dll" src="..\WixCA\bin\$(var.Configuration)\WixCA.CA.dll" />
+    <Property Id='CONFIGFILELOCATION' Value='[SourceDir]' />
+    <CustomAction Id="SetProperty" Execute="immediate"
+                        Property="CA_myCustomAction"
+                        Value="InstallDir=[MergeRedirectFolder];SourceDir=[CONFIGFILELOCATION]" />
+    <CustomAction Id="CA_myCustomAction"
+        BinaryKey="WixCA.CA.dll"
+        DllEntry="CopyCustomisationFiles"
+        Execute="deferred" Impersonate="no"
+        Return="check" />
 
+    <InstallExecuteSequence>
+      <Custom Action="SetProperty" After="CreateFolders">Not Installed</Custom>
+      <Custom Action="CA_myCustomAction" Before="InstallFinalize">Not Installed</Custom>
+    </InstallExecuteSequence>
+    
     <Feature Id="ProductFeature" Title="iSpy (64 bit)" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
       <ComponentGroupRef Id="XML" />
