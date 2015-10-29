@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Bundle Name="iSpy (64 bit)" Version="!(bind.packageVersion.iSpy)" Manufacturer="DeveloperInABox" UpgradeCode="646aac21-26ad-49c0-a3d7-84d5d6b90a8c"
+  <Bundle Name="iSpy package installer (64 bit)" Version="!(bind.packageVersion.iSpy)" Manufacturer="DeveloperInABox" UpgradeCode="646aac21-26ad-49c0-a3d7-84d5d6b90a8c"
     HelpUrl="http://www.ispyconnect.com/userguide.aspx"
     Copyright="Copyright© 2015, DeveloperInABox" IconSourceFile="ispy.ico"
     AboutUrl="http://www.ispyconnect.com/about.aspx" >
@@ -16,7 +16,7 @@
       <PackageGroupRef Id="NetFx40Web"/>
       <PackageGroupRef Id="WindowsInstaller45"/>
       <RollbackBoundary />
-      <MsiPackage Id="iSpy" SourceFile="$(var.iSpy64Setup.TargetPath)" DisplayInternalUI="no" Compressed="yes" Vital="yes">
+      <MsiPackage Id="iSpy" SourceFile="$(var.iSpy64Setup.TargetPath)" DisplayInternalUI="no" Compressed="yes" Vital="yes" Visible="yes">
         <MsiProperty Name="INSTALLLOCATION" Value="[InstallFolder]" />
       </MsiPackage>
     </Chain>
