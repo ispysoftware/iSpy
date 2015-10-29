@@ -31,7 +31,7 @@
           PerMachine="yes"
           Permanent="yes"
           Vital="yes"
-          SourceFile="..\redist\WindowsXP-KB942288-v3-x86.exe"
+          SourceFile="..\..\redist\WindowsXP-KB942288-v3-x86.exe"
           DownloadUrl="http://download.microsoft.com/download/2/6/1/261fca42-22c0-4f91-9451-0e0f2e08356d/WindowsXP-KB942288-v3-x86.exe"
           InstallCondition="VersionNT=v5.1 AND NOT VersionNT64 AND VersionMsi &lt; v4.5"
           InstallCommand="/quiet /norestart">
@@ -43,7 +43,7 @@
           PerMachine="yes"
           Permanent="yes"
           Vital="yes"
-          SourceFile="..\redist\WindowsServer2003-KB942288-v4-x86.exe"
+          SourceFile="..\..\redist\WindowsServer2003-KB942288-v4-x86.exe"
           DownloadUrl="http://download.microsoft.com/download/2/6/1/261fca42-22c0-4f91-9451-0e0f2e08356d/WindowsServer2003-KB942288-v4-x86.exe"
           InstallCondition="VersionNT=v5.2 AND NOT VersionNT64 AND VersionMsi &lt; v4.5"
           InstallCommand="/quiet /norestart">
@@ -55,7 +55,7 @@
           PerMachine="yes"
           Permanent="yes"
           Vital="yes"
-          SourceFile="..\redist\WindowsServer2003-KB942288-v4-x64.exe"
+          SourceFile="..\..\redist\WindowsServer2003-KB942288-v4-x64.exe"
           DownloadUrl="http://download.microsoft.com/download/2/6/1/261fca42-22c0-4f91-9451-0e0f2e08356d/WindowsServer2003-KB942288-v4-x64.exe"
           InstallCondition="VersionNT=v5.2 AND VersionNT64 AND VersionMsi &lt; v4.5"
           InstallCommand="/quiet /norestart">
@@ -67,7 +67,7 @@
           Permanent="yes"
           Vital="yes"
           KB="KB942288"
-          SourceFile="..\redist\Windows6.0-KB942288-v2-x86.msu"
+          SourceFile="..\..\redist\Windows6.0-KB942288-v2-x86.msu"
           DownloadUrl="http://download.microsoft.com/download/2/6/1/261fca42-22c0-4f91-9451-0e0f2e08356d/Windows6.0-KB942288-v2-x86.msu"
           InstallCondition="VersionNT=v6.0 AND NOT VersionNT64 AND VersionMsi &lt; v4.5"/>
       <MsuPackage
@@ -76,7 +76,7 @@
           Permanent="yes"
           Vital="yes"
           KB="KB942288"
-          SourceFile="..\redist\Windows6.0-KB942288-v2-x64.msu"
+          SourceFile="..\..\redist\Windows6.0-KB942288-v2-x64.msu"
           DownloadUrl="http://download.microsoft.com/download/2/6/1/261fca42-22c0-4f91-9451-0e0f2e08356d/Windows6.0-KB942288-v2-x64.msu"
           InstallCondition="VersionNT=v6.0 AND VersionNT64 AND VersionMsi &lt; v4.5"/>
     </PackageGroup>

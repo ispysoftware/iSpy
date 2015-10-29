@@ -1197,11 +1197,16 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />
+    <None Include="redist\Windows6.0-KB942288-v2-x64.msu" />
+    <None Include="redist\Windows6.0-KB942288-v2-x86.msu" />
     <None Include="Resources\cam_connecting.png" />
     <None Include="Resources\cam_offline.png" />
     <None Include="Resources\cam_removed.png" />
     <None Include="Resources\checkbox_off.png" />
     <None Include="Resources\arrow.bmp" />
+    <Content Include="redist\WindowsServer2003-KB942288-v4-x64.exe" />
+    <Content Include="redist\WindowsServer2003-KB942288-v4-x86.exe" />
+    <Content Include="redist\WindowsXP-KB942288-v3-x86.exe" />
     <Content Include="sounds\alsationxsiberian_bark.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
