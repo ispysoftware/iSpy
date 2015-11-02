@@ -873,7 +873,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="PTZController.cs" />
+    <Compile Include="..\..\..\filediff\old\PTZController.cs">
+      <Link>PTZController.cs</Link>
+    </Compile>
     <Compile Include="RestartableStream.cs" />
     <Compile Include="SerializableFont.cs" />
     <Compile Include="ShareCamera.cs">

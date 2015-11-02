@@ -902,7 +902,7 @@ namespace iSpyApplication
             // 
             this.btnTimestamp.AutoSize = true;
             this.btnTimestamp.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnTimestamp.Location = new System.Drawing.Point(413, 189);
+            this.btnTimestamp.Location = new System.Drawing.Point(413, 188);
             this.btnTimestamp.Margin = new System.Windows.Forms.Padding(6);
             this.btnTimestamp.Name = "btnTimestamp";
             this.btnTimestamp.Size = new System.Drawing.Size(30, 27);
@@ -914,7 +914,7 @@ namespace iSpyApplication
             // label43
             // 
             this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(6, 311);
+            this.label43.Location = new System.Drawing.Point(6, 310);
             this.label43.Margin = new System.Windows.Forms.Padding(6, 8, 6, 0);
             this.label43.Name = "label43";
             this.label43.Size = new System.Drawing.Size(102, 17);
@@ -953,7 +953,7 @@ namespace iSpyApplication
             // 
             // txtMaskImage
             // 
-            this.txtMaskImage.Location = new System.Drawing.Point(126, 228);
+            this.txtMaskImage.Location = new System.Drawing.Point(126, 227);
             this.txtMaskImage.Margin = new System.Windows.Forms.Padding(6);
             this.txtMaskImage.MaxLength = 50;
             this.txtMaskImage.Name = "txtMaskImage";
@@ -965,7 +965,7 @@ namespace iSpyApplication
             // label84
             // 
             this.label84.AutoSize = true;
-            this.label84.Location = new System.Drawing.Point(6, 230);
+            this.label84.Location = new System.Drawing.Point(6, 229);
             this.label84.Margin = new System.Windows.Forms.Padding(6, 8, 6, 0);
             this.label84.Name = "label84";
             this.label84.Size = new System.Drawing.Size(83, 17);
@@ -999,7 +999,7 @@ namespace iSpyApplication
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 191);
+            this.label11.Location = new System.Drawing.Point(6, 190);
             this.label11.Margin = new System.Windows.Forms.Padding(6, 8, 6, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(83, 17);
@@ -1018,7 +1018,7 @@ namespace iSpyApplication
             "{0:dd MMM yy hh:mm:sstt}",
             "{0:dd MMM yy HH:mm:sstt}",
             "{CAMERA} {0:MM/dd HH:mm:ss}"});
-            this.ddlTimestamp.Location = new System.Drawing.Point(126, 189);
+            this.ddlTimestamp.Location = new System.Drawing.Point(126, 188);
             this.ddlTimestamp.Margin = new System.Windows.Forms.Padding(6);
             this.ddlTimestamp.Name = "ddlTimestamp";
             this.ddlTimestamp.Size = new System.Drawing.Size(275, 24);
@@ -1030,7 +1030,7 @@ namespace iSpyApplication
             // 
             this.btnMaskImage.AutoSize = true;
             this.btnMaskImage.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnMaskImage.Location = new System.Drawing.Point(413, 228);
+            this.btnMaskImage.Location = new System.Drawing.Point(413, 227);
             this.btnMaskImage.Margin = new System.Windows.Forms.Padding(6);
             this.btnMaskImage.Name = "btnMaskImage";
             this.btnMaskImage.Size = new System.Drawing.Size(30, 27);
@@ -1046,7 +1046,7 @@ namespace iSpyApplication
             this.flowLayoutPanel2.Controls.Add(this.label47);
             this.flowLayoutPanel2.Controls.Add(this.numMaxFRRecording);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(120, 303);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(120, 302);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(513, 52);
@@ -1152,7 +1152,7 @@ namespace iSpyApplication
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 269);
+            this.label5.Location = new System.Drawing.Point(6, 268);
             this.label5.Margin = new System.Windows.Forms.Padding(6, 8, 6, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(71, 34);
@@ -1163,7 +1163,7 @@ namespace iSpyApplication
             // 
             this.btnPiP.AutoSize = true;
             this.btnPiP.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnPiP.Location = new System.Drawing.Point(126, 267);
+            this.btnPiP.Location = new System.Drawing.Point(126, 266);
             this.btnPiP.Margin = new System.Windows.Forms.Padding(6);
             this.btnPiP.Name = "btnPiP";
             this.btnPiP.Size = new System.Drawing.Size(30, 27);
@@ -1308,7 +1308,7 @@ namespace iSpyApplication
             // label72
             // 
             this.label72.AutoSize = true;
-            this.label72.Location = new System.Drawing.Point(6, 201);
+            this.label72.Location = new System.Drawing.Point(6, 200);
             this.label72.Margin = new System.Windows.Forms.Padding(6, 8, 6, 0);
             this.label72.Name = "label72";
             this.label72.Size = new System.Drawing.Size(60, 17);
@@ -1342,7 +1342,7 @@ namespace iSpyApplication
             // label48
             // 
             this.label48.AutoSize = true;
-            this.label48.Location = new System.Drawing.Point(6, 126);
+            this.label48.Location = new System.Drawing.Point(6, 125);
             this.label48.Margin = new System.Windows.Forms.Padding(6, 8, 6, 0);
             this.label48.Name = "label48";
             this.label48.Size = new System.Drawing.Size(103, 17);
@@ -1352,7 +1352,7 @@ namespace iSpyApplication
             // label46
             // 
             this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(6, 157);
+            this.label46.Location = new System.Drawing.Point(6, 156);
             this.label46.Margin = new System.Windows.Forms.Padding(6, 8, 6, 0);
             this.label46.Name = "label46";
             this.label46.Size = new System.Drawing.Size(89, 17);
@@ -1362,7 +1362,7 @@ namespace iSpyApplication
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 45);
+            this.label3.Location = new System.Drawing.Point(6, 44);
             this.label3.Margin = new System.Windows.Forms.Padding(6, 8, 6, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(100, 17);
@@ -1373,7 +1373,7 @@ namespace iSpyApplication
             // 
             this.ddlProcessor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlProcessor.FormattingEnabled = true;
-            this.ddlProcessor.Location = new System.Drawing.Point(121, 155);
+            this.ddlProcessor.Location = new System.Drawing.Point(121, 154);
             this.ddlProcessor.Margin = new System.Windows.Forms.Padding(6);
             this.ddlProcessor.Name = "ddlProcessor";
             this.ddlProcessor.Size = new System.Drawing.Size(191, 24);
@@ -1397,7 +1397,7 @@ namespace iSpyApplication
             this.flowLayoutPanel4.Controls.Add(this.button5);
             this.flowLayoutPanel4.Controls.Add(this.chkColourProcessing);
             this.flowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(115, 118);
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(115, 117);
             this.flowLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
             this.flowLayoutPanel4.Size = new System.Drawing.Size(573, 31);
@@ -1432,7 +1432,7 @@ namespace iSpyApplication
             this.ranger1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ranger1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ranger1.Gain = 10F;
-            this.ranger1.Location = new System.Drawing.Point(119, 41);
+            this.ranger1.Location = new System.Drawing.Point(119, 40);
             this.ranger1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ranger1.Name = "ranger1";
             this.ranger1.Size = new System.Drawing.Size(565, 73);
@@ -1444,7 +1444,7 @@ namespace iSpyApplication
             // 
             this.button4.AutoSize = true;
             this.button4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.button4.Location = new System.Drawing.Point(324, 155);
+            this.button4.Location = new System.Drawing.Point(324, 154);
             this.button4.Margin = new System.Windows.Forms.Padding(6);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(30, 27);
@@ -1456,7 +1456,7 @@ namespace iSpyApplication
             // label51
             // 
             this.label51.AutoSize = true;
-            this.label51.Location = new System.Drawing.Point(366, 157);
+            this.label51.Location = new System.Drawing.Point(366, 156);
             this.label51.Margin = new System.Windows.Forms.Padding(6, 8, 6, 0);
             this.label51.Name = "label51";
             this.label51.Size = new System.Drawing.Size(99, 17);
@@ -1468,7 +1468,7 @@ namespace iSpyApplication
             this.flowLayoutPanel17.Controls.Add(this.ddlProcessFrames);
             this.flowLayoutPanel17.Controls.Add(this.label64);
             this.flowLayoutPanel17.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel17.Location = new System.Drawing.Point(471, 149);
+            this.flowLayoutPanel17.Location = new System.Drawing.Point(471, 148);
             this.flowLayoutPanel17.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel17.Name = "flowLayoutPanel17";
             this.flowLayoutPanel17.Size = new System.Drawing.Size(217, 44);
@@ -1524,10 +1524,10 @@ namespace iSpyApplication
             this.flowLayoutPanel1.Controls.Add(this.numAutoOff);
             this.flowLayoutPanel1.Controls.Add(this.label82);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(115, 193);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(115, 192);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(203, 32);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(203, 33);
             this.flowLayoutPanel1.TabIndex = 64;
             // 
             // numAutoOff

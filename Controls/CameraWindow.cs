@@ -9,6 +9,7 @@ using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Globalization;
 using System.IO;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Media;
 using System.Net;
@@ -2815,6 +2816,50 @@ namespace iSpyApplication.Controls
             }
         }
 
+        public void OpenWebInterface()
+        {
+            if (SupportsWebInterface) { 
+                try
+                {
+                    var uri = new Uri(Camobject.settings.videosourcestring);
+                    var url = uri.AbsoluteUri.Replace(uri.PathAndQuery, "");
+                    if (!uri.Scheme.StartsWith("http"))
+                    {
+                        url = url.ReplaceFirst(uri.Scheme, "http");
+                        url = url.ReplaceFirst(":" + uri.Port, ":80");
+                    }
+                    MainForm.OpenUrl(url);
+                }
+                catch (Exception ex)
+                {
+                    MainForm.LogExceptionToFile(ex,"open web browser");
+                }
+            }
+        }
+
+        public bool SupportsWebInterface
+        {
+            get
+            {
+                switch (Camobject.settings.sourceindex)
+                {
+                    default:
+                        Uri uri;
+                        if (Uri.TryCreate(Camobject.settings.videosourcestring, UriKind.Absolute, out uri))
+                        {
+                            return !uri.IsFile;
+                        }
+                        return false;
+                    case 3:
+                    case 4:
+                    case 6:
+                    case 7:
+                    case 8:
+                    case 10:
+                        return false;
+                }
+            }
+        }
         [HandleProcessCorruptedStateExceptions]
         private void Record()
         {

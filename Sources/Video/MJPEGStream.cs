@@ -456,7 +456,14 @@ namespace iSpyApplication.Sources.Video
                     }
 
                     // get response stream
-                    stream = response.GetResponseStream();
+                    try
+                    {
+                        stream = response.GetResponseStream();
+                    }
+                    catch (NullReferenceException)
+                    {
+                        throw new Exception("Connection failed");
+                    }
                     stream.ReadTimeout = _requestTimeout;
 
                     // loop

@@ -3579,28 +3579,29 @@
   </Camera>
   <Camera id="146">
     <Makes>
-      <Make Name="Toshiba" Model="IK-WB15A" />
       <Make Name="Toshiba" Model="IK-WB21A" />
     </Makes>
     <CommandURL>
     </CommandURL>
     <Commands>
-      <Center>/user/cgi-bin/pantiltapi.cgi?cont_2=16</Center>
-      <Left>/user/cgi-bin/pantiltapi.cgi?cont_2=1</Left>
-      <Right>/user/cgi-bin/pantiltapi.cgi?cont_2=2</Right>
-      <Up>/user/cgi-bin/pantiltapi.cgi?cont_2=4</Up>
-      <Down>/user/cgi-bin/pantiltapi.cgi?cont_2=8</Down>
-      <ZoomIn>/user/cgi-bin/wbsetzoom.cgi?type=Set&amp;Zoom=Tele</ZoomIn>
-      <ZoomOut>/user/cgi-bin/wbsetzoom.cgi?type=Set&amp;Zoom=Wide</ZoomOut>
+      <Center>/api/wbpantiltapi.cgi?cont_2=16</Center>
+      <Left>/api/wbpantiltapi.cgi?cont_2=1</Left>
+      <Right>/api/wbpantiltapi.cgi?cont_2=2</Right>
+      <Up>/api/wbpantiltapi.cgi?cont_2=4</Up>
+      <Down>/api/wbpantiltapi.cgi?cont_2=8</Down>
+      <ZoomIn>/api/wbsetzoom.cgi?type=Set&amp;Zoom=Tele</ZoomIn>
+      <ZoomOut>/api/wbsetzoom.cgi?type=Set&amp;Zoom=Wide</ZoomOut>
     </Commands>
     <ExtendedCommands>
-      <Command Name="Go Preset 1">/user/cgi-bin/presetapi.cgi?cont_4=257</Command>
-      <Command Name="Go Preset 2">/user/cgi-bin/presetapi.cgi?cont_4=258</Command>
-      <Command Name="Go Preset 3">/user/cgi-bin/presetapi.cgi?cont_4=259</Command>
-      <Command Name="Go Preset 4">/user/cgi-bin/presetapi.cgi?cont_4=260</Command>
-      <Command Name="Go Preset 5">/user/cgi-bin/presetapi.cgi?cont_4=261</Command>
-      <Command Name="Go Preset 6">/user/cgi-bin/presetapi.cgi?cont_4=262</Command>
-      <Command Name="Go Preset 7">/user/cgi-bin/presetapi.cgi?cont_4=263</Command>
+      <Command Name="Go Preset 1">/api/wbpresetapi.cgi?cont_4=513</Command>
+      <Command Name="Go Preset 2">/api/wbpresetapi.cgi?cont_4=514</Command>
+      <Command Name="Go Preset 3">/api/wbpresetapi.cgi?cont_4=515</Command>
+      <Command Name="Go Preset 4">/api/wbpresetapi.cgi?cont_4=516</Command>
+      <Command Name="Go Preset 5">/api/wbpresetapi.cgi?cont_4=517</Command>
+      <Command Name="Go Preset 6">/api/wbpresetapi.cgi?cont_4=518</Command>
+      <Command Name="Go Preset 7">/api/wbpresetapi.cgi?cont_4=519</Command>
+      <Command Name="PTZ Scan">/api/wbpantiltapi.cgi?cont_2=32</Command>
+      <Command Name="PTZ Patrol">/api/wbpantiltapi.cgi?cont_2=64</Command>
     </ExtendedCommands>
   </Camera>
   <Camera id="147">
@@ -5867,6 +5868,194 @@ copy or delete as many lines as you need.-->
       <ZoomOut>/cgi-bin/camctrl/camctrl.cgi?zoom=wide</ZoomOut>
     </Commands>
     <ExtendedCommands>
+    </ExtendedCommands>
+  </Camera>
+  <Camera id="214">
+    <Makes>
+      <Make Name="Hikvision" Model="DS-2DE2103-DE3/W" />
+    </Makes>
+    <CommandURL></CommandURL>
+    <port>7000</port>
+    <Method>PUT</Method>
+    <Commands>
+      <Center>/ISAPI/PTZCtrl/channels/[CHANNEL]/homeposition/goto</Center>
+      <Left><![CDATA[/ISAPI/PTZCtrl/channels/[CHANNEL]/continuous?<?xml version="1.0" encoding="UTF-8"?><PTZData><pan>-60</pan><tilt>0</tilt><zoom>0</zoom></PTZData>]]></Left>
+      <Right><![CDATA[/ISAPI/PTZCtrl/channels/[CHANNEL]/continuous?<?xml version="1.0" encoding="UTF-8"?><PTZData><pan>60</pan><tilt>0</tilt><zoom>0</zoom></PTZData>]]></Right>
+      <Up><![CDATA[/ISAPI/PTZCtrl/channels/[CHANNEL]/continuous?<?xml version="1.0" encoding="UTF-8"?><PTZData><pan>0</pan><tilt>60</tilt><zoom>0</zoom></PTZData>]]></Up>
+      <Down><![CDATA[/ISAPI/PTZCtrl/channels/[CHANNEL]/continuous?<?xml version="1.0" encoding="UTF-8"?><PTZData><pan>0</pan><tilt>-60</tilt><zoom>0</zoom></PTZData>]]></Down>
+      <LeftUp><![CDATA[/ISAPI/PTZCtrl/channels/[CHANNEL]/continuous?<?xml version="1.0" encoding="UTF-8"?><PTZData><pan>-60</pan><tilt>60</tilt><zoom>0</zoom></PTZData>]]></LeftUp>
+      <RightUp><![CDATA[/ISAPI/PTZCtrl/channels/[CHANNEL]/continuous?<?xml version="1.0" encoding="UTF-8"?><PTZData><pan>60</pan><tilt>60</tilt><zoom>0</zoom></PTZData>]]></RightUp>
+      <LeftDown><![CDATA[/ISAPI/PTZCtrl/channels/[CHANNEL]/continuous?<?xml version="1.0" encoding="UTF-8"?><PTZData><pan>-60</pan><tilt>-60</tilt><zoom>0</zoom></PTZData>]]></LeftDown>
+      <RightDown><![CDATA[/ISAPI/PTZCtrl/channels/[CHANNEL]/continuous?<?xml version="1.0" encoding="UTF-8"?><PTZData><pan>60</pan><tilt>-60</tilt><zoom>0</zoom></PTZData>]]></RightDown>
+      <Stop><![CDATA[/ISAPI/PTZCtrl/channels/[CHANNEL]/continuous?<?xml version="1.0" encoding="UTF-8"?><PTZData><pan>0</pan><tilt>0</tilt><zoom>0</zoom></PTZData>]]></Stop>
+      <ZoomIn><![CDATA[/ISAPI/PTZCtrl/channels/[CHANNEL]/continuous?<?xml version="1.0" encoding="UTF-8"?><PTZData><pan>0</pan><tilt>0</tilt><zoom>60</zoom></PTZData>]]></ZoomIn>
+      <ZoomOut><![CDATA[/ISAPI/PTZCtrl/channels/[CHANNEL]/continuous?<?xml version="1.0" encoding="UTF-8"?><PTZData><pan>0</pan><tilt>0</tilt><zoom>-60</zoom></PTZData>]]></ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Go to Preset 1">/ISAPI/PTZCtrl/channels/[CHANNEL]/presets/1/goto?</Command>
+      <Command Name="Go to Preset 2">/ISAPI/PTZCtrl/channels/[CHANNEL]/presets/2/goto?</Command>
+      <Command Name="Go to Preset 3">/ISAPI/PTZCtrl/channels/[CHANNEL]/presets/3/goto?</Command>
+      <Command Name="Go to Preset 4">/ISAPI/PTZCtrl/channels/[CHANNEL]/presets/4/goto?</Command>
+      <Command Name="Go to Preset 5">/ISAPI/PTZCtrl/channels/[CHANNEL]/presets/5/goto?</Command>
+      <Command Name="Go to Preset 6">/ISAPI/PTZCtrl/channels/[CHANNEL]/presets/6/goto?</Command>
+      <Command Name="Go to Preset 7">/ISAPI/PTZCtrl/channels/[CHANNEL]/presets/7/goto?</Command>
+      <Command Name="Go to Preset 8">/ISAPI/PTZCtrl/channels/[CHANNEL]/presets/8/goto?</Command>
+      <Command Name="Go to Preset 9">/ISAPI/PTZCtrl/channels/[CHANNEL]/presets/9/goto?</Command>
+      <Command Name="Go to Preset 10">/ISAPI/PTZCtrl/channels/[CHANNEL]/presets/10/goto?</Command>
+      <Command Name="Set Preset 1"><![CDATA[/ISAPI/PTZCtrl/channels/[CHANNEL]/presets/1?<?xml version="1.0" encoding="UTF-8"?><PTZPreset><id>1</id><presetName>Preset 1</presetName></PTZPreset>]]></Command>
+      <Command Name="Set Preset 2"><![CDATA[/ISAPI/PTZCtrl/channels/[CHANNEL]/presets/2?<?xml version="1.0" encoding="UTF-8"?><PTZPreset><id>2</id><presetName>Preset 2</presetName></PTZPreset>]]></Command>
+      <Command Name="Set Preset 3"><![CDATA[/ISAPI/PTZCtrl/channels/[CHANNEL]/presets/3?<?xml version="1.0" encoding="UTF-8"?><PTZPreset><id>3</id><presetName>Preset 3</presetName></PTZPreset>]]></Command>
+      <Command Name="Set Preset 4"><![CDATA[/ISAPI/PTZCtrl/channels/[CHANNEL]/presets/4?<?xml version="1.0" encoding="UTF-8"?><PTZPreset><id>4</id><presetName>Preset 4</presetName></PTZPreset>]]></Command>
+      <Command Name="Set Preset 5"><![CDATA[/ISAPI/PTZCtrl/channels/[CHANNEL]/presets/5?<?xml version="1.0" encoding="UTF-8"?><PTZPreset><id>5</id><presetName>Preset 5</presetName></PTZPreset>]]></Command>
+      <Command Name="Set Preset 6"><![CDATA[/ISAPI/PTZCtrl/channels/[CHANNEL]/presets/6?<?xml version="1.0" encoding="UTF-8"?><PTZPreset><id>6</id><presetName>Preset 6</presetName></PTZPreset>]]></Command>
+      <Command Name="Set Preset 7"><![CDATA[/ISAPI/PTZCtrl/channels/[CHANNEL]/presets/7?<?xml version="1.0" encoding="UTF-8"?><PTZPreset><id>7</id><presetName>Preset 7</presetName></PTZPreset>]]></Command>
+      <Command Name="Set Preset 8"><![CDATA[/ISAPI/PTZCtrl/channels/[CHANNEL]/presets/8?<?xml version="1.0" encoding="UTF-8"?><PTZPreset><id>8</id><presetName>Preset 8</presetName></PTZPreset>]]></Command>
+      <Command Name="Set Preset 9"><![CDATA[/ISAPI/PTZCtrl/channels/[CHANNEL]/presets/9?<?xml version="1.0" encoding="UTF-8"?><PTZPreset><id>9</id><presetName>Preset 9</presetName></PTZPreset>]]></Command>
+      <Command Name="Set Preset 10"><![CDATA[/ISAPI/PTZCtrl/channels/[CHANNEL]/presets/10?<?xml version="1.0" encoding="UTF-8"?><PTZPreset><id>10</id><presetName>Preset 10</presetName></PTZPreset>]]></Command>
+    </ExtendedCommands>
+  </Camera>
+  <Camera id="215">
+    <Makes>
+      <Make Name="Toshiba" Model="IK-WB15A" />
+    </Makes>
+    <CommandURL></CommandURL>
+    <Commands>
+      <Center>/api/wbpantiltapi.cgi?cont_2=16</Center>
+      <Left>/api/wbpantiltapi.cgi?cont_2=1</Left>
+      <Right>/api/wbpantiltapi.cgi?cont_2=2</Right>
+      <Up>/api/wbpantiltapi.cgi?cont_2=4</Up>
+      <Down>/api/wbpantiltapi.cgi?cont_2=8</Down>
+      <ZoomIn>/api/wbsetzoom.cgi?type=Set&amp;Zoom=Tele</ZoomIn>
+      <ZoomOut>/api/wbsetzoom.cgi?type=Set&amp;Zoom=Wide</ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Go Preset 1">/api/wbpresetapi.cgi?cont_4=257</Command>
+      <Command Name="Go Preset 2">/api/wbpresetapi.cgi?cont_4=258</Command>
+      <Command Name="Go Preset 3">/api/wbpresetapi.cgi?cont_4=259</Command>
+      <Command Name="Go Preset 4">/api/wbpresetapi.cgi?cont_4=260</Command>
+      <Command Name="Go Preset 5">/api/wbpresetapi.cgi?cont_4=261</Command>
+      <Command Name="Go Preset 6">/api/wbpresetapi.cgi?cont_4=262</Command>
+      <Command Name="Go Preset 7">/api/wbpresetapi.cgi?cont_4=263</Command>
+      <Command Name="PTZ Scan">/api/wbpantiltapi.cgi?cont_2=32</Command>
+      <Command Name="PTZ Auto Patrol">/api/wbpantiltapi.cgi?cont_2=64&amp;id=1234</Command>
+    </ExtendedCommands>
+  </Camera>
+  <Camera id="216" AppendAuth="user=[USERNAME]&amp;pwd=[PASSWORD]">
+    <Makes>
+      <Make Name="SriCam" Model="AP001" />
+    </Makes>
+    <CommandURL>/decoder_control.cgi</CommandURL>
+    <Cookies>browser=1;noshow=0</Cookies>
+    <Commands>
+      <Center>command=25</Center>
+      <Left>command=4</Left>
+      <LeftUp>command=90</LeftUp>
+      <Right>command=6</Right>
+      <RightUp>command=91</RightUp>
+      <Up>command=0</Up>
+      <Down>command=2</Down>
+      <LeftDown>command=92</LeftDown>
+      <RightDown>command=93</RightDown>
+      <Stop>command=1</Stop>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Stop">command=1</Command>
+      <Command Name="IR on">camera_control.cgi?param=14&amp;value=1</Command>
+      <Command Name="IR off">camera_control.cgi?param=14&amp;value=0</Command>
+      <Command Name="H Patrol">command=28</Command>
+      <Command Name="H Patrol-off">command=29</Command>
+      <Command Name="V Patrol">command=26</Command>
+      <Command Name="V Patrol-off">command=27</Command>
+      <Command Name="Flip">/camera_control.cgi?param=5&amp;value=1</Command>
+      <Command Name="Mirror">/camera_control.cgi?param=5&amp;value=2</Command>
+      <Command Name="Flip And Mirror">/camera_control.cgi?param=5&amp;value=3</Command>
+      <Command Name="No Transforms">/camera_control.cgi?param=5&amp;value=0</Command>
+      <Command Name="Mode 50Hz">/camera_control.cgi?param=3&amp;value=0</Command>
+      <Command Name="Mode 60Hz">/camera_control.cgi?param=3&amp;value=1</Command>
+      <Command Name="Mode Outdoor">/camera_control.cgi?param=3&amp;value=2</Command>
+      <Command Name="Set Resolution 320x240">/camera_control.cgi?param=0&amp;value=8</Command>
+      <Command Name="Set Resolution 640x480">/camera_control.cgi?param=0&amp;value=32</Command>
+      <Command Name="IO Output High">command=94</Command>
+      <Command Name="IO Output Low">command=95</Command>
+      <Command Name="Set Preset 0">command=30</Command>
+      <Command Name="Go Preset 0">command=31</Command>
+      <Command Name="Set Preset 1">command=32</Command>
+      <Command Name="Go Preset 1">command=33</Command>
+      <Command Name="Set Preset 2">command=34</Command>
+      <Command Name="Go Preset 2">command=35</Command>
+      <Command Name="Set Preset 3">command=36</Command>
+      <Command Name="Go Preset 3">command=37</Command>
+      <Command Name="Set Preset 4">command=38</Command>
+      <Command Name="Go Preset 4">command=39</Command>
+      <Command Name="Set Preset 5">command=40</Command>
+      <Command Name="Go Preset 5">command=41</Command>
+      <Command Name="Set Preset 6">command=42</Command>
+      <Command Name="Go Preset 6">command=43</Command>
+      <Command Name="Set Preset 7">command=44</Command>
+      <Command Name="Go Preset 7">command=45</Command>
+      <Command Name="Set Preset 8">command=46</Command>
+      <Command Name="Go Preset 8">command=47</Command>
+      <Command Name="Set Preset 9">command=48</Command>
+      <Command Name="Go Preset 9">command=49</Command>
+      <Command Name="Set Preset 10">command=50</Command>
+      <Command Name="Go Preset 10">command=51</Command>
+      <Command Name="Set Preset 11">command=52</Command>
+      <Command Name="Go Preset 11">command=53</Command>
+      <Command Name="Set Preset 12">command=54</Command>
+      <Command Name="Go Preset 12">command=55</Command>
+      <Command Name="Set Preset 13">command=56</Command>
+      <Command Name="Go Preset 13">command=57</Command>
+      <Command Name="Set Preset 14">command=58</Command>
+      <Command Name="Go Preset 14">command=59</Command>
+      <Command Name="Set Preset 15">command=60</Command>
+      <Command Name="Go Preset 15">command=61</Command>
+      <Command Name="Set Preset 16">command=62</Command>
+      <Command Name="Go Preset 16">command=63</Command>
+      <Command Name="Brightness 0">/camera_control.cgi?param=1&amp;value=0</Command>
+      <Command Name="Brightness 1">/camera_control.cgi?param=1&amp;value=16</Command>
+      <Command Name="Brightness 2">/camera_control.cgi?param=1&amp;value=32</Command>
+      <Command Name="Brightness 3">/camera_control.cgi?param=1&amp;value=48</Command>
+      <Command Name="Brightness 4">/camera_control.cgi?param=1&amp;value=64</Command>
+      <Command Name="Brightness 5">/camera_control.cgi?param=1&amp;value=80</Command>
+      <Command Name="Brightness 6">/camera_control.cgi?param=1&amp;value=96</Command>
+      <Command Name="Brightness 7">/camera_control.cgi?param=1&amp;value=112</Command>
+      <Command Name="Brightness 8">/camera_control.cgi?param=1&amp;value=128</Command>
+      <Command Name="Brightness 9">/camera_control.cgi?param=1&amp;value=144</Command>
+      <Command Name="Brightness 10">/camera_control.cgi?param=1&amp;value=160</Command>
+      <Command Name="Brightness 11">/camera_control.cgi?param=1&amp;value=176</Command>
+      <Command Name="Brightness 12">/camera_control.cgi?param=1&amp;value=192</Command>
+      <Command Name="Brightness 13">/camera_control.cgi?param=1&amp;value=208</Command>
+      <Command Name="Brightness 14">/camera_control.cgi?param=1&amp;value=224</Command>
+      <Command Name="Brightness 15">/camera_control.cgi?param=1&amp;value=240</Command>
+      <Command Name="Contrast 0">/camera_control.cgi?param=2&amp;value=0</Command>
+      <Command Name="Contrast 1">/camera_control.cgi?param=2&amp;value=1</Command>
+      <Command Name="Contrast 2">/camera_control.cgi?param=2&amp;value=2</Command>
+      <Command Name="Contrast 3">/camera_control.cgi?param=2&amp;value=3</Command>
+      <Command Name="Contrast 4">/camera_control.cgi?param=2&amp;value=4</Command>
+      <Command Name="Contrast 5">/camera_control.cgi?param=2&amp;value=5</Command>
+      <Command Name="Contrast 6">/camera_control.cgi?param=2&amp;value=6</Command>
+    </ExtendedCommands>
+  </Camera>
+  <Camera id="217">
+    <Makes>
+      <Make Name="Motorola" Model="Focus 85" />
+    </Makes>
+    <CommandURL>/camera-cgi/com/ptz.cgi</CommandURL>
+    <Commands>
+      <Center>/?action=command&amp;command=reset_pan_tilt</Center>
+      <Left>/?action=command&amp;command=move_left1.0</Left>
+      <Right>/?action=command&amp;command=move_right0.1</Right>
+      <Right>/?action=command&amp;command=lr_stop</Right>
+      <Up>/?action=command&amp;command=move_backward0.1</Up>
+      <Down>/?action=command&amp;command=move_forward0.1</Down>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Melody1">/?action=command&amp;command=melody1</Command>
+      <Command Name="Melody2">/?action=command&amp;command=melody2</Command>
+      <Command Name="Melody3">/?action=command&amp;command=melody3</Command>
+      <Command Name="Melody4">/?action=command&amp;command=melody4</Command>
+      <Command Name="Melody5">/?action=command&amp;command=melody5</Command>
+      <Command Name="Melody Stop">/?action=command&amp;command=melodystop</Command>
     </ExtendedCommands>
   </Camera>
 </PTZSettings2>
