@@ -621,15 +621,18 @@ namespace iSpyApplication
             }
         }
 
-        public static string IPAddressExternal
+        public static string IPAddressExternal(out bool success)
         {
-            get
-            {
-                if (Conf.IPMode == "IPv4")
-                    return WsWrapper.ExternalIPv4(false);
-                return MakeIPv6Url(AddressIPv6);
-            }
+            if (Conf.IPMode == "IPv4")
+                    return WsWrapper.ExternalIPv4(false, out success);
+            success = true;
+            return MakeIPv6Url(AddressIPv6);
         }
+
+        public static string ExternalURL(out bool success)
+        {
+            return (X509.SslEnabled ? "https" : "http") + "://" + IPAddressExternal(out success) + "/";
+        } 
 
         private static string MakeIPv6Url(string ip)
         {

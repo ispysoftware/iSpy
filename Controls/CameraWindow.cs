@@ -29,6 +29,7 @@ using iSpyApplication.Sources.Video.Ximea;
 using iSpyApplication.Vision;
 using iSpyPRO.DirectShow;
 using iSpyPRO.DirectShow.Internals;
+using RestSharp.Extensions.MonoHttp;
 using xiApi.NET;
 using Encoder = System.Drawing.Imaging.Encoder;
 using Image = System.Drawing.Image;
@@ -2868,7 +2869,7 @@ namespace iSpyApplication.Controls
                 MainForm.RecordingThreads++;
                 AbortedAudio = false;
                 LogToPlugin("Recording Started");
-                DoAlert("recordingstarted");
+                string linktofile = "";
                 
                 
                 string previewImage = "";
@@ -2948,6 +2949,24 @@ namespace iSpyApplication.Controls
                                 if (!bSuccess)
                                 {
                                     throw new Exception("Failed to open up a video writer");
+                                }
+                                else
+                                {
+                                    try
+                                    {
+                                        bool success;
+                                        linktofile = HttpUtility.UrlEncode(MainForm.ExternalURL(out success) + "loadclip.mp4?oid=" + Camobject.id + "&ot=2&fn=" + VideoFileName + CodecExtension + "&auth=" + MainForm.Identifier);
+                                        if (!success)
+                                        {
+                                            linktofile = "";
+                                            throw new Exception("External IP unavailable");
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        MainForm.LogExceptionToFile(ex, "Generating external link to file");
+                                    }
+                                    DoAlert("recordingstarted", linktofile);
                                 }
 
                             }
@@ -3174,7 +3193,7 @@ namespace iSpyApplication.Controls
                 end:
 
                 LogToPlugin("Recording Stopped");
-                DoAlert("recordingstopped");
+                DoAlert("recordingstopped", linktofile);
             }
             catch (Exception ex)
             {

@@ -24,6 +24,7 @@ using iSpyApplication.Sources.Audio;
 using iSpyApplication.Sources.Audio.streams;
 using iSpyApplication.Sources.Audio.talk;
 using iSpyApplication.Sources.Video;
+using RestSharp.Extensions.MonoHttp;
 using WaveFormat = NAudio.Wave.WaveFormat;
 
 namespace iSpyApplication.Controls
@@ -1479,6 +1480,7 @@ namespace iSpyApplication.Controls
 
         private void Record()
         {
+            string linktofile = "";
             try
             {
                 _stopWrite.Reset();
@@ -1545,6 +1547,22 @@ namespace iSpyApplication.Controls
                                 AudioSource.RecordingFormat.BitsPerSample*AudioSource.RecordingFormat.SampleRate*
                                 AudioSource.RecordingFormat.Channels, AudioSource.RecordingFormat.SampleRate,
                                 AudioSource.RecordingFormat.Channels);
+
+                            try
+                            {
+                                bool success;
+                                linktofile = HttpUtility.UrlEncode(MainForm.ExternalURL(out success) + "loadclip.mp3?oid=" + Micobject.id + "&ot=1&fn=" + AudioFileName + ".mp3&auth=" + MainForm.Identifier);
+                                if (!success)
+                                {
+                                    linktofile = "";
+                                    throw new Exception("External IP unavailable");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                MainForm.LogExceptionToFile(ex, "Generating external link to file");
+                            }
+                            DoAlert("recordingstarted", linktofile);
                         }
                         finally
                         {
@@ -1703,6 +1721,7 @@ namespace iSpyApplication.Controls
                 {
                     Micobject.newrecordingcount++;
                     Notification?.Invoke(this, new NotificationType("NewRecording", Micobject.name, ""));
+                    DoAlert("recordingstopped", linktofile);
                 }
             }
             catch (Exception ex)
