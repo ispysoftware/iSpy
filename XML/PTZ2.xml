@@ -5853,7 +5853,6 @@ copy or delete as many lines as you need.-->
   </Camera>
   <Camera id="213">
     <Makes>
-      <Make Name="Toshiba" Model="IK-WB15A" />
       <Make Name="Toshiba" Model="IK-WB16A-W" />
     </Makes>
     <CommandURL>
