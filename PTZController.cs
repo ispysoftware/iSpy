@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
@@ -41,7 +42,7 @@ namespace iSpyApplication
         {
             get
             {
-                if (_cameraControl?.Camobject.ptz<-2)
+                if (_cameraControl?.Camobject.ptz < -2)
                 {
                     //onvif/pelco-p/pelco-d
                     return true;
@@ -59,7 +60,7 @@ namespace iSpyApplication
 
         public void ConfigurePelco()
         {
-            if (_serialPort!=null)
+            if (_serialPort != null)
             {
                 if (_serialPort.IsOpen)
                     _serialPort.Close();
@@ -75,7 +76,7 @@ namespace iSpyApplication
             try
             {
                 _serialPort = new SerialPort(cfg[0], Convert.ToInt32(cfg[1]), p, Convert.ToInt32(cfg[2]), sb)
-                                 {WriteTimeout = 2000, ReadTimeout = 2000};
+                { WriteTimeout = 2000, ReadTimeout = 2000 };
             }
             catch (Exception ex)
             {
@@ -100,7 +101,8 @@ namespace iSpyApplication
                 _ptzNull = _ptzSettings == null;
                 return _ptzSettings;
             }
-            set { 
+            set
+            {
                 _ptzSettings = value;
                 _ptzNull = _ptzSettings == null;
             }
@@ -124,11 +126,11 @@ namespace iSpyApplication
 
         public void AddPreset(string name)
         {
-            if (PTZProfile!=null)
+            if (PTZProfile != null)
             {
                 try
                 {
-                    PTZSession.SetPreset(PTZProfile.token, name,null).RunSynchronously();
+                    PTZSession.SetPreset(PTZProfile.token, name, null).RunSynchronously();
                 }
                 catch (Exception ex)
                 {
@@ -145,16 +147,16 @@ namespace iSpyApplication
                 {
                     var l = PTZSession.GetPresets(PTZProfile.token).RunSynchronously();
                     string t = "";
-                    foreach(var p in l)
+                    foreach (var p in l)
                     {
-                        if (p.name==name)
+                        if (p.name == name)
                         {
                             t = p.token;
                             break;
                         }
                     }
 
-                    if (t!="")
+                    if (t != "")
                         PTZSession.RemovePreset(PTZProfile.token, t).RunSynchronously();
                 }
                 catch (Exception ex)
@@ -168,13 +170,13 @@ namespace iSpyApplication
         {
             if (_cameraControl.Camobject.settings.ptzrotate90)
             {
-                angle -= (Math.PI/2);
+                angle -= (Math.PI / 2);
                 if (angle < -Math.PI)
                 {
-                    angle += (2*Math.PI);
+                    angle += (2 * Math.PI);
                 }
             }
-            if (_cameraControl.Camobject.ptz!=-1)
+            if (_cameraControl.Camobject.ptz != -1)
             {
                 //don't flip digital controls
                 if (_cameraControl.Camobject.settings.ptzflipx)
@@ -189,8 +191,8 @@ namespace iSpyApplication
                     angle = angle * -1;
                 }
             }
-            
-           
+
+
 
             if (PTZSettings == null)
             {
@@ -251,11 +253,11 @@ namespace iSpyApplication
                     case -6:
                         //none - ignore
                         break;
-                }               
+                }
                 return;
             }
 
-            
+
 
             string command = PTZSettings.Commands.Center;
             string diag = "";
@@ -327,7 +329,7 @@ namespace iSpyApplication
 
         public void SendPTZCommand(Enums.PtzCommand command)
         {
-            SendPTZCommand(command,false);
+            SendPTZCommand(command, false);
         }
 
         internal bool DigitalZoom
@@ -348,25 +350,25 @@ namespace iSpyApplication
                     case -6:
                         return false;
                     default:
-                    {
-                        PTZSettings2Camera ptz = MainForm.PTZs.SingleOrDefault(q => q.id == _cameraControl.Camobject.ptz);
-                        bool d = (ptz?.Commands == null);
-
-                        if (!d)
                         {
-                           
-                            if (string.IsNullOrEmpty(ptz.Commands.ZoomIn))
-                                d = true;
-                            if (string.IsNullOrEmpty(ptz.Commands.ZoomOut))
-                                d = true;
+                            PTZSettings2Camera ptz = MainForm.PTZs.SingleOrDefault(q => q.id == _cameraControl.Camobject.ptz);
+                            bool d = (ptz?.Commands == null);
+
+                            if (!d)
+                            {
+
+                                if (string.IsNullOrEmpty(ptz.Commands.ZoomIn))
+                                    d = true;
+                                if (string.IsNullOrEmpty(ptz.Commands.ZoomOut))
+                                    d = true;
+                            }
+                            return d;
                         }
-                        return d;
-                    }
                 }
             }
         }
 
-        
+
         public void SendPTZCommand(Enums.PtzCommand command, bool wait)
         {
             if (_cameraControl.Camera == null)
@@ -542,7 +544,7 @@ namespace iSpyApplication
                         SendPTZDirection(0d);
                         break;
                     case Enums.PtzCommand.Upleft:
-                        SendPTZDirection(Math.PI/4);
+                        SendPTZDirection(Math.PI / 4);
                         break;
                     case Enums.PtzCommand.Up:
                         SendPTZDirection(Math.PI / 2);
@@ -554,7 +556,7 @@ namespace iSpyApplication
                         SendPTZDirection(Math.PI);
                         break;
                     case Enums.PtzCommand.DownRight:
-                        SendPTZDirection(-3*Math.PI / 4);
+                        SendPTZDirection(-3 * Math.PI / 4);
                         break;
                     case Enums.PtzCommand.Down:
                         SendPTZDirection(-Math.PI / 2);
@@ -631,7 +633,7 @@ namespace iSpyApplication
                             _cameraControl.Camera.ZFactor += 0.2f;
                             break;
                         case Enums.PtzCommand.ZoomOut:
-                            isangle = false;                        
+                            isangle = false;
                             var f = _cameraControl.Camera.ZFactor;
                             f -= 0.2f;
                             if (f < 1)
@@ -653,7 +655,7 @@ namespace iSpyApplication
                         p.X -= Convert.ToInt32(15 * Math.Cos(angle));
                         p.Y -= Convert.ToInt32(15 * Math.Sin(angle));
                         _cameraControl.Camera.ZPoint = p;
-                    }   
+                    }
 
                 }
             }
@@ -726,16 +728,16 @@ namespace iSpyApplication
             d.GetCameraProperty(p, out v, out f);
             d.GetCameraPropertyRange(p, out minv, out maxv, out stepSize, out defVal, out cf);
 
-            int newv = v + i*stepSize;
-            if (newv<minv)
+            int newv = v + i * stepSize;
+            if (newv < minv)
                 newv = minv;
-            if (newv>maxv)
+            if (newv > maxv)
                 newv = maxv;
 
             if (i == 0)
                 newv = defVal;
 
-            if (cf== CameraControlFlags.Manual)
+            if (cf == CameraControlFlags.Manual)
             {
                 d.SetCameraProperty(p, newv, CameraControlFlags.Manual);
             }
@@ -743,7 +745,7 @@ namespace iSpyApplication
             {
                 MainForm.LogMessageToFile("Camera control flags are not manual");
             }
-            
+
         }
 
         private Profile PTZProfile
@@ -753,7 +755,7 @@ namespace iSpyApplication
                 if (PTZSession == null)
                     return null;
 
-                if (_ptzProfile!=null)
+                if (_ptzProfile != null)
                     return _ptzProfile;
 
                 string[] cfg = _cameraControl.Camobject.settings.onvifident.Split('|');
@@ -772,7 +774,7 @@ namespace iSpyApplication
                     MainForm.LogExceptionToFile(ex);
                     return null;
                 }
-                if (profiles.Length>profileid)
+                if (profiles.Length > profileid)
                     _ptzProfile = profiles[profileid];
                 return _ptzProfile;
             }
@@ -810,14 +812,14 @@ namespace iSpyApplication
                     ddh.DeviceIconUri = null;
                     MainForm.ONVIFDevices.Add(ddh);
                 }
-                    
+
 
                 ddh.Account = new NetworkCredential { UserName = _cameraControl.Camobject.settings.login, Password = _cameraControl.Camobject.settings.password };
                 var sessionFactory = new NvtSessionFactory(ddh.Account);
 
 
-                try {_nvtSession = sessionFactory.CreateSession(ddh.Uris[0]);}
-                catch(Exception ex)
+                try { _nvtSession = sessionFactory.CreateSession(ddh.Uris[0]); }
+                catch (Exception ex)
                 {
                     MainForm.LogExceptionToFile(ex);
                     return null;
@@ -835,7 +837,7 @@ namespace iSpyApplication
 
         void ProcessOnvif(Enums.PtzCommand command)
         {
-            if (PTZProfile!=null)
+            if (PTZProfile != null)
             {
                 //var speed = PTZProfile.ptzConfiguration.defaultPTZSpeed;
                 //string spacePT = PTZProfile.ptzConfiguration.defaultContinuousPanTiltVelocitySpace;
@@ -848,34 +850,34 @@ namespace iSpyApplication
                     switch (command)
                     {
                         case Enums.PtzCommand.Left:
-                            panTilt = new Vector2D {space = null, x = -0.5f, y = 0};
+                            panTilt = new Vector2D { space = null, x = -0.5f, y = 0 };
                             break;
                         case Enums.PtzCommand.Upleft:
-                            panTilt = new Vector2D {space = null, x = -0.5f, y = 0.5f};
+                            panTilt = new Vector2D { space = null, x = -0.5f, y = 0.5f };
                             break;
                         case Enums.PtzCommand.Up:
-                            panTilt = new Vector2D {space = null, x = 0, y = 0.5f};
+                            panTilt = new Vector2D { space = null, x = 0, y = 0.5f };
                             break;
                         case Enums.PtzCommand.UpRight:
-                            panTilt = new Vector2D {space = null, x = 0.5f, y = 0.5f};
+                            panTilt = new Vector2D { space = null, x = 0.5f, y = 0.5f };
                             break;
                         case Enums.PtzCommand.Right:
-                            panTilt = new Vector2D {space = null, x = 0.5f, y = 0};
+                            panTilt = new Vector2D { space = null, x = 0.5f, y = 0 };
                             break;
                         case Enums.PtzCommand.DownRight:
-                            panTilt = new Vector2D {space = null, x = 0.5f, y = -0.5f};
+                            panTilt = new Vector2D { space = null, x = 0.5f, y = -0.5f };
                             break;
                         case Enums.PtzCommand.Down:
-                            panTilt = new Vector2D {space = null, x = 0, y = -0.5f};
+                            panTilt = new Vector2D { space = null, x = 0, y = -0.5f };
                             break;
                         case Enums.PtzCommand.DownLeft:
-                            panTilt = new Vector2D {space = null, x = -0.5f, y = -0.5f};
+                            panTilt = new Vector2D { space = null, x = -0.5f, y = -0.5f };
                             break;
                         case Enums.PtzCommand.ZoomIn:
-                            zoom = new Vector1D {space = null, x = 0.5f};
+                            zoom = new Vector1D { space = null, x = 0.5f };
                             break;
                         case Enums.PtzCommand.ZoomOut:
-                            zoom = new Vector1D {space = null, x = -0.5f};
+                            zoom = new Vector1D { space = null, x = -0.5f };
                             break;
                         case Enums.PtzCommand.Center:
                             ProcessOnvifCommand(_cameraControl.Camobject.settings.ptzautohomecommand);
@@ -884,7 +886,7 @@ namespace iSpyApplication
                             PTZSession.Stop(PTZProfile.token, true, true).RunSynchronously();
                             return;
                     }
-                    PTZSession.ContinuousMove(PTZProfile.token, new PTZSpeed() {panTilt = panTilt, zoom = zoom},
+                    PTZSession.ContinuousMove(PTZProfile.token, new PTZSpeed() { panTilt = panTilt, zoom = zoom },
                                               null).RunSynchronously();
                 }
                 catch (Exception ex)
@@ -915,13 +917,13 @@ namespace iSpyApplication
                         PTZSession.GotoPreset(PTZProfile.token, t, null).RunSynchronously();
 
 
-                    
+
                 }
                 catch (Exception ex)
                 {
                     MainForm.LogExceptionToFile(ex);
                 }
-                
+
             }
         }
 
@@ -932,12 +934,12 @@ namespace iSpyApplication
                 var pl = new List<string>();
                 try
                 {
-                    if (PTZProfile != null && PTZSession!=null)
+                    if (PTZProfile != null && PTZSession != null)
                     {
-                    
-                            var presets = PTZSession.GetPresets(PTZProfile.token).RunSynchronously();
-                            pl.AddRange(presets.Select(p => p.name));
-                    
+
+                        var presets = PTZSession.GetPresets(PTZProfile.token).RunSynchronously();
+                        pl.AddRange(presets.Select(p => p.name));
+
                     }
                 }
                 catch (Exception ex)
@@ -1134,7 +1136,7 @@ namespace iSpyApplication
                         SendPelco(pelcoP.Flip(_addr));
                         break;
                     case "Pattern Stop":
-                        SendPelco(pelcoP.Pattern(_addr,P.PatternAction.Stop));
+                        SendPelco(pelcoP.Pattern(_addr, P.PatternAction.Stop));
                         break;
                     case "Pattern Run":
                         SendPelco(pelcoP.Pattern(_addr, P.PatternAction.Run));
@@ -1203,7 +1205,7 @@ namespace iSpyApplication
                         SendPelco(pelcoP.ZeroPanPosition(_addr));
                         break;
                     case "Start Zone 1":
-                        SendPelco(pelcoP.Zone(_addr,1,P.Action.Start));
+                        SendPelco(pelcoP.Zone(_addr, 1, P.Action.Start));
                         break;
                     case "Stop Zone 1":
                         SendPelco(pelcoP.Zone(_addr, 1, P.Action.Stop));
@@ -1239,7 +1241,7 @@ namespace iSpyApplication
                         SendPelco(pelcoP.Zone(_addr, 6, P.Action.Stop));
                         break;
                     case "Start Zone Scan":
-                        SendPelco(pelcoP.ZoneScan(_addr,P.Action.Start));
+                        SendPelco(pelcoP.ZoneScan(_addr, P.Action.Start));
                         break;
                     case "Stop Zone Scan":
                         SendPelco(pelcoP.ZoneScan(_addr, P.Action.Stop));
@@ -1396,7 +1398,7 @@ namespace iSpyApplication
 
         void SendPelco(byte[] arr)
         {
-            _serialPort.Write(arr,0,arr.Length);
+            _serialPort.Write(arr, 0, arr.Length);
         }
 
         //void SerialPortDataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -1407,7 +1409,7 @@ namespace iSpyApplication
 
         public void SendPTZCommand(string cmd)
         {
-            SendPTZCommand(cmd,false);
+            SendPTZCommand(cmd, false);
         }
 
         public void SendPTZCommand(string cmd, bool wait)
@@ -1419,7 +1421,14 @@ namespace iSpyApplication
             {
                 if (!wait)
                     return;
-                _request.Abort();
+                try
+                {
+                    _request.Abort();
+                }
+                catch
+                {
+                    _request = null;
+                }
             }
 
             PTZSettings2Camera ptz;
@@ -1447,107 +1456,71 @@ namespace iSpyApplication
             if (ptz == null)
                 return;
 
-            Uri uri;
-            bool absURL = false;
-            
-            string url = _cameraControl.Camobject.settings.videosourcestring;
+            UriBuilder uri;
+            string urltemp = _cameraControl.Camobject.settings.videosourcestring;
 
-            if (_cameraControl.Camobject.settings.ptzurlbase.Contains("://"))
+            bool absURL = false;
+            if (_cameraControl.Camobject.settings.ptzurlbase.StartsWith("http", true, CultureInfo.InvariantCulture))
             {
-                url = _cameraControl.Camobject.settings.ptzurlbase;
+                urltemp = _cameraControl.Camobject.settings.ptzurlbase;
                 absURL = true;
             }
 
-            if (cmd.Contains("://"))
+            if (cmd.StartsWith("http", true, CultureInfo.InvariantCulture))
             {
-                Uri uriTemp;
-                if (Uri.TryCreate(cmd, UriKind.RelativeOrAbsolute, out uriTemp))
-                {
-                    absURL = uriTemp.IsAbsoluteUri;
-                    if (absURL)
-                        url = cmd;
-                }
+                urltemp = cmd;
+                absURL = true;
             }
 
             try
             {
-                uri = new Uri(url);
+                uri = new UriBuilder(urltemp);
             }
             catch (Exception e)
             {
                 MainForm.LogExceptionToFile(e);
                 return;
             }
+
             if (uri.Scheme == Uri.UriSchemeFile)
                 return;
 
+
+            uri.Port = _cameraControl.Camobject.settings.ptzport;
+
+            if (!uri.Scheme.ToLower().StartsWith("http")) //allow http and https
+            {
+                uri.Scheme = "http";
+            }
+
             if (!absURL)
             {
-                url = uri.AbsoluteUri.Replace(uri.PathAndQuery, "/");
-
-                if (ptz.portSpecified && ptz.port > 0)
-                {
-                    url = url.ReplaceFirst(":" + uri.Port + "/", ":" + ptz.port + "/");
-                }
-
-                if (!uri.Scheme.ToLower().StartsWith("http")) //allow http and https
-                {
-                    url = url.ReplaceFirst(uri.Scheme + "://", "http://");
-                }
-
-                url = url.Trim('/');
-
-                if (!cmd.StartsWith("/"))
-                {
-                    url += _cameraControl.Camobject.settings.ptzurlbase;
-
-                    if (cmd != "")
-                    {
-                        if (!url.EndsWith("/"))
-                        {
-                            string ext = "?";
-                            if (url.IndexOf("?", StringComparison.Ordinal) != -1)
-                                ext = "&";
-                            url += ext + cmd;
-                        }
-                        else
-                        {
-                            url += cmd;
-                        }
-
-                    }
-                }
+                //uri is currently video source uri\
+                //ptzurlbase is defaulted to commandurl
+                string pandq = _cameraControl.Camobject.settings.ptzurlbase.Trim();
+                if (cmd.StartsWith("/") || string.IsNullOrEmpty(pandq))
+                    pandq = cmd;
                 else
                 {
-                    url += cmd;
+                    if (!string.IsNullOrEmpty(cmd))
+                    {
+                        string ext = "?";
+                        if (pandq.IndexOf("?", StringComparison.Ordinal) != -1)
+                        {
+                            ext = "&";
+                        }
+                        pandq += ext + cmd;
+                    }
                 }
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(cmd))
+                int i = pandq.IndexOf("?", StringComparison.Ordinal);
+                if (i == -1 || i == pandq.Length)
+                    uri.Path = pandq;
+                else
                 {
-                    if (!cmd.Contains("://"))
-                    {
-                        if (!url.EndsWith("/"))
-                        {
-                            string ext = "?";
-                            if (url.IndexOf("?", StringComparison.Ordinal) != -1)
-                                ext = "&";
-                            url += ext + cmd;
-                        }
-                        else
-                        {
-                            url += cmd;
-                        }
-                    }
-                    else
-                    {
-                        url = cmd;
-                    }
-
+                    uri.Path = pandq.Substring(0, i);
+                    uri.Query = pandq.Substring(i + 1);
                 }
             }
-
 
             string un = _cameraControl.Camobject.settings.login;
             string pwd = _cameraControl.Camobject.settings.password;
@@ -1561,34 +1534,34 @@ namespace iSpyApplication
             {
                 if (_cameraControl.Camobject.settings.login == string.Empty)
                 {
-
                     //get from url
-                    if (!string.IsNullOrEmpty(uri.UserInfo))
-                    {
-                        string[] creds = uri.UserInfo.Split(':');
-                        if (creds.Length >= 2)
-                        {
-                            un = creds[0];
-                            pwd = creds[1];
-                        }
-                    }
+                    un = uri.UserName;
+                    pwd = uri.Password;
                 }
             }
 
+            uri.UserName = un;
+            uri.Password = pwd;
+
+
             if (!string.IsNullOrEmpty(ptz.AppendAuth))
             {
-                if (url.IndexOf("?", StringComparison.Ordinal) == -1)
-                    url += "?" + ptz.AppendAuth;
-                else
-                    url += "&" + ptz.AppendAuth;
+                string aurl = ptz.AppendAuth.Replace("[USERNAME]", Uri.EscapeDataString(un));
+                aurl = aurl.Replace("[PASSWORD]", Uri.EscapeDataString(pwd));
 
+                if (uri.Query == "")
+                    uri.Query = aurl;
+                else
+                    uri.Query = uri.Query.Trim('?') + "&" + aurl;
             }
 
-            url = url.Replace("[USERNAME]", Uri.EscapeDataString(un));
-            url = url.Replace("[PASSWORD]", Uri.EscapeDataString(pwd));
-            url = url.Replace("[CHANNEL]", _cameraControl.Camobject.settings.ptzchannel);
 
-            _request = (HttpWebRequest) WebRequest.Create(url);
+
+            string url = uri.ToString().Replace("%5BUSERNAME%5D", Uri.EscapeDataString(un));
+            url = url.Replace("%5BPASSWORD%5D", Uri.EscapeDataString(pwd));
+            url = url.Replace("%5BCHANNEL%5D", _cameraControl.Camobject.settings.ptzchannel);
+
+            _request = (HttpWebRequest)WebRequest.Create(url);
             _request.Timeout = 5000;
             _request.AllowAutoRedirect = true;
             _request.KeepAlive = true;
@@ -1598,9 +1571,9 @@ namespace iSpyApplication
             if (_cameraControl.Camobject.settings.usehttp10)
                 _request.ProtocolVersion = HttpVersion.Version10;
             //
-            
+
             //get credentials
-            
+
             // set login and password
 
             string authInfo = "";
@@ -1609,7 +1582,7 @@ namespace iSpyApplication
                 authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(Uri.EscapeDataString(un) + ":" + Uri.EscapeDataString(pwd)));
                 _request.Headers["Authorization"] = "Basic " + authInfo;
             }
-            
+
             string ckies = _cameraControl.Camobject.settings.cookies ?? "";
             if (!string.IsNullOrEmpty(ckies))
             {
@@ -1644,39 +1617,46 @@ namespace iSpyApplication
 
             switch (ptz.Method)
             {
-                
+                case "PUT":
                 case "POST":
+                    string postData = "";
                     var i = url.IndexOf("?", StringComparison.Ordinal);
                     if (i > -1 && i < url.Length)
+                        postData = url.Substring(i + 1);
+
+
+                    var encoding = new ASCIIEncoding();
+
+                    byte[] data = encoding.GetBytes(postData);
+
+                    _request.Method = ptz.Method;
+                    _request.ContentType = "application/x-www-form-urlencoded";
+                    _request.ContentLength = data.Length;
+
+                    try
                     {
-                        var encoding = new ASCIIEncoding();
-                        string postData = url.Substring(i + 1);
-                        byte[] data = encoding.GetBytes(postData);
-
-                        _request.Method = ptz.Method;
-                        _request.ContentType = "application/x-www-form-urlencoded";
-                        _request.ContentLength = data.Length;
-
                         using (Stream stream = _request.GetRequestStream())
                         {
                             stream.Write(data, 0, data.Length);
                         }
                     }
-                    break;
-                case "PUT":
+                    catch
+                    {
+                        _request = null;
+                        throw;
+                    }
 
                     break;
-
             }
-            
 
-            var myRequestState = new RequestState {Request = _request};
+
+            var myRequestState = new RequestState { Request = _request };
             _request.BeginGetResponse(FinishPTZRequest, myRequestState);
         }
 
         private void FinishPTZRequest(IAsyncResult result)
         {
-            var myRequestState = (RequestState) result.AsyncState;
+            var myRequestState = (RequestState)result.AsyncState;
             WebRequest myWebRequest = myRequestState.Request;
             // End the Asynchronous request.
             try
@@ -1697,15 +1677,15 @@ namespace iSpyApplication
 
                 myRequestState.Response.Close();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MainForm.LogExceptionToFile(ex);
             }
             myRequestState.Response = null;
-                myRequestState.Request = null;
-            
+            myRequestState.Request = null;
+
             _request = null;
-            if (_nextcommand!="")
+            if (_nextcommand != "")
             {
                 string nc = _nextcommand;
                 _nextcommand = "";

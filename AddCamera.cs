@@ -1727,7 +1727,8 @@ namespace iSpyApplication
                 if (_loaded)
                 {
                     CameraControl.Camobject.settings.ptzurlbase = ptz.CommandURL;
-                    CameraControl.Camobject.settings.ptzport = ptz.portSpecified?ptz.port:80;
+                    if (ptz.portSpecified)
+                        CameraControl.Camobject.settings.ptzport = ptz.port;
                 }
             }
             if (CameraControl.Camobject.ptz==-3 || CameraControl.Camobject.ptz==-4)
