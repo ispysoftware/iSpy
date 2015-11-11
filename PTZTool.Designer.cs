@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PTZTool));
             this.pnlPTZ = new System.Windows.Forms.Panel();
             this.ddlExtended = new System.Windows.Forms.ComboBox();
             this.pnlController = new System.Windows.Forms.Panel();
@@ -39,13 +38,14 @@
             // 
             // pnlPTZ
             // 
-            this.pnlPTZ.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnlPTZ.BackgroundImage")));
+            this.pnlPTZ.BackgroundImage = global::iSpyApplication.Properties.Resources.PTZ_Controller;
             this.pnlPTZ.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pnlPTZ.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pnlPTZ.Location = new System.Drawing.Point(6, 9);
-            this.pnlPTZ.Margin = new System.Windows.Forms.Padding(6);
+            this.pnlPTZ.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlPTZ.Location = new System.Drawing.Point(0, 0);
+            this.pnlPTZ.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.pnlPTZ.Name = "pnlPTZ";
-            this.pnlPTZ.Size = new System.Drawing.Size(225, 169);
+            this.pnlPTZ.Size = new System.Drawing.Size(225, 176);
             this.pnlPTZ.TabIndex = 5;
             this.pnlPTZ.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlPTZ_MouseDown);
             this.pnlPTZ.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnlPTZ_MouseMove);
@@ -53,23 +53,25 @@
             // 
             // ddlExtended
             // 
+            this.ddlExtended.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.ddlExtended.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlExtended.FormattingEnabled = true;
-            this.ddlExtended.Location = new System.Drawing.Point(6, 178);
+            this.ddlExtended.Location = new System.Drawing.Point(0, 176);
+            this.ddlExtended.Margin = new System.Windows.Forms.Padding(4);
             this.ddlExtended.Name = "ddlExtended";
-            this.ddlExtended.Size = new System.Drawing.Size(225, 21);
+            this.ddlExtended.Size = new System.Drawing.Size(225, 24);
             this.ddlExtended.TabIndex = 6;
             this.ddlExtended.SelectedIndexChanged += new System.EventHandler(this.ddlExtended_SelectedIndexChanged);
             // 
             // pnlController
             // 
-            this.pnlController.AutoSize = true;
             this.pnlController.Controls.Add(this.pnlPTZ);
             this.pnlController.Controls.Add(this.ddlExtended);
             this.pnlController.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlController.Location = new System.Drawing.Point(0, 0);
+            this.pnlController.Location = new System.Drawing.Point(3, 3);
+            this.pnlController.Margin = new System.Windows.Forms.Padding(4);
             this.pnlController.Name = "pnlController";
-            this.pnlController.Size = new System.Drawing.Size(237, 202);
+            this.pnlController.Size = new System.Drawing.Size(225, 200);
             this.pnlController.TabIndex = 7;
             // 
             // tmrRepeater
@@ -79,25 +81,21 @@
             // 
             // PTZTool
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(237, 202);
-            this.ControlBox = false;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.ClientSize = new System.Drawing.Size(231, 206);
             this.Controls.Add(this.pnlController);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(243, 231);
             this.MinimizeBox = false;
             this.Name = "PTZTool";
+            this.Padding = new System.Windows.Forms.Padding(3);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "PTZ Tool";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PTZTool_FormClosing);
             this.Load += new System.EventHandler(this.PTZTool_Load);
             this.pnlController.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

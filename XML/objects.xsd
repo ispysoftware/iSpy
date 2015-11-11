@@ -91,6 +91,7 @@
                                                     <xs:element name="ptzflipy" type="xs:boolean" default="false"/>
                                                     <xs:element name="ptzrotate90" type="xs:boolean" default="false"/>
                                                     <xs:element name="ptzurlbase" type="xs:string"/>
+                                                    <xs:element name="ptzport" type="xs:int" default="80"/>
                                                     <xs:element name="ptzautotrack" type="xs:boolean" default="false"/>
                                                     <xs:element name="ptzautotrackreverse" type="xs:boolean" default="false"/>
                                                     <xs:element name="ptzautohome" type="xs:boolean" default="false"/>

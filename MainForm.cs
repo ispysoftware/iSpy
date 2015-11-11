@@ -4078,6 +4078,7 @@ namespace iSpyApplication
             pTZControllerToolStripMenuItem.Checked =
                 menuItem18.Checked = pTZControllerToolStripMenuItem1.Checked = false;
             Conf.ShowPTZController = false;
+            _ptzTool = null;
         }
 
         public void TalkTo(CameraWindow cw, bool talk)
@@ -4325,7 +4326,10 @@ namespace iSpyApplication
                               Fill = cg.Fill,
                               ShowAtStartup = cg.ShowAtStartup,
                           };
+               // bool b = ((Form) parent).TopMost;
+                //((Form) parent).TopMost = false;
                 gvc.ShowDialog(parent);
+                //((Form)parent).TopMost = b;
                 if (gvc.DialogResult == DialogResult.OK)
                 {
                     cg.Columns = gvc.Cols;

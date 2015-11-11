@@ -186,23 +186,9 @@ namespace iSpyApplication
             this.tabPage8 = new System.Windows.Forms.TabPage();
             this.pnlPTZControls = new System.Windows.Forms.Panel();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
-            this.flowLayoutPanel11 = new System.Windows.Forms.FlowLayoutPanel();
-            this.chkPTZFlipX = new System.Windows.Forms.CheckBox();
-            this.chkPTZFlipY = new System.Windows.Forms.CheckBox();
-            this.chkPTZRotate90 = new System.Windows.Forms.CheckBox();
             this.pnlPTZ = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.lbExtended = new System.Windows.Forms.ListBox();
-            this.flowLayoutPanel18 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label18 = new System.Windows.Forms.Label();
-            this.txtPTZURL = new System.Windows.Forms.TextBox();
-            this.label22 = new System.Windows.Forms.Label();
-            this.txtPTZUsername = new System.Windows.Forms.TextBox();
-            this.label42 = new System.Windows.Forms.Label();
-            this.txtPTZPassword = new System.Windows.Forms.TextBox();
-            this.label91 = new System.Windows.Forms.Label();
-            this.txtPTZChannel = new System.Windows.Forms.TextBox();
-            this.btnConfigurePelco = new System.Windows.Forms.Button();
             this.label16 = new System.Windows.Forms.Label();
             this.flowLayoutPanel31 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnAddPreset = new System.Windows.Forms.Button();
@@ -383,6 +369,7 @@ namespace iSpyApplication
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.linkLabel4 = new System.Windows.Forms.LinkLabel();
+            this.button6 = new System.Windows.Forms.Button();
             this.tcCamera.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox8.SuspendLayout();
@@ -435,9 +422,7 @@ namespace iSpyApplication
             this.tabPage8.SuspendLayout();
             this.pnlPTZControls.SuspendLayout();
             this.tableLayoutPanel12.SuspendLayout();
-            this.flowLayoutPanel11.SuspendLayout();
             this.panel5.SuspendLayout();
-            this.flowLayoutPanel18.SuspendLayout();
             this.flowLayoutPanel31.SuspendLayout();
             this.flowLayoutPanel7.SuspendLayout();
             this.tableLayoutPanel11.SuspendLayout();
@@ -2499,7 +2484,7 @@ namespace iSpyApplication
             this.pnlPTZControls.Location = new System.Drawing.Point(6, 48);
             this.pnlPTZControls.Margin = new System.Windows.Forms.Padding(6);
             this.pnlPTZControls.Name = "pnlPTZControls";
-            this.pnlPTZControls.Size = new System.Drawing.Size(645, 444);
+            this.pnlPTZControls.Size = new System.Drawing.Size(645, 302);
             this.pnlPTZControls.TabIndex = 79;
             // 
             // tableLayoutPanel12
@@ -2507,72 +2492,20 @@ namespace iSpyApplication
             this.tableLayoutPanel12.ColumnCount = 2;
             this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 241F));
             this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel12.Controls.Add(this.flowLayoutPanel11, 0, 0);
-            this.tableLayoutPanel12.Controls.Add(this.pnlPTZ, 0, 2);
-            this.tableLayoutPanel12.Controls.Add(this.panel5, 1, 2);
-            this.tableLayoutPanel12.Controls.Add(this.flowLayoutPanel18, 0, 1);
-            this.tableLayoutPanel12.Controls.Add(this.label16, 0, 3);
-            this.tableLayoutPanel12.Controls.Add(this.flowLayoutPanel31, 1, 3);
-            this.tableLayoutPanel12.Controls.Add(this.flowLayoutPanel7, 0, 4);
+            this.tableLayoutPanel12.Controls.Add(this.pnlPTZ, 0, 0);
+            this.tableLayoutPanel12.Controls.Add(this.panel5, 1, 0);
+            this.tableLayoutPanel12.Controls.Add(this.label16, 0, 1);
+            this.tableLayoutPanel12.Controls.Add(this.flowLayoutPanel31, 1, 1);
+            this.tableLayoutPanel12.Controls.Add(this.flowLayoutPanel7, 0, 2);
             this.tableLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel12.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel12.Name = "tableLayoutPanel12";
-            this.tableLayoutPanel12.RowCount = 5;
-            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel12.RowCount = 3;
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 182F));
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tableLayoutPanel12.Size = new System.Drawing.Size(645, 386);
+            this.tableLayoutPanel12.Size = new System.Drawing.Size(645, 287);
             this.tableLayoutPanel12.TabIndex = 81;
-            // 
-            // flowLayoutPanel11
-            // 
-            this.tableLayoutPanel12.SetColumnSpan(this.flowLayoutPanel11, 2);
-            this.flowLayoutPanel11.Controls.Add(this.chkPTZFlipX);
-            this.flowLayoutPanel11.Controls.Add(this.chkPTZFlipY);
-            this.flowLayoutPanel11.Controls.Add(this.chkPTZRotate90);
-            this.flowLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel11.Location = new System.Drawing.Point(3, 3);
-            this.flowLayoutPanel11.Name = "flowLayoutPanel11";
-            this.flowLayoutPanel11.Size = new System.Drawing.Size(639, 25);
-            this.flowLayoutPanel11.TabIndex = 78;
-            // 
-            // chkPTZFlipX
-            // 
-            this.chkPTZFlipX.AutoSize = true;
-            this.chkPTZFlipX.Location = new System.Drawing.Point(6, 6);
-            this.chkPTZFlipX.Margin = new System.Windows.Forms.Padding(6);
-            this.chkPTZFlipX.Name = "chkPTZFlipX";
-            this.chkPTZFlipX.Size = new System.Drawing.Size(66, 21);
-            this.chkPTZFlipX.TabIndex = 73;
-            this.chkPTZFlipX.Text = "Flip-X";
-            this.chkPTZFlipX.UseVisualStyleBackColor = true;
-            this.chkPTZFlipX.CheckedChanged += new System.EventHandler(this.chkPTZFlipX_CheckedChanged);
-            // 
-            // chkPTZFlipY
-            // 
-            this.chkPTZFlipY.AutoSize = true;
-            this.chkPTZFlipY.Location = new System.Drawing.Point(84, 6);
-            this.chkPTZFlipY.Margin = new System.Windows.Forms.Padding(6);
-            this.chkPTZFlipY.Name = "chkPTZFlipY";
-            this.chkPTZFlipY.Size = new System.Drawing.Size(66, 21);
-            this.chkPTZFlipY.TabIndex = 74;
-            this.chkPTZFlipY.Text = "Flip-Y";
-            this.chkPTZFlipY.UseVisualStyleBackColor = true;
-            this.chkPTZFlipY.CheckedChanged += new System.EventHandler(this.chkPTZFlipY_CheckedChanged);
-            // 
-            // chkPTZRotate90
-            // 
-            this.chkPTZRotate90.AutoSize = true;
-            this.chkPTZRotate90.Location = new System.Drawing.Point(162, 6);
-            this.chkPTZRotate90.Margin = new System.Windows.Forms.Padding(6);
-            this.chkPTZRotate90.Name = "chkPTZRotate90";
-            this.chkPTZRotate90.Size = new System.Drawing.Size(92, 21);
-            this.chkPTZRotate90.TabIndex = 75;
-            this.chkPTZRotate90.Text = "Rotate 90";
-            this.chkPTZRotate90.UseVisualStyleBackColor = true;
-            this.chkPTZRotate90.CheckedChanged += new System.EventHandler(this.chkPTZRotate90_CheckedChanged);
             // 
             // pnlPTZ
             // 
@@ -2580,7 +2513,7 @@ namespace iSpyApplication
             this.pnlPTZ.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pnlPTZ.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pnlPTZ.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlPTZ.Location = new System.Drawing.Point(6, 77);
+            this.pnlPTZ.Location = new System.Drawing.Point(6, 6);
             this.pnlPTZ.Margin = new System.Windows.Forms.Padding(6);
             this.pnlPTZ.Name = "pnlPTZ";
             this.pnlPTZ.Size = new System.Drawing.Size(229, 170);
@@ -2594,7 +2527,7 @@ namespace iSpyApplication
             // 
             this.panel5.Controls.Add(this.lbExtended);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel5.Location = new System.Drawing.Point(244, 74);
+            this.panel5.Location = new System.Drawing.Point(244, 3);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(398, 176);
             this.panel5.TabIndex = 78;
@@ -2612,112 +2545,10 @@ namespace iSpyApplication
             this.lbExtended.Click += new System.EventHandler(this.LbExtendedClick);
             this.lbExtended.SelectedIndexChanged += new System.EventHandler(this.LbExtendedSelectedIndexChanged);
             // 
-            // flowLayoutPanel18
-            // 
-            this.tableLayoutPanel12.SetColumnSpan(this.flowLayoutPanel18, 2);
-            this.flowLayoutPanel18.Controls.Add(this.label18);
-            this.flowLayoutPanel18.Controls.Add(this.txtPTZURL);
-            this.flowLayoutPanel18.Controls.Add(this.label22);
-            this.flowLayoutPanel18.Controls.Add(this.txtPTZUsername);
-            this.flowLayoutPanel18.Controls.Add(this.label42);
-            this.flowLayoutPanel18.Controls.Add(this.txtPTZPassword);
-            this.flowLayoutPanel18.Controls.Add(this.label91);
-            this.flowLayoutPanel18.Controls.Add(this.txtPTZChannel);
-            this.flowLayoutPanel18.Controls.Add(this.btnConfigurePelco);
-            this.flowLayoutPanel18.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel18.Location = new System.Drawing.Point(3, 34);
-            this.flowLayoutPanel18.Name = "flowLayoutPanel18";
-            this.flowLayoutPanel18.Size = new System.Drawing.Size(639, 34);
-            this.flowLayoutPanel18.TabIndex = 81;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(3, 8);
-            this.label18.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(67, 17);
-            this.label18.TabIndex = 76;
-            this.label18.Text = "PTZ URL";
-            // 
-            // txtPTZURL
-            // 
-            this.txtPTZURL.Location = new System.Drawing.Point(76, 3);
-            this.txtPTZURL.Name = "txtPTZURL";
-            this.txtPTZURL.Size = new System.Drawing.Size(86, 22);
-            this.txtPTZURL.TabIndex = 77;
-            this.txtPTZURL.TextChanged += new System.EventHandler(this.txtPTZURL_TextChanged);
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(168, 8);
-            this.label22.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(73, 17);
-            this.label22.TabIndex = 78;
-            this.label22.Text = "Username";
-            // 
-            // txtPTZUsername
-            // 
-            this.txtPTZUsername.Location = new System.Drawing.Point(247, 3);
-            this.txtPTZUsername.Name = "txtPTZUsername";
-            this.txtPTZUsername.Size = new System.Drawing.Size(39, 22);
-            this.txtPTZUsername.TabIndex = 79;
-            // 
-            // label42
-            // 
-            this.label42.AutoSize = true;
-            this.label42.Location = new System.Drawing.Point(292, 8);
-            this.label42.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
-            this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(69, 17);
-            this.label42.TabIndex = 81;
-            this.label42.Text = "Password";
-            // 
-            // txtPTZPassword
-            // 
-            this.txtPTZPassword.Location = new System.Drawing.Point(367, 3);
-            this.txtPTZPassword.Name = "txtPTZPassword";
-            this.txtPTZPassword.PasswordChar = '*';
-            this.txtPTZPassword.Size = new System.Drawing.Size(46, 22);
-            this.txtPTZPassword.TabIndex = 80;
-            this.txtPTZPassword.TextChanged += new System.EventHandler(this.txtPTZPassword_TextChanged);
-            // 
-            // label91
-            // 
-            this.label91.AutoSize = true;
-            this.label91.Location = new System.Drawing.Point(419, 8);
-            this.label91.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
-            this.label91.Name = "label91";
-            this.label91.Size = new System.Drawing.Size(60, 17);
-            this.label91.TabIndex = 82;
-            this.label91.Text = "Channel";
-            // 
-            // txtPTZChannel
-            // 
-            this.txtPTZChannel.Location = new System.Drawing.Point(485, 3);
-            this.txtPTZChannel.Name = "txtPTZChannel";
-            this.txtPTZChannel.Size = new System.Drawing.Size(39, 22);
-            this.txtPTZChannel.TabIndex = 83;
-            this.txtPTZChannel.TextChanged += new System.EventHandler(this.txtPTZChannel_TextChanged);
-            this.txtPTZChannel.Leave += new System.EventHandler(this.txtPTZChannel_Leave);
-            // 
-            // btnConfigurePelco
-            // 
-            this.btnConfigurePelco.Location = new System.Drawing.Point(3, 31);
-            this.btnConfigurePelco.Name = "btnConfigurePelco";
-            this.btnConfigurePelco.Size = new System.Drawing.Size(110, 23);
-            this.btnConfigurePelco.TabIndex = 84;
-            this.btnConfigurePelco.Text = "Configure Pelco";
-            this.btnConfigurePelco.UseVisualStyleBackColor = true;
-            this.btnConfigurePelco.Visible = false;
-            this.btnConfigurePelco.Click += new System.EventHandler(this.btnConfigurePelco_Click);
-            // 
             // label16
             // 
             this.label16.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label16.Location = new System.Drawing.Point(6, 253);
+            this.label16.Location = new System.Drawing.Point(6, 182);
             this.label16.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(229, 41);
@@ -2731,7 +2562,7 @@ namespace iSpyApplication
             this.flowLayoutPanel31.Controls.Add(this.btnAddPreset);
             this.flowLayoutPanel31.Controls.Add(this.btnDeletePreset);
             this.flowLayoutPanel31.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel31.Location = new System.Drawing.Point(241, 253);
+            this.flowLayoutPanel31.Location = new System.Drawing.Point(241, 182);
             this.flowLayoutPanel31.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel31.Name = "flowLayoutPanel31";
             this.flowLayoutPanel31.Size = new System.Drawing.Size(404, 41);
@@ -2763,7 +2594,7 @@ namespace iSpyApplication
             this.flowLayoutPanel7.Controls.Add(this.btnPTZTrack);
             this.flowLayoutPanel7.Controls.Add(this.btnPTZSchedule);
             this.flowLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowLayoutPanel7.Location = new System.Drawing.Point(3, 297);
+            this.flowLayoutPanel7.Location = new System.Drawing.Point(3, 226);
             this.flowLayoutPanel7.Name = "flowLayoutPanel7";
             this.flowLayoutPanel7.Size = new System.Drawing.Size(639, 38);
             this.flowLayoutPanel7.TabIndex = 83;
@@ -2838,6 +2669,7 @@ namespace iSpyApplication
             // 
             // flowLayoutPanel23
             // 
+            this.flowLayoutPanel23.Controls.Add(this.button6);
             this.flowLayoutPanel23.Controls.Add(this.linkLabel6);
             this.flowLayoutPanel23.Controls.Add(this.llblEditPTZ);
             this.flowLayoutPanel23.Controls.Add(this.linkLabel10);
@@ -2850,7 +2682,7 @@ namespace iSpyApplication
             // linkLabel6
             // 
             this.linkLabel6.AutoSize = true;
-            this.linkLabel6.Location = new System.Drawing.Point(6, 8);
+            this.linkLabel6.Location = new System.Drawing.Point(36, 8);
             this.linkLabel6.Margin = new System.Windows.Forms.Padding(6, 8, 6, 0);
             this.linkLabel6.Name = "linkLabel6";
             this.linkLabel6.Size = new System.Drawing.Size(100, 17);
@@ -2862,7 +2694,7 @@ namespace iSpyApplication
             // llblEditPTZ
             // 
             this.llblEditPTZ.AutoSize = true;
-            this.llblEditPTZ.Location = new System.Drawing.Point(115, 8);
+            this.llblEditPTZ.Location = new System.Drawing.Point(145, 8);
             this.llblEditPTZ.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.llblEditPTZ.Name = "llblEditPTZ";
             this.llblEditPTZ.Size = new System.Drawing.Size(32, 17);
@@ -2874,7 +2706,7 @@ namespace iSpyApplication
             // linkLabel10
             // 
             this.linkLabel10.AutoSize = true;
-            this.linkLabel10.Location = new System.Drawing.Point(153, 8);
+            this.linkLabel10.Location = new System.Drawing.Point(183, 8);
             this.linkLabel10.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.linkLabel10.Name = "linkLabel10";
             this.linkLabel10.Size = new System.Drawing.Size(53, 17);
@@ -5043,6 +4875,20 @@ namespace iSpyApplication
             this.linkLabel4.Text = "Copy To...";
             this.linkLabel4.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel4_LinkClicked);
             // 
+            // button6
+            // 
+            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button6.AutoSize = true;
+            this.button6.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.button6.Location = new System.Drawing.Point(0, 0);
+            this.button6.Margin = new System.Windows.Forms.Padding(0);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(30, 27);
+            this.button6.TabIndex = 76;
+            this.button6.Text = "...";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click_1);
+            // 
             // AddCamera
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -5134,11 +4980,7 @@ namespace iSpyApplication
             this.pnlPTZControls.ResumeLayout(false);
             this.pnlPTZControls.PerformLayout();
             this.tableLayoutPanel12.ResumeLayout(false);
-            this.flowLayoutPanel11.ResumeLayout(false);
-            this.flowLayoutPanel11.PerformLayout();
             this.panel5.ResumeLayout(false);
-            this.flowLayoutPanel18.ResumeLayout(false);
-            this.flowLayoutPanel18.PerformLayout();
             this.flowLayoutPanel31.ResumeLayout(false);
             this.flowLayoutPanel7.ResumeLayout(false);
             this.tableLayoutPanel11.ResumeLayout(false);
@@ -5368,11 +5210,6 @@ namespace iSpyApplication
         private System.Windows.Forms.GroupBox gpbSubscriber2;
         private System.Windows.Forms.LinkLabel linkLabel9;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.CheckBox chkPTZRotate90;
-        private System.Windows.Forms.CheckBox chkPTZFlipY;
-        private System.Windows.Forms.CheckBox chkPTZFlipX;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.TextBox txtPTZURL;
         private System.Windows.Forms.NumericUpDown numMaxFR;
         private System.Windows.Forms.Label label43;
         private System.Windows.Forms.Button button4;
@@ -5418,7 +5255,6 @@ namespace iSpyApplication
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel11;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel14;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel15;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel16;
@@ -5433,15 +5269,10 @@ namespace iSpyApplication
         private AreaSelector AreaControl;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel16;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel17;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel18;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel19;
         private System.Windows.Forms.Panel panel10;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel19;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel20;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.TextBox txtPTZUsername;
-        private System.Windows.Forms.Label label42;
-        private System.Windows.Forms.TextBox txtPTZPassword;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel23;
         private System.Windows.Forms.LinkLabel llblEditPTZ;
         private System.Windows.Forms.LinkLabel linkLabel10;
@@ -5486,8 +5317,6 @@ namespace iSpyApplication
         private System.Windows.Forms.Label label90;
         private System.Windows.Forms.ComboBox ddlTriggerRecording;
         private System.Windows.Forms.LinkLabel linkLabel14;
-        private System.Windows.Forms.Label label91;
-        private System.Windows.Forms.TextBox txtPTZChannel;
         private Ranger ranger1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label93;
@@ -5499,7 +5328,6 @@ namespace iSpyApplication
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.CheckBox chkIgnoreAudio;
         private System.Windows.Forms.LinkLabel llblClearAll;
-        private System.Windows.Forms.Button btnConfigurePelco;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel31;
         private System.Windows.Forms.Button btnAddPreset;
         private System.Windows.Forms.Button btnDeletePreset;
@@ -5583,5 +5411,6 @@ namespace iSpyApplication
         private System.Windows.Forms.CheckBox chkMessaging;
         private System.Windows.Forms.CheckBox chkScheduleMessaging;
         private System.Windows.Forms.Button btnAuthoriseYouTube;
+        private System.Windows.Forms.Button button6;
     }
 }

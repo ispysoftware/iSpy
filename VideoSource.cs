@@ -592,6 +592,23 @@ namespace iSpyApplication
             SetupVideoSource();
         }
 
+        private void SetPTZPort()
+        {
+            try
+            {
+                var u = new Uri(VideoSourceString);
+                if (u.Scheme.StartsWith("http"))
+                {
+                    CameraControl.Camobject.settings.ptzport = u.Port;
+                }
+            }
+            catch
+            {
+                //invalid URI
+            }
+
+        }
+
         private void SetupVideoSource()
         {
             StopPlayer();
@@ -627,7 +644,7 @@ namespace iSpyApplication
                     }
                     VideoSourceString = url;
                     CameraControl.Camobject.settings.frameinterval = frameinterval;
-                    
+                    SetPTZPort();
                     break;
                 case 1:
                     url = cmbMJPEGURL.Text.Trim();
@@ -640,6 +657,7 @@ namespace iSpyApplication
                     CameraLogin = txtLogin2.Text;
                     CameraPassword = txtPassword2.Text;
                     CameraControl.Camobject.decodekey = txtDecodeKey.Text;
+                    SetPTZPort();
                     break;
                 case 2:
                     url = cmbFile.Text.Trim();
@@ -655,6 +673,7 @@ namespace iSpyApplication
                         CameraControl.Camobject.settings.timeout = CameraControl.Camobject.settings.analyseduration + 500;
 
                     CameraControl.Camobject.settings.rtspmode = ddlRTSP.SelectedIndex;
+                    SetPTZPort();
                     break;
                 case 3:
                     if (!devicesCombo.Enabled)
@@ -731,6 +750,7 @@ namespace iSpyApplication
                     }
                     VideoSourceString = url;
                     CameraControl.Camobject.settings.vlcargs = txtVLCArgs.Text.Trim();
+                    SetPTZPort();
                     break;
                 case 6:
                     if (!pnlXimea.Enabled)

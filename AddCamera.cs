@@ -291,7 +291,7 @@ namespace iSpyApplication
             txtLocalFilename.Text = CameraControl.Camobject.savelocal.filename;
 
             
-            txtPTZChannel.Text = CameraControl.Camobject.settings.ptzchannel;
+            
             
             ShowSchedule(-1);
 
@@ -349,11 +349,7 @@ namespace iSpyApplication
 
             
             txtMaskImage.Text = CameraControl.Camobject.settings.maskimage;
-
-            chkPTZFlipX.Checked = CameraControl.Camobject.settings.ptzflipx;
-            chkPTZFlipY.Checked = CameraControl.Camobject.settings.ptzflipy;
-            chkPTZRotate90.Checked = CameraControl.Camobject.settings.ptzrotate90;
-
+            
             txtFTPText.Text = CameraControl.Camobject.ftp.text;
             txtSaveOverlay.Text = CameraControl.Camobject.savelocal.text;
 
@@ -372,7 +368,7 @@ namespace iSpyApplication
             
             
             LoadPTZs();
-            txtPTZURL.Text = CameraControl.Camobject.settings.ptzurlbase;
+            
 
             txtAccessGroups.Text = CameraControl.Camobject.settings.accessgroups;
             
@@ -390,8 +386,7 @@ namespace iSpyApplication
             ddlCopyFrom.SelectedIndex = 0;
 
 
-            txtPTZUsername.Text = CameraControl.Camobject.settings.ptzusername;
-            txtPTZPassword.Text = CameraControl.Camobject.settings.ptzpassword;
+            
             tbQuality.Value = CameraControl.Camobject.recorder.quality;
 
             numTimelapseSave.Value = CameraControl.Camobject.recorder.timelapsesave;
@@ -595,8 +590,7 @@ namespace iSpyApplication
             chkActive.Text = LocRm.GetString("CameraActive");
             chkFri.Text = LocRm.GetString("Fri");
             chkFTP.Text = LocRm.GetString("FtpEnabled");
-            label22.Text = LocRm.GetString("Username");
-            label42.Text = LocRm.GetString("Password");
+            
             
             chkschedPTZ.Text = LocRm.GetString("SchedulePTZ");
             rdoMotion.Text = LocRm.GetString("WhenMotionDetected");
@@ -722,9 +716,7 @@ namespace iSpyApplication
             toolTip1.SetToolTip(lbSchedule, LocRm.GetString("ToolTip_PressDelete"));
             label16.Text = LocRm.GetString("PTZNote");
             //chkRotate90.Text = LocRm.GetString("Rotate90");
-            chkPTZFlipX.Text = LocRm.GetString("Flipx");
-            chkPTZFlipY.Text = LocRm.GetString("Flipy");
-            chkPTZRotate90.Text = LocRm.GetString("Rotate90");
+            
             label43.Text = LocRm.GetString("MaxFramerate");
             label47.Text = LocRm.GetString("WhenRecording");
             label74.Text = LocRm.GetString("Directory");
@@ -1073,9 +1065,7 @@ namespace iSpyApplication
             CameraControl.Camobject.settings.ignoreaudio = chkIgnoreAudio.Checked;
             CameraControl.Camobject.alerts.active = chkMovement.Checked;
                 
-            CameraControl.Camobject.settings.ptzusername = txtPTZUsername.Text;
-            CameraControl.Camobject.settings.ptzpassword = txtPTZPassword.Text;
-            CameraControl.Camobject.settings.ptzchannel = txtPTZChannel.Text;
+           
                 
             CameraControl.Camobject.recorder.quality = tbQuality.Value;
             CameraControl.Camobject.recorder.timelapsesave = (int)numTimelapseSave.Value;
@@ -1665,9 +1655,7 @@ namespace iSpyApplication
 
         private void PnlPtzMouseDown(object sender, MouseEventArgs e)
         {
-            CameraControl.Camobject.settings.ptzusername = txtPTZUsername.Text;
-            CameraControl.Camobject.settings.ptzpassword = txtPTZPassword.Text;
-            CameraControl.Camobject.settings.ptzchannel = txtPTZChannel.Text;
+            
 
             ProcessPtzInput(e.Location);
         }
@@ -1729,15 +1717,18 @@ namespace iSpyApplication
             {
                 PTZSettings2Camera ptz = MainForm.PTZs.Single(p => p.id == CameraControl.Camobject.ptz);
                 CameraControl.PTZ.PTZSettings = ptz;
-                if (ptz.ExtendedCommands != null && ptz.ExtendedCommands.Command!=null)
+                if (ptz.ExtendedCommands?.Command != null)
                 {
                     foreach (var extcmd in ptz.ExtendedCommands.Command)
                     {
                         lbExtended.Items.Add(new ListItem(extcmd.Name, extcmd.Value));
                     }
                 }
-                if (_loaded)    
-                    txtPTZURL.Text = ptz.CommandURL;
+                if (_loaded)
+                {
+                    CameraControl.Camobject.settings.ptzurlbase = ptz.CommandURL;
+                    CameraControl.Camobject.settings.ptzport = ptz.portSpecified?ptz.port:80;
+                }
             }
             if (CameraControl.Camobject.ptz==-3 || CameraControl.Camobject.ptz==-4)
             {
@@ -1763,15 +1754,6 @@ namespace iSpyApplication
                     break;
 
             }
-            
-
-            bool bPelco = CameraControl.Camobject.ptz == -3 || CameraControl.Camobject.ptz == -4;
-            bool bConfig = CameraControl.Camobject.ptz >= 0;
-
-             txtPTZChannel.Visible =label91.Visible = txtPTZPassword.Visible = label42.Visible = txtPTZUsername.Visible =label22.Visible = txtPTZURL.Visible =label18.Visible = bConfig;
-
-            btnConfigurePelco.Visible = bPelco;
-
         }
 
         private void PopOnvifPresets()
@@ -1822,11 +1804,11 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    LocRm.GetString("Validate_Camera_PTZIPOnly") + Environment.NewLine + Environment.NewLine +
-                    ex.Message, LocRm.GetString("Error"));
+                MainForm.LogExceptionToFile(ex);
+                MessageBox.Show(ex.Message, LocRm.GetString("Error"));
             }
         }
+
 
         private void PnlPtzMouseMove(object sender, MouseEventArgs e)
         {
@@ -2141,29 +2123,9 @@ namespace iSpyApplication
 
         #endregion
 
-        private void chkPTZFlipX_CheckedChanged(object sender, EventArgs e)
-        {
-            CameraControl.Camobject.settings.ptzflipx = chkPTZFlipX.Checked;
-        }
-
-        private void chkPTZFlipY_CheckedChanged(object sender, EventArgs e)
-        {
-            CameraControl.Camobject.settings.ptzflipy = chkPTZFlipY.Checked;
-        }
-
-        private void chkPTZRotate90_CheckedChanged(object sender, EventArgs e)
-        {
-            CameraControl.Camobject.settings.ptzrotate90 = chkPTZRotate90.Checked;
-        }
-
         private void label16_Click(object sender, EventArgs e)
         {
 
-        }
-
-        private void txtPTZURL_TextChanged(object sender, EventArgs e)
-        {
-            CameraControl.Camobject.settings.ptzurlbase = txtPTZURL.Text;
         }
 
         private void numMaxFR_ValueChanged(object sender, EventArgs e)
@@ -2500,33 +2462,7 @@ namespace iSpyApplication
             AreaControl.Invalidate();
         }
 
-        private void txtPTZChannel_TextChanged(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void txtPTZChannel_Leave(object sender, EventArgs e)
-        {
-            CameraControl.Camobject.settings.ptzchannel = txtPTZChannel.Text;
-        }
-
-        private void btnConfigurePelco_Click(object sender, EventArgs e)
-        {
-            if (String.IsNullOrEmpty(CameraControl.Camobject.settings.ptzpelcoconfig))
-            {
-                //default
-                CameraControl.Camobject.settings.ptzpelcoconfig = "COM1|9600|8|One|Odd|1";
-            }
-            var pc = new PelcoConfig { Config = CameraControl.Camobject.settings.ptzpelcoconfig};
-            if (pc.ShowDialog(this) == DialogResult.OK)
-            {
-                CameraControl.Camobject.settings.ptzpelcoconfig = pc.Config;
-                CameraControl.PTZ.ConfigurePelco();
-            }
-
-            pc.Dispose();
-
-        }
+       
 
         private void btnAddPreset_Click(object sender, EventArgs e)
         {
@@ -2803,5 +2739,18 @@ namespace iSpyApplication
                 MessageBox.Show(this, LocRm.GetString("Failed"));
         }
 
+        private void flowLayoutPanel11_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void button6_Click_1(object sender, EventArgs e)
+        {
+            using (var pc = new PTZConfig())
+            {
+                pc.CameraControl = CameraControl;
+                pc.ShowDialog(this);
+            }
+        }
     }
 }

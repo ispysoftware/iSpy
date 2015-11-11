@@ -433,6 +433,9 @@
       <DependentUpon>AlertSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\AppLoop.cs" />
+    <Compile Include="Controls\AutoCompleteTextbox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\ColorSlider.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -808,6 +811,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="LayoutItem.cs" />
+    <Compile Include="PTZConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PTZConfig.Designer.cs">
+      <DependentUpon>PTZConfig.cs</DependentUpon>
+    </Compile>
     <Compile Include="PTZTool.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1597,6 +1606,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Prompt.resx">
       <DependentUpon>Prompt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PTZConfig.resx">
+      <DependentUpon>PTZConfig.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PTZTool.resx">
       <DependentUpon>PTZTool.cs</DependentUpon>

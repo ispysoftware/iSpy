@@ -4414,7 +4414,6 @@
     <url version="206M" prefix="http://" Source="JPEG" url="jpg/image.jpg?size=3" />
     <url version="m1031w" prefix="http://" Source="JPEG" url="jpg/image.jpg?size=3" />
     <url version="P3354" prefix="http://" Source="JPEG" url="jpg/1/image.jpg" />
-    <url version="SetupVideoSource" prefix="http://" Source="JPEG" url="jpg/image.jpg" />
     <url version="154" prefix="http://" Source="JPEG" url="jpg/image.jpg?size=3" />
     <url version="214ptz" prefix="http://" Source="JPEG" url="jpg/image.jpg?size=3" />
     <url version="M1011" prefix="http://" Source="JPEG" url="jpg/image.jpg?size=3" />
@@ -7003,9 +7002,6 @@
   <Manufacturer name="chint">
     <url version="x x x" prefix="http://" Source="JPEG" url="snap.jpg?JpegCam=[CHANNEL]" />
   </Manufacturer>
-  <Manufacturer name="chipshit">
-    <url version="chipshit" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" port="554" />
-  </Manufacturer>
   <Manufacturer name="CHOICE">
     <url version="N5304MV" prefix="http://" Source="FFMPEG" url="stream1.asf" />
     <url version="N5304MV" prefix="http://" Source="FFMPEG" url="stream.asf" />
@@ -7799,9 +7795,6 @@
   </Manufacturer>
   <Manufacturer name="Craigs">
     <url version="Craigs" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-  </Manufacturer>
-  <Manufacturer name="CrapOla">
-    <url version="WhoKnows" prefix="http://" Source="JPEG" url="cgi-bin/net_jpeg.cgi?ch=[CHANNEL]" />
   </Manufacturer>
   <Manufacturer name="Creative">
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]*[HEIGHT]" />
@@ -11716,7 +11709,6 @@
     <url version="LIZM40T200" prefix="rtsp://" Source="FFMPEG" url="/0" port="554" />
     <url version="Longse_New" prefix="rtsp://" Source="FFMPEG" url="/0" port="554" />
     <url version="Fisotech" prefix="rtsp://" Source="FFMPEG" url="/0" port="554" />
-    <url version="Fuck" prefix="http://" Source="MJPEG" url="display_pic.cgi?cam=[CHANNEL]&amp;res=hi" />
   </Manufacturer>
   <Manufacturer name="DM365_IPNC">
     <url version="DM365" prefix="rtsp://" Source="FFMPEG" url="/0" port="554" />
@@ -17404,7 +17396,6 @@
     <url version="other" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" />
     <url version="Anran" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=xqrlkNym_channel=1_stream=0.sdp" />
     <url version="unknown" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" />
-    <url version="China crap" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" />
     <url version="anran" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=1.sdp" />
     <url version="anran" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" />
     <url version="H264rte" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" />
@@ -21762,7 +21753,6 @@
     <url version="187v" prefix="rtsp://" Source="FFMPEG" url="/11" port="554" />
     <url version="INSTAR5907" prefix="rtsp://" Source="FFMPEG" url="/12" port="554" />
     <url version="1234" prefix="http://" Source="FFMPEG" url="videostream.asf" />
-    <url version="chinaShit1" prefix="rtsp://" Source="FFMPEG" url="/11" port="554" />
     <url version="hx3200" prefix="rtsp://" Source="FFMPEG" url="/11" port="10082" />
     <url version="Unknown" prefix="rtsp://" Source="FFMPEG" url="/11" port="554" />
     <url version="HI 3518E" prefix="rtsp://" Source="FFMPEG" url="/11" port="554" />
@@ -27843,7 +27833,6 @@
     <url version="nvt" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" />
     <url version="Backshopseite" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" />
     <url version="n9004d" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=BKpGTR7y_channel=1_stream=1.sdp" />
-    <url version="China_shit" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=ST2TOrkp_channel=1_stream=0.sdp" />
     <url version="DMP100F" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=6QNMIQGe_channel=1_stream=0.sdp" />
     <url version="HK02W-IP" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=1.sdp" />
     <url version="ELP" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=htE3fe11_channel=1_stream=0.sdp" />
@@ -28377,7 +28366,6 @@
     <url version="chinszczyzna" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" port="554" />
     <url version="chinszczyzna extra" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=1.sdp" port="554" />
     <url version="myCAM" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" port="554" />
-    <url version="SHITCAM" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" />
     <url version="AR-408GW" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" />
     <url version="Wired 10" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=1.sdp" />
     <url version="mojakamera" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" port="554" />
@@ -28402,7 +28390,6 @@
     <url version="AR306NW IP" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" port="554" />
     <url version="0978" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" />
     <url version="ANRAN VGB101" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=JvzruA7W_channel=1_stream=0.sdp" />
-    <url version="SHIT CAM" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" />
     <url version="ANRAN" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=JvzruA7W_channel=1_stream=0.sdp" />
     <url version="YT8095LE" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=ElgWvTVG_channel=1_stream=0.sdp" />
     <url version="SCN-720WIP" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" port="554" />
@@ -28512,7 +28499,6 @@
     <url version="crenova" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" port="554" />
     <url version="DVR" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=BFbNSfnF_channel=1_stream=0.sdp" port="554" />
     <url version="chris" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=LIK4qb6e_channel=1_stream=0.sdp" />
-    <url version="fuck" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=6QNMIQGe_channel=1_stream=0.sdp" />
     <url version="not suer" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" port="554" />
     <url version="not sure" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" port="554" />
     <url version="not sure" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=1.sdp" port="554" />
@@ -28649,7 +28635,6 @@
     <url version="i90" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=P4J0UB5k_channel=1_stream=1.sdp" />
     <url version="720hd" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=1.sdp" port="554" />
     <url version="C1_51_VA0092_M" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=ZFx7lOkk_channel=1_stream=0.sdp" port="554" />
-    <url version="shit01" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" />
     <url version="elp hd" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" port="554" />
     <url version="bigyo" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" port="554" />
     <url version="escam" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=MEo0zgfO_channel=1_stream=0.sdp" port="554" />
@@ -29382,7 +29367,6 @@
     <url version="DA-IP8529TD" prefix="rtsp://" Source="FFMPEG" url="/mpeg4" port="8082" />
     <url version="cybo" prefix="rtsp://" Source="FFMPEG" url="/mpeg4cif" port="554" />
     <url version="GW-2040IP" prefix="rtsp://" Source="FFMPEG" url="/mpeg4cif" port="554" />
-    <url version="Cheapshit" prefix="rtsp://" Source="FFMPEG" url="/mpeg4" port="554" />
     <url version="HDIZZLE" prefix="rtsp://" Source="FFMPEG" url="/mpeg4" port="554" />
     <url version="tn-234" prefix="rtsp://" Source="FFMPEG" url="/mpeg4" port="554" />
     <url version="Garazs" prefix="rtsp://" Source="FFMPEG" url="/mpeg4" port="554" />
@@ -29409,7 +29393,6 @@
     <url version="China_5MP" prefix="rtsp://" Source="FFMPEG" url="/mpeg4" port="554" />
     <url version="Cotier 623 - 360" prefix="rtsp://" Source="FFMPEG" url="/mpeg4cif" port="554" />
     <url version="cam1" prefix="rtsp://" Source="FFMPEG" url="/mpeg4cif" port="554" />
-    <url version="fuck" prefix="rtsp://" Source="FFMPEG" url="/mpeg4cif" port="554" />
     <url version="kenvs" prefix="rtsp://" Source="FFMPEG" url="/mpeg4cif" port="554" />
     <url version="AZ-ESBY960R3" prefix="rtsp://" Source="FFMPEG" url="/mpeg4" port="554" />
     <url version="Hivideo" prefix="rtsp://" Source="FFMPEG" url="/mpeg4" port="554" />
@@ -29685,9 +29668,6 @@
   </Manufacturer>
   <Manufacturer name="Outside">
     <url version="Other" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
-  </Manufacturer>
-  <Manufacturer name="OUTSIDE1">
-    <url version="SHIT" prefix="rtsp://" Source="FFMPEG" url="/live0.264" port="8554" />
   </Manufacturer>
   <Manufacturer name="Overmax">
     <url version="Camspot 3.1" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
@@ -31531,7 +31511,6 @@
     <url version="Other" prefix="http://" Source="JPEG" url="cgi-bin/guest/Video.cgi?media=JPEG&amp;channel=[CHANNEL]" />
   </Manufacturer>
   <Manufacturer name="PT8126">
-    <url version="Fucknose" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="rtsp://" Source="VLC" url="ch0_0.h264" port="554" />
   </Manufacturer>
   <Manufacturer name="PTCam-18">
@@ -33437,7 +33416,6 @@
     <url version="CCIS1345" prefix="rtsp://" Source="VLC" url="ch0_0.h264" port="554" />
     <url version="CCMS2025" prefix="rtsp://" Source="VLC" url="cam/realmonitor?channel=[CHANNEL]&amp;subtype=1" port="554" />
     <url version="CFMS2025" prefix="rtsp://" Source="VLC" url="cam/realmonitor?channel=[CHANNEL]&amp;subtype=1" port="554" />
-    <url version="crap" prefix="rtsp://" Source="VLC" url="video" port="554" />
     <url version="CFMS2025" prefix="rtsp://" Source="VLC" url="video.mp4" port="554" />
     <url version="CCIC1410-ST" prefix="rtsp://" Source="VLC" url="video.mp4" port="554" />
     <url version="CCMC1315-LP" prefix="rtsp://" Source="VLC" url="video.mp4" port="554" />
@@ -38212,7 +38190,6 @@
     <url version="iprobot 3" prefix="rtsp://" Source="FFMPEG" url="/0/av2" port="8001" />
     <url version="gen" prefix="rtsp://" Source="FFMPEG" url="/0/av0" port="8001" />
     <url version="IPCAM3" prefix="rtsp://" Source="FFMPEG" url="/0/av0" port="8001" />
-    <url version="crap" prefix="rtsp://" Source="FFMPEG" url="/0/av0" port="8001" />
     <url version="Ude01" prefix="rtsp://" Source="FFMPEG" url="/0/video0" port="8001" />
     <url version="tenvis" prefix="rtsp://" Source="FFMPEG" url="/0/av1" port="8003" />
     <url version="ONVIF" prefix="rtsp://" Source="FFMPEG" url="/0/av0" port="32465" />
@@ -40993,7 +40970,6 @@
     <url version="webcam" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="NCM-623W" prefix="rtsp://" Source="FFMPEG" url="/11" port="554" />
     <url version="M-Series" prefix="rtsp://" Source="FFMPEG" url="/11" port="554" />
-    <url version="NCSHIT" prefix="rtsp://" Source="FFMPEG" url="/11" port="554" />
     <url version="Wansview H Series" prefix="rtsp://" Source="FFMPEG" url="/11" port="554" />
     <url version="ncm625w" prefix="rtsp://" Source="FFMPEG" url="/11" port="554" />
     <url version="NCL616W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />

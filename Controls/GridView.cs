@@ -927,7 +927,7 @@ namespace iSpyApplication.Controls
                             }
                             break;
                         case 5:
-                            MainClass.EditObject(ctrl);
+                            MainClass.EditObject(ctrl, _owner);
                             break;
                         case 6:
                             if (Helper.HasFeature(Enums.Features.Access_Media))

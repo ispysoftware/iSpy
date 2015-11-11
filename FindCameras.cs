@@ -102,6 +102,8 @@ namespace iSpyApplication
             chkRTSP.Checked = MainForm.IPRTSP;
             chkHTTP.Checked = MainForm.IPHTTP;
 
+            
+
             UISync.Init(this);
             LoadSources();
             ShowPanel(pnlConfig);           
@@ -139,7 +141,7 @@ namespace iSpyApplication
             label4.Text = LocRm.GetString("IPAddress");
             label2.Text = LocRm.GetString("Username");
             label3.Text = LocRm.GetString("Password");
-            label1.Text = label13.Text = LocRm.GetString("Manufacturer");
+            label1.Text = label13.Text = LocRm.GetString("Model");
             //label6.Text = LocRm.GetString("Port");
             label5.Text = LocRm.GetString("ScanInstructions");
             btnBack.Text = LocRm.GetString("Back");
@@ -150,7 +152,6 @@ namespace iSpyApplication
 
             rdoListed.Text = LocRm.GetString("Listed");
             rdoUnlisted.Text = LocRm.GetString("NotListed");
-            label11.Text = label14.Text = LocRm.GetString("Model");
 
             chkRTSP.Text = LocRm.GetString("ScanRTSPAddresses");
             chkHTTP.Text = LocRm.GetString("ScanHTTPAddresses");
@@ -476,70 +477,27 @@ namespace iSpyApplication
 
         private void LoadSources()
         {
-            if (MainForm.Sources == null)
-                return;
-            ddlMake.Items.Clear();
-            foreach (var m in MainForm.Sources)
+            var camDb = new List<string>();
+            var data = new HashSet<string>();
+            foreach (var source in MainForm.Sources)
             {
-                ddlMake.Items.Add(m.name);
-            }
-            if (MainForm.IPTYPE != "")
-            {
-                try
+                foreach (var u in source.url)
                 {
-                    ddlMake.SelectedItem = MainForm.IPTYPE;
-                    txtMake.Text = MainForm.IPTYPE;
-                }
-                catch
-                {
-                    //may have been removed
-                }
-            }
-        }
-
-        private void LoadModels()
-        {
-            ddlModel.Items.Clear();
-            if (MainForm.Sources == null || ddlMake.SelectedIndex==-1)
-                return;
-
-            string make = ddlMake.SelectedItem.ToString();
-            if (MainForm.IPLISTED)
-            {
-                txtMake.Text = make;
-            }
-            var m = MainForm.Sources.FirstOrDefault(p => p.name == make);
-
-            string added = ",";
-            ddlModel.Items.Add("Other");
-
-            if (m != null)
-            {
-                var l = m.url.OrderBy(p => p.version).ToList();
-                foreach (var u in l)
-                {
-                    if (!string.IsNullOrEmpty(u.version) &&
-                        added.IndexOf("," + u.version.ToUpper() + ",", StringComparison.Ordinal) == -1)
+                    string name = source.name.Trim();
+                    if (!string.IsNullOrEmpty(u.version))
+                        name += ": " + u.version.Trim();
+                    if (!data.Contains(name.ToUpper()))
                     {
-                        ddlModel.Items.Add(u.version);
-                        added += u.version.ToUpper() + ",";
+                        camDb.Add(name);
+                        data.Add(name.ToUpper());
                     }
                 }
             }
-            if (ddlModel.SelectedIndex == -1)
-                ddlModel.SelectedIndex = 0;
 
-            if (MainForm.IPMODEL != "")
-            {
-                try
-                {
-                    ddlModel.SelectedItem = MainForm.IPMODEL;
-                }
-                catch
-                {
-                    //may have been removed
-                }
-            }
+
+            txtFindModel.AutoCompleteList = camDb;
+            txtFindModel.CaseSensitive = false;
+            txtFindModel.MinTypedCharacters = 1;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -548,7 +506,7 @@ namespace iSpyApplication
 
         private void ddlMake_SelectedIndexChanged(object sender, EventArgs e)
         {
-            LoadModels();
+            //LoadModels();
         }
 
         private void AddConnections()
@@ -562,9 +520,12 @@ namespace iSpyApplication
             if (MainForm.IPLISTED)
             {
                 llblScan.Visible = true;
-                make = ddlMake.SelectedItem.ToString();
-                if (ddlModel.SelectedIndex > 0)
-                    model = ddlModel.SelectedItem.ToString().ToUpper();
+                var mm = txtFindModel.Text.Split(':');
+
+                make = mm[0].Trim();
+                if (mm.Length > 1)
+                    model = mm[1].Trim().ToUpper();
+                
             }
             else
                 llblScan.Visible = false;
@@ -668,7 +629,7 @@ namespace iSpyApplication
             UISync.Execute(() => tsddScanner.Enabled = false);
         }
 
-        private void ScanListedURLs()
+        private void ScanListedUrLs()
         {
             _quiturlscanner = false;
             string login = Uri.EscapeDataString(txtUsername.Text);
@@ -939,8 +900,6 @@ namespace iSpyApplication
                 _drSelected = _dt.Rows[e.RowIndex];
                 txtIPAddress.Text = _drSelected[0].ToString();
                 numPort.Value = Convert.ToInt32(_drSelected[1]);
-                if (_drSelected[2].ToString() == "iSpyServer")
-                    ddlMake.SelectedItem = "iSpy Camera Server";
             }
         }
 
@@ -956,7 +915,7 @@ namespace iSpyApplication
 
         private void txtIPAddress_KeyUp(object sender, KeyEventArgs e)
         {
-            btnBack.Enabled = ddlMake.SelectedIndex > -1 && txtIPAddress.Text.Trim() != "";
+            //btnBack.Enabled = ddlMake.SelectedIndex > -1 && txtIPAddress.Text.Trim() != "";
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -1001,7 +960,7 @@ namespace iSpyApplication
                 MainForm.IPHTTP = chkHTTP.Checked;
                 if (MainForm.IPLISTED)
                 {
-                    if (ddlMake.SelectedIndex == -1)
+                    if (txtFindModel.Text=="")
                     {
                         MessageBox.Show(this, LocRm.GetString("ChooseMake"));
                         return;
@@ -1043,7 +1002,7 @@ namespace iSpyApplication
             }
             if (pnlConnect.Visible)
             {
-                if (MainForm.IPLISTED && ddlMake.SelectedIndex == 0)
+                if (MainForm.IPLISTED && txtFindModel.Text=="")
                 {
                     ShowPanel(pnlConfig);
                     return;
@@ -1054,9 +1013,12 @@ namespace iSpyApplication
                 
                 if (MainForm.IPLISTED)
                 {
-                    make = ddlMake.SelectedItem.ToString();
-                    if (ddlModel.SelectedIndex > 0)
-                        model = ddlModel.SelectedItem.ToString().ToUpper();
+                    var mm = txtFindModel.Text.Split(':');
+
+                    make = mm[0].Trim();
+                    model = "";
+                    if (mm.Length > 1)
+                        model = mm[1].Trim().ToUpper();
                 }
               
 
@@ -1275,16 +1237,6 @@ namespace iSpyApplication
             MainForm.OpenUrl(Program.Platform == "x64" ? MainForm.VLCx64 : MainForm.VLCx86);
         }
 
-        private void ddlModel_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (MainForm.IPLISTED)
-            {
-                if (ddlModel.SelectedIndex > -1)
-                {
-                    txtModel.Text = ddlModel.SelectedItem.ToString();
-                }
-            }
-        }
 
         private void rdoListed_CheckedChanged(object sender, EventArgs e)
         {
@@ -1328,7 +1280,7 @@ namespace iSpyApplication
             {
                 QuitScanner();
             }
-            _urlscanner = new Thread(ScanListedURLs);
+            _urlscanner = new Thread(ScanListedUrLs);
             _urlscanner.Start();
             tsddScanner.Enabled = true;
         }

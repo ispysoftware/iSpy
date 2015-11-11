@@ -5874,7 +5874,6 @@ copy or delete as many lines as you need.-->
       <Make Name="Hikvision" Model="DS-2DE2103-DE3/W" />
     </Makes>
     <CommandURL></CommandURL>
-    <port>7000</port>
     <Method>PUT</Method>
     <Commands>
       <Center>/ISAPI/PTZCtrl/channels/[CHANNEL]/homeposition/goto</Center>

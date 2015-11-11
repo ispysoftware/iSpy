@@ -1910,12 +1910,10 @@ namespace iSpyApplication
                 }
             }
 
-            if (cw == null) return;
-            TopMost = false;
+            if (cw == null) return;           
             var ac = new AddCamera { CameraControl = cw, MainClass = this };
             ac.ShowDialog(owner ?? this);
             ac.Dispose();
-            TopMost = Conf.AlwaysOnTop;
         }
 
         internal void EditObject(ISpyControl ctrl, IWin32Window owner = null)
@@ -1955,11 +1953,9 @@ namespace iSpyApplication
 
             if (vlf != null)
             {
-                TopMost = false;
                 var am = new AddMicrophone { VolumeLevel = vlf, MainClass = this };
                 am.ShowDialog(owner ?? this);
                 am.Dispose();
-                TopMost = Conf.AlwaysOnTop;
             }
         }
 
