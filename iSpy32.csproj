@@ -817,6 +817,7 @@
     <Compile Include="PTZConfig.Designer.cs">
       <DependentUpon>PTZConfig.cs</DependentUpon>
     </Compile>
+    <Compile Include="PTZController.cs" />
     <Compile Include="PTZTool.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -881,9 +882,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="..\..\..\filediff\old\PTZController.cs">
-      <Link>PTZController.cs</Link>
     </Compile>
     <Compile Include="RestartableStream.cs" />
     <Compile Include="SerializableFont.cs" />
