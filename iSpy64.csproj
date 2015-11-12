@@ -422,6 +422,9 @@
     <Compile Include="CommandButtons.Designer.cs">
       <DependentUpon>CommandButtons.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\AutoCompleteTextbox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\ColorSlider.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -448,6 +451,12 @@
     </Compile>
     <Compile Include="Importer.Designer.cs">
       <DependentUpon>Importer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PTZConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PTZConfig.Designer.cs">
+      <DependentUpon>PTZConfig.cs</DependentUpon>
     </Compile>
     <Compile Include="TagConfigure.cs">
       <SubType>Form</SubType>
@@ -1574,6 +1583,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Prompt.resx">
       <DependentUpon>Prompt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PTZConfig.resx">
+      <DependentUpon>PTZConfig.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PTZTool.resx">
       <DependentUpon>PTZTool.cs</DependentUpon>
