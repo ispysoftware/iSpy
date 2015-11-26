@@ -289,9 +289,9 @@ namespace iSpyApplication.Sources.Video
 
                     //forces processing of volume level without piping it out
                     var sampleBuffer = new float[dataLength];
-                    _sampleChannel.Read(sampleBuffer, 0, dataLength);
+                    int read = _sampleChannel.Read(sampleBuffer, 0, dataLength);
 
-                    DataAvailable?.Invoke(this, new DataAvailableEventArgs((byte[])_audioBuffer.Clone()));
+                    DataAvailable?.Invoke(this, new DataAvailableEventArgs((byte[])_audioBuffer.Clone(),read));
                 }
             }
         }

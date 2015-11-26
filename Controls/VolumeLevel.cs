@@ -1606,7 +1606,7 @@ namespace iSpyApplication.Controls
                                             }
                                         }
                                         float d = Levels.Max();
-                                        _soundData.Append(String.Format(CultureInfo.InvariantCulture,
+                                        _soundData.Append(string.Format(CultureInfo.InvariantCulture,
                                             "{0:0.000}", d));
                                         _soundData.Append(",");
                                         if (d > maxlevel)
@@ -1759,6 +1759,7 @@ namespace iSpyApplication.Controls
                 {
                     fa.Nullify();
                 }
+                Buffer = new ConcurrentQueue<Helper.FrameAction>();
             }
         }
 

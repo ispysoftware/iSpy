@@ -501,13 +501,13 @@ namespace iSpyApplication.Sources.Video
                     da?.Invoke(this, new DataAvailableEventArgs(audio));
 
                     var sampleBuffer = new float[audio.Length];
-                    SampleChannel.Read(sampleBuffer, 0, audio.Length);
+                    int read = SampleChannel.Read(sampleBuffer, 0, audio.Length);
 
-                    _waveProvider?.AddSamples(audio, 0, audio.Length);
+                    _waveProvider?.AddSamples(audio, 0, read);
 
                     if (WaveOutProvider != null && Listening)
                     {
-                        WaveOutProvider?.AddSamples(audio, 0, audio.Length);
+                        WaveOutProvider?.AddSamples(audio, 0, read);
                     }
                 }
                 catch (Exception ex)

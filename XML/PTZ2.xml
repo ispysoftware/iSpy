@@ -6040,20 +6040,75 @@ copy or delete as many lines as you need.-->
     </Makes>
     <CommandURL>/camera-cgi/com/ptz.cgi</CommandURL>
     <Commands>
-      <Center>/?action=command&amp;command=reset_pan_tilt</Center>
-      <Left>/?action=command&amp;command=move_left1.0</Left>
-      <Right>/?action=command&amp;command=move_right0.1</Right>
-      <Right>/?action=command&amp;command=lr_stop</Right>
-      <Up>/?action=command&amp;command=move_backward0.1</Up>
-      <Down>/?action=command&amp;command=move_forward0.1</Down>
+      <Center>action=command&amp;command=reset_pan_tilt</Center>
+      <Left>action=command&amp;command=move_left1.0</Left>
+      <Right>action=command&amp;command=move_right0.1</Right>
+      <Right>action=command&amp;command=lr_stop</Right>
+      <Up>action=command&amp;command=move_backward0.1</Up>
+      <Down>action=command&amp;command=move_forward0.1</Down>
     </Commands>
     <ExtendedCommands>
-      <Command Name="Melody1">/?action=command&amp;command=melody1</Command>
-      <Command Name="Melody2">/?action=command&amp;command=melody2</Command>
-      <Command Name="Melody3">/?action=command&amp;command=melody3</Command>
-      <Command Name="Melody4">/?action=command&amp;command=melody4</Command>
-      <Command Name="Melody5">/?action=command&amp;command=melody5</Command>
-      <Command Name="Melody Stop">/?action=command&amp;command=melodystop</Command>
+      <Command Name="Melody1">action=command&amp;command=melody1</Command>
+      <Command Name="Melody2">action=command&amp;command=melody2</Command>
+      <Command Name="Melody3">action=command&amp;command=melody3</Command>
+      <Command Name="Melody4">action=command&amp;command=melody4</Command>
+      <Command Name="Melody5">action=command&amp;command=melody5</Command>
+      <Command Name="Melody Stop">action=command&amp;command=melodystop</Command>
+    </ExtendedCommands>
+  </Camera>
+  <Camera id="218">
+    <Makes>
+      <Make Name="INSTAR" Model="IN-6/7xx" />
+    </Makes>
+    <CommandURL>/web/cgi-bin/hi3510/</CommandURL>
+    <Commands>
+      <Center>preset.cgi?-act=goto&amp;-number=0</Center>
+      <Left>ptzctrl.cgi?-step=1&amp;-act=left</Left>
+      <Right>ptzctrl.cgi?-step=1&amp;-act=right</Right>
+      <Up>ptzctrl.cgi?-step=1&amp;-act=up</Up>
+      <Down>ptzctrl.cgi?-step=1&amp;-act=down</Down>
+      <Stop>ptzctrl.cgi?-step=0&amp;-act=stop</Stop>
+      <ZoomIn>ptzctrl.cgi?-step=1&amp;-act=zoomin</ZoomIn>
+      <ZoomOut>ptzctrl.cgi?-step=1&amp;-act=zoomout</ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Go Preset 1">preset.cgi?-act=goto&amp;-number=0</Command>
+      <Command Name="Go Preset 2">preset.cgi?-act=goto&amp;-number=1</Command>
+      <Command Name="Go Preset 3">preset.cgi?-act=goto&amp;-number=2</Command>
+      <Command Name="Go Preset 4">preset.cgi?-act=goto&amp;-number=3</Command>
+      <Command Name="Go Preset 5">preset.cgi?-act=goto&amp;-number=4</Command>
+      <Command Name="Go Preset 6">preset.cgi?-act=goto&amp;-number=5</Command>
+      <Command Name="Go Preset 7">preset.cgi?-act=goto&amp;-number=6</Command>
+      <Command Name="Go Preset 7">preset.cgi?-act=goto&amp;-number=7</Command>
+    </ExtendedCommands>
+  </Camera>
+  <Camera id="219">
+    <Makes>
+      <Make Name="P2P" Model="Other" />
+    </Makes>
+    <CommandURL>/decoder_control.cgi</CommandURL>
+    <Commands>
+      <Center></Center>
+      <Left>command=4</Left>
+      <LeftUp>command=90</LeftUp>
+      <Right>command=6</Right>
+      <RightUp>command=91</RightUp>
+      <Up>command=0</Up>
+      <Down>command=2</Down>
+      <LeftDown>command=92</LeftDown>
+      <RightDown>command=93</RightDown>
+      <Stop>command=1</Stop>
+      <ZoomIn>
+      </ZoomIn>
+      <ZoomOut>
+      </ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Stop">command=1</Command>
+      <Command Name="Horizon patrol">command=28</Command>
+      <Command Name="Stop horizon patrol">command=29</Command>
+      <Command Name="Vertical patrol">command=26</Command>
+      <Command Name="Stop vertical patrol">command=27</Command>
     </ExtendedCommands>
   </Camera>
 </PTZSettings2>

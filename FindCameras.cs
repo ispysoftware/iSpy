@@ -13,6 +13,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using iSpyApplication.Controls;
 using iSpyApplication.Utilities;
 
 namespace iSpyApplication
@@ -141,7 +142,8 @@ namespace iSpyApplication
             label4.Text = LocRm.GetString("IPAddress");
             label2.Text = LocRm.GetString("Username");
             label3.Text = LocRm.GetString("Password");
-            label1.Text = label13.Text = LocRm.GetString("Model");
+            label14.Text = LocRm.GetString("Model");
+            label1.Text = label13.Text = LocRm.GetString("Make");
             //label6.Text = LocRm.GetString("Port");
             label5.Text = LocRm.GetString("ScanInstructions");
             btnBack.Text = LocRm.GetString("Back");
@@ -475,10 +477,12 @@ namespace iSpyApplication
             manager.Start();
         }
 
+
+        private HashSet<string> hashdata = new HashSet<string>();
         private void LoadSources()
         {
-            var camDb = new List<string>();
-            var data = new HashSet<string>();
+            var camDb = new List<AutoCompleteTextbox.TextEntry>();
+            
             foreach (var source in MainForm.Sources)
             {
                 foreach (var u in source.url)
@@ -486,17 +490,16 @@ namespace iSpyApplication
                     string name = source.name.Trim();
                     if (!string.IsNullOrEmpty(u.version))
                         name += ": " + u.version.Trim();
-                    if (!data.Contains(name.ToUpper()))
+                    if (!hashdata.Contains(name.ToUpper()))
                     {
-                        camDb.Add(name);
-                        data.Add(name.ToUpper());
+                        camDb.Add(new AutoCompleteTextbox.TextEntry(name));
+                        hashdata.Add(name.ToUpper());
                     }
                 }
             }
 
 
             txtFindModel.AutoCompleteList = camDb;
-            txtFindModel.CaseSensitive = false;
             txtFindModel.MinTypedCharacters = 1;
         }
 
@@ -960,7 +963,7 @@ namespace iSpyApplication
                 MainForm.IPHTTP = chkHTTP.Checked;
                 if (MainForm.IPLISTED)
                 {
-                    if (txtFindModel.Text=="")
+                    if (!hashdata.Contains(txtFindModel.Text.ToUpper()))
                     {
                         MessageBox.Show(this, LocRm.GetString("ChooseMake"));
                         return;

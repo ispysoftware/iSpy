@@ -177,6 +177,7 @@ internal static class Program
             // in case our https certificate ever expires or there is some other issue
             ServicePointManager.ServerCertificateValidationCallback += ValidateRemoteCertificate;
             ServicePointManager.Expect100Continue = false;
+            ServicePointManager.DefaultConnectionLimit = 1000;
 
             FfmpegMutex = new Mutex();
             

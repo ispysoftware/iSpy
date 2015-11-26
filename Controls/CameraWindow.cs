@@ -1603,7 +1603,7 @@ namespace iSpyApplication.Controls
                     else
                     {
                         Calibrating = true;
-                        PTZ.SendPTZCommand(entry.command, false);
+                        PTZ.SendPTZCommand(entry.command);
                     }
                 }
             }
@@ -1690,7 +1690,10 @@ namespace iSpyApplication.Controls
                 {
                     //camera has been down for 30 seconds - send notification
                     DoAlert("disconnect");
+                    if (Recording)
+                        StopSaving();
                     _errorTime = DateTime.MinValue;
+                    
                 }
             }
         }
@@ -2142,7 +2145,7 @@ namespace iSpyApplication.Controls
                 {
                     ErrorHandler?.Invoke(ex.Message);
                     _timeLapseWriter = null;
-                    Camobject.recorder.timelapse = 0;
+                    //Camobject.recorder.timelapse = 0;
                 }
                 finally
                 {
@@ -5001,7 +5004,7 @@ namespace iSpyApplication.Controls
 
         public void ExecutePluginCommand(string command)
         {
-            var a = Camera.Plugin?.GetType().GetMethod("ExecuteCommand");
+            var a = Camera?.Plugin?.GetType().GetMethod("ExecuteCommand");
             if (a != null)
             {
                 var b = (String) a.Invoke(Camera.Plugin, new object[] {command});
@@ -5014,7 +5017,7 @@ namespace iSpyApplication.Controls
 
         public bool ExecutePluginShortcut(string shortcut)
         {
-            var a = Camera.Plugin?.GetType().GetMethod("ExecuteShortcut");
+            var a = Camera?.Plugin?.GetType().GetMethod("ExecuteShortcut");
             if (a != null)
             {
                 var b = (String)a.Invoke(Camera.Plugin, new object[] { shortcut });
@@ -5045,9 +5048,9 @@ namespace iSpyApplication.Controls
         //ispykinect: this processes commands from the plugin
         void CameraWindow_AlertHandler(object sender, AlertEventArgs eventArgs)
         {
-            if (Camera.Plugin != null)
+            if (Camera?.Plugin != null)
             {
-                var a = (String)Camera.Plugin.GetType().GetMethod("ProcessAlert").Invoke(Camera.Plugin, new object[] { eventArgs.Description });
+                var a = (string)Camera.Plugin.GetType().GetMethod("ProcessAlert").Invoke(Camera.Plugin, new object[] { eventArgs.Description });
                 ProcessAlertFromPlugin(a, eventArgs.Description);
             }
 

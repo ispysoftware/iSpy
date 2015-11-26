@@ -590,8 +590,6 @@
             // 
             // txtFindModel
             // 
-            this.txtFindModel.AutoCompleteList = ((System.Collections.Generic.List<string>)(resources.GetObject("txtFindModel.AutoCompleteList")));
-            this.txtFindModel.CaseSensitive = false;
             this.txtFindModel.Location = new System.Drawing.Point(136, 3);
             this.txtFindModel.MaxDropDownItems = 16;
             this.txtFindModel.MinTypedCharacters = 2;

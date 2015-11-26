@@ -85,7 +85,7 @@ namespace iSpyApplication
             _addr = Convert.ToUInt16(cfg[5]);
         }
 
-        private HttpWebRequest _request;
+        //private HttpWebRequest _request;
         const double Arc = Math.PI / 8;
         private string _nextcommand = "";
 
@@ -1406,30 +1406,11 @@ namespace iSpyApplication
         //    string data = _serialPort.ReadLine();
         //    Debug.WriteLine(" <- " + data);
         //}
-
-        public void SendPTZCommand(string cmd)
-        {
-            SendPTZCommand(cmd, false);
-        }
-
-        public void SendPTZCommand(string cmd, bool wait)
+        
+        public void SendPTZCommand(string cmd, bool wait = false)
         {
             if (string.IsNullOrEmpty(cmd))
                 return;
-
-            if (_request != null)
-            {
-                if (!wait)
-                    return;
-                try
-                {
-                    _request.Abort();
-                }
-                catch
-                {
-                    _request = null;
-                }
-            }
 
             PTZSettings2Camera ptz;
             switch (_cameraControl.Camobject.ptz)
@@ -1504,11 +1485,17 @@ namespace iSpyApplication
                 {
                     if (!string.IsNullOrEmpty(cmd))
                     {
-                        string ext = "?";
+                        string ext = "";
                         if (pandq.IndexOf("?", StringComparison.Ordinal) != -1)
                         {
                             ext = "&";
                         }
+                        else
+                        {
+                            if (!pandq.EndsWith("/"))
+                                ext = "?";
+                        }
+                        
                         pandq += ext + cmd;
                     }
                 }
@@ -1561,15 +1548,15 @@ namespace iSpyApplication
             url = url.Replace("%5BPASSWORD%5D", Uri.EscapeDataString(pwd));
             url = url.Replace("%5BCHANNEL%5D", _cameraControl.Camobject.settings.ptzchannel);
 
-            _request = (HttpWebRequest)WebRequest.Create(url);
-            _request.Timeout = 5000;
-            _request.AllowAutoRedirect = true;
-            _request.KeepAlive = true;
-            _request.SendChunked = false;
-            _request.AllowWriteStreamBuffering = true;
-            _request.UserAgent = _cameraControl.Camobject.settings.useragent;
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Timeout = 5000;
+            request.AllowAutoRedirect = true;
+            request.KeepAlive = true;
+            request.SendChunked = false;
+            request.AllowWriteStreamBuffering = true;
+            request.UserAgent = _cameraControl.Camobject.settings.useragent;
             if (_cameraControl.Camobject.settings.usehttp10)
-                _request.ProtocolVersion = HttpVersion.Version10;
+                request.ProtocolVersion = HttpVersion.Version10;
             //
 
             //get credentials
@@ -1580,7 +1567,7 @@ namespace iSpyApplication
             if (!string.IsNullOrEmpty(un))
             {
                 authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(Uri.EscapeDataString(un) + ":" + Uri.EscapeDataString(pwd)));
-                _request.Headers["Authorization"] = "Basic " + authInfo;
+                request.Headers["Authorization"] = "Basic " + authInfo;
             }
 
             string ckies = _cameraControl.Camobject.settings.cookies ?? "";
@@ -1608,11 +1595,11 @@ namespace iSpyApplication
                         if (nv.Length == 2)
                         {
                             var cookie = new Cookie(nv[0].Trim(), nv[1].Trim());
-                            myContainer.Add(new Uri(_request.RequestUri.ToString()), cookie);
+                            myContainer.Add(new Uri(request.RequestUri.ToString()), cookie);
                         }
                     }
                 }
-                _request.CookieContainer = myContainer;
+                request.CookieContainer = myContainer;
             }
 
             switch (ptz.Method)
@@ -1629,20 +1616,20 @@ namespace iSpyApplication
 
                     byte[] data = encoding.GetBytes(postData);
 
-                    _request.Method = ptz.Method;
-                    _request.ContentType = "application/x-www-form-urlencoded";
-                    _request.ContentLength = data.Length;
+                    request.Method = ptz.Method;
+                    request.ContentType = "application/x-www-form-urlencoded";
+                    request.ContentLength = data.Length;
 
                     try
                     {
-                        using (Stream stream = _request.GetRequestStream())
+                        using (Stream stream = request.GetRequestStream())
                         {
                             stream.Write(data, 0, data.Length);
                         }
                     }
                     catch
                     {
-                        _request = null;
+                        request = null;
                         throw;
                     }
 
@@ -1650,8 +1637,8 @@ namespace iSpyApplication
             }
 
 
-            var myRequestState = new RequestState { Request = _request };
-            _request.BeginGetResponse(FinishPTZRequest, myRequestState);
+            var myRequestState = new RequestState { Request = request };
+            request.BeginGetResponse(FinishPTZRequest, myRequestState);
         }
 
         private void FinishPTZRequest(IAsyncResult result)
@@ -1677,14 +1664,17 @@ namespace iSpyApplication
 
                 myRequestState.Response.Close();
             }
+            catch (WebException wex)
+            {
+                MainForm.LogExceptionToFile(wex, myWebRequest.RequestUri.ToString());
+            }
             catch (Exception ex)
             {
                 MainForm.LogExceptionToFile(ex);
             }
             myRequestState.Response = null;
             myRequestState.Request = null;
-
-            _request = null;
+            
             if (_nextcommand != "")
             {
                 string nc = _nextcommand;

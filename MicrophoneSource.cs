@@ -364,7 +364,7 @@ namespace iSpyApplication
 
         private void DdlDeviceSelectedIndexChanged(object sender, EventArgs e)
         {
-
+            
         }
 
 

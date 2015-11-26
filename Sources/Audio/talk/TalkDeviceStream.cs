@@ -211,17 +211,18 @@ namespace iSpyApplication.Sources.Audio.talk
             if (DataAvailable != null)
             {
                 //forces processing of volume level without piping it out
+                int l = e.BytesRecorded;
                 if (_sampleChannel != null)
                 {
                     var sampleBuffer = new float[e.BytesRecorded];
-                    _sampleChannel.Read(sampleBuffer, 0, e.BytesRecorded);
+                    l = _sampleChannel.Read(sampleBuffer, 0, e.BytesRecorded);
                 }
                 if (Listening)
                 {
-                    WaveOutProvider?.AddSamples(e.Buffer, 0, e.BytesRecorded);
+                    WaveOutProvider?.AddSamples(e.Buffer, 0, l);
                 }
-                var da = new DataAvailableEventArgs((byte[])e.Buffer.Clone(),e.BytesRecorded);
-                DataAvailable(this, da);
+                
+                DataAvailable(this, new DataAvailableEventArgs((byte[])e.Buffer.Clone(), l));
             }
         }
 

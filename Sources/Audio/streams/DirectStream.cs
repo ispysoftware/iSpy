@@ -193,8 +193,8 @@ namespace iSpyApplication.Sources.Audio.streams
                 {
                     while (!_stopEvent.WaitOne(0, false) && !MainForm.ShuttingDown)
                     {
-                       
-                        if (DataAvailable != null)
+                        var da = DataAvailable;
+                        if (da != null)
                         {
                             int recbytesize = _stream.Read(data, 0, PacketSize);
                             if (recbytesize > 0)
@@ -204,14 +204,14 @@ namespace iSpyApplication.Sources.Audio.streams
                                     _waveProvider.AddSamples(data, 0, recbytesize);
 
                                     var sampleBuffer = new float[recbytesize];
-                                    _sampleChannel.Read(sampleBuffer, 0, recbytesize);
+                                    int read = _sampleChannel.Read(sampleBuffer, 0, recbytesize);
 
+                                    da(this, new DataAvailableEventArgs((byte[])data.Clone(), read));
+                                    
                                     if (Listening)
                                     {
-                                        WaveOutProvider?.AddSamples(data, 0, recbytesize);
+                                        WaveOutProvider?.AddSamples(data, 0, read);
                                     }
-                                    var da = new DataAvailableEventArgs((byte[]) data.Clone(),recbytesize);
-                                    DataAvailable(this, da);
                                 }
                                 
                             }

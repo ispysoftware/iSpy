@@ -68,16 +68,16 @@ namespace iSpyApplication
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.label14 = new System.Windows.Forms.Label();
             this.ddlCloneMicrophone = new System.Windows.Forms.ComboBox();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtWavStreamURL = new System.Windows.Forms.TextBox();
             this.linkLabel3 = new System.Windows.Forms.LinkLabel();
             this.llblHelp = new System.Windows.Forms.LinkLabel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.button5 = new System.Windows.Forms.Button();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
-            this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtWavStreamURL = new System.Windows.Forms.TextBox();
             this.tcAudioSource.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -93,19 +93,19 @@ namespace iSpyApplication
             this.tabPage5.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.tableLayoutPanel10.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
             this.tabPage7.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ddlDevice
             // 
             this.ddlDevice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlDevice.FormattingEnabled = true;
-            this.ddlDevice.Location = new System.Drawing.Point(77, 3);
+            this.ddlDevice.Location = new System.Drawing.Point(98, 3);
             this.ddlDevice.Name = "ddlDevice";
-            this.ddlDevice.Size = new System.Drawing.Size(346, 21);
+            this.ddlDevice.Size = new System.Drawing.Size(346, 24);
             this.ddlDevice.TabIndex = 26;
             this.ddlDevice.SelectedIndexChanged += new System.EventHandler(this.DdlDeviceSelectedIndexChanged);
             // 
@@ -113,9 +113,9 @@ namespace iSpyApplication
             // 
             this.button2.AutoSize = true;
             this.button2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.button2.Location = new System.Drawing.Point(415, 3);
+            this.button2.Location = new System.Drawing.Point(398, 3);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(50, 23);
+            this.button2.Size = new System.Drawing.Size(61, 27);
             this.button2.TabIndex = 25;
             this.button2.Text = "Cancel";
             this.button2.UseVisualStyleBackColor = true;
@@ -125,9 +125,9 @@ namespace iSpyApplication
             // 
             this.button1.AutoSize = true;
             this.button1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.button1.Location = new System.Drawing.Point(471, 3);
+            this.button1.Location = new System.Drawing.Point(465, 3);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(32, 23);
+            this.button1.Size = new System.Drawing.Size(38, 27);
             this.button1.TabIndex = 24;
             this.button1.Text = "OK";
             this.button1.UseVisualStyleBackColor = true;
@@ -153,10 +153,10 @@ namespace iSpyApplication
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.tableLayoutPanel3);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(6);
-            this.tabPage1.Size = new System.Drawing.Size(498, 224);
+            this.tabPage1.Size = new System.Drawing.Size(498, 221);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Local Device";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -182,10 +182,10 @@ namespace iSpyApplication
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 35);
+            this.label1.Location = new System.Drawing.Point(3, 39);
             this.label1.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(68, 13);
+            this.label1.Size = new System.Drawing.Size(89, 17);
             this.label1.TabIndex = 32;
             this.label1.Text = "Sample Rate";
             // 
@@ -195,7 +195,7 @@ namespace iSpyApplication
             this.label8.Location = new System.Drawing.Point(3, 8);
             this.label8.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(41, 13);
+            this.label8.Size = new System.Drawing.Size(51, 17);
             this.label8.TabIndex = 31;
             this.label8.Text = "Device";
             // 
@@ -203,18 +203,18 @@ namespace iSpyApplication
             // 
             this.ddlSampleRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlSampleRate.FormattingEnabled = true;
-            this.ddlSampleRate.Location = new System.Drawing.Point(77, 30);
+            this.ddlSampleRate.Location = new System.Drawing.Point(98, 34);
             this.ddlSampleRate.Name = "ddlSampleRate";
-            this.ddlSampleRate.Size = new System.Drawing.Size(121, 21);
+            this.ddlSampleRate.Size = new System.Drawing.Size(121, 24);
             this.ddlSampleRate.TabIndex = 33;
             // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.tableLayoutPanel4);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(6);
-            this.tabPage3.Size = new System.Drawing.Size(498, 224);
+            this.tabPage3.Size = new System.Drawing.Size(498, 221);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "iSpy Server";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -242,13 +242,13 @@ namespace iSpyApplication
             this.label9.Location = new System.Drawing.Point(3, 8);
             this.label9.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(29, 13);
+            this.label9.Size = new System.Drawing.Size(36, 17);
             this.label9.TabIndex = 31;
             this.label9.Text = "URL";
             // 
             // linkLabel1
             // 
-            this.linkLabel1.Location = new System.Drawing.Point(38, 26);
+            this.linkLabel1.Location = new System.Drawing.Point(45, 28);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(351, 46);
             this.linkLabel1.TabIndex = 32;
@@ -259,19 +259,19 @@ namespace iSpyApplication
             // 
             // txtNetwork
             // 
-            this.txtNetwork.Location = new System.Drawing.Point(38, 3);
+            this.txtNetwork.Location = new System.Drawing.Point(45, 3);
             this.txtNetwork.Name = "txtNetwork";
-            this.txtNetwork.Size = new System.Drawing.Size(154, 20);
+            this.txtNetwork.Size = new System.Drawing.Size(154, 22);
             this.txtNetwork.TabIndex = 30;
             this.txtNetwork.TextChanged += new System.EventHandler(this.TextBox1TextChanged);
             // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.tableLayoutPanel2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(6);
-            this.tabPage2.Size = new System.Drawing.Size(498, 224);
+            this.tabPage2.Size = new System.Drawing.Size(498, 221);
             this.tabPage2.TabIndex = 3;
             this.tabPage2.Text = "VLC";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -304,7 +304,7 @@ namespace iSpyApplication
             this.flowLayoutPanel3.Controls.Add(this.cmbVLCURL);
             this.flowLayoutPanel3.Controls.Add(this.button3);
             this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(66, 3);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(85, 3);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
             this.flowLayoutPanel3.Size = new System.Drawing.Size(417, 34);
             this.flowLayoutPanel3.TabIndex = 61;
@@ -314,7 +314,7 @@ namespace iSpyApplication
             this.cmbVLCURL.FormattingEnabled = true;
             this.cmbVLCURL.Location = new System.Drawing.Point(3, 3);
             this.cmbVLCURL.Name = "cmbVLCURL";
-            this.cmbVLCURL.Size = new System.Drawing.Size(327, 21);
+            this.cmbVLCURL.Size = new System.Drawing.Size(327, 24);
             this.cmbVLCURL.TabIndex = 49;
             // 
             // button3
@@ -333,13 +333,13 @@ namespace iSpyApplication
             this.label21.Location = new System.Drawing.Point(3, 8);
             this.label21.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(53, 13);
+            this.label21.Size = new System.Drawing.Size(66, 17);
             this.label21.TabIndex = 50;
             this.label21.Text = "File/ URL";
             // 
             // lblInstallVLC
             // 
-            this.lblInstallVLC.Location = new System.Drawing.Point(66, 120);
+            this.lblInstallVLC.Location = new System.Drawing.Point(85, 124);
             this.lblInstallVLC.Name = "lblInstallVLC";
             this.lblInstallVLC.Size = new System.Drawing.Size(402, 75);
             this.lblInstallVLC.TabIndex = 58;
@@ -350,15 +350,15 @@ namespace iSpyApplication
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(66, 40);
+            this.label19.Location = new System.Drawing.Point(85, 40);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(297, 13);
+            this.label19.Size = new System.Drawing.Size(389, 17);
             this.label19.TabIndex = 53;
             this.label19.Text = "eg: http://username:password@192.168.1.4/videostream.asf";
             // 
             // txtVLCArgs
             // 
-            this.txtVLCArgs.Location = new System.Drawing.Point(66, 56);
+            this.txtVLCArgs.Location = new System.Drawing.Point(85, 60);
             this.txtVLCArgs.Multiline = true;
             this.txtVLCArgs.Name = "txtVLCArgs";
             this.txtVLCArgs.Size = new System.Drawing.Size(367, 61);
@@ -367,20 +367,20 @@ namespace iSpyApplication
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(3, 61);
+            this.label18.Location = new System.Drawing.Point(3, 65);
             this.label18.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(57, 13);
+            this.label18.Size = new System.Drawing.Size(76, 17);
             this.label18.TabIndex = 52;
             this.label18.Text = "Arguments";
             // 
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.tableLayoutPanel5);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Location = new System.Drawing.Point(4, 25);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(6);
-            this.tabPage4.Size = new System.Drawing.Size(498, 224);
+            this.tabPage4.Size = new System.Drawing.Size(498, 221);
             this.tabPage4.TabIndex = 4;
             this.tabPage4.Text = "FFMPEG";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -413,7 +413,7 @@ namespace iSpyApplication
             this.label2.Location = new System.Drawing.Point(3, 8);
             this.label2.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(50, 13);
+            this.label2.Size = new System.Drawing.Size(62, 17);
             this.label2.TabIndex = 51;
             this.label2.Text = "File/URL";
             // 
@@ -422,7 +422,7 @@ namespace iSpyApplication
             this.lblFFMPEG.AutoSize = true;
             this.lblFFMPEG.Location = new System.Drawing.Point(133, 31);
             this.lblFFMPEG.Name = "lblFFMPEG";
-            this.lblFFMPEG.Size = new System.Drawing.Size(297, 13);
+            this.lblFFMPEG.Size = new System.Drawing.Size(346, 31);
             this.lblFFMPEG.TabIndex = 54;
             this.lblFFMPEG.Text = "eg: http://username:password@192.168.1.4/videostream.asf";
             // 
@@ -452,7 +452,7 @@ namespace iSpyApplication
             this.cmbFFMPEGURL.FormattingEnabled = true;
             this.cmbFFMPEGURL.Location = new System.Drawing.Point(3, 3);
             this.cmbFFMPEGURL.Name = "cmbFFMPEGURL";
-            this.cmbFFMPEGURL.Size = new System.Drawing.Size(267, 21);
+            this.cmbFFMPEGURL.Size = new System.Drawing.Size(267, 24);
             this.cmbFFMPEGURL.TabIndex = 52;
             // 
             // button4
@@ -471,7 +471,7 @@ namespace iSpyApplication
             this.label7.Location = new System.Drawing.Point(3, 70);
             this.label7.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(109, 13);
+            this.label7.Size = new System.Drawing.Size(120, 21);
             this.label7.TabIndex = 87;
             this.label7.Text = "Analyse Duration (ms)";
             // 
@@ -489,7 +489,7 @@ namespace iSpyApplication
             0,
             0});
             this.numAnalyseDuration.Name = "numAnalyseDuration";
-            this.numAnalyseDuration.Size = new System.Drawing.Size(95, 20);
+            this.numAnalyseDuration.Size = new System.Drawing.Size(95, 22);
             this.numAnalyseDuration.TabIndex = 89;
             this.numAnalyseDuration.Value = new decimal(new int[] {
             500,
@@ -500,10 +500,10 @@ namespace iSpyApplication
             // tabPage5
             // 
             this.tabPage5.Controls.Add(this.lblCamera);
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Location = new System.Drawing.Point(4, 25);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(498, 224);
+            this.tabPage5.Size = new System.Drawing.Size(498, 221);
             this.tabPage5.TabIndex = 5;
             this.tabPage5.Text = "Camera";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -513,16 +513,16 @@ namespace iSpyApplication
             this.lblCamera.AutoSize = true;
             this.lblCamera.Location = new System.Drawing.Point(6, 13);
             this.lblCamera.Name = "lblCamera";
-            this.lblCamera.Size = new System.Drawing.Size(60, 13);
+            this.lblCamera.Size = new System.Drawing.Size(79, 17);
             this.lblCamera.TabIndex = 0;
             this.lblCamera.Text = "No Camera";
             // 
             // tabPage6
             // 
             this.tabPage6.Controls.Add(this.tableLayoutPanel10);
-            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Location = new System.Drawing.Point(4, 25);
             this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Size = new System.Drawing.Size(498, 224);
+            this.tabPage6.Size = new System.Drawing.Size(498, 221);
             this.tabPage6.TabIndex = 6;
             this.tabPage6.Text = "Clone";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -540,7 +540,7 @@ namespace iSpyApplication
             this.tableLayoutPanel10.RowCount = 2;
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(498, 224);
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(498, 221);
             this.tableLayoutPanel10.TabIndex = 1;
             // 
             // label14
@@ -549,7 +549,7 @@ namespace iSpyApplication
             this.label14.Location = new System.Drawing.Point(6, 6);
             this.label14.Margin = new System.Windows.Forms.Padding(6);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(63, 13);
+            this.label14.Size = new System.Drawing.Size(82, 17);
             this.label14.TabIndex = 0;
             this.label14.Text = "Microphone";
             // 
@@ -559,16 +559,59 @@ namespace iSpyApplication
             this.ddlCloneMicrophone.FormattingEnabled = true;
             this.ddlCloneMicrophone.Location = new System.Drawing.Point(108, 3);
             this.ddlCloneMicrophone.Name = "ddlCloneMicrophone";
-            this.ddlCloneMicrophone.Size = new System.Drawing.Size(308, 21);
+            this.ddlCloneMicrophone.Size = new System.Drawing.Size(308, 24);
             this.ddlCloneMicrophone.TabIndex = 1;
+            // 
+            // tabPage7
+            // 
+            this.tabPage7.Controls.Add(this.tableLayoutPanel1);
+            this.tabPage7.Location = new System.Drawing.Point(4, 25);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Size = new System.Drawing.Size(498, 221);
+            this.tabPage7.TabIndex = 7;
+            this.tabPage7.Text = "Wav Stream";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.Controls.Add(this.label3, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.txtWavStreamURL, 1, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(498, 87);
+            this.tableLayoutPanel1.TabIndex = 34;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 8);
+            this.label3.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(36, 17);
+            this.label3.TabIndex = 31;
+            this.label3.Text = "URL";
+            // 
+            // txtWavStreamURL
+            // 
+            this.txtWavStreamURL.Location = new System.Drawing.Point(45, 3);
+            this.txtWavStreamURL.Name = "txtWavStreamURL";
+            this.txtWavStreamURL.Size = new System.Drawing.Size(266, 22);
+            this.txtWavStreamURL.TabIndex = 30;
             // 
             // linkLabel3
             // 
             this.linkLabel3.AutoSize = true;
-            this.linkLabel3.Location = new System.Drawing.Point(215, 8);
+            this.linkLabel3.Location = new System.Drawing.Point(168, 8);
             this.linkLabel3.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.linkLabel3.Name = "linkLabel3";
-            this.linkLabel3.Size = new System.Drawing.Size(78, 13);
+            this.linkLabel3.Size = new System.Drawing.Size(100, 17);
             this.linkLabel3.TabIndex = 60;
             this.linkLabel3.TabStop = true;
             this.linkLabel3.Text = "Download VLC";
@@ -577,10 +620,10 @@ namespace iSpyApplication
             // llblHelp
             // 
             this.llblHelp.AutoSize = true;
-            this.llblHelp.Location = new System.Drawing.Point(299, 8);
+            this.llblHelp.Location = new System.Drawing.Point(274, 8);
             this.llblHelp.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.llblHelp.Name = "llblHelp";
-            this.llblHelp.Size = new System.Drawing.Size(29, 13);
+            this.llblHelp.Size = new System.Drawing.Size(37, 17);
             this.llblHelp.TabIndex = 61;
             this.llblHelp.TabStop = true;
             this.llblHelp.Text = "Help";
@@ -611,56 +654,13 @@ namespace iSpyApplication
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(334, 3);
+            this.button5.Location = new System.Drawing.Point(317, 3);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 23);
             this.button5.TabIndex = 62;
             this.button5.Text = "Advanced";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
-            // tabPage7
-            // 
-            this.tabPage7.Controls.Add(this.tableLayoutPanel1);
-            this.tabPage7.Location = new System.Drawing.Point(4, 22);
-            this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(498, 224);
-            this.tabPage7.TabIndex = 7;
-            this.tabPage7.Text = "Wav Stream";
-            this.tabPage7.UseVisualStyleBackColor = true;
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.Controls.Add(this.label3, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.txtWavStreamURL, 1, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(498, 87);
-            this.tableLayoutPanel1.TabIndex = 34;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 8);
-            this.label3.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(29, 13);
-            this.label3.TabIndex = 31;
-            this.label3.Text = "URL";
-            // 
-            // txtWavStreamURL
-            // 
-            this.txtWavStreamURL.Location = new System.Drawing.Point(38, 3);
-            this.txtWavStreamURL.Name = "txtWavStreamURL";
-            this.txtWavStreamURL.Size = new System.Drawing.Size(266, 20);
-            this.txtWavStreamURL.TabIndex = 30;
             // 
             // MicrophoneSource
             // 
@@ -697,12 +697,12 @@ namespace iSpyApplication
             this.tabPage6.ResumeLayout(false);
             this.tableLayoutPanel10.ResumeLayout(false);
             this.tableLayoutPanel10.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
             this.tabPage7.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }

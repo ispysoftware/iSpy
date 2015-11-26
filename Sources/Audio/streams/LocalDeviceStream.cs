@@ -208,20 +208,28 @@ namespace iSpyApplication.Sources.Audio.streams
         void WaveInDataAvailable(object sender, WaveInEventArgs e)
         {
             if (_waveIn == null) return;
+            try { 
+                var da = DataAvailable;
+                if (da == null) return;
+                var sc = _sampleChannel;
+                if (sc == null) return;
+                var sampleBuffer = new float[e.BytesRecorded];
+                int read = sc.Read(sampleBuffer, 0, e.BytesRecorded);
 
-            var da = DataAvailable;
-            if (da == null) return;
-            var sc = _sampleChannel;
-            if (sc == null) return;
-            var sampleBuffer = new float[e.BytesRecorded];
-            sc.Read(sampleBuffer, 0, e.BytesRecorded);
+                da(this, new DataAvailableEventArgs((byte[])e.Buffer.Clone(), read));
 
-            if (Listening)
-            {
-                WaveOutProvider?.AddSamples(e.Buffer, 0, e.BytesRecorded);
+                if (Listening)
+                {
+                    WaveOutProvider?.AddSamples(e.Buffer, 0, read);
+                }
             }
-            var dae = new DataAvailableEventArgs((byte[])e.Buffer.Clone(), e.BytesRecorded);
-            da(this, dae);
+            catch (Exception ex)
+            {
+                var af = AudioFinished;
+                af?.Invoke(this, new PlayingFinishedEventArgs(ReasonToFinishPlaying.DeviceLost));
+
+                MainForm.LogExceptionToFile(ex, "AudioDevice");
+            }
         }
 
 

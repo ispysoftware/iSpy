@@ -221,14 +221,15 @@ namespace iSpyApplication.Sources.Audio.streams
                                 _waveProvider.AddSamples(dec, 0, dec.Length);
 
                                 var sampleBuffer = new float[dec.Length];
-                                _sampleChannel.Read(sampleBuffer, 0, dec.Length);
+                                int read = _sampleChannel.Read(sampleBuffer, 0, dec.Length);
+
+                                da(this, new DataAvailableEventArgs((byte[])dec.Clone(), read));
 
                                 if (Listening)
                                 {
-                                    WaveOutProvider?.AddSamples(dec, 0, dec.Length);
+                                    WaveOutProvider?.AddSamples(dec, 0, read);
                                 }
-                                var dae = new DataAvailableEventArgs((byte[]) dec.Clone(), dec.Length);
-                                da(this, dae);
+                                
                             }
                         }
                         else
