@@ -434,6 +434,12 @@
     <Compile Include="Controls\PictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\PTZUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PTZUI.Designer.cs">
+      <DependentUpon>PTZUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TagEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -822,9 +828,6 @@
     <Compile Include="MainForm_Layout.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm_Logging.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="MainForm_Media.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -958,9 +961,12 @@
     <Compile Include="SSLConfig.Designer.cs">
       <DependentUpon>SSLConfig.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\ConnectionOptions.cs" />
+    <Compile Include="Utilities\Logger.cs" />
     <Compile Include="Utilities\NativeMethods.cs" />
     <Compile Include="Utilities\NetworkBrowser.cs" />
     <Compile Include="Utilities\ReadFullyStream.cs" />
+    <Compile Include="Utilities\RequestState.cs" />
     <Compile Include="Utilities\ScreenArea.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1490,6 +1496,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\PTZTracking.resx">
       <DependentUpon>PTZTracking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PTZUI.resx">
+      <DependentUpon>PTZUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\SelectObjects.resx">
       <DependentUpon>SelectObjects.cs</DependentUpon>
