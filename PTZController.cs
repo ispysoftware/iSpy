@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using iSpyApplication.Controls;
 using iSpyApplication.Pelco;
 using iSpyApplication.Sources.Video;
@@ -328,11 +330,6 @@ namespace iSpyApplication
 
         }
 
-        public void SendPTZCommand(Enums.PtzCommand command)
-        {
-            SendPTZCommand(command, false);
-        }
-
         internal bool DigitalZoom
         {
             get
@@ -370,7 +367,7 @@ namespace iSpyApplication
         }
 
 
-        public void SendPTZCommand(Enums.PtzCommand command, bool wait)
+        public void SendPTZCommand(Enums.PtzCommand command)
         {
             if (_cameraControl.Camera == null)
                 return;
@@ -566,20 +563,20 @@ namespace iSpyApplication
                         SendPTZDirection(-Math.PI / 4);
                         break;
                     case Enums.PtzCommand.ZoomIn:
-                        SendPTZCommand(ptz.Commands.ZoomIn, wait);
+                        SendPTZCommand(ptz.Commands.ZoomIn);
                         break;
                     case Enums.PtzCommand.ZoomOut:
-                        SendPTZCommand(ptz.Commands.ZoomOut, wait);
+                        SendPTZCommand(ptz.Commands.ZoomOut);
                         break;
                     case Enums.PtzCommand.Center:
-                        SendPTZCommand(ptz.Commands.Center, wait);
+                        SendPTZCommand(ptz.Commands.Center);
                         break;
                     case Enums.PtzCommand.Stop:
                         if (_previousCommand == Enums.PtzCommand.ZoomIn)
                         {
                             if (!string.IsNullOrEmpty(ptz.Commands.ZoomInStop))
                             {
-                                SendPTZCommand(ptz.Commands.ZoomInStop, wait);
+                                SendPTZCommand(ptz.Commands.ZoomInStop);
                                 break;
                             }
                         }
@@ -587,11 +584,11 @@ namespace iSpyApplication
                         {
                             if (!string.IsNullOrEmpty(ptz.Commands.ZoomOutStop))
                             {
-                                SendPTZCommand(ptz.Commands.ZoomOutStop, wait);
+                                SendPTZCommand(ptz.Commands.ZoomOutStop);
                                 break;
                             }
                         }
-                        SendPTZCommand(ptz.Commands.Stop, wait);
+                        SendPTZCommand(ptz.Commands.Stop);
                         break;
                 }
                 _previousCommand = command;
@@ -1402,7 +1399,7 @@ namespace iSpyApplication
             _serialPort.Write(arr, 0, arr.Length);
         }
 
-        public void SendPTZCommand(string cmd, bool wait = false)
+        public void SendPTZCommand(string cmd)
         {
             if (string.IsNullOrEmpty(cmd))
                 return;
@@ -1563,6 +1560,8 @@ namespace iSpyApplication
             {
                 string nc = _nextcommand;
                 _nextcommand = "";
+                Thread.Sleep(100);
+                
                 SendPTZCommand(nc);
             }
         }

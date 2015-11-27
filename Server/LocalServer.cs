@@ -1959,7 +1959,7 @@ namespace iSpyApplication.Server
                                                 (Enums.PtzCommand) Convert.ToInt32(value.Replace("ispydir_", "")));
                                         }
                                         else
-                                            cw.PTZ.SendPTZCommand(Uri.UnescapeDataString(value), true);
+                                            cw.PTZ.SendPTZCommand(Uri.UnescapeDataString(value));
                                     }
                                     catch (Exception ex)
                                     {

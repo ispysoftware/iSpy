@@ -28,28 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.pnlPTZ = new System.Windows.Forms.Panel();
             this.ddlExtended = new System.Windows.Forms.ComboBox();
             this.pnlController = new System.Windows.Forms.Panel();
-            this.tmrRepeater = new System.Windows.Forms.Timer(this.components);
+            this.ptzui1 = new iSpyApplication.Controls.PTZUI();
             this.pnlController.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // pnlPTZ
-            // 
-            this.pnlPTZ.BackgroundImage = global::iSpyApplication.Properties.Resources.PTZ_Controller;
-            this.pnlPTZ.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pnlPTZ.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pnlPTZ.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlPTZ.Location = new System.Drawing.Point(0, 0);
-            this.pnlPTZ.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.pnlPTZ.Name = "pnlPTZ";
-            this.pnlPTZ.Size = new System.Drawing.Size(225, 176);
-            this.pnlPTZ.TabIndex = 5;
-            this.pnlPTZ.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlPTZ_MouseDown);
-            this.pnlPTZ.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnlPTZ_MouseMove);
-            this.pnlPTZ.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pnlPTZ_MouseUp);
             // 
             // ddlExtended
             // 
@@ -65,7 +48,7 @@
             // 
             // pnlController
             // 
-            this.pnlController.Controls.Add(this.pnlPTZ);
+            this.pnlController.Controls.Add(this.ptzui1);
             this.pnlController.Controls.Add(this.ddlExtended);
             this.pnlController.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlController.Location = new System.Drawing.Point(3, 3);
@@ -74,10 +57,12 @@
             this.pnlController.Size = new System.Drawing.Size(225, 200);
             this.pnlController.TabIndex = 7;
             // 
-            // tmrRepeater
+            // ptzui1
             // 
-            this.tmrRepeater.Interval = 200;
-            this.tmrRepeater.Tick += new System.EventHandler(this.tmrRepeater_Tick);
+            this.ptzui1.Location = new System.Drawing.Point(0, 0);
+            this.ptzui1.Name = "ptzui1";
+            this.ptzui1.Size = new System.Drawing.Size(225, 176);
+            this.ptzui1.TabIndex = 7;
             // 
             // PTZTool
             // 
@@ -100,10 +85,8 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel pnlPTZ;
         private System.Windows.Forms.ComboBox ddlExtended;
         private System.Windows.Forms.Panel pnlController;
-        private System.Windows.Forms.Timer tmrRepeater;
+        private Controls.PTZUI ptzui1;
     }
 }

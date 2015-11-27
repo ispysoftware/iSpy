@@ -408,7 +408,7 @@ namespace iSpyApplication.Sources.Video
                 {
                     // create request
                     // get response
-                    response = ConnectionFactory.GetResponse(_source, Cookies, Headers, HttpUserAgent, Login, Password, "GET", "", out request);
+                    response = ConnectionFactory.GetResponse(_source, Cookies, Headers, HttpUserAgent, Login, Password, "GET", "", UseHttp10, out request);
                     if (response==null)
                         throw new Exception("Stream could not connect");
                     // check content type

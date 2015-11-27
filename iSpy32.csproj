@@ -463,6 +463,12 @@
     <Compile Include="Controls\PictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\PTZUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PTZUI.Designer.cs">
+      <DependentUpon>PTZUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SelectObjects.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1437,6 +1443,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\EditCommandButton.resx">
       <DependentUpon>EditCommandButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PTZUI.resx">
+      <DependentUpon>PTZUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\SelectObjects.resx">
       <DependentUpon>SelectObjects.cs</DependentUpon>

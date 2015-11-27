@@ -784,7 +784,7 @@ namespace iSpyApplication
             HttpStatusCode sc = 0;
 
             HttpWebRequest req;
-            var res = ConnectionFactory.GetResponse(source, cookies, "","",login, password, "GET","", out req);
+            var res = ConnectionFactory.GetResponse(source, cookies, "","",login, password, "GET","", false,out req);
             if (res != null)
             {
                 sc = res.StatusCode;

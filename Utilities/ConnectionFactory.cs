@@ -83,7 +83,7 @@ namespace iSpyApplication.Utilities
             };
             return GetResponse(co, out request);
         }
-        public static HttpWebResponse GetResponse(string source, string cookies, string headers, string userAgent, string username, string password, string method, string channel, out HttpWebRequest request)
+        public static HttpWebResponse GetResponse(string source, string cookies, string headers, string userAgent, string username, string password, string method, string channel, bool useHttp10, out HttpWebRequest request)
         {
             var co = new ConnectionOptions
             {
@@ -98,7 +98,7 @@ namespace iSpyApplication.Utilities
                 userAgent = userAgent,
                 username = username,
                 useSeparateConnectionGroup = false,
-                useHttp10 = false
+                useHttp10 = useHttp10
             };
             return GetResponse(co, out request);
         }
@@ -142,6 +142,13 @@ namespace iSpyApplication.Utilities
 
             try
             {
+                if (co.data != null)
+                {
+                    using (var stream = request.GetRequestStream())
+                    {
+                        stream.Write(co.data, 0, co.data.Length);
+                    }
+                }
                 response = (HttpWebResponse)request.GetResponse();
             }
             catch (WebException ex)
@@ -152,8 +159,9 @@ namespace iSpyApplication.Utilities
                 response?.Close();
                 response = TryDigestRequest(co, ex);
             }
-            catch
+            catch (Exception ex)
             {
+                Logger.LogExceptionToFile(ex, "Connection Factory");
                 response = null;
             }
 
@@ -164,8 +172,27 @@ namespace iSpyApplication.Utilities
         {
             var request = GetRequest(co);
             co.callback += successCallback;
+
+
             var myRequestState = new RequestState { Request = request, ConnectionOptions = co };
-            request.BeginGetResponse(FinishRequest, myRequestState);
+            try
+            {
+                if (co.data != null)
+                {
+                    using (var stream = request.GetRequestStream())
+                    {
+                        stream.Write(co.data, 0, co.data.Length);
+                    }
+                }
+                request.BeginGetResponse(FinishRequest, myRequestState);
+            }
+            catch (Exception ex)
+            {
+                co.ExecuteCallback(false);
+                Logger.LogExceptionToFile(ex, "Connection Factory");
+            }
+
+            
         }
 
         private static void FinishRequest(IAsyncResult result)
@@ -289,19 +316,7 @@ namespace iSpyApplication.Utilities
                     request.Method = co.method;
                     request.ContentType = "application/x-www-form-urlencoded";
                     request.ContentLength = data.Length;
-
-                    try
-                    {
-                        using (var stream = request.GetRequestStream())
-                        {
-                            stream.Write(data, 0, data.Length);
-                        }
-                    }
-                    catch
-                    {
-                        request = null;
-                        throw;
-                    }
+                    co.data = data;
 
                     break;
             }

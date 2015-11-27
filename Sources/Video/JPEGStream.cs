@@ -357,7 +357,7 @@ namespace iSpyApplication.Sources.Video
                     // set download start time
 					DateTime start = DateTime.UtcNow;
                     var url = _source + ((_source.IndexOf('?') == -1) ? '?' : '&') + "fake=" + rand.Next();
-                    response = ConnectionFactory.GetResponse(url, Cookies, Headers, HttpUserAgent, Login, Password, "GET", "", out request);
+                    response = ConnectionFactory.GetResponse(url, Cookies, Headers, HttpUserAgent, Login, Password, "GET", "", UseHttp10, out request);
 
                     // get response stream
                     try

@@ -186,7 +186,6 @@ namespace iSpyApplication
             this.tabPage8 = new System.Windows.Forms.TabPage();
             this.pnlPTZControls = new System.Windows.Forms.Panel();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlPTZ = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.lbExtended = new System.Windows.Forms.ListBox();
             this.label16 = new System.Windows.Forms.Label();
@@ -201,6 +200,7 @@ namespace iSpyApplication
             this.label73 = new System.Windows.Forms.Label();
             this.ddlPTZ = new System.Windows.Forms.ComboBox();
             this.flowLayoutPanel23 = new System.Windows.Forms.FlowLayoutPanel();
+            this.button6 = new System.Windows.Forms.Button();
             this.linkLabel6 = new System.Windows.Forms.LinkLabel();
             this.llblEditPTZ = new System.Windows.Forms.LinkLabel();
             this.linkLabel10 = new System.Windows.Forms.LinkLabel();
@@ -369,7 +369,7 @@ namespace iSpyApplication
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.linkLabel4 = new System.Windows.Forms.LinkLabel();
-            this.button6 = new System.Windows.Forms.Button();
+            this.ptzui1 = new iSpyApplication.Controls.PTZUI();
             this.tcCamera.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox8.SuspendLayout();
@@ -2492,11 +2492,11 @@ namespace iSpyApplication
             this.tableLayoutPanel12.ColumnCount = 2;
             this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 241F));
             this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel12.Controls.Add(this.pnlPTZ, 0, 0);
             this.tableLayoutPanel12.Controls.Add(this.panel5, 1, 0);
             this.tableLayoutPanel12.Controls.Add(this.label16, 0, 1);
             this.tableLayoutPanel12.Controls.Add(this.flowLayoutPanel31, 1, 1);
             this.tableLayoutPanel12.Controls.Add(this.flowLayoutPanel7, 0, 2);
+            this.tableLayoutPanel12.Controls.Add(this.ptzui1, 0, 0);
             this.tableLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel12.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel12.Name = "tableLayoutPanel12";
@@ -2506,22 +2506,6 @@ namespace iSpyApplication
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tableLayoutPanel12.Size = new System.Drawing.Size(645, 287);
             this.tableLayoutPanel12.TabIndex = 81;
-            // 
-            // pnlPTZ
-            // 
-            this.pnlPTZ.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnlPTZ.BackgroundImage")));
-            this.pnlPTZ.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pnlPTZ.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pnlPTZ.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlPTZ.Location = new System.Drawing.Point(6, 6);
-            this.pnlPTZ.Margin = new System.Windows.Forms.Padding(6);
-            this.pnlPTZ.Name = "pnlPTZ";
-            this.pnlPTZ.Size = new System.Drawing.Size(229, 170);
-            this.pnlPTZ.TabIndex = 4;
-            this.pnlPTZ.Paint += new System.Windows.Forms.PaintEventHandler(this.PnlPtzPaint);
-            this.pnlPTZ.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PnlPtzMouseDown);
-            this.pnlPTZ.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PnlPtzMouseMove);
-            this.pnlPTZ.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PnlPtzMouseUp);
             // 
             // panel5
             // 
@@ -2678,6 +2662,20 @@ namespace iSpyApplication
             this.flowLayoutPanel23.Name = "flowLayoutPanel23";
             this.flowLayoutPanel23.Size = new System.Drawing.Size(319, 36);
             this.flowLayoutPanel23.TabIndex = 2;
+            // 
+            // button6
+            // 
+            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button6.AutoSize = true;
+            this.button6.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.button6.Location = new System.Drawing.Point(0, 0);
+            this.button6.Margin = new System.Windows.Forms.Padding(0);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(30, 27);
+            this.button6.TabIndex = 76;
+            this.button6.Text = "...";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click_1);
             // 
             // linkLabel6
             // 
@@ -4875,19 +4873,12 @@ namespace iSpyApplication
             this.linkLabel4.Text = "Copy To...";
             this.linkLabel4.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel4_LinkClicked);
             // 
-            // button6
+            // ptzui1
             // 
-            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button6.AutoSize = true;
-            this.button6.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.button6.Location = new System.Drawing.Point(0, 0);
-            this.button6.Margin = new System.Windows.Forms.Padding(0);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(30, 27);
-            this.button6.TabIndex = 76;
-            this.button6.Text = "...";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click_1);
+            this.ptzui1.Location = new System.Drawing.Point(3, 3);
+            this.ptzui1.Name = "ptzui1";
+            this.ptzui1.Size = new System.Drawing.Size(225, 176);
+            this.ptzui1.TabIndex = 84;
             // 
             // AddCamera
             // 
@@ -5165,7 +5156,6 @@ namespace iSpyApplication
         private System.Windows.Forms.TabPage tabPage8;
         private System.Windows.Forms.Label label73;
         private System.Windows.Forms.ComboBox ddlPTZ;
-        private System.Windows.Forms.Panel pnlPTZ;
         private System.Windows.Forms.Label label75;
         private System.Windows.Forms.ListBox lbExtended;
         private System.Windows.Forms.TabPage tabPage9;
@@ -5412,5 +5402,6 @@ namespace iSpyApplication
         private System.Windows.Forms.CheckBox chkScheduleMessaging;
         private System.Windows.Forms.Button btnAuthoriseYouTube;
         private System.Windows.Forms.Button button6;
+        private PTZUI ptzui1;
     }
 }

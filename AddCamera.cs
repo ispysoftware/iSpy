@@ -468,6 +468,7 @@ namespace iSpyApplication
                 }
             }
             intervalConfig1.Init(CameraControl);
+            ptzui1.CameraControl = CameraControl;
             _loaded = true;
         }
 
@@ -1777,7 +1778,7 @@ namespace iSpyApplication
             if (lbExtended.SelectedIndex > -1)
             {
                 var li = ((ListItem) lbExtended.SelectedItem);
-                SendPtzCommand(li.Value, true);
+                SendPtzCommand(li.Value);
             }
         }
 
@@ -1786,13 +1787,13 @@ namespace iSpyApplication
         {
             PTZSettings2Camera ptz = MainForm.PTZs.SingleOrDefault(p => p.id == CameraControl.Camobject.ptz);
             if ((ptz != null && ptz.Commands.Stop!=""))
-                SendPtzCommand(ptz.Commands.Stop,true);
+                SendPtzCommand(ptz.Commands.Stop);
 
             if (CameraControl.PTZ.IsContinuous)
                 CameraControl.PTZ.SendPTZCommand(Enums.PtzCommand.Stop);
         }
 
-        private void SendPtzCommand(string cmd, bool wait)
+        private void SendPtzCommand(string cmd)
         {
             if (cmd == "")
             {
@@ -1802,7 +1803,7 @@ namespace iSpyApplication
             try
             {
                 CameraControl.Calibrating = true;
-                CameraControl.PTZ.SendPTZCommand(cmd, wait);
+                CameraControl.PTZ.SendPTZCommand(cmd);
             }
             catch (Exception ex)
             {

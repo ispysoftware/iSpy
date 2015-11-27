@@ -779,7 +779,7 @@ namespace iSpyApplication.Controls
                     PTZNavigate = false;
                     PTZSettings2Camera ptz = MainForm.PTZs.SingleOrDefault(p => p.id == Camobject.ptz);
                     if (!string.IsNullOrEmpty(ptz?.Commands.Stop))
-                        PTZ.SendPTZCommand(ptz.Commands.Stop, true);
+                        PTZ.SendPTZCommand(ptz.Commands.Stop);
 
                     if (PTZ.IsContinuous)
                         PTZ.SendPTZCommand(Enums.PtzCommand.Stop);

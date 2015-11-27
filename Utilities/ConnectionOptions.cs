@@ -13,6 +13,7 @@ namespace iSpyApplication.Utilities
         public bool useSeparateConnectionGroup, useHttp10;
         public int requestTimeout;
         public event EventHandler callback;
+        public byte[] data;
 
         public void ExecuteCallback(bool success)
         {
