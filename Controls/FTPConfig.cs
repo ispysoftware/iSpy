@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using iSpyApplication.Properties;
+using iSpyApplication.Utilities;
 
 namespace iSpyApplication.Controls
 {
@@ -97,7 +98,7 @@ namespace iSpyApplication.Controls
                     }
                     catch (Exception ex)
                     {
-                        MainForm.LogExceptionToFile(ex);
+                        Logger.LogExceptionToFile(ex);
                         MessageBox.Show(ex.Message);
                     }
                     imageStream.Close();

@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Net;
 using System.Windows.Forms;
+using iSpyApplication.Utilities;
 
 namespace iSpyApplication
 {
@@ -106,7 +107,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                     MessageBox.Show(this,
                                        LocRm.GetString("ErrorFromFirewall") +Environment.NewLine+ ex.Message +Environment.NewLine+
                                        LocRm.GetString("AddFirewallExceptionManually"));

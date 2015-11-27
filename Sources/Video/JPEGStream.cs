@@ -356,8 +356,8 @@ namespace iSpyApplication.Sources.Video
 				{
                     // set download start time
 					DateTime start = DateTime.UtcNow;
-
-                    response = ConnectionFactory.GetResponse(_source + ((_source.IndexOf('?') == -1) ? '?' : '&') + "fake=" + rand.Next(), Cookies, Headers, HttpUserAgent, Proxy, UseHttp10, SeparateConnectionGroup, RequestTimeout, Login, Password,false, out request);
+                    var url = _source + ((_source.IndexOf('?') == -1) ? '?' : '&') + "fake=" + rand.Next();
+                    response = ConnectionFactory.GetResponse(url, Cookies, Headers, HttpUserAgent, Login, Password, "GET", "", out request);
 
                     // get response stream
                     try
@@ -427,7 +427,7 @@ namespace iSpyApplication.Sources.Video
                 catch ( Exception ex )
 				{
                     // provide information to clients
-                    MainForm.LogExceptionToFile(ex,"JPEG");
+                    Logger.LogExceptionToFile(ex,"JPEG");
 				    err++;
                     if (err>3)
                     {

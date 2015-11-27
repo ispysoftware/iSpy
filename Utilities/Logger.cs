@@ -1,26 +1,36 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
-namespace iSpyApplication
+namespace iSpyApplication.Utilities
 {
-    public partial class MainForm
+    public static class Logger
     {
+        public static string NextLog = "";
+        private static bool _logging;
         private static StringBuilder _logFile = new StringBuilder();
+        private static string _lastlog = "";
+        private static string _lastPluginLog = "";
         private static readonly StringBuilder PluginLogFile = new StringBuilder(100000);
         private static DateTime _logStartDateTime = DateTime.Now;
-        
+        private static readonly string PluginLogTemplate =
+            "<?xml version=\"1.0\" encoding=\"utf-8\"?><PluginLog username=\"" + Environment.UserName +
+            "\"><!--CONTENT--></PluginLog>";
+
         internal static void LogExceptionToFile(Exception ex, string info)
         {
             ex.HelpLink = info + ": " + ex.Message;
-            LogExceptionToFile(ex);
+            Logger.LogExceptionToFile(ex);
         }
 
 
         internal static void LogExceptionToFile(Exception ex)
         {
-            if (!_logging || !Conf.Logging.Enabled)
+            if (!_logging || !MainForm.Conf.Logging.Enabled)
                 return;
 
             try
@@ -37,11 +47,11 @@ namespace iSpyApplication
         }
         internal static void LogMessageToFile(String message, string e)
         {
-            LogMessageToFile(String.Format(message, e));
+            Logger.LogMessageToFile(String.Format(message, e));
         }
         internal static void LogMessageToFile(String message)
         {
-            if (!_logging || !Conf.Logging.Enabled)
+            if (!_logging || !MainForm.Conf.Logging.Enabled)
                 return;
 
             try
@@ -58,12 +68,12 @@ namespace iSpyApplication
         internal static void LogPluginToFile(string name, int id, string action, string detail)
         {
             DateTime dt = Helper.Now;
-            PluginLogFile.Append("<message name=\"" + name + "\" id=\"" + id + "\" action=\"" + action + "\" timestamp=\"" + dt.Ticks+"\">" + detail.Replace("&", "&amp;") + "</message>");
+            PluginLogFile.Append("<message name=\"" + name + "\" id=\"" + id + "\" action=\"" + action + "\" timestamp=\"" + dt.Ticks + "\">" + detail.Replace("&", "&amp;") + "</message>");
         }
 
         internal static void LogErrorToFile(String message)
         {
-            if (!_logging || !Conf.Logging.Enabled)
+            if (!_logging || !MainForm.Conf.Logging.Enabled)
                 return;
 
             try
@@ -78,13 +88,13 @@ namespace iSpyApplication
         }
         internal static void LogErrorToFile(String message, string message2)
         {
-            if (!_logging || !Conf.Logging.Enabled)
+            if (!_logging || !MainForm.Conf.Logging.Enabled)
                 return;
 
             try
             {
                 _logFile.Append("<tr><td style=\"color:red\" valign=\"top\">Error</td><td valign=\"top\">" +
-                               DateTime.Now.ToLongTimeString() + "</td><td valign=\"top\">" + message + ", "+message2+"</td></tr>");
+                               DateTime.Now.ToLongTimeString() + "</td><td valign=\"top\">" + message + ", " + message2 + "</td></tr>");
             }
             catch
             {
@@ -94,7 +104,7 @@ namespace iSpyApplication
 
         internal static void LogWarningToFile(String message)
         {
-            if (!_logging || !Conf.Logging.Enabled)
+            if (!_logging || !MainForm.Conf.Logging.Enabled)
                 return;
 
             try
@@ -109,9 +119,9 @@ namespace iSpyApplication
         }
 
 
-        private void WriteLogs()
+        public static void WriteLogs()
         {
-            if (!Conf.Logging.Enabled)
+            if (!MainForm.Conf.Logging.Enabled)
                 return;
             if (DateTime.Now.DayOfYear != _logStartDateTime.DayOfYear)
             {
@@ -126,18 +136,18 @@ namespace iSpyApplication
             {
                 try
                 {
-                    if (_logFile.Length > Conf.Logging.FileSize * 1024)
+                    if (_logFile.Length > MainForm.Conf.Logging.FileSize * 1024)
                     {
                         _logFile.Append("<tr><td style=\"color:red\" valign=\"top\">Logging Exiting</td><td valign=\"top\">" +
                             DateTime.Now.ToLongTimeString() +
                             "</td><td valign=\"top\">Logging is being disabled as it has reached the maximum size (" +
-                            Conf.Logging.FileSize + "kb).</td></tr>");
+                            MainForm.Conf.Logging.FileSize + "kb).</td></tr>");
                         _logging = false;
                     }
                     if (_lastlog.Length != _logFile.Length)
                     {
-                        string logTemplate = "<html><head><title>iSpy v"+ProductVersion+" Log File</title><style type=\"text/css\">body,td,th,div {font-family:Verdana;font-size:10px}</style></head><body><h1>"+Conf.ServerName+": Log Start (v"+Application.
-                                                                                                          ProductVersion + " Platform: " + Program.Platform+"): " + _logStartDateTime + "</h1><p><table cellpadding=\"2px\"><!--CONTENT--></table></p></body></html>";
+                        string logTemplate = "<html><head><title>iSpy v" + Application.ProductVersion + " Log File</title><style type=\"text/css\">body,td,th,div {font-family:Verdana;font-size:10px}</style></head><body><h1>" + MainForm.Conf.ServerName + ": Log Start (v" + Application.
+                                                                                                          ProductVersion + " Platform: " + Program.Platform + "): " + _logStartDateTime + "</h1><p><table cellpadding=\"2px\"><!--CONTENT--></table></p></body></html>";
                         string fc = logTemplate.Replace("<!--CONTENT-->", _logFile.ToString());
                         File.WriteAllText(Program.AppDataPath + @"log_" + NextLog + ".htm", fc);
                         _lastlog = _logFile.ToString();
@@ -148,7 +158,7 @@ namespace iSpyApplication
                     _logging = false;
                 }
             }
-            
+
 
             try
             {
@@ -165,17 +175,17 @@ namespace iSpyApplication
             }
         }
 
-        private void InitLogging(bool warnonerror = true)
+        public static void InitLogging(bool warnonerror = true)
         {
             DateTime logdate = DateTime.Now;
 
             foreach (string s in Directory.GetFiles(Program.AppDataPath, "log_*", SearchOption.TopDirectoryOnly))
             {
                 var fi = new FileInfo(s);
-                if (fi.CreationTime < Helper.Now.AddDays(0-Conf.Logging.KeepDays))
+                if (fi.CreationTime < Helper.Now.AddDays(0 - MainForm.Conf.Logging.KeepDays))
                     FileOperations.Delete(s);
             }
-            NextLog = Zeropad(logdate.Day) + Zeropad(logdate.Month) + logdate.Year;
+            NextLog = Helper.ZeroPad(logdate.Day) + Helper.ZeroPad(logdate.Month) + logdate.Year;
             int i = 1;
             if (File.Exists(Program.AppDataPath + "log_" + NextLog + ".htm"))
             {
@@ -192,8 +202,8 @@ namespace iSpyApplication
             {
                 if (warnonerror && MessageBox.Show(LocRm.GetString("LogStartError").Replace("[MESSAGE]", ex.Message), LocRm.GetString("Warning"), MessageBoxButtons.YesNo) == DialogResult.No)
                 {
-                    ShuttingDown = true;
-                    Close();
+                    MainForm.ShuttingDown = true;
+                    //VisualStyleElement.ToolTip.Close();
                 }
             }
         }

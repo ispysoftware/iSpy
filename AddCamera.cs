@@ -16,6 +16,7 @@ using iSpyApplication.Pelco;
 using iSpyApplication.Sources;
 using iSpyApplication.Sources.Audio;
 using iSpyApplication.Sources.Video;
+using iSpyApplication.Utilities;
 using iSpyPRO.DirectShow.Internals;
 
 
@@ -917,7 +918,7 @@ namespace iSpyApplication
             }
             catch(Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
         }
 
@@ -1805,7 +1806,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
                 MessageBox.Show(ex.Message, LocRm.GetString("Error"));
             }
         }

@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using iSpyApplication.Utilities;
 
 namespace iSpyApplication
 {
@@ -173,7 +174,7 @@ namespace iSpyApplication
                     }
                     catch (Exception ex)
                     {
-                        MainForm.LogExceptionToFile(ex);
+                        Logger.LogExceptionToFile(ex);
                     }
                 }
             }
@@ -198,7 +199,7 @@ namespace iSpyApplication
                     }
                     catch (Exception ex)
                     {
-                        MainForm.LogExceptionToFile(ex);
+                        Logger.LogExceptionToFile(ex);
                     }
                 }
             }
@@ -284,7 +285,7 @@ namespace iSpyApplication
                     }
                     catch(Exception ex)
                     {
-                        MainForm.LogExceptionToFile(ex);
+                        Logger.LogExceptionToFile(ex);
                     }
                 }
 
@@ -306,7 +307,7 @@ namespace iSpyApplication
                     }
                     catch(Exception ex)
                     {
-                        MainForm.LogExceptionToFile(ex);
+                        Logger.LogExceptionToFile(ex);
                     }
                 }
                 System.Array.ForEach(Directory.GetFiles(dir + "video\\" +

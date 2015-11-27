@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using iSpyApplication.Utilities;
 using NATUPNPLib;
 
 namespace iSpyApplication
@@ -49,7 +50,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
                 try
                 {
@@ -58,7 +59,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
             }
 

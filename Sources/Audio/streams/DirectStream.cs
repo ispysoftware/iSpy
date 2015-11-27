@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using iSpyApplication.Utilities;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
@@ -236,7 +237,7 @@ namespace iSpyApplication.Sources.Audio.streams
                 AudioFinished?.Invoke(this, new PlayingFinishedEventArgs(ReasonToFinishPlaying.DeviceLost));
                 //if (AudioSourceError!=null)
                 //    AudioSourceError(this, new AudioSourceErrorEventArgs(e.Message));
-                MainForm.LogExceptionToFile(e,"Direct");
+                Logger.LogExceptionToFile(e,"Direct");
             }
             
             _stream?.Close();

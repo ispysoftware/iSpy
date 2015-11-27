@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using iSpyApplication.Utilities;
 
 namespace iSpyApplication
 {
@@ -66,7 +67,7 @@ namespace iSpyApplication
             }
             catch (KeyNotFoundException)
             {
-                MainForm.LogErrorToFile("No Translation for token " + identifier);
+                Logger.LogErrorToFile("No Translation for token " + identifier);
                 if (CultureCode != "en")
                 {
                     var eng = TranslationSets.FirstOrDefault(p => p.CultureCode == "en");
@@ -100,7 +101,7 @@ namespace iSpyApplication
             catch (KeyNotFoundException)
             {
                 ctrl.Text = identifier;
-                MainForm.LogErrorToFile("No Translation for token " + identifier);
+                Logger.LogErrorToFile("No Translation for token " + identifier);
                 if (CultureCode != "en")
                 {
                     var eng = TranslationSets.FirstOrDefault(p => p.CultureCode == "en");
@@ -132,7 +133,7 @@ namespace iSpyApplication
             }
             catch (KeyNotFoundException)
             {
-                MainForm.LogErrorToFile("No Translation for token " + identifier);
+                Logger.LogErrorToFile("No Translation for token " + identifier);
                 ctrl.Text = identifier;
                 if (CultureCode!="en")
                 {
@@ -166,7 +167,7 @@ namespace iSpyApplication
             }
             catch (KeyNotFoundException)
             {
-                MainForm.LogErrorToFile("No Translation for token " + identifier);
+                Logger.LogErrorToFile("No Translation for token " + identifier);
                 ctrl.Text = identifier;
                 if (CultureCode != "en")
                 {
@@ -225,7 +226,7 @@ namespace iSpyApplication
                     }
                     catch (Exception ex)
                     {
-                        MainForm.LogErrorToFile("Translation: "+tran.Token+": "+ex.Message);
+                        Logger.LogErrorToFile("Translation: "+tran.Token+": "+ex.Message);
                     }
                 }
                 

@@ -72,7 +72,7 @@ namespace iSpyApplication
         public static Brush RecordBrush = new SolidBrush(Color.Red);
         public static Brush OverlayBackgroundBrush = new SolidBrush(Color.FromArgb(128, 0, 0, 0));
         public static List<DeviceDescriptionHolder> ONVIFDevices = new List<DeviceDescriptionHolder>();
-        public static string NextLog = "";
+        
         public static string Identifier;
         public static DataTable IPTABLE;
         public static bool IPLISTED = true;
@@ -169,7 +169,7 @@ namespace iSpyApplication
         public static string PurchaseLink = "http://www.ispyconnect.com/astore.aspx";
         private static int _storageCounter;
         private static Timer _rescanIPTimer, _tmrJoystick;
-        private static bool _logging;
+        
         private static string _counters = "";
         private static readonly Random Random = new Random();
         private static ViewController _vc;
@@ -178,11 +178,9 @@ namespace iSpyApplication
         private static bool _needsDelete = false;
         
 
-        private static readonly string PluginLogTemplate =
-            "<?xml version=\"1.0\" encoding=\"utf-8\"?><PluginLog username=\"" + Environment.UserName +
-            "\"><!--CONTENT--></PluginLog>";
+        
 
-        private static string _lastlog = "", _lastPluginLog = "";
+        
         
         private static string _browser = String.Empty;
         
@@ -756,12 +754,7 @@ namespace iSpyApplication
             Maximise(sender);
         }
 
-        private static string Zeropad(int i)
-        {
-            if (i > 9)
-                return i.ToString(CultureInfo.InvariantCulture);
-            return "0" + i;
-        }
+        
 
         private static void AddPlugin(FileInfo dll)
         {
@@ -779,13 +772,13 @@ namespace iSpyApplication
                 }
                 if (ins != null)
                 {
-                    LogMessageToFile("Added: " + dll.FullName);
+                    Logger.LogMessageToFile("Added: " + dll.FullName);
                     Plugins.Add(dll.FullName);
                 }
             }
             catch // (Exception ex)
             {
-                //LogExceptionToFile(ex);
+                //Logger.LogExceptionToFile(ex);
             }
         }
 
@@ -828,17 +821,17 @@ namespace iSpyApplication
         private void MainInit()
         {
             UISync.Init(this);
-
+            Logger.InitLogging();
             try
             {
                 File.WriteAllText(Program.AppDataPath + "exit.txt", "RUNNING");
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
 
-            InitLogging();
+            
 
             if (!SilentStartup)
             {
@@ -923,37 +916,37 @@ namespace iSpyApplication
             if (!Directory.Exists(Conf.MediaDirectories[0].Entry))
             {
                 string notfound = Conf.MediaDirectories[0].Entry;
-                LogErrorToFile("Media directory could not be found (" + notfound + ") - reset it to " +
+                Logger.LogErrorToFile("Media directory could not be found (" + notfound + ") - reset it to " +
                                Program.AppDataPath + @"WebServerRoot\Media\" + " in settings if it doesn't attach.");
             }
 
             if (!VlcHelper.VlcInstalled)
             {
-                LogWarningToFile(
+                Logger.LogWarningToFile(
                     "VLC not installed - install VLC (" + Program.Platform + ") for additional connectivity.");
                 if (Program.Platform == "x64")
                 {
-                    LogWarningToFile(
+                    Logger.LogWarningToFile(
                         "VLC64  must be unzipped so the dll files and folders including libvlc.dll and the plugins folder are in " +
                         Program.AppPath + "VLC64\\");
-                    LogWarningToFile("Download: <a href=\""+VLCx64+"\">"+VLCx64+"</a>");
+                    Logger.LogWarningToFile("Download: <a href=\""+VLCx64+"\">"+VLCx64+"</a>");
                 }
                 else
-                    LogWarningToFile("Download: <a href=\"" + VLCx86 + "\">" + VLCx86 + "</a>");
+                    Logger.LogWarningToFile("Download: <a href=\"" + VLCx86 + "\">" + VLCx86 + "</a>");
             }
             else
             {
                 Version v = VlcHelper.VlcVersion;
                 if (v.CompareTo(VlcHelper.VMin) < 0)
                 {
-                    LogWarningToFile(
+                    Logger.LogWarningToFile(
                         "Old VLC installed - update VLC (" + Program.Platform + ") for additional connectivity.");
                 }
                 else
                 {
                     if (v.CompareTo(new Version(2, 0, 2)) == 0)
                     {
-                        LogWarningToFile(
+                        Logger.LogWarningToFile(
                             "VLC v2.0.2 detected - there are known issues with this version of VLC (HTTP streaming is broken for a lot of cameras) - if you are having problems with VLC connectivity we recommend you install v2.0.1 ( http://download.videolan.org/pub/videolan/vlc/2.0.1/ ) or the latest (if available).");
                     }
                 }
@@ -1233,7 +1226,7 @@ namespace iSpyApplication
                     }
                 }
                 Conf.FirstRun = false;
-                LogMessageToFile("Webserver: " + Webserver);
+                Logger.LogMessageToFile("Webserver: " + Webserver);
 
                 string logo = Program.AppDataPath + "logo.jpg";
                 if (!File.Exists(logo))
@@ -1256,7 +1249,7 @@ namespace iSpyApplication
                     }
                     catch (Exception ex)
                     {
-                        LogExceptionToFile(ex);
+                        Logger.LogExceptionToFile(ex);
                     }
                 }
             }
@@ -1297,14 +1290,14 @@ namespace iSpyApplication
                     }
                     catch (Exception ex2)
                     {
-                        LogExceptionToFile(ex2);
+                        Logger.LogExceptionToFile(ex2);
                         _pcMem = null;
                     }
                 }
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
                 _cputotalCounter = null;
             }
 
@@ -1367,14 +1360,14 @@ namespace iSpyApplication
             if (Directory.Exists(Program.AppPath + "Plugins"))
             {
                 var plugindir = new DirectoryInfo(Program.AppPath + "Plugins");
-                LogMessageToFile("Checking Plugins...");
+                Logger.LogMessageToFile("Checking Plugins...");
                 foreach (FileInfo dll in plugindir.GetFiles("*.dll"))
                 {
                     AddPlugin(dll);
                 }
                 foreach (DirectoryInfo d in plugindir.GetDirectories())
                 {
-                    LogMessageToFile(d.Name);
+                    Logger.LogMessageToFile(d.Name);
                     foreach (FileInfo dll in d.GetFiles("*.dll"))
                     {
                         AddPlugin(dll);
@@ -1421,7 +1414,7 @@ namespace iSpyApplication
                 {
                     case "IPv4":
 
-                        LogErrorToFile("Your IP address has changed. Please set a static IP address for your local computer to ensure uninterrupted connectivity.");
+                        Logger.LogErrorToFile("Your IP address has changed. Please set a static IP address for your local computer to ensure uninterrupted connectivity.");
                         //force reload of ip info
                         AddressIPv4 = Conf.IPv4Address;
                         if (Conf.DHCPReroute && Conf.IPMode == "IPv4")
@@ -1431,17 +1424,17 @@ namespace iSpyApplication
                             {
                                 //change router ports
                                 if (NATControl.SetPorts(Conf.ServerPort, Conf.LANPort))
-                                    LogMessageToFile("Router port forwarding has been updated. (" +
+                                    Logger.LogMessageToFile("Router port forwarding has been updated. (" +
                                                      Conf.IPv4Address + ")");
                             }
                             else
                             {
-                                LogMessageToFile("Please check Use UPNP in web settings to handle this automatically");
+                                Logger.LogMessageToFile("Please check Use UPNP in web settings to handle this automatically");
                             }
                         }
                         else
                         {
-                            LogMessageToFile("Enable DHCP Reroute in Web Settings to handle this automatically");
+                            Logger.LogMessageToFile("Enable DHCP Reroute in Web Settings to handle this automatically");
                         }
                         MWS.StopServer();
                         MWS.StartServer();
@@ -1457,7 +1450,7 @@ namespace iSpyApplication
                         }
                         if (!iplisted)
                         {
-                            LogErrorToFile(
+                            Logger.LogErrorToFile(
                                 "Your IP address has changed. Please set a static IP address for your local computer to ensure uninterrupted connectivity.");
                             _ipv6Address = "";
                             AddressIPv6 = Conf.IPv6Address;
@@ -1729,7 +1722,7 @@ namespace iSpyApplication
                 catch (Exception ex)
                 {
                     // _cputotalCounter = null;
-                    LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
                 if (CpuTotal > _conf.CPUMax)
                 {
@@ -1778,7 +1771,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
                 try
                 {
@@ -1786,7 +1779,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
             }
             try
@@ -1796,7 +1789,7 @@ namespace iSpyApplication
                     _tsslStats.Text = "Server Error - see log file";
                     if (MWS.NumErr >= 5)
                     {
-                        LogMessageToFile("Server not running - restarting");
+                        Logger.LogMessageToFile("Server not running - restarting");
                         StopAndStartServer();
                     }
                 }
@@ -1869,9 +1862,9 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
-            WriteLogs();
+            Logger.WriteLogs();
             if (!_shuttingDown)
                 _houseKeepingTimer.Start();
         }
@@ -1908,14 +1901,14 @@ namespace iSpyApplication
                     r = r || Microphones.Any(p => p.settings.storagemanagement.enabled);
                     if (r)
                     {
-                        LogMessageToFile("Running Storage Management");
+                        Logger.LogMessageToFile("Running Storage Management");
                         _storageThread = new Thread(DeleteOldFiles) {IsBackground = true};
                         _storageThread.Start();
                     }
                 }
             }
             else
-                LogMessageToFile("Storage Management is already running");
+                Logger.LogMessageToFile("Storage Management is already running");
         }
 
         private void UpdateTimerElapsed(object sender, ElapsedEventArgs e)
@@ -1952,7 +1945,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
             }
             if (!_shuttingDown)
@@ -1987,7 +1980,7 @@ namespace iSpyApplication
                     }
                     catch (Exception ex)
                     {
-                        LogExceptionToFile(ex);
+                        Logger.LogExceptionToFile(ex);
                         i++;
                         Thread.Sleep(500);
                     }
@@ -1997,7 +1990,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
             _fsw.EnableRaisingEvents = true;
         }
@@ -2011,7 +2004,7 @@ namespace iSpyApplication
 
                 if (command.ToLower().StartsWith("open "))
                 {
-                    LogMessageToFile("Loading List: " + command);
+                    Logger.LogMessageToFile("Loading List: " + command);
                     if (InvokeRequired)
                         Invoke(new Delegates.ExternalCommandDelegate(LoadObjectList), command.Substring(5).Trim('"'));
                     else
@@ -2028,7 +2021,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
                 MessageBox.Show(LocRm.GetString("LoadFailed").Replace("[MESSAGE]", ex.Message));
             }
         }
@@ -2044,7 +2037,7 @@ namespace iSpyApplication
                 {
                     if (!string.IsNullOrEmpty(command2))
                     {
-                        LogMessageToFile("Running Command: " + command2);
+                        Logger.LogMessageToFile("Running Command: " + command2);
                         if (InvokeRequired)
                             Invoke(new Delegates.ExternalCommandDelegate(ProcessCommandInternal), command2.Trim('"'));
                         else
@@ -2113,7 +2106,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
 
             Application.DoEvents();
@@ -2123,7 +2116,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
             return message;
         }
@@ -2164,7 +2157,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
                 if (!suppressMessages)
                 {
                     UISync.Execute(() => MessageBox.Show(LocRm.GetString("CheckUpdateError"), LocRm.GetString("Error")));
@@ -2387,7 +2380,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
 
             _shuttingDown = true;
@@ -2398,7 +2391,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
             
 
@@ -2429,7 +2422,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
 
             try
@@ -2442,7 +2435,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
             try
             {
@@ -2454,7 +2447,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
             try
             {
@@ -2462,7 +2455,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
             
             try
@@ -2471,7 +2464,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
 
             if (StorageThreadRunning)
@@ -2484,7 +2477,7 @@ namespace iSpyApplication
                 {
                 }
             }
-            WriteLogs();
+            Logger.WriteLogs();
         }
 
 
@@ -2639,7 +2632,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex2)
                 {
-                    LogExceptionToFile(ex2);
+                    Logger.LogExceptionToFile(ex2);
                 }
             }
         }
@@ -2810,7 +2803,7 @@ namespace iSpyApplication
 
         private void ShowLogFile()
         {
-            Process.Start(Program.AppDataPath + "log_" + NextLog + ".htm");
+            Process.Start(Program.AppDataPath + "log_" + Logger.NextLog + ".htm");
         }
 
         private void ResetSizeToolStripMenuItemClick(object sender, EventArgs e)
@@ -2963,7 +2956,7 @@ namespace iSpyApplication
                         return;
                     }
                     if (!silent && !_shuttingDown)
-                        LogMessageToFile(LocRm.GetString("WebsiteDown"));
+                        Logger.LogMessageToFile(LocRm.GetString("WebsiteDown"));
                     return;
                 }
                 var ws = new Webservices();
@@ -2980,7 +2973,7 @@ namespace iSpyApplication
             }
             else
             {
-                LogMessageToFile(LocRm.GetString("WebsiteDown"));
+                Logger.LogMessageToFile(LocRm.GetString("WebsiteDown"));
             }
         }
 
@@ -4128,7 +4121,7 @@ namespace iSpyApplication
 
         private void _talkSource_AudioFinished(object sender, PlayingFinishedEventArgs e)
         {
-            //LogMessageToFile("Talk Finished: " + reason);
+            //Logger.LogMessageToFile("Talk Finished: " + reason);
         }
 
         private void TalkTargetTalkStopped(object sender, EventArgs e)
@@ -4225,7 +4218,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
         }      
 

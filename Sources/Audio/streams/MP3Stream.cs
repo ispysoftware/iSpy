@@ -169,7 +169,7 @@ namespace iSpyApplication.Sources.Audio.streams
             
             try
             {
-                var resp = ConnectionFactory.GetResponse(_source,false, out request);
+                var resp = ConnectionFactory.GetResponse(_source,"GET", out request);
                 var buffer = new byte[16384 * 4]; // needs to be big enough to hold a decompressed frame
                 IMp3FrameDecompressor decompressor = null;
 
@@ -260,7 +260,7 @@ namespace iSpyApplication.Sources.Audio.streams
                 var af = AudioFinished;
                 af?.Invoke(this, new PlayingFinishedEventArgs(ReasonToFinishPlaying.DeviceLost));
 
-                MainForm.LogExceptionToFile(ex,"MP3Stream");
+                Logger.LogExceptionToFile(ex,"MP3Stream");
             }
             finally
             {

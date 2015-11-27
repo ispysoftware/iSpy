@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
+using iSpyApplication.Utilities;
 using NAudio.Wave;
 
 namespace iSpyApplication.Sources.Audio.talk
@@ -37,7 +38,7 @@ namespace iSpyApplication.Sources.Audio.talk
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex,"TalkKinect");
+                Logger.LogExceptionToFile(ex,"TalkKinect");
                 TalkStopped?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -130,7 +131,7 @@ namespace iSpyApplication.Sources.Audio.talk
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex, "TalkKinect");
+                Logger.LogExceptionToFile(ex, "TalkKinect");
                 StopTalk();
             }
         }

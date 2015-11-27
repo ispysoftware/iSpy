@@ -13,6 +13,7 @@ using Microsoft.Win32;
 using NAudio.Wave;
 using iSpyApplication.Controls;
 using iSpyApplication.Joystick;
+using iSpyApplication.Utilities;
 using Encoder = System.Drawing.Imaging.Encoder;
 
 namespace iSpyApplication
@@ -141,7 +142,7 @@ namespace iSpyApplication
                 if (!Directory.Exists(MainForm.Conf.Archive))
                 {
                     MainForm.Conf.Archive = "";
-                    MainForm.LogErrorToFile("Archive directory ignored - couldn't be found on disk");
+                    Logger.LogErrorToFile("Archive directory ignored - couldn't be found on disk");
                 }
             }
 
@@ -190,7 +191,7 @@ namespace iSpyApplication
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
             }
             else
@@ -203,7 +204,7 @@ namespace iSpyApplication
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
             }
 
@@ -450,7 +451,7 @@ namespace iSpyApplication
             }
             catch (ApplicationException ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
                 ddlTalkMic.Items.Add(_noDevices);
                 ddlTalkMic.Enabled = false;
             }

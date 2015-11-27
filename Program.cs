@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using iSpy.Video.FFMPEG;
 using iSpyApplication;
 using iSpyApplication.Controls;
+using iSpyApplication.Utilities;
 using Microsoft.Win32;
 
 internal static class Program
@@ -115,7 +116,7 @@ internal static class Program
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex, "startup");
+                    Logger.LogExceptionToFile(ex, "startup");
                 }
             }
 
@@ -209,7 +210,7 @@ internal static class Program
         {
             try
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             } catch
             {
                 
@@ -218,7 +219,7 @@ internal static class Program
             {
                 try
                 {
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
                 catch
                 {
@@ -239,13 +240,13 @@ internal static class Program
         try
         {
             var ex = (Exception)e.ExceptionObject;          
-            MainForm.LogExceptionToFile(ex);
+            Logger.LogExceptionToFile(ex);
         }
         catch (Exception ex2)
         {
             try
             {
-                MainForm.LogExceptionToFile(ex2);
+                Logger.LogExceptionToFile(ex2);
             }
             catch
             {
@@ -352,13 +353,13 @@ internal static class Program
                 //USB audio plugged/ unplugged (typically the cause) - no other way to catch this exception in the volume level control due to limitation in NAudio
             }
             if (e!=null)
-                MainForm.LogExceptionToFile(e.Exception);
+                Logger.LogExceptionToFile(e.Exception);
         }
         catch (Exception ex2)
         {
             try
             {
-                MainForm.LogExceptionToFile(ex2);
+                Logger.LogExceptionToFile(ex2);
             }
             catch
             {

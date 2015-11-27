@@ -244,9 +244,9 @@ namespace iSpyApplication.Sources.Video
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex,"VLC Stream");
-                    MainForm.LogMessageToFile("VLC arguments are: " + string.Join(",", args.ToArray()), "VLC Stream");
-                    MainForm.LogMessageToFile("Using default VLC configuration.", "VLC Stream");
+                    Logger.LogExceptionToFile(ex,"VLC Stream");
+                    Logger.LogMessageToFile("VLC arguments are: " + string.Join(",", args.ToArray()), "VLC Stream");
+                    Logger.LogMessageToFile("Using default VLC configuration.", "VLC Stream");
                     _mFactory = new MediaPlayerFactory(args.ToArray());
                 }
                 GC.KeepAlive(_mFactory);
@@ -373,7 +373,7 @@ namespace iSpyApplication.Sources.Video
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex,"VLC");
+                Logger.LogExceptionToFile(ex,"VLC");
             }
             _waveProvider = null;
 
@@ -382,7 +382,7 @@ namespace iSpyApplication.Sources.Video
 
         static void Handler(Exception ex)
         {
-            MainForm.LogExceptionToFile(ex, "VLC Stream");
+            Logger.LogExceptionToFile(ex, "VLC Stream");
 
         }
 
@@ -578,7 +578,7 @@ namespace iSpyApplication.Sources.Video
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex, "VLC Audio");
+                Logger.LogExceptionToFile(ex, "VLC Audio");
             }
         }
 
@@ -686,7 +686,7 @@ namespace iSpyApplication.Sources.Video
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex,"VLC");
+                    Logger.LogExceptionToFile(ex,"VLC");
                 }
             }
             try

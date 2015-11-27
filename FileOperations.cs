@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using iSpyApplication.Utilities;
 
 namespace iSpyApplication
 {
@@ -171,7 +172,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
                 return false;
             }
             return true;

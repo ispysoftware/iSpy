@@ -227,7 +227,7 @@ namespace iSpyApplication.Controls
                     }
                     catch (Exception ex)
                     {
-                        MainForm.LogExceptionToFile(ex);
+                        Logger.LogExceptionToFile(ex);
                         MessageBox.Show(LocRm.GetString("NoPlayerForThisFile"));
                     }
                     break;

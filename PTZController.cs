@@ -9,6 +9,7 @@ using System.Text;
 using iSpyApplication.Controls;
 using iSpyApplication.Pelco;
 using iSpyApplication.Sources.Video;
+using iSpyApplication.Utilities;
 using iSpyPRO.DirectShow;
 using odm.core;
 using onvif.services;
@@ -80,7 +81,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
             _addr = Convert.ToUInt16(cfg[5]);
         }
@@ -134,7 +135,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
             }
         }
@@ -161,7 +162,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
             }
         }
@@ -716,7 +717,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
             }
         }
@@ -743,7 +744,7 @@ namespace iSpyApplication
             }
             else
             {
-                MainForm.LogMessageToFile("Camera control flags are not manual");
+                Logger.LogMessageToFile("Camera control flags are not manual");
             }
 
         }
@@ -771,7 +772,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                     return null;
                 }
                 if (profiles.Length > profileid)
@@ -821,7 +822,7 @@ namespace iSpyApplication
                 try { _nvtSession = sessionFactory.CreateSession(ddh.Uris[0]); }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                     return null;
                 }
                 //ddh.Name = _nvtSession
@@ -891,7 +892,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
             }
         }
@@ -921,7 +922,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
 
             }
@@ -944,7 +945,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
                 return pl.ToArray();
             }
@@ -970,7 +971,7 @@ namespace iSpyApplication
                     {
                         _serialPort.Dispose();
                         _serialPort = null;
-                        MainForm.LogExceptionToFile(ex);
+                        Logger.LogExceptionToFile(ex);
                         return;
                     }
                     //SerialPort.DataReceived += SerialPort_DataReceived;
@@ -1098,7 +1099,7 @@ namespace iSpyApplication
                     {
                         _serialPort.Dispose();
                         _serialPort = null;
-                        MainForm.LogExceptionToFile(ex);
+                        Logger.LogExceptionToFile(ex);
                         return;
                     }
                     //SerialPort.DataReceived += SerialPort_DataReceived;
@@ -1401,12 +1402,6 @@ namespace iSpyApplication
             _serialPort.Write(arr, 0, arr.Length);
         }
 
-        //void SerialPortDataReceived(object sender, SerialDataReceivedEventArgs e)
-        //{
-        //    string data = _serialPort.ReadLine();
-        //    Debug.WriteLine(" <- " + data);
-        //}
-        
         public void SendPTZCommand(string cmd, bool wait = false)
         {
             if (string.IsNullOrEmpty(cmd))
@@ -1459,7 +1454,7 @@ namespace iSpyApplication
             }
             catch (Exception e)
             {
-                MainForm.LogExceptionToFile(e);
+                Logger.LogExceptionToFile(e, "PTZ Controller");
                 return;
             }
 
@@ -1485,17 +1480,11 @@ namespace iSpyApplication
                 {
                     if (!string.IsNullOrEmpty(cmd))
                     {
-                        string ext = "";
+                        string ext = "?";
                         if (pandq.IndexOf("?", StringComparison.Ordinal) != -1)
                         {
                             ext = "&";
                         }
-                        else
-                        {
-                            if (!pandq.EndsWith("/"))
-                                ext = "?";
-                        }
-                        
                         pandq += ext + cmd;
                     }
                 }
@@ -1548,133 +1537,28 @@ namespace iSpyApplication
             url = url.Replace("%5BPASSWORD%5D", Uri.EscapeDataString(pwd));
             url = url.Replace("%5BCHANNEL%5D", _cameraControl.Camobject.settings.ptzchannel);
 
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.Timeout = 5000;
-            request.AllowAutoRedirect = true;
-            request.KeepAlive = true;
-            request.SendChunked = false;
-            request.AllowWriteStreamBuffering = true;
-            request.UserAgent = _cameraControl.Camobject.settings.useragent;
-            if (_cameraControl.Camobject.settings.usehttp10)
-                request.ProtocolVersion = HttpVersion.Version10;
-            //
-
-            //get credentials
-
-            // set login and password
-
-            string authInfo = "";
-            if (!string.IsNullOrEmpty(un))
+            var co = new ConnectionOptions
             {
-                authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(Uri.EscapeDataString(un) + ":" + Uri.EscapeDataString(pwd)));
-                request.Headers["Authorization"] = "Basic " + authInfo;
-            }
-
-            string ckies = _cameraControl.Camobject.settings.cookies ?? "";
-            if (!string.IsNullOrEmpty(ckies))
-            {
-                if (!ckies.EndsWith(";"))
-                    ckies += ";";
-            }
-            if (!string.IsNullOrEmpty(ptz.Cookies))
-                ckies += ptz.Cookies;
-
-            if (!string.IsNullOrEmpty(ckies))
-            {
-                ckies = ckies.Replace("[USERNAME]", un);
-                ckies = ckies.Replace("[PASSWORD]", pwd);
-                ckies = ckies.Replace("[CHANNEL]", _cameraControl.Camobject.settings.ptzchannel);
-                ckies = ckies.Replace("[AUTH]", authInfo);
-                var myContainer = new CookieContainer();
-                string[] coll = ckies.Split(';');
-                foreach (var ckie in coll)
-                {
-                    if (!string.IsNullOrEmpty(ckie))
-                    {
-                        string[] nv = ckie.Split('=');
-                        if (nv.Length == 2)
-                        {
-                            var cookie = new Cookie(nv[0].Trim(), nv[1].Trim());
-                            myContainer.Add(new Uri(request.RequestUri.ToString()), cookie);
-                        }
-                    }
-                }
-                request.CookieContainer = myContainer;
-            }
-
-            switch (ptz.Method)
-            {
-                case "PUT":
-                case "POST":
-                    string postData = "";
-                    var i = url.IndexOf("?", StringComparison.Ordinal);
-                    if (i > -1 && i < url.Length)
-                        postData = url.Substring(i + 1);
+                channel = _cameraControl.Camobject.settings.ptzchannel,
+                cookies = _cameraControl.Camobject.settings.cookies,
+                headers = _cameraControl.Camobject.settings.headers,
+                method = ptz.Method,
+                password = pwd,
+                username = un,
+                proxy = null,
+                requestTimeout = 5000,
+                source = url,
+                useHttp10 = _cameraControl.Camobject.settings.usehttp10,
+                useSeparateConnectionGroup = false,
+                userAgent = _cameraControl.Camobject.settings.useragent
+            };
 
 
-                    var encoding = new ASCIIEncoding();
-
-                    byte[] data = encoding.GetBytes(postData);
-
-                    request.Method = ptz.Method;
-                    request.ContentType = "application/x-www-form-urlencoded";
-                    request.ContentLength = data.Length;
-
-                    try
-                    {
-                        using (Stream stream = request.GetRequestStream())
-                        {
-                            stream.Write(data, 0, data.Length);
-                        }
-                    }
-                    catch
-                    {
-                        request = null;
-                        throw;
-                    }
-
-                    break;
-            }
-
-
-            var myRequestState = new RequestState { Request = request };
-            request.BeginGetResponse(FinishPTZRequest, myRequestState);
+            ConnectionFactory.BeginGetResponse(co, CoCallback);
         }
 
-        private void FinishPTZRequest(IAsyncResult result)
+        public void CoCallback(object sender, EventArgs e)
         {
-            var myRequestState = (RequestState)result.AsyncState;
-            WebRequest myWebRequest = myRequestState.Request;
-            // End the Asynchronous request.
-            try
-            {
-                myRequestState.Response = myWebRequest.EndGetResponse(result);
-
-#if DEBUG
-                using (Stream data = myRequestState.Response.GetResponseStream())
-                {
-                    if (data != null)
-                        using (var reader = new StreamReader(data))
-                        {
-                            string text = reader.ReadToEnd();
-                            //Debug.WriteLine("PTZ Response: "+text);
-                        }
-                }
-#endif
-
-                myRequestState.Response.Close();
-            }
-            catch (WebException wex)
-            {
-                MainForm.LogExceptionToFile(wex, myWebRequest.RequestUri.ToString());
-            }
-            catch (Exception ex)
-            {
-                MainForm.LogExceptionToFile(ex);
-            }
-            myRequestState.Response = null;
-            myRequestState.Request = null;
-            
             if (_nextcommand != "")
             {
                 string nc = _nextcommand;
@@ -1682,22 +1566,5 @@ namespace iSpyApplication
                 SendPTZCommand(nc);
             }
         }
-
-        #region Nested type: RequestState
-
-        public class RequestState
-        {
-            // This class stores the request state of the request.
-            public WebRequest Request;
-            public WebResponse Response;
-
-            public RequestState()
-            {
-                Request = null;
-                Response = null;
-            }
-        }
-
-        #endregion
     }
 }

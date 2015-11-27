@@ -24,6 +24,7 @@ using iSpyApplication.Sources.Audio;
 using iSpyApplication.Sources.Audio.streams;
 using iSpyApplication.Sources.Audio.talk;
 using iSpyApplication.Sources.Video;
+using iSpyApplication.Utilities;
 using RestSharp.Extensions.MonoHttp;
 using WaveFormat = NAudio.Wave.WaveFormat;
 
@@ -739,7 +740,7 @@ namespace iSpyApplication.Controls
 
         void VolumeLevel_ErrorHandler(string message)
         {
-            MainForm.LogErrorToFile(Micobject.name+": "+message);
+            Logger.LogErrorToFile(Micobject.name+": "+message);
         }
 
 
@@ -1508,7 +1509,7 @@ namespace iSpyApplication.Controls
                 {
                     if (cw.AbortedAudio)
                     {
-                        MainForm.LogErrorToFile(Micobject.name +
+                        Logger.LogErrorToFile(Micobject.name +
                                                 ": paired recording aborted as the camera is already recording");
                         ForcedRecording = false;
                         return;
@@ -1560,7 +1561,7 @@ namespace iSpyApplication.Controls
                             }
                             catch (Exception ex)
                             {
-                                MainForm.LogExceptionToFile(ex, "Generating external link to file");
+                                Logger.LogExceptionToFile(ex, "Generating external link to file");
                             }
                             DoAlert("recordingstarted", linktofile);
                         }
@@ -1726,7 +1727,7 @@ namespace iSpyApplication.Controls
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
         }
 

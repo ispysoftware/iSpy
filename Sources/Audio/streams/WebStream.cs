@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Threading;
+using iSpyApplication.Utilities;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
@@ -233,7 +234,7 @@ namespace iSpyApplication.Sources.Audio.streams
                 //if (AudioSourceError!=null)
                 //    AudioSourceError(this, new AudioSourceErrorEventArgs(e.Message));
                 AudioFinished?.Invoke(this, new PlayingFinishedEventArgs(ReasonToFinishPlaying.DeviceLost));
-                MainForm.LogExceptionToFile(e,"WebStream");
+                Logger.LogExceptionToFile(e,"WebStream");
             }
             if (_socket != null)
             {

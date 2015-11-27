@@ -1404,7 +1404,7 @@ namespace iSpyApplication.Sources.Video
             }
             catch ( Exception ex )
             {
-                MainForm.LogExceptionToFile(ex,"Device");
+                Logger.LogExceptionToFile(ex,"Device");
                 // provide information to clients
                 res = ReasonToFinishPlaying.DeviceLost;
             }
@@ -1478,7 +1478,7 @@ namespace iSpyApplication.Sources.Video
                 catch(Exception ex)
                 {
                     // ignored
-                    MainForm.LogExceptionToFile(ex,"SetResolution");
+                    Logger.LogExceptionToFile(ex,"SetResolution");
                 }
             }
 
@@ -1507,7 +1507,7 @@ namespace iSpyApplication.Sources.Video
                 }
                 catch ( InvalidCastException ex)
                 {
-                    MainForm.LogExceptionToFile(ex, "GetPinCapabilities");
+                    Logger.LogExceptionToFile(ex, "GetPinCapabilities");
                 }
 
                 if ( streamConfig != null )
@@ -1521,7 +1521,7 @@ namespace iSpyApplication.Sources.Video
                         }
                         catch(Exception ex)
                         {
-                            MainForm.LogExceptionToFile(ex, "Device Caps");
+                            Logger.LogExceptionToFile(ex, "Device Caps");
 
                         }
                     }

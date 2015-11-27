@@ -4,6 +4,7 @@ using System.Drawing.Imaging;
 using System.Globalization;
 using System.Threading;
 using System.Windows.Forms;
+using iSpyApplication.Utilities;
 using Cursor = System.Windows.Forms.Cursor;
 using Cursors = System.Windows.Forms.Cursors;
 
@@ -228,7 +229,7 @@ namespace iSpyApplication.Sources.Video
                 {
                     if (!_error)
                     {
-                        MainForm.LogExceptionToFile(ex, "Desktop");
+                        Logger.LogExceptionToFile(ex, "Desktop");
                         _error = true;
                     }
                     // provide information to clients

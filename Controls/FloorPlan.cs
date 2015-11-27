@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using AForge.Imaging.Filters;
+using iSpyApplication.Utilities;
 
 namespace iSpyApplication.Controls
 {
@@ -470,7 +471,7 @@ namespace iSpyApplication.Controls
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
 
             if (_mouseMove > Helper.Now.AddSeconds(-3) && MainForm.Conf.ShowOverlayControls)

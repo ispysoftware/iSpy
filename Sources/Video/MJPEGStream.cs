@@ -408,8 +408,7 @@ namespace iSpyApplication.Sources.Video
                 {
                     // create request
                     // get response
-                    response = ConnectionFactory.GetResponse(_source, Cookies, Headers, HttpUserAgent, Proxy,
-                        UseHttp10, SeparateConnectionGroup, RequestTimeout, Login, Password, false, out request);
+                    response = ConnectionFactory.GetResponse(_source, Cookies, Headers, HttpUserAgent, Login, Password, "GET", "", out request);
                     if (response==null)
                         throw new Exception("Stream could not connect");
                     // check content type
@@ -633,7 +632,7 @@ namespace iSpyApplication.Sources.Video
                 catch (Exception ex)
                 {
                     // provide information to clients
-                    MainForm.LogExceptionToFile(ex,"MJPEG");
+                    Logger.LogExceptionToFile(ex,"MJPEG");
                     res = ReasonToFinishPlaying.DeviceLost;
                     break;
                     // wait for a while before the next try

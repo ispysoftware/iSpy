@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using AForge.Imaging.Filters;
 using System.Linq;
 using iSpyApplication.Controls;
+using iSpyApplication.Utilities;
 
 namespace iSpyApplication
 {
@@ -39,7 +40,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
             }
 

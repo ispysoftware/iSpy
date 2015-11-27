@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.Threading;
+using iSpyApplication.Utilities;
 
 namespace iSpyApplication.Sources.Video.Ximea
 {
@@ -431,7 +432,7 @@ namespace iSpyApplication.Sources.Video.Ximea
             }
             catch ( Exception ex )
             {
-                MainForm.LogExceptionToFile(ex, "XIMEA");
+                Logger.LogExceptionToFile(ex, "XIMEA");
                 reasonToStop = ReasonToFinishPlaying.VideoSourceError;
             }
             finally

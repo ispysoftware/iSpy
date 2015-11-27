@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
+using iSpyApplication.Utilities;
 using Timer = System.Timers.Timer;
 
 namespace iSpyApplication.Controls
@@ -655,7 +656,7 @@ namespace iSpyApplication.Controls
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using iSpyApplication.Utilities;
 
 namespace iSpyApplication
 {
@@ -36,7 +37,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
 
             }
         }

@@ -88,7 +88,7 @@ namespace iSpyApplication.Utilities
                                                     + Path.DirectorySeparatorChar;
                         if (v.CompareTo(VMin) >= 0)
                         {
-                            MainForm.LogMessageToFile("Using VLC from " + _vlcInstallationFolder + " (v" + v + ")", "VLCHelper");
+                            Logger.LogMessageToFile("Using VLC from " + _vlcInstallationFolder + " (v" + v + ")", "VLCHelper");
                             _versionVLC = Version.Parse(vlcKey.GetValue("Version").ToString());
                             AddVlcToPath();
                             return true;
@@ -98,7 +98,7 @@ namespace iSpyApplication.Utilities
                 catch (Exception ex)
                 {
                     _failed = true;
-                    MainForm.LogExceptionToFile(ex, "VLCHelper");
+                    Logger.LogExceptionToFile(ex, "VLCHelper");
                 }
                 if (Program.Platform == "x64")
                 {
@@ -131,14 +131,14 @@ namespace iSpyApplication.Utilities
 
                             _vlcInstallationFolder = folder;
                             _versionVLC = v;
-                            MainForm.LogMessageToFile("Using VLC (x64) from " + _vlcInstallationFolder + " (v" + _versionVLC + ")", "VLCHelper");
+                            Logger.LogMessageToFile("Using VLC (x64) from " + _vlcInstallationFolder + " (v" + _versionVLC + ")", "VLCHelper");
                             AddVlcToPath();
                             return true;
                         }
-                        MainForm.LogMessageToFile("VLC in " + folder + " is 64 bit but below minimum version. Please update with the latest version of VLC.", "VLCHelper");
+                        Logger.LogMessageToFile("VLC in " + folder + " is 64 bit but below minimum version. Please update with the latest version of VLC.", "VLCHelper");
                     }
                     else
-                        MainForm.LogMessageToFile("VLC in " + folder + " is not 64 bit. You need to replace it with the 64 bit version of VLC.", "VLCHelper");
+                        Logger.LogMessageToFile("VLC in " + folder + " is not 64 bit. You need to replace it with the 64 bit version of VLC.", "VLCHelper");
                 }
             }
             catch

@@ -36,7 +36,7 @@ namespace iSpyApplication.Utilities
 
         private static int _nc;
 
-        private static string GetDigestHeader(string url, string username, string password, string realm, string nonce, string cnonce, string qop )
+        private static string GetDigestHeader(string url, string username, string password, string realm, string nonce, string cnonce, string qop)
         {
             _nc++;
             var uri = new Uri(url);
@@ -48,11 +48,11 @@ namespace iSpyApplication.Utilities
 
             return $"Digest username=\"{username}\", realm=\"{realm}\", nonce=\"{nonce}\", uri=\"{dir}\", " +
                    $"algorithm=MD5, response=\"{digestResponse}\", qop={qop}, nc={_nc:00000000}, cnonce=\"{cnonce}\"";
-            
-            
+
+
         }
 
-        public static HttpWebResponse GetResponse(string source, bool post, out HttpWebRequest request)
+        public static HttpWebResponse GetResponse(string source, string method, out HttpWebRequest request)
         {
             var uri = new Uri(source);
             string username = "", password = "";
@@ -65,17 +65,47 @@ namespace iSpyApplication.Utilities
                     password = lp[1];
                 }
             }
-            return GetResponse(source, "", "", "", null, false, true, 5000, username, password, post, out request);
-        }
+            var co = new ConnectionOptions
+            {
+                channel = "",
+                cookies = "",
+                headers = "",
+                method = method,
+                password = password,
+                proxy = null,
+                requestTimeout = 5000,
+                source = source,
+                userAgent = "",
+                username = username,
+                useSeparateConnectionGroup = false,
+                useHttp10 = false
 
-        public static HttpWebResponse GetResponse(string source, string cookies, string username, string password, bool post, out HttpWebRequest request)
+            };
+            return GetResponse(co, out request);
+        }
+        public static HttpWebResponse GetResponse(string source, string cookies, string headers, string userAgent, string username, string password, string method, string channel, out HttpWebRequest request)
         {
-            return GetResponse(source, cookies, "", "", null, false, true, 5000, username, password, post, out request);
+            var co = new ConnectionOptions
+            {
+                channel = channel,
+                cookies = cookies,
+                headers = headers,
+                method = method,
+                password = password,
+                proxy = null,
+                requestTimeout = 5000,
+                source = source,
+                userAgent = userAgent,
+                username = username,
+                useSeparateConnectionGroup = false,
+                useHttp10 = false
+            };
+            return GetResponse(co, out request);
         }
 
         private static readonly List<DigestConfig> Digests = new List<DigestConfig>();
 
-        public static void AddDigest(DigestConfig digest)
+        private static void AddDigest(DigestConfig digest)
         {
             lock (Lock)
             {
@@ -83,7 +113,7 @@ namespace iSpyApplication.Utilities
             }
         }
 
-        public static DigestConfig GetDigest(string host)
+        private static DigestConfig GetDigest(string host)
         {
             lock (Lock)
             {
@@ -92,7 +122,7 @@ namespace iSpyApplication.Utilities
             }
         }
 
-        public class DigestConfig
+        private class DigestConfig
         {
             public string Host, Authorization;
             public DateTime Created;
@@ -105,23 +135,22 @@ namespace iSpyApplication.Utilities
             }
         }
 
-        public static HttpWebResponse GetResponse(string source, string cookies, string headers, string userAgent, IWebProxy proxy, bool useHttp10, bool useSeparateConnectionGroup, int requestTimeout, string username, string password, bool post, out HttpWebRequest request)
+        private static HttpWebResponse GetResponse(ConnectionOptions co, out HttpWebRequest request)
         {
-            request = GetRequest(source, cookies, headers, userAgent, proxy, useHttp10, useSeparateConnectionGroup, requestTimeout, username, password,post);
+            request = GetRequest(co);
             HttpWebResponse response = null;
 
             try
             {
-                response = (HttpWebResponse) request.GetResponse();
+                response = (HttpWebResponse)request.GetResponse();
             }
             catch (WebException ex)
             {
                 // Try to fix a 401 exception by adding a Authorization header
-                if (ex.Response == null || ((HttpWebResponse) ex.Response).StatusCode != HttpStatusCode.Unauthorized)
+                if (ex.Response == null || ((HttpWebResponse)ex.Response).StatusCode != HttpStatusCode.Unauthorized)
                     return null;
                 response?.Close();
-
-                response = TryDigestRequest(source, cookies, headers, userAgent, proxy, useHttp10, useSeparateConnectionGroup, requestTimeout, username, password,post,ex);
+                response = TryDigestRequest(co, ex);
             }
             catch
             {
@@ -131,9 +160,48 @@ namespace iSpyApplication.Utilities
             return response;
         }
 
-        public static HttpWebResponse TryDigestRequest(string source, string cookies, string headers, string userAgent,
-            IWebProxy proxy, bool useHttp10, bool useSeparateConnectionGroup, int requestTimeout, string username,
-            string password, bool post, WebException ex)
+        public static void BeginGetResponse(ConnectionOptions co, EventHandler successCallback)
+        {
+            var request = GetRequest(co);
+            co.callback += successCallback;
+            var myRequestState = new RequestState { Request = request, ConnectionOptions = co };
+            request.BeginGetResponse(FinishRequest, myRequestState);
+        }
+
+        private static void FinishRequest(IAsyncResult result)
+        {
+            var myRequestState = (RequestState)result.AsyncState;
+            WebRequest myWebRequest = myRequestState.Request;
+            if (myWebRequest == null)
+                return;
+            // End the Asynchronous request.
+            try
+            {
+                myRequestState.Response = myWebRequest.EndGetResponse(result);
+                myRequestState.Response.Close();
+                myRequestState.ConnectionOptions.ExecuteCallback(true);
+
+            }
+            catch (WebException ex)
+            {
+                if (ex.Response == null || ((HttpWebResponse)ex.Response).StatusCode != HttpStatusCode.Unauthorized)
+                {
+                    Logger.LogExceptionToFile(ex, "Connection Factory");
+                    myRequestState.ConnectionOptions.ExecuteCallback(false);
+                }
+                else
+                {
+                    myRequestState.Response = TryDigestRequest(myRequestState.ConnectionOptions, ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                myRequestState.ConnectionOptions.ExecuteCallback(false);
+                Logger.LogExceptionToFile(ex, "Connection Factory");
+            }
+        }
+
+        private static HttpWebResponse TryDigestRequest(ConnectionOptions co, WebException ex)
         {
             HttpWebResponse response;
             try
@@ -150,104 +218,119 @@ namespace iSpyApplication.Utilities
 
                 string cnonce = new Random().Next(123400, 9999999).ToString(CultureInfo.InvariantCulture);
 
-                var request = GetRequest(source, cookies, headers, userAgent, proxy, useHttp10,
-                    useSeparateConnectionGroup, requestTimeout, username, password, post);
+                var request = GetRequest(co);
 
-                string authorization = GetDigestHeader(source, username, password, realm, nonce, cnonce, qop);
+                string authorization = GetDigestHeader(co.source, co.username, co.password, realm, nonce, cnonce, qop);
                 request.Headers["Authorization"] = authorization;
 
-                response = (HttpWebResponse) request.GetResponse();
+                response = (HttpWebResponse)request.GetResponse();
                 Uri uri;
-                if (Uri.TryCreate(source, UriKind.Absolute, out uri))
+                if (Uri.TryCreate(co.source, UriKind.Absolute, out uri))
                 {
                     if (uri != null)
                     {
                         AddDigest(new DigestConfig(uri.Host, authorization));
                     }
                 }
+                co.ExecuteCallback(true);
             }
             catch (ApplicationException)
             {
                 //headers missing for digest
                 response = null;
+                co.ExecuteCallback(false);
             }
             catch (Exception ex2)
             {
-                MainForm.LogExceptionToFile(ex2,"Digest");
+                Logger.LogExceptionToFile(ex2, "Digest");
                 response = null;
+                co.ExecuteCallback(false);
             }
             return response;
         }
 
-        public static HttpWebRequest GetRequest(string source, string cookies, string headers, string userAgent, IWebProxy proxy, bool useHttp10, bool useSeparateConnectionGroup, int requestTimeout, string username, string password, bool post)
+        public static HttpWebRequest GetRequest(ConnectionOptions co)
         {
             Uri uri;
-            if (Uri.TryCreate(source, UriKind.Absolute, out uri))
+            if (Uri.TryCreate(co.source, UriKind.Absolute, out uri))
             {
-                if (string.IsNullOrEmpty(username))
+                if (string.IsNullOrEmpty(co.username))
                 {
                     var ui = uri.UserInfo.Split(':');
                     if (ui.Length > 1)
                     {
-                        username = ui[0];
-                        password = ui[1];
+                        co.username = ui[0];
+                        co.password = ui[1];
                     }
                 }
             }
-            var request = GenerateRequest(source, cookies, headers, userAgent, proxy, useHttp10, useSeparateConnectionGroup, requestTimeout, username, password);
-            if (uri!=null)
+            var request = GenerateRequest(co);
+            if (uri != null)
             {
                 var dc = GetDigest(uri.Host);
                 if (dc != null)
                     request.Headers["Authorization"] = dc.Authorization;
             }
 
-            if (post)
+            switch (co.method)
             {
+                case "PUT":
+                case "POST":
+                    string postData = "";
+                    var i = co.source.IndexOf("?", StringComparison.Ordinal);
+                    if (i > -1 && i < co.source.Length)
+                        postData = co.source.Substring(i + 1);
 
-                var i = source.IndexOf("?", StringComparison.Ordinal);
-                if (i > -1 && i < source.Length)
-                {
+
                     var encoding = new ASCIIEncoding();
-                    string postData = source.Substring(i + 1);
+
                     byte[] data = encoding.GetBytes(postData);
 
-                    request.Method = "POST";
+                    request.Method = co.method;
                     request.ContentType = "application/x-www-form-urlencoded";
                     request.ContentLength = data.Length;
 
-                    using (var stream = request.GetRequestStream())
+                    try
                     {
-                        stream.Write(data, 0, data.Length);
+                        using (var stream = request.GetRequestStream())
+                        {
+                            stream.Write(data, 0, data.Length);
+                        }
                     }
-                }
+                    catch
+                    {
+                        request = null;
+                        throw;
+                    }
+
+                    break;
             }
             return request;
         }
 
         private static readonly object Lock = new object();
 
-        private static HttpWebRequest GenerateRequest(string source, string cookies, string headers, string userAgent, IWebProxy proxy, bool useHttp10, bool useSeparateConnectionGroup, int requestTimeout, string username, string password)
+        private static HttpWebRequest GenerateRequest(ConnectionOptions co)
         {
-            var request = (HttpWebRequest)WebRequest.Create(source);
+            var request = (HttpWebRequest)WebRequest.Create(co.source);
 
             // set user agent
-            if (!string.IsNullOrEmpty(userAgent))
+            if (!string.IsNullOrEmpty(co.userAgent))
             {
-                request.UserAgent = userAgent;
+                request.UserAgent = co.userAgent;
             }
 
             // set proxy
-            if (proxy != null)
+            if (co.proxy != null)
             {
-                request.Proxy = proxy;
+                request.Proxy = co.proxy;
             }
 
-            if (useHttp10)
+            if (co.useHttp10)
                 request.ProtocolVersion = HttpVersion.Version10;
 
             // set timeout value for the request
-            request.Timeout = request.ServicePoint.ConnectionLeaseTimeout = request.ServicePoint.MaxIdleTime = requestTimeout;
+            request.Timeout = request.ServicePoint.ConnectionLeaseTimeout = request.ServicePoint.MaxIdleTime = co.requestTimeout;
             request.AllowAutoRedirect = true;
             request.AllowWriteStreamBuffering = true;
             request.AllowAutoRedirect = true;
@@ -255,28 +338,29 @@ namespace iSpyApplication.Utilities
             request.SendChunked = false;
 
             // set login and password
-            if (!string.IsNullOrEmpty(username))
-                request.Credentials = new NetworkCredential(username, password);
+            if (!string.IsNullOrEmpty(co.username))
+                request.Credentials = new NetworkCredential(co.username, co.password);
             // set connection group name
-            if (useSeparateConnectionGroup)
+            if (co.useSeparateConnectionGroup)
                 request.ConnectionGroupName = request.GetHashCode().ToString(CultureInfo.InvariantCulture);
             // force basic authentication through extra headers if required
 
             var authInfo = "";
-            if (!string.IsNullOrEmpty(username))
+            if (!string.IsNullOrEmpty(co.username))
             {
-                authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(username + ":" + password));
+                authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(co.username + ":" + co.password));
                 request.Headers["Authorization"] = "Basic " + authInfo;
             }
-            
 
-            if (!string.IsNullOrEmpty(cookies))
+
+            if (!string.IsNullOrEmpty(co.cookies))
             {
-                cookies = cookies.Replace("[AUTH]", authInfo);
-                cookies = cookies.Replace("[USERNAME]", username);
-                cookies = cookies.Replace("[PASSWORD]", password);
+                co.cookies = co.cookies.Replace("[AUTH]", authInfo);
+                co.cookies = co.cookies.Replace("[USERNAME]", co.username);
+                co.cookies = co.cookies.Replace("[PASSWORD]", co.password);
+                co.cookies = co.cookies.Replace("[CHANNEL]", co.channel);
                 var myContainer = new CookieContainer();
-                string[] coll = cookies.Split(';');
+                string[] coll = co.cookies.Split(';');
                 foreach (var ckie in coll)
                 {
                     if (!string.IsNullOrEmpty(ckie))
@@ -292,10 +376,10 @@ namespace iSpyApplication.Utilities
                 request.CookieContainer = myContainer;
             }
 
-            if (!string.IsNullOrEmpty(headers))
+            if (!string.IsNullOrEmpty(co.headers))
             {
-                headers = headers.Replace("[AUTH]", authInfo);
-                string[] coll = headers.Split(';');
+                co.headers = co.headers.Replace("[AUTH]", authInfo);
+                string[] coll = co.headers.Split(';');
                 foreach (var hdr in coll)
                 {
                     if (!string.IsNullOrEmpty(hdr))

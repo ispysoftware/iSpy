@@ -12,6 +12,7 @@ using AForge.Imaging;
 using AForge.Imaging.Filters;
 using iSpyApplication.Sources;
 using iSpyApplication.Sources.Video;
+using iSpyApplication.Utilities;
 using iSpyApplication.Vision;
 using Point = System.Drawing.Point;
 
@@ -620,7 +621,7 @@ namespace iSpyApplication.Controls
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
         }
 

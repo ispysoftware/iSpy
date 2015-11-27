@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using iSpyApplication.Controls;
+using iSpyApplication.Utilities;
 
 namespace iSpyApplication.Kinect
 {
@@ -323,7 +324,7 @@ namespace iSpyApplication.Kinect
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
 
         }

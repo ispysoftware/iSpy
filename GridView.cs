@@ -137,52 +137,55 @@ namespace iSpyApplication
         {
             var so = new SelectObjects();
             so.ShowDialog(this);
-            var l = so.SelectedObjects;
-            int i = 0;
-            var lg = new List<configurationGridGridItem>();
-
-            foreach (var o in l)
+            if (so.DialogResult == DialogResult.OK)
             {
-                int oid=-1, otid=-1;
-                var k = o as objectsCamera;
-                if (k!=null)
-                {
-                    oid = k.id;
-                    otid = 2;
-                }
-                var j = o as objectsMicrophone;
-                if (j != null)
-                {
-                    oid = j.id;
-                    otid = 1;
-                }
-                var m = o as objectsFloorplan;
-                if (m != null)
-                {
-                    oid = m.id;
-                    otid = 3;
-                }
-                lg.Add(new configurationGridGridItem
-                       {
-                           CycleDelay = 4,
-                           GridIndex = i,
-                           Item =
-                               new[]
-                               {
-                                   new configurationGridGridItemItem
-                                   {
-                                       ObjectID = oid,
-                                       TypeID = otid
-                                   }
-                               }
-                       });
-                i++;
-                if (i >= _gv.Cg.Columns*_gv.Cg.Rows)
-                    break;
+                var l = so.SelectedObjects;
+                int i = 0;
+                var lg = new List<configurationGridGridItem>();
 
+                foreach (var o in l)
+                {
+                    int oid = -1, otid = -1;
+                    var k = o as objectsCamera;
+                    if (k != null)
+                    {
+                        oid = k.id;
+                        otid = 2;
+                    }
+                    var j = o as objectsMicrophone;
+                    if (j != null)
+                    {
+                        oid = j.id;
+                        otid = 1;
+                    }
+                    var m = o as objectsFloorplan;
+                    if (m != null)
+                    {
+                        oid = m.id;
+                        otid = 3;
+                    }
+                    lg.Add(new configurationGridGridItem
+                           {
+                               CycleDelay = 4,
+                               GridIndex = i,
+                               Item =
+                                   new[]
+                                   {
+                                       new configurationGridGridItemItem
+                                       {
+                                           ObjectID = oid,
+                                           TypeID = otid
+                                       }
+                                   }
+                           });
+                    i++;
+                    if (i >= _gv.Cg.Columns*_gv.Cg.Rows)
+                        break;
+
+                }
+                _gv.Cg.GridItem = lg.ToArray();
+                _gv.Init();
             }
-            _gv.Cg.GridItem = lg.ToArray();
-            _gv.Init();
         }
 
         private void quickSelectToolStripMenuItem_DropDownOpening(object sender, EventArgs e)

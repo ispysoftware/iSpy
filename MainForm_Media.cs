@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using iSpyApplication.Cloud;
 using iSpyApplication.Controls;
 using iSpyApplication.Properties;
+using iSpyApplication.Utilities;
 
 namespace iSpyApplication
 {
@@ -165,7 +166,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
             flowPreview.Controls.Remove(pb);
             pb.MouseDown -= PbMouseDown;

@@ -11,6 +11,7 @@ using Google.Apis.Upload;
 using Google.Apis.Util.Store;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
+using iSpyApplication.Utilities;
 
 namespace iSpyApplication.Cloud
 {
@@ -131,7 +132,7 @@ namespace iSpyApplication.Cloud
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
                 return false;
 
             }
@@ -212,7 +213,7 @@ namespace iSpyApplication.Cloud
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
                 Upload(null);
             }
@@ -234,7 +235,7 @@ namespace iSpyApplication.Cloud
                     break;
 
                 case UploadStatus.Failed:
-                    MainForm.LogMessageToFile($"Upload to YouTube failed ({progress.Exception})");
+                    Logger.LogMessageToFile($"Upload to YouTube failed ({progress.Exception})");
                     break;
             }
         }
@@ -244,7 +245,7 @@ namespace iSpyApplication.Cloud
             string msg = "YouTube video uploaded: <a href=\"http://www.youtube.com/watch?v=" + video.Id + "\">" +
                                 video.Id + "</a>";
             msg += " ("+video.Status.PrivacyStatus+")";
-            MainForm.LogMessageToFile(msg);
+            Logger.LogMessageToFile(msg);
             _uploaded = true;
         }
 

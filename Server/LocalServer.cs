@@ -27,6 +27,7 @@ using iSpyApplication.Sources.Audio;
 using iSpyApplication.Sources.Audio.streams;
 using iSpyApplication.Sources.Audio.talk;
 using iSpyApplication.Sources.Video;
+using iSpyApplication.Utilities;
 using NAudio.Wave;
 using ThreadState = System.Threading.ThreadState;
 
@@ -148,13 +149,13 @@ namespace iSpyApplication.Server
             }
             catch (Exception e)
             {
-                MainForm.LogExceptionToFile(e);
+                Logger.LogExceptionToFile(e);
                 StopServer();
                 message = "Could not start local iSpy server - please select a different LAN port in settings. The port specified is in use. See the log file for more information.";
             }
             if (message != "")
             {
-                MainForm.LogMessageToFile(message);
+                Logger.LogMessageToFile(message);
                 return message;
             }
             try 
@@ -172,7 +173,7 @@ namespace iSpyApplication.Server
             catch (Exception e)
             {
                 message = e.Message;
-                MainForm.LogExceptionToFile(e);
+                Logger.LogExceptionToFile(e);
             }
 
             lock (_threadLock)
@@ -201,7 +202,7 @@ namespace iSpyApplication.Server
                 catch (SocketException ex)
                 {
                     //During one socket disconnected we can faced exception
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
             }
 
@@ -213,7 +214,7 @@ namespace iSpyApplication.Server
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
                 _myListener = null;
             }
@@ -248,7 +249,7 @@ namespace iSpyApplication.Server
             }
             catch
             {
-                //MainForm.LogErrorToFile("No mime type for request " + sRequestedFile);
+                //Logger.LogErrorToFile("No mime type for request " + sRequestedFile);
             }
 
 
@@ -384,7 +385,7 @@ namespace iSpyApplication.Server
                 {
                     req.Stream.Write(bSendData,0,bSendData.Length);
                     //if (req.TcpClient.Client.Send(bSendData) == -1)
-                      //  MainForm.LogExceptionToFile(new Exception("Socket Error cannot Send Packet"));
+                      //  Logger.LogExceptionToFile(new Exception("Socket Error cannot Send Packet"));
                 }
             }
             catch (SocketException)
@@ -393,7 +394,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception e)
             {
-                MainForm.LogExceptionToFile(e);
+                Logger.LogExceptionToFile(e);
             }
         }
 
@@ -411,7 +412,7 @@ namespace iSpyApplication.Server
                 {
                     req.Stream.Write(bSendData, 0, datalength);
                     //if (req.TcpClient.Client.Send(bSendData) == -1)
-                    //  MainForm.LogExceptionToFile(new Exception("Socket Error cannot Send Packet"));
+                    //  Logger.LogExceptionToFile(new Exception("Socket Error cannot Send Packet"));
                 }
             }
             catch (SocketException)
@@ -420,7 +421,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception e)
             {
-                MainForm.LogExceptionToFile(e);
+                Logger.LogExceptionToFile(e);
             }
         }
 
@@ -449,7 +450,7 @@ namespace iSpyApplication.Server
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                     break;
                 }
                 // Wait until a connection is made and processed before  
@@ -468,13 +469,13 @@ namespace iSpyApplication.Server
                 switch (sslPolicyErrors)
                 {
                     case SslPolicyErrors.RemoteCertificateNameMismatch:
-                        MainForm.LogErrorToFile("Client name mismatch. End communication");
+                        Logger.LogErrorToFile("Client name mismatch. End communication");
                         return false;
                     case SslPolicyErrors.RemoteCertificateNotAvailable:
-                        MainForm.LogErrorToFile("Client's certificate not available. End communication");
+                        Logger.LogErrorToFile("Client's certificate not available. End communication");
                         return false;
                     case SslPolicyErrors.RemoteCertificateChainErrors:
-                        MainForm.LogErrorToFile("Client's certificate validation failed. End communication");
+                        Logger.LogErrorToFile("Client's certificate validation failed. End communication");
                         return false;
                 }
             }
@@ -578,7 +579,7 @@ namespace iSpyApplication.Server
                         //ignore connection timeout errors
                         if (ex.ErrorCode != 10060)
                         {
-                            MainForm.LogExceptionToFile(ex);
+                            Logger.LogExceptionToFile(ex);
                             NumErr++;
 
                         }
@@ -598,7 +599,7 @@ namespace iSpyApplication.Server
             
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
                 NumErr++;
             }
         }
@@ -809,7 +810,7 @@ namespace iSpyApplication.Server
                 //ignore connection timeout errors
                 if (ex.ErrorCode != 10060)
                 {
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                     NumErr++;
 
                 }
@@ -1606,7 +1607,7 @@ namespace iSpyApplication.Server
                         }
                         catch (Exception ex)
                         {
-                            MainForm.LogExceptionToFile(ex);
+                            Logger.LogExceptionToFile(ex);
                             resp = "Command Failed: " + ex.Message + ",OK";
                         }
                     }
@@ -1645,7 +1646,7 @@ namespace iSpyApplication.Server
                         }
                         catch (Exception e)
                         {
-                            MainForm.LogExceptionToFile(e);
+                            Logger.LogExceptionToFile(e);
                         }
                     }
                     if (otid == 2)
@@ -1666,7 +1667,7 @@ namespace iSpyApplication.Server
                         }
                         catch (Exception e)
                         {
-                            MainForm.LogExceptionToFile(e);
+                            Logger.LogExceptionToFile(e);
                         }
                     }
                     resp = "OK";
@@ -1701,7 +1702,7 @@ namespace iSpyApplication.Server
                         }
                         catch (Exception ex)
                         {
-                            MainForm.LogExceptionToFile(ex);
+                            Logger.LogExceptionToFile(ex);
                             return ex.Message;
                         }
                     }
@@ -1766,7 +1767,7 @@ namespace iSpyApplication.Server
                         }
                         catch (Exception ex)
                         {
-                            MainForm.LogExceptionToFile(ex);
+                            Logger.LogExceptionToFile(ex);
                         }
                     }
 
@@ -1784,7 +1785,7 @@ namespace iSpyApplication.Server
                         }
                         catch (Exception ex)
                         {
-                            MainForm.LogExceptionToFile(ex);
+                            Logger.LogExceptionToFile(ex);
                         }
                     }
                     resp = "OK";
@@ -1962,7 +1963,7 @@ namespace iSpyApplication.Server
                                     }
                                     catch (Exception ex)
                                     {
-                                        MainForm.LogErrorToFile(LocRm.GetString("Validate_Camera_PTZIPOnly") + ": " +
+                                        Logger.LogErrorToFile(LocRm.GetString("Validate_Camera_PTZIPOnly") + ": " +
                                                                 ex.Message);
                                     }
                                 }
@@ -3034,7 +3035,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                MainForm.LogErrorToFile("Failed to get path for request: "+sRequest+" ("+sMyWebServerRoot+") - "+ex.Message);
+                Logger.LogErrorToFile("Failed to get path for request: "+sRequest+" ("+sMyWebServerRoot+") - "+ex.Message);
                 sLocalDir = "";
                 sDirName = "";
             }
@@ -3063,7 +3064,7 @@ namespace iSpyApplication.Server
 
         private void SendLogFile(string sHttpVersion, ref HttpRequest req)
         {
-            var fi = new FileInfo(Program.AppDataPath + "log_" + MainForm.NextLog + ".htm");
+            var fi = new FileInfo(Program.AppDataPath + "log_" + Logger.NextLog + ".htm");
             int iTotBytes = Convert.ToInt32(fi.Length);
             byte[] bytes;
             using (var fs = new FileStream(fi.FullName, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -3280,7 +3281,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
         }
 
@@ -3350,7 +3351,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
         }
 
@@ -3437,7 +3438,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
         }
 
@@ -3523,7 +3524,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
         }
 
@@ -3561,7 +3562,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
         }
 
@@ -3730,7 +3731,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
             overlayBackgroundBrush.Dispose();
             drawfont.Dispose();
@@ -3861,7 +3862,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
         }
         
@@ -3984,7 +3985,7 @@ namespace iSpyApplication.Server
             }
             catch(Exception ex)
             {
-                MainForm.LogExceptionToFile(ex,"Talk (network)");
+                Logger.LogExceptionToFile(ex,"Talk (network)");
             }
             Finish:
                 DisconnectRequest(req);

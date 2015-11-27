@@ -207,7 +207,7 @@ namespace iSpyApplication
             }
 
             UISync.Execute(() => pbScanner.Maximum = ipranges.Count * 254);
-            MainForm.LogMessageToFile("Scanning LAN");
+            Logger.LogMessageToFile("Scanning LAN");
             j = 0;
             foreach (string IP in DnsEntries)
             {
@@ -293,7 +293,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
             
             UISync.Execute(ResetControls);
@@ -344,7 +344,7 @@ namespace iSpyApplication
             }
             if (found)
             {
-                MainForm.LogMessageToFile("Ping response from " + ipaddress);
+                Logger.LogMessageToFile("Ping response from " + ipaddress);
                 string hostname = "Unknown";
                 try
                 {
@@ -378,11 +378,11 @@ namespace iSpyApplication
                         }
                         catch (Exception ex)
                         {
-                            MainForm.LogMessageToFile("Web error from " + ipaddress + ":" + iport + " " + ex.Message);
+                            Logger.LogMessageToFile("Web error from " + ipaddress + ":" + iport + " " + ex.Message);
                         }
                         if (response != null)
                         {
-                            MainForm.LogMessageToFile("Web response from " + ipaddress + ":" + iport + " " +
+                            Logger.LogMessageToFile("Web response from " + ipaddress + ":" + iport + " " +
                                                       response.StatusCode);
                             if (response.Headers != null)
                             {
@@ -407,7 +407,7 @@ namespace iSpyApplication
                     }
                     catch (Exception ex)
                     {
-                        MainForm.LogMessageToFile("Web error from " + ipaddress + ":" + iport + " " + ex.Message);
+                        Logger.LogMessageToFile("Web error from " + ipaddress + ":" + iport + " " + ex.Message);
 
                     }
                 }
@@ -470,7 +470,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
 
             var manager = new Thread(p => PortScannerManager(host)) { Name = "Port Scanner", IsBackground = true, Priority = ThreadPriority.Normal };
@@ -784,7 +784,7 @@ namespace iSpyApplication
             HttpStatusCode sc = 0;
 
             HttpWebRequest req;
-            var res = ConnectionFactory.GetResponse(source, cookies, login, password, false, out req);
+            var res = ConnectionFactory.GetResponse(source, cookies, "","",login, password, "GET","", out req);
             if (res != null)
             {
                 sc = res.StatusCode;
@@ -799,7 +799,7 @@ namespace iSpyApplication
                 res.Close();
             }
 
-            MainForm.LogMessageToFile("Status " + sc + " at " + source, "Uri Checker");
+            Logger.LogMessageToFile("Status " + sc + " at " + source, "Uri Checker");
 
             return b;
         }
@@ -841,13 +841,13 @@ namespace iSpyApplication
                     {
                         b = true;
                     }
-                    MainForm.LogMessageToFile("RTSP attempt: " + resp + " at " + addr);
+                    Logger.LogMessageToFile("RTSP attempt: " + resp + " at " + addr);
                 }
                 sock.Close();
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
             return b;
         }

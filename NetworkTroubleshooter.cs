@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
+using iSpyApplication.Utilities;
 using onvif.services;
 
 namespace iSpyApplication
@@ -76,7 +77,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
             
             bool portMapOk = false;
@@ -295,7 +296,7 @@ namespace iSpyApplication
                         }
                         catch (Exception ex)
                         {
-                            MainForm.LogExceptionToFile(ex);
+                            Logger.LogExceptionToFile(ex);
                            
                         }
                     }

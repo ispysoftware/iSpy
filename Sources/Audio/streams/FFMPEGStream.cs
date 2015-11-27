@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Windows.Forms;
+using iSpyApplication.Utilities;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using AudioFileReader = iSpy.Video.FFMPEG.AudioFileReader;
@@ -229,7 +230,7 @@ namespace iSpyApplication.Sources.Audio.streams
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex,"FFMPEG");
+                Logger.LogExceptionToFile(ex,"FFMPEG");
             }
             finally
             {
@@ -303,7 +304,7 @@ namespace iSpyApplication.Sources.Audio.streams
             }
             catch (Exception e)
             {
-                MainForm.LogExceptionToFile(e,"FFMPEG");
+                Logger.LogExceptionToFile(e,"FFMPEG");
                 errmsg = e.Message;
             }
 
@@ -341,7 +342,7 @@ namespace iSpyApplication.Sources.Audio.streams
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex, "FFMPEG");
+                    Logger.LogExceptionToFile(ex, "FFMPEG");
                 }
             }
 

@@ -171,7 +171,7 @@ namespace iSpyApplication.Sources.Audio.streams
             HttpWebRequest request = null;
             try
             {
-                using (HttpWebResponse resp = ConnectionFactory.GetResponse(_source,false, out request))
+                using (HttpWebResponse resp = ConnectionFactory.GetResponse(_source,"GET", out request))
                 {
                     //1/4 of a second, 16 byte buffer
                     var data = new byte[((RecordingFormat.SampleRate/4)*2)*RecordingFormat.Channels];
@@ -215,7 +215,7 @@ namespace iSpyApplication.Sources.Audio.streams
             catch (Exception ex)
             {
                 res = ReasonToFinishPlaying.DeviceLost;
-                MainForm.LogExceptionToFile(ex,"WavStream");
+                Logger.LogExceptionToFile(ex,"WavStream");
             }
             finally
             {

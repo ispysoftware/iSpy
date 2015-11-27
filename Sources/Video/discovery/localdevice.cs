@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using iSpyApplication.Utilities;
 using iSpyPRO.DirectShow;
 
 namespace iSpyApplication.Sources.Video.discovery
@@ -26,7 +27,7 @@ namespace iSpyApplication.Sources.Video.discovery
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex,"LocalDevice");
+                Logger.LogExceptionToFile(ex,"LocalDevice");
             }
         }
 

@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using iSpyApplication.Sources.Audio;
+using iSpyApplication.Utilities;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
@@ -559,7 +560,7 @@ namespace iSpyApplication.Sources.Video
                                         catch (Exception ex)
                                         {
                                             //sometimes corrupted packets come through...
-                                            MainForm.LogExceptionToFile(ex,"KinectNetwork");
+                                            Logger.LogExceptionToFile(ex,"KinectNetwork");
                                         }
 
 
@@ -648,7 +649,7 @@ namespace iSpyApplication.Sources.Video
                 catch (Exception ex)
                 {
                     // provide information to clients
-                    MainForm.LogExceptionToFile(ex, "KinectNetwork");
+                    Logger.LogExceptionToFile(ex, "KinectNetwork");
                     res = ReasonToFinishPlaying.DeviceLost;
                     break;
                     // wait for a while before the next try

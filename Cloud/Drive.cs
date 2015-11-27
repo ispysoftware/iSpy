@@ -11,6 +11,7 @@ using Google.Apis.Drive.v2.Data;
 using Google.Apis.Services;
 using Google.Apis.Upload;
 using Google.Apis.Util.Store;
+using iSpyApplication.Utilities;
 using File = Google.Apis.Drive.v2.Data.File;
 
 namespace iSpyApplication.Cloud
@@ -115,7 +116,7 @@ namespace iSpyApplication.Cloud
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
                 return false;
             }
 
@@ -140,7 +141,7 @@ namespace iSpyApplication.Cloud
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
                 return "";
             }
             bool first = true;
@@ -253,7 +254,7 @@ namespace iSpyApplication.Cloud
                 catch(Exception ex)
                 {
                     //file doesn't exist
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                     return;
                 }
                 var mt = MimeTypes.GetMimeType(fi.Extension);
@@ -275,13 +276,13 @@ namespace iSpyApplication.Cloud
                         }
                         catch (Exception ex)
                         {
-                            MainForm.LogExceptionToFile(ex);
+                            Logger.LogExceptionToFile(ex);
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
                 Upload(null);
             }
@@ -294,7 +295,7 @@ namespace iSpyApplication.Cloud
         static void RequestResponseReceived(File obj)
         {
             string msg = "File uploaded to google drive: <a href=\"" + obj.DownloadUrl + "\">" +obj.Title + "</a>";
-            MainForm.LogMessageToFile(msg);
+            Logger.LogMessageToFile(msg);
         }
 
         private static void RequestProgressChanged(IUploadProgress obj)
@@ -303,17 +304,17 @@ namespace iSpyApplication.Cloud
             {
                 case UploadStatus.Failed:
                     if (obj.Exception!=null)
-                        MainForm.LogErrorToFile("Upload to Google Drive failed ("+obj.Exception.Message+")");
+                        Logger.LogErrorToFile("Upload to Google Drive failed ("+obj.Exception.Message+")");
                     else
                     {
-                        MainForm.LogErrorToFile("Upload to Google Drive failed");
+                        Logger.LogErrorToFile("Upload to Google Drive failed");
                     }
                     break;
             }
 
             if (obj.Exception != null)
             {
-                MainForm.LogExceptionToFile(obj.Exception);
+                Logger.LogExceptionToFile(obj.Exception);
             }
 
 

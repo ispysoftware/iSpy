@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
+using iSpyApplication.Utilities;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
@@ -250,7 +251,7 @@ namespace iSpyApplication.Sources.Audio.streams
                 var af = AudioFinished;
                 af?.Invoke(this, new PlayingFinishedEventArgs(ReasonToFinishPlaying.DeviceLost));
 
-                MainForm.LogExceptionToFile(e,"ispyServer");
+                Logger.LogExceptionToFile(e,"ispyServer");
             }
 
             if (_sampleChannel != null)

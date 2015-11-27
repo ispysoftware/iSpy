@@ -5,6 +5,7 @@ using System.Threading;
 using System.Windows.Forms;
 using iSpy.Video.FFMPEG;
 using iSpyApplication.Sources.Audio;
+using iSpyApplication.Utilities;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
@@ -208,7 +209,7 @@ namespace iSpyApplication.Sources.Video
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex, "FFMPEG");
+                Logger.LogExceptionToFile(ex, "FFMPEG");
             }
             finally
             {
@@ -291,7 +292,7 @@ namespace iSpyApplication.Sources.Video
             }
             catch (Exception e)
             {
-                MainForm.LogExceptionToFile(e, "FFMPEG");
+                Logger.LogExceptionToFile(e, "FFMPEG");
                 errmsg = e.Message;
             }
 
@@ -329,7 +330,7 @@ namespace iSpyApplication.Sources.Video
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex, "FFMPEG");
+                    Logger.LogExceptionToFile(ex, "FFMPEG");
                 }
 
             PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_reasonToStop));
@@ -361,7 +362,7 @@ namespace iSpyApplication.Sources.Video
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex, "FFMPEG");
+                Logger.LogExceptionToFile(ex, "FFMPEG");
             }
         }
 
@@ -467,7 +468,7 @@ namespace iSpyApplication.Sources.Video
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex,"FFMPEG");
+                Logger.LogExceptionToFile(ex,"FFMPEG");
             }
         }
         #endregion
@@ -512,7 +513,7 @@ namespace iSpyApplication.Sources.Video
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex, "FFMPEG");
+                    Logger.LogExceptionToFile(ex, "FFMPEG");
                 }
             }
             try
@@ -524,7 +525,7 @@ namespace iSpyApplication.Sources.Video
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex, "FFMPEG");
+                Logger.LogExceptionToFile(ex, "FFMPEG");
             }
         }
 
@@ -551,7 +552,7 @@ namespace iSpyApplication.Sources.Video
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex, "FFMPEG");
+                    Logger.LogExceptionToFile(ex, "FFMPEG");
                 }
             }
 

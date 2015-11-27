@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using iSpyApplication.Utilities;
 using SharpDX.DirectInput;
 
 namespace iSpyApplication.Joystick
@@ -35,7 +36,7 @@ namespace iSpyApplication.Joystick
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
         }
 
@@ -53,7 +54,7 @@ namespace iSpyApplication.Joystick
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
             return ret;
         }
@@ -97,7 +98,7 @@ namespace iSpyApplication.Joystick
                                     }
                                     catch (Exception ex)
                                     {
-                                        MainForm.LogExceptionToFile(ex);
+                                        Logger.LogExceptionToFile(ex);
                                     }
                                 }
                                 break;
@@ -114,7 +115,7 @@ namespace iSpyApplication.Joystick
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
                 return false;
             }
 

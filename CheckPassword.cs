@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using iSpyApplication.Utilities;
 
 namespace iSpyApplication
 {
@@ -21,7 +22,7 @@ namespace iSpyApplication
                     MainForm.NeedsResourceUpdate = true;
                 MainForm.Group = g.name;
                 DialogResult = DialogResult.OK;
-                MainForm.LogMessageToFile("Login: "+g.name);
+                Logger.LogMessageToFile("Login: "+g.name);
                 Close();
                 return;
             }

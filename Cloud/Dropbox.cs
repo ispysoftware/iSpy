@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using DropNet;
+using iSpyApplication.Utilities;
 
 namespace iSpyApplication.Cloud
 {
@@ -73,7 +74,7 @@ namespace iSpyApplication.Cloud
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
                 return false;
             }
             return true;
@@ -110,7 +111,7 @@ namespace iSpyApplication.Cloud
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
                 return false;
             }
@@ -120,7 +121,7 @@ namespace iSpyApplication.Cloud
         {
             if (!Authorised)
             {
-                MainForm.LogMessageToFile("Authorise dropbox in settings");
+                Logger.LogMessageToFile("Authorise dropbox in settings");
                 return LocRm.GetString("CloudAddSettings");
             }
             if (UploadList.SingleOrDefault(p => p.SourceFilename == filename) != null)
@@ -193,11 +194,11 @@ namespace iSpyApplication.Cloud
                     {
                         string p = "/" + entry.DestinationPath.Replace("\\", "/").Trim('/') + "/";
                         var r = Service.UploadFile(p, fi.Name, stream);
-                        MainForm.LogMessageToFile("Uploaded to dropbox: /iSpy" + r.Path);
+                        Logger.LogMessageToFile("Uploaded to dropbox: /iSpy" + r.Path);
                     }
                     catch (Exception ex)
                     {
-                        MainForm.LogExceptionToFile(ex);
+                        Logger.LogExceptionToFile(ex);
                     }
                 }
                 Upload(null);

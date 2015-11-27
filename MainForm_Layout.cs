@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using iSpyApplication.Controls;
+using iSpyApplication.Utilities;
 using PictureBox = iSpyApplication.Controls.PictureBox;
 
 namespace iSpyApplication
@@ -263,7 +264,7 @@ namespace iSpyApplication
                 }
                 catch(Exception ex)
                 {
-                    LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
             }
 

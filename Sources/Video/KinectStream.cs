@@ -9,6 +9,7 @@ using System.Threading;
 using AForge.Imaging.Filters;
 using iSpyApplication.Kinect;
 using iSpyApplication.Sources.Audio;
+using iSpyApplication.Utilities;
 using Microsoft.Kinect;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
@@ -199,7 +200,7 @@ namespace iSpyApplication.Sources.Video
             }
             if (_sensor==null)
             {
-                MainForm.LogMessageToFile("Sensor not found: "+_uniqueKinectId,"KinectStream");
+                Logger.LogMessageToFile("Sensor not found: "+_uniqueKinectId,"KinectStream");
                 _isrunning = false;
                 return;
             }
@@ -262,7 +263,7 @@ namespace iSpyApplication.Sources.Video
             }
             catch (Exception ex)//IOException)
             {
-                MainForm.LogExceptionToFile(ex, "KinectStream");
+                Logger.LogExceptionToFile(ex, "KinectStream");
                 _sensor = null;
                 _isrunning = false;
             }
@@ -686,7 +687,7 @@ namespace iSpyApplication.Sources.Video
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex, "KinectStream");
+                Logger.LogExceptionToFile(ex, "KinectStream");
             }
             return null;
         }
@@ -720,7 +721,7 @@ namespace iSpyApplication.Sources.Video
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex, "KinectStream");
+                Logger.LogExceptionToFile(ex, "KinectStream");
             }
             return null;
         }

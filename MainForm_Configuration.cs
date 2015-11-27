@@ -171,7 +171,7 @@ namespace iSpyApplication
                         }
                         catch (Exception ex)
                         {
-                            LogExceptionToFile(ex);
+                            Logger.LogExceptionToFile(ex);
                         }
                     }
                 }
@@ -200,7 +200,7 @@ namespace iSpyApplication
                     {
                         string m = LocRm.GetString("CouldNotLoadRestore")+Environment.NewLine+ex2.Message;
                         MessageBox.Show(m);
-                        LogMessageToFile(m);
+                        Logger.LogMessageToFile(m);
                         throw;
                     }
                 }
@@ -439,7 +439,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    LogExceptionToFile(ex, "IP Lookup");
+                    Logger.LogExceptionToFile(ex, "IP Lookup");
                 }
 
 
@@ -453,14 +453,14 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    LogExceptionToFile(ex, "Configuration");
+                    Logger.LogExceptionToFile(ex, "Configuration");
                     try
                     {
                         arr.AddRange(Dns.GetHostAddresses(Dns.GetHostName()));
                     }
                     catch (Exception ex2)
                     {
-                        LogExceptionToFile(ex2, "Configuration");
+                        Logger.LogExceptionToFile(ex2, "Configuration");
                         //none in the system - just use the loopback address
                         _ipv4Addresses = new[] { System.Net.IPAddress.Parse("127.0.0.1") };
                         return _ipv4Addresses;
@@ -500,7 +500,7 @@ namespace iSpyApplication
                 catch (Exception ex)
                 {
                     //unsupported on win xp
-                    LogExceptionToFile(ex, "Configuration");
+                    Logger.LogExceptionToFile(ex, "Configuration");
                 }
                 _ipv6Addresses = ipv6Adds.Distinct().ToArray();
                 return _ipv6Addresses;
@@ -530,7 +530,7 @@ namespace iSpyApplication
                         _ipv4Address = ip.ToString();
                         return _ipv4Address;
                     }
-                    LogErrorToFile(
+                    Logger.LogErrorToFile(
                             "Unable to find a suitable IP address, check your network connection. Using the local loopback address.",
                             "Configuration");
                     _ipv4Address = "127.0.0.1";
@@ -656,7 +656,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
                 MessageBox.Show(LocRm.GetString("ConfigurationChanged"), LocRm.GetString("Error"));
                 _cameras = new List<objectsCamera>();
                 _microphones = new List<objectsMicrophone>();
@@ -690,7 +690,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
                 switch (MessageBox.Show($"Error loading file ({ex.Message}) Try again?", "Error", MessageBoxButtons.YesNo))
                 {
                     case DialogResult.Yes:
@@ -1025,7 +1025,7 @@ namespace iSpyApplication
                     }
                     catch (IOException e)
                     {
-                        LogExceptionToFile(e);
+                        Logger.LogExceptionToFile(e);
                     }
                 }
 
@@ -1262,7 +1262,7 @@ namespace iSpyApplication
             }
             SaveConfig();
             NeedsSync = true;
-            LogMessageToFile("Loaded " + c.cameras.Length + " cameras, " + c.microphones.Length + " mics and " + c.floorplans.Length + " floorplans");
+            Logger.LogMessageToFile("Loaded " + c.cameras.Length + " cameras, " + c.microphones.Length + " mics and " + c.floorplans.Length + " floorplans");
             return c;
 
         }
@@ -1482,7 +1482,7 @@ namespace iSpyApplication
                         }
                         catch (Exception ex)
                         {
-                            LogExceptionToFile(ex);
+                            Logger.LogExceptionToFile(ex);
                         }
                     }
                 }
@@ -1525,7 +1525,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
             NeedsSync = true;
         }
@@ -1606,7 +1606,7 @@ namespace iSpyApplication
                     }
                     catch (Exception ex)
                     {
-                        LogExceptionToFile(ex);
+                        Logger.LogExceptionToFile(ex);
                     }
                 }
             }
@@ -1678,7 +1678,7 @@ namespace iSpyApplication
                     }
                     catch (Exception ex)
                     {
-                        LogExceptionToFile(ex);
+                        Logger.LogExceptionToFile(ex);
                     }
                 }
             }
@@ -1714,7 +1714,7 @@ namespace iSpyApplication
                     }
                     catch (Exception ex)
                     {
-                        LogExceptionToFile(ex);
+                        Logger.LogExceptionToFile(ex);
                         return;
                     }
 
@@ -1769,7 +1769,7 @@ namespace iSpyApplication
                     if (fileschanged)
                     {
                         UISync.Execute(RefreshControls);
-                        LogMessageToFile(LocRm.GetString("MediaStorageLimit").Replace("[AMOUNT]",
+                        Logger.LogMessageToFile(LocRm.GetString("MediaStorageLimit").Replace("[AMOUNT]",
                                                                                       d.MaxMediaFolderSizeMB.ToString
                                                                                           (
                                                                                               CultureInfo.
@@ -1876,7 +1876,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
             micControl.GetFiles();
         }
@@ -2060,7 +2060,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
             }
         }
@@ -2141,7 +2141,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
             }
         }
@@ -2242,7 +2242,7 @@ namespace iSpyApplication
                 }
             }
             catch (Exception ex)
-            { LogExceptionToFile(ex); }
+            { Logger.LogExceptionToFile(ex); }
         }
 
         private void RefreshControls()
@@ -2767,7 +2767,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
                 return null;
             }
             return AddPreviewControl(fp, bmp, movieName, name);
@@ -2818,7 +2818,7 @@ namespace iSpyApplication
         //    }
         //    catch (Exception ex)
         //    {
-        //        LogExceptionToFile(ex);
+        //        Logger.LogExceptionToFile(ex);
         //        return null;
         //    }
         //    return AddPreviewControl(otid,oid,bmp, movieName, duration, createdDate, name);
@@ -2945,7 +2945,7 @@ namespace iSpyApplication
                     }
                     catch (Exception e)
                     {
-                        LogExceptionToFile(e);
+                        Logger.LogExceptionToFile(e);
                     }
                 }
             }
@@ -2986,7 +2986,7 @@ namespace iSpyApplication
                     }
                     catch (Exception e)
                     {
-                        LogExceptionToFile(e);
+                        Logger.LogExceptionToFile(e);
                     }
                 }
             }
@@ -3581,7 +3581,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
             if (enableOnDisplay)
                 cameraControl.Enable();

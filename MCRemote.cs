@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using iSpyApplication.Utilities;
 
 namespace iSpyApplication
 {
@@ -299,7 +300,7 @@ namespace iSpyApplication
                     (uint)Marshal.SizeOf(rid[0]))
                     )
                 {
-                    MainForm.LogMessageToFile("Failed to register raw input devices.");
+                    Logger.LogMessageToFile("Failed to register raw input devices.");
                 }
             }
 

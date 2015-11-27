@@ -261,7 +261,7 @@ namespace iSpyApplication
             }
             catch (ApplicationException ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
                 ddlDevice.Items.Add(_noDevices);
                 ddlDevice.Enabled = false;
             }

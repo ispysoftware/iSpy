@@ -61,6 +61,7 @@ namespace iSpyApplication.Controls
                         break;
                 }
             }
+            DialogResult = DialogResult.OK;
             Close();
         }
 

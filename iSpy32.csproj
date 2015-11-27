@@ -833,9 +833,6 @@
     <Compile Include="MainForm_Layout.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm_Logging.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="MainForm_Media.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -967,9 +964,12 @@
       <DependentUpon>TagConfigure.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\ConnectionFactory.cs" />
+    <Compile Include="Utilities\ConnectionOptions.cs" />
+    <Compile Include="Utilities\Logger.cs" />
     <Compile Include="Utilities\NativeMethods.cs" />
     <Compile Include="Utilities\NetworkBrowser.cs" />
     <Compile Include="Utilities\ReadFullyStream.cs" />
+    <Compile Include="Utilities\RequestState.cs" />
     <Compile Include="Utilities\ScreenArea.cs">
       <SubType>Form</SubType>
     </Compile>

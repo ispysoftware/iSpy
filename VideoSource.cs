@@ -153,7 +153,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
             if (empty)
             {
@@ -322,7 +322,7 @@ namespace iSpyApplication
             catch(Exception)
             {
                 //Ximea DLL not installed
-                //MainForm.LogMessageToFile("This is not a XIMEA device");
+                //Logger.LogMessageToFile("This is not a XIMEA device");
             }
 
             pnlXimea.Enabled = deviceCount>0;
@@ -385,7 +385,7 @@ namespace iSpyApplication
             catch (Exception)
             {
                 //Type error if not installed
-                MainForm.LogMessageToFile("Kinect is not installed");
+                Logger.LogMessageToFile("Kinect is not installed");
             }
             if (deviceCount>0)
             {
@@ -1183,7 +1183,7 @@ namespace iSpyApplication
             }
             catch ( Exception ex )
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
                 MessageBox.Show( ex.Message, LocRm.GetString("Error"),
                     MessageBoxButtons.OK, MessageBoxIcon.Error );
             }
@@ -1556,7 +1556,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
             finally
             {
@@ -1708,7 +1708,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex);
                 }
             }
         }
@@ -1775,7 +1775,7 @@ namespace iSpyApplication
                     }
                     catch (Exception ex)
                     {
-                        MainForm.LogExceptionToFile(ex);
+                        Logger.LogExceptionToFile(ex);
                         urls.Add("Ensure your login information is correct.");
                         continue;
                     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
+using iSpyApplication.Utilities;
 
 namespace iSpyApplication
 {
@@ -16,12 +17,12 @@ namespace iSpyApplication
             try
             {
                 _sslCertificate = X509Certificate.CreateFromCertFile(fileName);
-                MainForm.LogMessageToFile("Loaded SSL Certificate: " + _sslCertificate.ToString(false));
+                Logger.LogMessageToFile("Loaded SSL Certificate: " + _sslCertificate.ToString(false));
                 return "OK";
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
                 return ex.Message;
             }
         }

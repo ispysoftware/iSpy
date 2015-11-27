@@ -25,6 +25,7 @@ using iSpyApplication.Sources;
 using iSpyApplication.Sources.Audio;
 using iSpyApplication.Sources.Video;
 using iSpyApplication.Sources.Video.Ximea;
+using iSpyApplication.Utilities;
 using iSpyApplication.Vision;
 using iSpyPRO.DirectShow;
 using iSpyPRO.DirectShow.Internals;
@@ -590,7 +591,7 @@ namespace iSpyApplication.Controls
 
         void CameraWindow_ErrorHandler(string message)
         {
-            MainForm.LogErrorToFile(Camobject.name+": "+message);
+            Logger.LogErrorToFile(Camobject.name+": "+message);
         }
 
         private Thread _tFiles;
@@ -2835,7 +2836,7 @@ namespace iSpyApplication.Controls
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogExceptionToFile(ex,"open web browser");
+                    Logger.LogExceptionToFile(ex,"open web browser");
                 }
             }
         }
@@ -2966,7 +2967,7 @@ namespace iSpyApplication.Controls
                                     }
                                     catch (Exception ex)
                                     {
-                                        MainForm.LogExceptionToFile(ex, "Generating external link to file");
+                                        Logger.LogExceptionToFile(ex, "Generating external link to file");
                                     }
                                     DoAlert("recordingstarted", linktofile);
                                 }
@@ -3199,7 +3200,7 @@ namespace iSpyApplication.Controls
             }
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
         }
 
@@ -3393,7 +3394,7 @@ namespace iSpyApplication.Controls
             string l = mode + ": " + Camobject.name;
             if (msg != "")
                 l += " message: " + msg;
-            MainForm.LogMessageToFile(l);
+            Logger.LogMessageToFile(l);
 
             Bitmap bmp = null;
             if (mode == "alert")
@@ -3424,7 +3425,7 @@ namespace iSpyApplication.Controls
                     }
                     catch (Exception ex)
                     {
-                        MainForm.LogExceptionToFile(ex);
+                        Logger.LogExceptionToFile(ex);
                     }
                 }
                 

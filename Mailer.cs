@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Net.Mail;
+using iSpyApplication.Utilities;
 
 namespace iSpyApplication
 {
@@ -88,7 +89,7 @@ namespace iSpyApplication
             catch (Exception ex)
             {
                 success = false;
-                MainForm.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex);
             }
             return success;
         }

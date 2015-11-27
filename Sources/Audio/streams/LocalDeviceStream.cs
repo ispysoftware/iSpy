@@ -1,4 +1,5 @@
 ﻿using System;
+using iSpyApplication.Utilities;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
@@ -228,7 +229,7 @@ namespace iSpyApplication.Sources.Audio.streams
                 var af = AudioFinished;
                 af?.Invoke(this, new PlayingFinishedEventArgs(ReasonToFinishPlaying.DeviceLost));
 
-                MainForm.LogExceptionToFile(ex, "AudioDevice");
+                Logger.LogExceptionToFile(ex, "AudioDevice");
             }
         }
 
@@ -262,7 +263,7 @@ namespace iSpyApplication.Sources.Audio.streams
             try { wi.StopRecording();}
             catch (Exception ex)
             {
-                MainForm.LogExceptionToFile(ex,"Device");
+                Logger.LogExceptionToFile(ex,"Device");
             }
             wi.RecordingStopped -= WaveInRecordingStopped;
             if (WaveOutProvider?.BufferedBytes>0) WaveOutProvider?.ClearBuffer();

@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Windows.Forms;
 using System.Xml;
+using iSpyApplication.Utilities;
 
 namespace iSpyApplication
 {
@@ -84,7 +85,7 @@ namespace iSpyApplication
                             }
                             catch (Exception ex)
                             {
-                                MainForm.LogExceptionToFile(ex);
+                                Logger.LogExceptionToFile(ex);
                                 DialogResult = DialogResult.Cancel;
                                 aborting = true;
                                 Close();
@@ -95,12 +96,12 @@ namespace iSpyApplication
                     }
                     else
                     {
-                        MainForm.LogMessageToFile("Update cancelled");
+                        Logger.LogMessageToFile("Update cancelled");
                     }
                 }
                 else
                 {
-                    MainForm.LogErrorToFile("Response stream from " + Url + " failed");
+                    Logger.LogErrorToFile("Response stream from " + Url + " failed");
                 }
             }
             response.Close();
