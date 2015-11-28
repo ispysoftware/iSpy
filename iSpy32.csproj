@@ -469,12 +469,6 @@
     <Compile Include="Controls\PTZUI.Designer.cs">
       <DependentUpon>PTZUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\SelectObjects.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Controls\SelectObjects.Designer.cs">
-      <DependentUpon>SelectObjects.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\CopyTo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -517,6 +511,12 @@
     </Compile>
     <Compile Include="Controls\PTZTracking.Designer.cs">
       <DependentUpon>PTZTracking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SelectObjects.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\SelectObjects.Designer.cs">
+      <DependentUpon>SelectObjects.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\ServerEventRow.cs">
       <SubType>UserControl</SubType>
@@ -1447,9 +1447,6 @@
     <EmbeddedResource Include="Controls\PTZUI.resx">
       <DependentUpon>PTZUI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\SelectObjects.resx">
-      <DependentUpon>SelectObjects.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\CopyTo.resx">
       <DependentUpon>CopyTo.cs</DependentUpon>
     </EmbeddedResource>
@@ -1471,6 +1468,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\PTZTracking.resx">
       <DependentUpon>PTZTracking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SelectObjects.resx">
+      <DependentUpon>SelectObjects.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ServerEventRow.resx">
       <DependentUpon>ServerEventRow.cs</DependentUpon>

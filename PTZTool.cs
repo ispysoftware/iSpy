@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using iSpyApplication.Controls;
-using iSpyApplication.Utilities;
 
 namespace iSpyApplication
 {
@@ -11,9 +9,6 @@ namespace iSpyApplication
     {
         private bool _loaded;
         private CameraWindow _cameraControl;
-        private bool _mousedown;
-        private Point _location = Point.Empty;
-
         public CameraWindow CameraControl
         {
             get { return _cameraControl; }

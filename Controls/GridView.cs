@@ -522,6 +522,7 @@ namespace iSpyApplication.Controls
                                 {
                                     gvc.ObjectIDs.Remove(gvc.ObjectIDs[gvc.CurrentIndex]);
                                 }
+                                gGrid.DrawRectangle(new Pen(vl.BorderColor), rFeed);
                                 break;
                             case 2:
                                 var cw = MainClass.GetCameraWindow(obj.ObjectID);
@@ -566,6 +567,7 @@ namespace iSpyApplication.Controls
                                         gGrid.DrawString(txt, Drawfont, OverlayBrush, new PointF(rect.X + 5, rect.Y + 2));
                                         gGrid.DrawString(cw.Camobject.name, Drawfont, OverlayBrush, new PointF(r.X + 5, r.Y + 2));
                                         gGrid.DrawString(cw.SourceType, Drawfont, OverlayBrush, new PointF(r.X + 5, r.Y + 20));
+                                        
                                     }
 
                                     if (cw.IsEnabled && (cw.VideoSourceErrorState || !cw.GotImage))
@@ -573,6 +575,7 @@ namespace iSpyApplication.Controls
                                         var img = Properties.Resources.connecting;
                                         gGrid.DrawImage(img, x+ _itemwidth - img.Width - 2, y + 2, img.Width, img.Height);
                                     }
+                                    gGrid.DrawRectangle(new Pen(cw.BorderColor), rFeed);
                                 }
                                 else
                                 {
@@ -813,6 +816,20 @@ namespace iSpyApplication.Controls
             _overControlIndex = -1;
         }
 
+        public void QuickSelect(Point p)
+        {
+            GridViewConfig cgv;
+            int bpi, io;
+            GetInfoByLocation(p, out cgv, out bpi, out io);
+
+            if (Cg.ModeIndex == 0)
+            {
+                List(cgv, io);                
+            }
+        }
+
+
+
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
@@ -820,64 +837,9 @@ namespace iSpyApplication.Controls
 
             if (e.Button==MouseButtons.Left)
             {
-                var row = -1;
-                var col = -1;
-                var x = e.Location.X;
-                var y = e.Location.Y;
-                int io = 0;
-
-                GridViewConfig cgv = null;
-                if (_maximised != null)
-                {
-                    cgv = _maximised;
-                    row = 0;
-                    col = 0;
-                    int j = 0;
-                    foreach (var obj in _controls)
-                    {
-                        if (obj!=null && obj.Equals(cgv))
-                        {
-                            io = j;
-                            break;
-                        }
-                        j++;
-                    }
-                }
-                else
-                {
-
-                    for (var i = 1; i <= _cols; i++)
-                    {
-                        if (i*(_itemwidth + Itempadding) - Itempadding/2 > x)
-                        {
-                            col = i - 1;
-                            break;
-                        }
-                    }
-                    for (var i = 1; i <= _rows; i++)
-                    {
-                        if (i*(_itemheight + Itempadding) - Itempadding/2 > y)
-                        {
-                            row = i - 1;
-                            break;
-                        }
-                    }
-
-                    if (row != -1 && col != -1)
-                    {
-                        cgv = _controls[row*_cols + col];
-                        io = row*_cols + col;
-                    }
-
-                }
-
-                int rx = col * (_itemwidth + Itempadding);
-                int ry = row * (_itemheight + Itempadding);
-
-                int ox = x - rx;
-                int oy = (ry + _itemheight) - y - 20;
-
-                int bpi = GetButtonIndexByLocation(new Point(ox, oy));
+                GridViewConfig cgv;
+                int bpi,io;
+                GetInfoByLocation(e.Location, out cgv, out bpi, out io);
 
                 if (Cg.ModeIndex == 0)
                 {
@@ -892,6 +854,7 @@ namespace iSpyApplication.Controls
                 {
                     var gv = cgv.ObjectIDs[cgv.CurrentIndex];
                     var ctrl = MainClass.GetISpyControl(gv.TypeID, gv.ObjectID);
+                    ((Control)ctrl).Focus();
                     switch (bpi)
                     {
                         case 0:
@@ -966,6 +929,68 @@ namespace iSpyApplication.Controls
                 }
             }
 
+        }
+
+        private void GetInfoByLocation(Point p, out GridViewConfig cgv, out int bpi, out int io)
+        {
+            var row = -1;
+            var col = -1;
+            var x = p.X;
+            var y = p.Y;
+            io = 0;
+
+            cgv = null;
+            if (_maximised != null)
+            {
+                cgv = _maximised;
+                row = 0;
+                col = 0;
+                int j = 0;
+                foreach (var obj in _controls)
+                {
+                    if (obj != null && obj.Equals(cgv))
+                    {
+                        io = j;
+                        break;
+                    }
+                    j++;
+                }
+            }
+            else
+            {
+
+                for (var i = 1; i <= _cols; i++)
+                {
+                    if (i * (_itemwidth + Itempadding) - Itempadding / 2 > x)
+                    {
+                        col = i - 1;
+                        break;
+                    }
+                }
+                for (var i = 1; i <= _rows; i++)
+                {
+                    if (i * (_itemheight + Itempadding) - Itempadding / 2 > y)
+                    {
+                        row = i - 1;
+                        break;
+                    }
+                }
+
+                if (row != -1 && col != -1)
+                {
+                    cgv = _controls[row * _cols + col];
+                    io = row * _cols + col;
+                }
+
+            }
+
+            int rx = col * (_itemwidth + Itempadding);
+            int ry = row * (_itemheight + Itempadding);
+
+            int ox = x - rx;
+            int oy = (ry + _itemheight) - y - 20;
+
+            bpi = GetButtonIndexByLocation(new Point(ox, oy));
         }
 
         protected override void OnMouseDoubleClick(MouseEventArgs e)
@@ -1108,45 +1133,50 @@ namespace iSpyApplication.Controls
             }
 
         }
-        
+
         private void List(GridViewConfig cgv, int io)
         {
-            var gvc = new GridViewCamera();
-            if (cgv != null)
+            using (var gvc = new GridViewCamera())
             {
-                gvc.Delay = cgv.Delay;
-                gvc.SelectedIDs = cgv.ObjectIDs;
-            }
-            else
-            {
-                gvc.SelectedIDs = new List<GridViewItem>();
-            }
-            if (gvc.ShowDialog(this) == DialogResult.OK)
-            {
-                foreach (var gvi in gvc.SelectedIDs)
+                if (cgv != null)
                 {
-                    gvi.Init(this);
+                    gvc.Delay = cgv.Delay;
+                    gvc.SelectedIDs = cgv.ObjectIDs;
                 }
-                cgv = gvc.SelectedIDs.Count > 0 ? new GridViewConfig(gvc.SelectedIDs, gvc.Delay) : null;
-
-                if (Cg != null)
+                else
                 {
-                    var gi = Cg.GridItem.FirstOrDefault(p => p.GridIndex == io);
-                    if (gi == null)
+                    gvc.SelectedIDs = new List<GridViewItem>();
+                }
+                if (gvc.ShowDialog(this) == DialogResult.OK)
+                {
+                    foreach (var gvi in gvc.SelectedIDs)
                     {
-                        gi = new configurationGridGridItem { CycleDelay = gvc.Delay, GridIndex = io };
-                        var lgi = Cg.GridItem.ToList();
-                        lgi.Add(gi);
-                        Cg.GridItem = lgi.ToArray();
+                        gvi.Init(this);
                     }
-                    
+                    cgv = gvc.SelectedIDs.Count > 0 ? new GridViewConfig(gvc.SelectedIDs, gvc.Delay) : null;
 
-                    gi.CycleDelay = gvc.Delay;
+                    if (Cg != null)
+                    {
+                        var gi = Cg.GridItem.FirstOrDefault(p => p.GridIndex == io);
+                        if (gi == null)
+                        {
+                            gi = new configurationGridGridItem {CycleDelay = gvc.Delay, GridIndex = io};
+                            var lgi = Cg.GridItem.ToList();
+                            lgi.Add(gi);
+                            Cg.GridItem = lgi.ToArray();
+                        }
 
-                    gi.Item = gvc.SelectedIDs.Select(i => new configurationGridGridItemItem {ObjectID = i.ObjectID, TypeID = i.TypeID}).ToArray();
+
+                        gi.CycleDelay = gvc.Delay;
+
+                        gi.Item =
+                            gvc.SelectedIDs.Select(
+                                i => new configurationGridGridItemItem {ObjectID = i.ObjectID, TypeID = i.TypeID})
+                                .ToArray();
+                    }
+                    _controls[io] = cgv;
+                    Invalidate();
                 }
-                _controls[io] = cgv;
-                Invalidate();
             }
         }
 

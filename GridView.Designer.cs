@@ -51,7 +51,9 @@
             this.alwaysOnTopToolStripMenuItem,
             this.closeGridViewToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(245, 188);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(245, 160);
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            this.contextMenuStrip1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.contextMenuStrip1_MouseMove);
             // 
             // editToolStripMenuItem
             // 
@@ -111,12 +113,14 @@
             this.ClientSize = new System.Drawing.Size(1153, 789);
             this.ContextMenuStrip = this.contextMenuStrip1;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "GridView";
             this.Text = "iSpy Grid View";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GridView_FormClosing);
             this.Load += new System.EventHandler(this.GridView_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GridView_KeyDown);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GridView_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GridView_MouseMove);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 

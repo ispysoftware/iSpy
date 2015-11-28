@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using iSpyApplication.Controls;
@@ -135,56 +136,58 @@ namespace iSpyApplication
 
         private void quickSelectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var so = new SelectObjects();
-            so.ShowDialog(this);
-            if (so.DialogResult == DialogResult.OK)
+            using (var so = new SelectObjects())
             {
-                var l = so.SelectedObjects;
-                int i = 0;
-                var lg = new List<configurationGridGridItem>();
-
-                foreach (var o in l)
+                so.ShowDialog(this);
+                if (so.DialogResult == DialogResult.OK)
                 {
-                    int oid = -1, otid = -1;
-                    var k = o as objectsCamera;
-                    if (k != null)
-                    {
-                        oid = k.id;
-                        otid = 2;
-                    }
-                    var j = o as objectsMicrophone;
-                    if (j != null)
-                    {
-                        oid = j.id;
-                        otid = 1;
-                    }
-                    var m = o as objectsFloorplan;
-                    if (m != null)
-                    {
-                        oid = m.id;
-                        otid = 3;
-                    }
-                    lg.Add(new configurationGridGridItem
-                           {
-                               CycleDelay = 4,
-                               GridIndex = i,
-                               Item =
-                                   new[]
-                                   {
-                                       new configurationGridGridItemItem
-                                       {
-                                           ObjectID = oid,
-                                           TypeID = otid
-                                       }
-                                   }
-                           });
-                    i++;
-                    if (i >= _gv.Cg.Columns*_gv.Cg.Rows)
-                        break;
+                    var l = so.SelectedObjects;
+                    int i = 0;
+                    var lg = new List<configurationGridGridItem>();
 
+                    foreach (var o in l)
+                    {
+                        int oid = -1, otid = -1;
+                        var k = o as objectsCamera;
+                        if (k != null)
+                        {
+                            oid = k.id;
+                            otid = 2;
+                        }
+                        var j = o as objectsMicrophone;
+                        if (j != null)
+                        {
+                            oid = j.id;
+                            otid = 1;
+                        }
+                        var m = o as objectsFloorplan;
+                        if (m != null)
+                        {
+                            oid = m.id;
+                            otid = 3;
+                        }
+                        lg.Add(new configurationGridGridItem
+                               {
+                                   CycleDelay = 4,
+                                   GridIndex = i,
+                                   Item =
+                                       new[]
+                                       {
+                                           new configurationGridGridItemItem
+                                           {
+                                               ObjectID = oid,
+                                               TypeID = otid
+                                           }
+                                       }
+                               });
+                        i++;
+                        if (i >= _gv.Cg.Columns*_gv.Cg.Rows)
+                            break;
+
+                    }
+                    _gv.Cg.GridItem = lg.ToArray();
+                    _gv.Init();
                 }
-                _gv.Cg.GridItem = lg.ToArray();
-                _gv.Init();
             }
         }
 
@@ -193,7 +196,24 @@ namespace iSpyApplication
             quickSelectToolStripMenuItem.Visible = _gv.Cg.ModeIndex == 0;
         }
 
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
 
+        }
 
+        private void GridView_MouseDown(object sender, MouseEventArgs e)
+        {
+            
+        }
+
+        private void contextMenuStrip1_MouseMove(object sender, MouseEventArgs e)
+        {
+            
+        }
+
+        private void GridView_MouseMove(object sender, MouseEventArgs e)
+        {
+
+        }
     }
 }
