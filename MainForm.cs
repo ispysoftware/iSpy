@@ -1252,6 +1252,7 @@ namespace iSpyApplication
                         Logger.LogExceptionToFile(ex);
                     }
                 }
+                _lastClicked = _pnlCameras;
             }
 
             LoadCommands();
@@ -3745,6 +3746,8 @@ namespace iSpyApplication
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Handled)
+                return;
             if (e.KeyCode == Keys.PageUp)
             {
                 ProcessKey("previous_control");
@@ -3858,8 +3861,16 @@ namespace iSpyApplication
             }
             if (e.KeyCode == Keys.Delete)
             {
-                ProcessKey("delete");
-                ProcessKey("next_control"); return;
+                if (_lastClicked == _pnlCameras)
+                {
+                    ProcessKey("delete");
+                    ProcessKey("next_control");
+                    return;
+                }
+                if (_lastClicked == flowPreview)
+                {
+                    MediaDeleteSelected();
+                }
             }
             if (e.KeyCode.ToString()=="Menu")
             {
@@ -4391,6 +4402,7 @@ namespace iSpyApplication
 
         private void flowPreview_MouseDown(object sender, MouseEventArgs e)
         {
+            _lastClicked = flowPreview;
             flowPreview.Focus();
         }
 
@@ -6170,6 +6182,7 @@ namespace iSpyApplication
             this.flCommands.Name = "flCommands";
             this.flCommands.Size = new System.Drawing.Size(253, 168);
             this.flCommands.TabIndex = 0;
+            this.flCommands.MouseDown += new System.Windows.Forms.MouseEventHandler(this.flCommands_MouseDown);
             this.flCommands.MouseEnter += new System.EventHandler(this.flCommands_MouseEnter);
             // 
             // panel2
@@ -6218,6 +6231,7 @@ namespace iSpyApplication
             this._pnlCameras.Size = new System.Drawing.Size(887, 426);
             this._pnlCameras.TabIndex = 19;
             this._pnlCameras.Scroll += new System.Windows.Forms.ScrollEventHandler(this._pnlCameras_Scroll);
+            this._pnlCameras.MouseDown += new System.Windows.Forms.MouseEventHandler(this._pnlCameras_MouseDown);
             // 
             // panel1
             // 
@@ -6682,6 +6696,17 @@ namespace iSpyApplication
         private void menuItem32_Click(object sender, EventArgs e)
         {
             ManageGridViews();
+        }
+
+        private Panel _lastClicked;
+        private void _pnlCameras_MouseDown(object sender, MouseEventArgs e)
+        {
+            _lastClicked = _pnlCameras;
+        }
+
+        private void flCommands_MouseDown(object sender, MouseEventArgs e)
+        {
+            _lastClicked = flCommands;
         }
 
         private void menuItem33_Click(object sender, EventArgs e)

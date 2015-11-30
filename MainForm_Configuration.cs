@@ -453,20 +453,22 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex, "Configuration");
+                    Logger.LogExceptionToFile(ex, "IP Lookup Add Range");
                     try
                     {
                         arr.AddRange(Dns.GetHostAddresses(Dns.GetHostName()));
                     }
                     catch (Exception ex2)
                     {
-                        Logger.LogExceptionToFile(ex2, "Configuration");
+                        Logger.LogExceptionToFile(ex2, "IP Lookup GetHostAddresses");
                         //none in the system - just use the loopback address
                         _ipv4Addresses = new[] { System.Net.IPAddress.Parse("127.0.0.1") };
                         return _ipv4Addresses;
                     }
                     //ignore lookup
                 }
+
+
                 _ipv4Addresses = arr.Where(IsValidIP).Distinct().ToArray();
 
                 if (!_ipv4Addresses.Any()) //none in the system - just use the loopback address
@@ -2011,7 +2013,7 @@ namespace iSpyApplication
         public void RemoveCamera(CameraWindow cameraControl, bool confirm)
         {
             if (confirm &&
-                MessageBox.Show(LocRm.GetString("AreYouSure"), LocRm.GetString("Confirm"), MessageBoxButtons.OKCancel,
+                MessageBox.Show(LocRm.GetString("Delete")+":" +cameraControl.ObjectName, LocRm.GetString("Confirm"), MessageBoxButtons.OKCancel,
                                 MessageBoxIcon.Warning) == DialogResult.Cancel)
                 return;
 
@@ -2099,7 +2101,7 @@ namespace iSpyApplication
         public void RemoveMicrophone(VolumeLevel volumeControl, bool confirm)
         {
             if (confirm &&
-                MessageBox.Show(LocRm.GetString("AreYouSure"), LocRm.GetString("Confirm"), MessageBoxButtons.OKCancel,
+                MessageBox.Show(LocRm.GetString("Delete") + ":" + volumeControl.ObjectName, LocRm.GetString("Confirm"), MessageBoxButtons.OKCancel,
                                 MessageBoxIcon.Warning) == DialogResult.Cancel)
                 return;
 
@@ -2181,7 +2183,7 @@ namespace iSpyApplication
         private void RemoveFloorplan(FloorPlanControl fpc, bool confirm)
         {
             if (confirm &&
-                MessageBox.Show(LocRm.GetString("AreYouSure"), LocRm.GetString("Confirm"), MessageBoxButtons.OKCancel,
+                MessageBox.Show(LocRm.GetString("Delete") + ":" + fpc.ObjectName, LocRm.GetString("Confirm"), MessageBoxButtons.OKCancel,
                                 MessageBoxIcon.Warning) == DialogResult.Cancel)
                 return;
 
@@ -2849,6 +2851,7 @@ namespace iSpyApplication
                         break;
                 }
             }
+            _lastClicked = flowPreview;
         }
 
         public CameraWindow GetCameraWindow(int cameraId)
@@ -3156,6 +3159,7 @@ namespace iSpyApplication
 
         private void CameraControlMouseDown(object sender, MouseEventArgs e)
         {
+            _lastClicked = _pnlCameras;
             if (Resizing) return;
             var cameraControl = (CameraWindow)sender;
             cameraControl.Focus();
@@ -3358,6 +3362,7 @@ namespace iSpyApplication
 
         private void VolumeControlMouseDown(object sender, MouseEventArgs e)
         {
+            _lastClicked = _pnlCameras;
             if (Resizing) return;
             var volumeControl = (VolumeLevel)sender;
             switch (e.Button)
@@ -3476,6 +3481,7 @@ namespace iSpyApplication
 
         private void FloorPlanMouseDown(object sender, MouseEventArgs e)
         {
+            _lastClicked = _pnlCameras;
             if (Resizing) return;
             var fpc = (FloorPlanControl)sender;
             if (e.Button == MouseButtons.Left)

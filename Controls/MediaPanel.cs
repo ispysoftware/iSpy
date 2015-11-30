@@ -23,10 +23,7 @@ namespace iSpyApplication.Controls
 
         void MediaPanelKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode==Keys.Delete)
-            {
-                MainForm.InstanceReference.MediaDeleteSelected();
-            }
+            
         }
 
         protected override void OnScroll(ScrollEventArgs se)

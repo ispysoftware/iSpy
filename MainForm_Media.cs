@@ -273,7 +273,10 @@ namespace iSpyApplication
                 {
                     first = false;
                     dtCurrent = dt;
-                    var lb = new Label { Text = dtCurrent.ToShortDateString(), Margin = new Padding(3), Padding = new Padding(0), ForeColor = Color.White, BackColor = Color.Black, Width=96, Height=73, TextAlign = ContentAlignment.MiddleCenter};
+                    DateTime tag = new DateTime(dtCurrent.Year, dtCurrent.Month, dtCurrent.Day);
+                    var lb = new Label { Text = dtCurrent.ToShortDateString(), Tag = tag, Margin = new Padding(3), Padding = new Padding(0), ForeColor = Color.White, BackColor = Color.Black, Width=96, Height=73, TextAlign = ContentAlignment.MiddleCenter};
+                    lb.Click += Lb_Click;
+                    lb.Cursor = Cursors.Hand;
                     flowPreview.Controls.Add(lb);
                     flowPreview.Controls.SetChildIndex(lb, ci);
                     ci++;
@@ -318,6 +321,29 @@ namespace iSpyApplication
 
             flowPreview.ResumeLayout(true);
             NeedsMediaRebuild = false;
+        }
+
+        private void Lb_Click(object sender, EventArgs e)
+        {
+            var dt = (DateTime)((Label) sender).Tag;
+            var dtTo = dt.AddDays(1);
+            bool f = true, s = false;
+            foreach (var c in flowPreview.Controls)
+            {
+                var pb = c as PreviewBox;
+                if (pb != null && pb.CreatedDate>dt)
+                {
+                    if (f)
+                    {
+                        s = pb.Selected;
+                        f = false;
+                    }
+                    if (pb.CreatedDate > dt && pb.CreatedDate <dtTo)
+                        pb.Selected = !s;
+                }
+            }
+            flowPreview.Invalidate();
+
         }
 
         public void RemovePreviewByFileName(string fn)
