@@ -1529,10 +1529,11 @@ namespace iSpyApplication
             }
 
 
-
-            string url = uri.ToString().Replace("%5BUSERNAME%5D", Uri.EscapeDataString(un));
-            url = url.Replace("%5BPASSWORD%5D", Uri.EscapeDataString(pwd));
-            url = url.Replace("%5BCHANNEL%5D", _cameraControl.Camobject.settings.ptzchannel);
+            string url = uri.ToString().Replace("%5B", "[");
+            url = url.Replace("%5D", "]");
+            url = url.Replace("[USERNAME]", Uri.EscapeDataString(un));
+            url = url.Replace("[PASSWORD]", Uri.EscapeDataString(pwd));
+            url = url.Replace("[CHANNEL]", _cameraControl.Camobject.settings.ptzchannel);
 
             var co = new ConnectionOptions
             {
