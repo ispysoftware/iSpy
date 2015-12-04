@@ -422,19 +422,20 @@ namespace iSpyApplication
                 var arr = new List<IPAddress>();
 
                 //get ipv4 from connected NIC
-                var client = new TcpClient();
-                client.ReceiveTimeout = client.SendTimeout = 3000;
                 try
                 {
-                    client.Connect("www.google.com", 80);
-                    var ep = client.Client.LocalEndPoint;
-                    client.Close();
-                    if (ep != null)
+                    using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
                     {
-                        string detectip = ep.ToString();
-                        int end = detectip.IndexOf(":", StringComparison.Ordinal);
-                        detectip = detectip.Remove(end);
-                        arr.Add(System.Net.IPAddress.Parse(detectip));
+                        socket.Connect("10.0.2.4", 65530);
+                        IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
+                        if (endPoint != null)
+                        {
+                            var localIP = endPoint.Address.ToString();
+                            int end = localIP.IndexOf(":", StringComparison.Ordinal);
+                            if (end > -1)
+                                localIP = localIP.Remove(end);
+                            arr.Add(System.Net.IPAddress.Parse(localIP));
+                        }
                     }
                 }
                 catch (Exception ex)

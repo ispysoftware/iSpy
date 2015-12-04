@@ -7,7 +7,7 @@
     <MajorUpgrade DowngradeErrorMessage="A newer version of iSpy is already installed." AllowDowngrades="no" />
     <MediaTemplate EmbedCab="yes" />
     <Binary Id="WixCA.CA.dll" src="..\WixCA\bin\$(var.Configuration)\WixCA.CA.dll" />
-    <Property Id='CONFIGFILELOCATION' Value='[SourceDir]' />
+    <Property Id="CONFIGFILELOCATION" Value="[SourceDir]" />
     <CustomAction Id="SetProperty" Execute="immediate"
                         Property="CA_myCustomAction"
                         Value="InstallDir=[MergeRedirectFolder];SourceDir=[CONFIGFILELOCATION]" />

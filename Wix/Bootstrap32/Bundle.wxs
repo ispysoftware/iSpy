@@ -12,13 +12,13 @@
         LicenseFile="license.rtf"
         xmlns:bal="http://schemas.microsoft.com/wix/BalExtension" SuppressOptionsUI="no"/>
     </BootstrapperApplicationRef>
-    <Variable Name="LaunchTarget" Value="[InstallFolder]\iSpy\iSpy.exe"/>
+    <Variable Name="LaunchTarget" Value="[InstallFolder]\iSpy.exe"/>
 		<Chain>
       <PackageGroupRef Id="NetFx40Web"/>
       <PackageGroupRef Id="WindowsInstaller45"/>
       <RollbackBoundary />
       <MsiPackage Id="iSpy" SourceFile="$(var.iSpy32Setup.TargetPath)" DisplayInternalUI="no" Compressed="yes" Vital="yes" Visible="yes">
-        <MsiProperty Name="INSTALLLOCATION" Value="[InstallFolder]" />
+        <MsiProperty Name="INSTALLFOLDER" Value="[InstallFolder]" />
         <MsiProperty Name='CONFIGFILELOCATION' Value='[WixBundleOriginalSourceFolder]' />
       </MsiPackage>
 		</Chain>

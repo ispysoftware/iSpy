@@ -830,9 +830,6 @@
     <Compile Include="PTZTool.Designer.cs">
       <DependentUpon>PTZTool.cs</DependentUpon>
     </Compile>
-    <Compile Include="Server\LocalServer.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="MainForm_Commands.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -888,6 +885,7 @@
     </Compile>
     <Compile Include="RestartableStream.cs" />
     <Compile Include="SerializableFont.cs" />
+    <Compile Include="Server\LocalServer.cs" />
     <Compile Include="ShareCamera.cs">
       <SubType>Form</SubType>
     </Compile>
