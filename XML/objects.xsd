@@ -281,6 +281,10 @@
                                                 <xs:attribute name="profile" type="xs:int" default="0" />
                                                 <xs:attribute name="crf" type="xs:boolean" default="true" />
                                                 <xs:attribute name="trigger" type="xs:string" default=""/>
+                                                <xs:attribute name="ftpenabled" type="xs:boolean" default="false" />
+                                                <xs:attribute name="ftpfilename" type="xs:string" default="" />
+                                                <xs:attribute name="ftpcounter" type="xs:int" default="0"/>
+                                                <xs:attribute name="ftpcountermax" type="xs:int" default="20" />
                                             </xs:complexType>
                                         </xs:element>
                                         <xs:element name="alerts">
@@ -403,6 +407,7 @@
                                     <xs:attribute name="ptzentryindex" type="xs:int" default="0" />
                                     <xs:attribute name="newrecordingcount" type="xs:int" default="0"/>
                                     <xs:attribute name="surfaceID" type="xs:int" default="0"/>
+                                    <xs:attribute name="deleted" type="xs:boolean" default="false" />
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>
@@ -570,6 +575,7 @@
                                     <xs:attribute name="width" type="xs:int" use="required" />
                                     <xs:attribute name="height" type="xs:int" use="required" />
                                     <xs:attribute name="newrecordingcount" type="xs:int" default="0"/>
+                                    <xs:attribute name="deleted" type="xs:boolean" default="false" />
                                     <xs:attribute name="surfaceID" type="xs:int" default="0"/>
                                 </xs:complexType>
                             </xs:element>
@@ -618,6 +624,7 @@
                                     <xs:attribute name="fov" type="xs:int" default="90"/>
                                     <xs:attribute name="radius" type="xs:int" default="80"/>
                                     <xs:attribute name="needsupdate" type="xs:boolean" use="required" />
+                                    <xs:attribute name="deleted" type="xs:boolean" default="false" />
                                     <xs:attribute name="surfaceID" type="xs:int" default="0"/>
                                 </xs:complexType>
                             </xs:element>
@@ -644,6 +651,29 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
+              <xs:element name="schedule">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="entries">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="entry">
+                            <xs:complexType>
+                              <xs:attribute name="time" type="xs:int" use="required" />
+                              <xs:attribute name="typeid" type="xs:int" use="required" />
+                              <xs:attribute name="daysofweek" type="xs:string" use="required" />
+                              <xs:attribute name="parameter" type="xs:string" default="" />
+                              <xs:attribute name="active" type="xs:boolean" default="true" />
+                              <xs:attribute name="objecttypeid" type="xs:int" use="required"/>
+                              <xs:attribute name="objectid" type="xs:int" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
                 <xs:element name="actions">
                   <xs:complexType>
                     <xs:sequence>
@@ -660,6 +690,8 @@
                                 <xs:attribute name="param2" type="xs:string" default="" />
                                 <xs:attribute name="param3" type="xs:string" default="" />
                                 <xs:attribute name="param4" type="xs:string" default="" />
+                                <xs:attribute name="ident" type="xs:string" default="" />
+                                <xs:attribute name="active" type="xs:boolean" default="true" />
                               </xs:complexType>
                             </xs:element>
                           </xs:sequence>

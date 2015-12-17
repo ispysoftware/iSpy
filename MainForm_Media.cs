@@ -452,7 +452,8 @@ namespace iSpyApplication
                     var pb = flowPreview.Controls[i] as PreviewBox;
                     if (pb != null && pb.Selected)
                     {
-                        msg = CloudGateway.Upload(pb.Otid, pb.Oid, pb.FileName);
+                        bool b;
+                        msg = CloudGateway.Upload(pb.Otid, pb.Oid, pb.FileName, out b);
                     }
                 }
             }
@@ -478,7 +479,8 @@ namespace iSpyApplication
                     var pb = flowPreview.Controls[i] as PreviewBox;
                     if (pb != null && pb.Selected)
                     {
-                        msg = YouTubeUploader.Upload(pb.Oid, pb.FileName);
+                        bool b;
+                        msg = YouTubeUploader.Upload(pb.Oid, pb.FileName, out b);
                     }
                 }
             }

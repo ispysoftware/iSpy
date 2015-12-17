@@ -30,8 +30,8 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.lblSummary = new System.Windows.Forms.Label();
             this.pbEdit = new System.Windows.Forms.PictureBox();
+            this.chkSummary = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbEdit)).BeginInit();
@@ -44,8 +44,8 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.Controls.Add(this.pictureBox2, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.lblSummary, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.pbEdit, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.chkSummary, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -67,20 +67,6 @@
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
-            // lblSummary
-            // 
-            this.lblSummary.AutoEllipsis = true;
-            this.lblSummary.AutoSize = true;
-            this.lblSummary.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblSummary.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSummary.Location = new System.Drawing.Point(3, 3);
-            this.lblSummary.Margin = new System.Windows.Forms.Padding(3);
-            this.lblSummary.Name = "lblSummary";
-            this.lblSummary.Padding = new System.Windows.Forms.Padding(3);
-            this.lblSummary.Size = new System.Drawing.Size(259, 25);
-            this.lblSummary.TabIndex = 0;
-            this.lblSummary.Text = "label1";
-            // 
             // pbEdit
             // 
             this.pbEdit.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -92,6 +78,18 @@
             this.pbEdit.TabIndex = 1;
             this.pbEdit.TabStop = false;
             this.pbEdit.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // chkSummary
+            // 
+            this.chkSummary.AutoSize = true;
+            this.chkSummary.Location = new System.Drawing.Point(6, 6);
+            this.chkSummary.Margin = new System.Windows.Forms.Padding(6);
+            this.chkSummary.Name = "chkSummary";
+            this.chkSummary.Size = new System.Drawing.Size(80, 17);
+            this.chkSummary.TabIndex = 3;
+            this.chkSummary.Text = "checkBox1";
+            this.chkSummary.UseVisualStyleBackColor = true;
+            this.chkSummary.CheckedChanged += new System.EventHandler(this.chkSummary_CheckedChanged);
             // 
             // AlertEventRow
             // 
@@ -112,8 +110,8 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label lblSummary;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pbEdit;
+        private System.Windows.Forms.CheckBox chkSummary;
     }
 }

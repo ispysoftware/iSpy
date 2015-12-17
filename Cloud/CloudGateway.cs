@@ -9,6 +9,12 @@ namespace iSpyApplication.Cloud
 
         public static string Upload(int otid, int oid, string srcPath)
         {
+            bool b;
+            return Upload(otid, oid, srcPath, out b);
+        }
+        public static string Upload(int otid, int oid, string srcPath, out bool success)
+        {
+            success = false;
             if (!MainForm.Conf.Subscribed)
                 return LocRm.GetString("AccessDenied");
 
@@ -39,9 +45,9 @@ namespace iSpyApplication.Cloud
             switch (provider)
             {
                 case "Google Drive":
-                    return Drive.Upload(srcPath, dstPath);
+                    return Drive.Upload(srcPath, dstPath, out success);
                 case "Dropbox":
-                    return Dropbox.Upload(srcPath, dstPath);
+                    return Dropbox.Upload(srcPath, dstPath, out success);
             }
             return LocRm.GetString("NotConfigured");
         }

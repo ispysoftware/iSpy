@@ -1,0 +1,86 @@
+﻿{
+  "header": "Schedule Entry",
+  "okResult": "UploadJSON",
+  "name": "EditSchedule",
+  "ident": "new",
+  "sections": [
+    {
+      "header": "Schedule Entry",
+      "displayType": "Form",
+      "items": [
+        { "text": "Enabled", "value": false, "type": "Boolean", "bindto": "active" },
+        {
+          "text": "Time",
+          "value": "",
+          "type": "Time",
+          "bindto": "time",
+          "help": "(local time at iSpy Server is TIME)"
+        },
+        {
+          "text": "Days",
+          "value": "",
+          "type": "CheckedList",
+          "bindto": "daysofweek",
+          "converter": "daysofweek",
+          "options": [
+            {
+              "text": "Sun",
+              "value": false,
+              "id": "chkSun"
+            },
+            {
+              "text": "Mon",
+              "value": false,
+              "id": "chkMon"
+            },
+            {
+              "text": "Tue",
+              "value": false,
+              "id": "chkTue"
+            },
+            {
+              "text": "Wed",
+              "value": false,
+              "id": "chkWed"
+            },
+            {
+              "text": "Thu",
+              "value": false,
+              "id": "chkThu"
+            },
+            {
+              "text": "Fri",
+              "value": false,
+              "id": "chkFri"
+            },
+            {
+              "text": "Sat",
+              "value": false,
+              "id": "chkSat"
+            }
+
+          ]
+        },
+        {
+          "text": "Command",
+          "value": "",
+          "type": "Select",
+          "bindto": "typeid",
+          "options": [
+            SCHEDULEACTIONS
+          ]
+        },
+        {
+          "text": "Alert",
+          "value": "",
+          "type": "Select",
+          "bindto": "parameter",
+          "options": [
+            ALERTLIST
+          ],
+          "help": "Applies to Alert Action On and Alert Action Off commands"
+        }
+      ]
+    }
+  ]
+}

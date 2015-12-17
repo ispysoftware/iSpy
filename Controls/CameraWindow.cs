@@ -29,7 +29,7 @@ using iSpyApplication.Utilities;
 using iSpyApplication.Vision;
 using iSpyPRO.DirectShow;
 using iSpyPRO.DirectShow.Internals;
-using RestSharp.Extensions.MonoHttp;
+using RestSharp.Contrib;
 using xiApi.NET;
 using Encoder = System.Drawing.Imaging.Encoder;
 using Image = System.Drawing.Image;
@@ -66,7 +66,6 @@ namespace iSpyApplication.Controls
         private Camera _camera;
         private DateTime _lastFrameUploaded = Helper.Now;
         private DateTime _lastFrameSaved = Helper.Now;
-        private DateTime _lastScheduleCheck = DateTime.MinValue;
         private DateTime _dtPTZLastCheck = DateTime.Now;
         private long _lastRun = Helper.Now.Ticks;
 
@@ -78,6 +77,11 @@ namespace iSpyApplication.Controls
             get { return new DateTime(_lastMovementDetected); }
             set { Interlocked.Exchange(ref _lastMovementDetected, value.Ticks); }
         }
+
+        public int ObjectTypeID => 2;
+
+        public int ObjectID => Camobject.id;
+        
 
         public DateTime LastAlerted
         {
@@ -149,7 +153,7 @@ namespace iSpyApplication.Controls
                 return vc.Listening;
             }
         }
-        public bool ForcedRecording;
+        public bool ForcedRecording { get; set; }
         public bool NeedMotionZones = true;
         public XimeaVideoSource XimeaSource;
         public bool Alerted;
@@ -620,6 +624,196 @@ namespace iSpyApplication.Controls
             }
         }
 
+        #region schedule
+        private List<objectsScheduleEntry> _schedule;
+        public List<objectsScheduleEntry> Schedule
+        {
+            get
+            {
+                if (_schedule != null && !_needsNewSchedule)
+                    return _schedule;
+                _schedule =
+                    MainForm.Schedule.Where(p => p.objectid == ObjectID && p.objecttypeid == ObjectTypeID && p.active)
+                        .ToList();
+                _needsNewSchedule = false;
+                return _schedule;
+            }
+        }
+
+        private bool _needsNewSchedule;
+        public void ReloadSchedule()
+        {
+            _needsNewSchedule = true;
+        }
+
+        private int _lastMinute = -1;
+        private bool CheckSchedule()
+        {
+            var t = Convert.ToInt32(Math.Floor(DateTime.Now.TimeOfDay.TotalMinutes));
+            bool enable = false, disable = false;
+            if (_lastMinute != t)
+            {
+                _lastMinute = t;
+                var lRec = Schedule.Where(p => p.time == _lastMinute).ToList();
+                string dow = ((int)DateTime.Now.DayOfWeek).ToString(CultureInfo.InvariantCulture);
+                bool b = false;
+                foreach (var en in lRec)
+                {
+                    if (en.daysofweek.Contains(dow))
+                    {
+                        bool enable2, disable2;
+                        ActionSchedule(en, out enable2, out disable2);
+                        enable = enable || enable2;
+                        disable = disable || disable2;
+                        b = true;
+                    }
+                }
+                if (enable && !disable)
+                    Enable();
+                if (disable && !enable)
+                    Disable();
+                return b;
+            }
+            return false;
+        }
+
+        public bool ApplySchedule()
+        {
+            var t = Convert.ToInt32(Math.Floor(DateTime.Now.TimeOfDay.TotalMinutes));
+            bool enable = false, disable = false;
+            var lRec = Schedule.Where(p => p.time < t).OrderBy(p => p.time).ToList();
+            string dow = ((int)DateTime.Now.DayOfWeek).ToString(CultureInfo.InvariantCulture);
+            foreach (var en in lRec)
+            {
+                if (en.daysofweek.Contains(dow))
+                {
+                    bool enable2, disable2;
+
+                    ActionSchedule(en, out enable2, out disable2);
+
+                    if (enable2)
+                    {
+                        enable = true;
+                        disable = false;
+                    }
+                    else
+                    {
+                        if (disable2)
+                        {
+                            enable = false;
+                            disable = true;
+                        }
+                    }
+                }
+            }
+            if (enable)
+                Enable();
+            if (disable)
+                Disable();
+
+            return !(enable || disable);
+        }
+
+        private void ActionSchedule(objectsScheduleEntry en, out bool enable, out bool disable)
+        {
+            enable = false;
+            disable = false;
+            switch (en.typeid)
+            {
+                case 0:
+                    enable = true;
+                    break;
+                case 1:
+                    disable = true;
+                    break;
+                case 2:
+                    ForcedRecording = true;
+                    break;
+                case 3:
+                    ForcedRecording = false;
+                    break;
+                case 4:
+                    Camobject.detector.recordondetect = true;
+                    Camobject.detector.recordonalert = false;
+                    break;
+                case 5:
+                    Camobject.detector.recordondetect = false;
+                    Camobject.detector.recordonalert = true;
+                    break;
+                case 6:
+                    Camobject.detector.recordondetect = false;
+                    Camobject.detector.recordonalert = false;
+                    break;
+                case 7:
+                    Camobject.alerts.active = true;
+                    break;
+                case 8:
+                    Camobject.alerts.active = false;
+                    break;
+                case 9:
+                    {
+                        var a = MainForm.Actions.FirstOrDefault(p => p.ident == en.parameter);
+
+                        if (a != null)
+                            a.active = true;
+                    }
+                    break;
+                case 10:
+                    {
+                        var a = MainForm.Actions.FirstOrDefault(p => p.ident == en.parameter);
+
+                        if (a != null)
+                            a.active = false;
+                    }
+                    break;
+                case 11:
+                    Camobject.recorder.timelapseenabled = true;
+                    break;
+                case 12:
+                    Camobject.recorder.timelapseenabled = false;
+                    CloseTimeLapseWriter();
+                    break;
+                case 13:
+                    Camobject.ftp.enabled = true;
+                    break;
+                case 14:
+                    Camobject.ftp.enabled = false;
+                    break;
+                case 15:
+                    Camobject.recorder.ftpenabled = true;
+                    break;
+                case 16:
+                    Camobject.recorder.ftpenabled = false;
+                    break;
+                case 17:
+                    Camobject.savelocal.enabled = true;
+                    break;
+                case 18:
+                    Camobject.savelocal.enabled = false;
+                    break;
+                case 19:
+                    Camobject.ptzschedule.active = true;
+                    break;
+                case 20:
+                    Camobject.ptzschedule.active = false;
+                    break;
+                case 21:
+                    Camobject.settings.messaging = true;
+                    break;
+                case 22:
+                    Camobject.settings.messaging = false;
+                    break;
+                case 23:
+                    Camobject.settings.ptzautotrack = true;
+                    break;
+                case 24:
+                    Camobject.settings.ptzautotrack = false;
+                    break;
+            }
+        }
+
+        #endregion
+
         public string[] ScheduleDetails
         {
             get
@@ -844,7 +1038,7 @@ namespace iSpyApplication.Controls
                                     case 3:
                                         if (Helper.HasFeature(Enums.Features.Access_Media))
                                         {
-                                            string url = MainForm.Webserver + "/watch_new.aspx";
+                                            string url = MainForm.Webpage;
                                             if (WsWrapper.WebsiteLive && MainForm.Conf.ServicesEnabled)
                                             {
                                                 MainForm.OpenUrl(url);
@@ -1611,77 +1805,6 @@ namespace iSpyApplication.Controls
             _dtPTZLastCheck = DateTime.Now;
         }
 
-        private bool CheckSchedule()
-        {
-            DateTime dtnow = DateTime.Now;
-
-            foreach (var entry in Camobject.schedule.entries.Where(p => p.active))
-            {
-                if (
-                    entry.daysofweek.IndexOf(((int)dtnow.DayOfWeek).ToString(CultureInfo.InvariantCulture),
-                                             StringComparison.Ordinal) == -1) continue;
-                var stop = entry.stop.Split(':');
-                if (stop[0] != "-")
-                {
-                    if (Convert.ToInt32(stop[0]) == dtnow.Hour)
-                    {
-                        if (Convert.ToInt32(stop[1]) == dtnow.Minute && dtnow.Second < 2)
-                        {
-                            Camobject.detector.recordondetect = entry.recordondetect;
-                            Camobject.detector.recordonalert = entry.recordonalert;
-                            Camobject.ftp.enabled = entry.ftpenabled;
-                            Camobject.savelocal.enabled = entry.savelocalenabled;
-                            Camobject.ptzschedule.active = entry.ptz;
-                            Camobject.alerts.active = entry.alerts;
-                            Camobject.settings.messaging = entry.messaging;
-
-                            if (IsEnabled)
-                                Disable();
-                            return true;
-                        }
-                    }
-                }
-
-
-                var start = entry.start.Split(':');
-                if (start[0] != "-")
-                {
-                    if (Convert.ToInt32(start[0]) == dtnow.Hour)
-                    {
-                        if (Convert.ToInt32(start[1]) == dtnow.Minute && dtnow.Second < 3)
-                        {
-                            if ((dtnow - _lastScheduleCheck).TotalSeconds > 60) //only want to do this once per schedule
-                            {
-                                if (!IsEnabled)
-                                    Enable();
-
-                                Camobject.detector.recordondetect = entry.recordondetect;
-                                Camobject.detector.recordonalert = entry.recordonalert;
-                                Camobject.ftp.enabled = entry.ftpenabled;
-                                Camobject.savelocal.enabled = entry.savelocalenabled;
-                                Camobject.ptzschedule.active = entry.ptz;
-                                Camobject.alerts.active = entry.alerts;
-                                Camobject.settings.messaging = entry.messaging;
-
-                                if (Camobject.recorder.timelapseenabled && !entry.timelapseenabled)
-                                {
-                                    CloseTimeLapseWriter();
-                                }
-                                Camobject.recorder.timelapseenabled = entry.timelapseenabled;
-                                if (entry.recordonstart)
-                                {
-                                    ForcedRecording = true;
-                                }
-                                _lastScheduleCheck = dtnow;
-                            }
-                            return true;
-                        }
-                    }
-                }
-            }
-            return false;
-        }
-
         private void CheckDisconnect()
         {
             if (_errorTime != DateTime.MinValue)
@@ -1976,7 +2099,8 @@ namespace iSpyApplication.Controls
 
                         if (Camobject.settings.cloudprovider.images)
                         {
-                            CloudGateway.Upload(2, Camobject.id, fullpath);
+                            bool b;
+                            CloudGateway.Upload(2, Camobject.id, fullpath, out b);
                         }
                     }
                 }
@@ -2082,6 +2206,56 @@ namespace iSpyApplication.Controls
 
         }
 
+        private void FtpRecording(string path)
+        {
+
+            try
+            {
+                int i = 0;
+                string filename = Camobject.recorder.ftpfilename;
+                if (filename != "")
+                {
+                    filename = filename.Replace("{C}",
+                        ZeroPad(Camobject.recorder.ftpcounter, Camobject.recorder.ftpcountermax));
+                    Camobject.recorder.ftpcounter++;
+                    if (Camobject.recorder.ftpcounter > Camobject.recorder.ftpcountermax)
+                        Camobject.recorder.ftpcounter = 0;
+
+                    while (filename.IndexOf("{", StringComparison.Ordinal) != -1 && i < 20)
+                    {
+                        filename = String.Format(CultureInfo.InvariantCulture, filename, DateTime.Now);
+                        i++;
+                    }
+
+                }
+                else
+                {
+                    var fp = path.Split('\\');
+                    filename = fp[fp.Length - 1];
+                }
+
+                configurationServer ftp = MainForm.Conf.FTPServers.FirstOrDefault(p => p.ident == Camobject.ftp.ident);
+                if (ftp != null)
+                {
+                    Camobject.ftp.ready = false;
+
+                    ThreadPool.QueueUserWorkItem((new AsynchronousFtpUpLoader()).FTP,
+                        new FTPTask(ftp.server, ftp.port,
+                            ftp.usepassive, ftp.username,
+                            ftp.password, filename,
+                            File.ReadAllBytes(path),
+                            Camobject.id,
+                            Camobject.recorder.ftpcounter,
+                            ftp.rename, ftp.sftp));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogExceptionToFile(ex);
+                Camobject.ftp.ready = true;
+            }
+        }
         private bool OpenTimeLapseWriter()
         {
             DateTime date = DateTime.Now;
@@ -3151,6 +3325,10 @@ namespace iSpyApplication.Controls
                             {
                                 CloudGateway.Upload(2, Camobject.id, path + CodecExtension);
                             }
+                            if (Camobject.recorder.ftpenabled)
+                            {
+                                FtpRecording(path + CodecExtension);
+                            }
                         }
                         AbortedAudio = false;
 
@@ -3251,7 +3429,7 @@ namespace iSpyApplication.Controls
             fa.Nullify();
         }
 
-        public void CameraAlarm(object sender, EventArgs e)
+        public void Alarm(object sender, EventArgs e)
         {
             double d = 0.3;
             if (Camera.Framerate > 3) //prevent division by zero
@@ -3431,7 +3609,7 @@ namespace iSpyApplication.Controls
                 
 
                 int i = 0;
-                foreach (var ev in MainForm.Actions.Where(p => p.objectid == oid && p.objecttypeid == 2 && p.mode == mode))
+                foreach (var ev in MainForm.Actions.Where(p => p.objectid == oid && p.objecttypeid == 2 && p.mode == mode && p.active))
                 {
                     ProcessAlertEvent(ev.mode, rawgrab, msg, ev.type, ev.param1, ev.param2, ev.param3, ev.param4);
                 }
@@ -3706,13 +3884,13 @@ namespace iSpyApplication.Controls
                                     case "1":
                                         VolumeLevel vl =
                                             MainForm.InstanceReference.GetVolumeLevel(Convert.ToInt32(tid[1]));
-                                        vl?.MicrophoneAlarm(this, EventArgs.Empty);
+                                        vl?.Alarm(this, EventArgs.Empty);
                                         break;
                                     case "2":
                                         CameraWindow cw =
                                             MainForm.InstanceReference.GetCameraWindow(Convert.ToInt32(tid[1]));
                                         if (cw != null && cw!=this) //prevent recursion
-                                            cw.CameraAlarm(this, EventArgs.Empty);
+                                            cw.Alarm(this, EventArgs.Empty);
                                         break;
                                 }
                         }
@@ -3926,7 +4104,7 @@ namespace iSpyApplication.Controls
                     Calibrating = false;
 
                     Camera.NewFrame -= CameraNewFrame;
-                    Camera.Alarm -= CameraAlarm;
+                    Camera.Alarm -= Alarm;
                     Camera.PlayingFinished -= VideoDeviceVideoFinished;
                     Camera.ErrorHandler -= CameraWindow_ErrorHandler;
 
@@ -3947,7 +4125,7 @@ namespace iSpyApplication.Controls
                         var source = Camera.VideoSource as KinectStream;
                         if (source != null)
                         {
-                            source.TripWire -= CameraAlarm;
+                            source.TripWire -= Alarm;
                         }
 
                         var source1 = Camera.VideoSource as KinectNetworkStream;
@@ -4532,15 +4710,7 @@ namespace iSpyApplication.Controls
                     XimeaSource.FrameInterval =
                         (int) (1000.0f/XimeaSource.GetParamFloat(CameraParameter.FramerateMax));
                 }
-
-
-
-                if (File.Exists(Camobject.settings.maskimage))
-                {
-                    Camera.Mask = (Bitmap) Image.FromFile(Camobject.settings.maskimage);
-                }
-
-
+                Camera.UpdateResources();
             }
 
             Camobject.settings.active = true;
@@ -4611,6 +4781,45 @@ namespace iSpyApplication.Controls
                     //ignore - not supported on the device
                 }
             }
+        }
+        public void Apply()
+        {
+            Console.WriteLine("Applied");
+            if (Camobject.settings.active)
+                Enable();
+            else
+            {
+                Disable();
+            }
+            if (Camera == null) return;
+            SetDetector();
+            if (Camera != null)
+            {
+                Camera.AlarmLevel = Helper.CalculateTrigger(Camobject.detector.minsensitivity);
+                Camera.AlarmLevelMax = Helper.CalculateTrigger(Camobject.detector.maxsensitivity);
+                Camera.UpdateResources();
+            }
+            
+            _firstFrame = true; //for rotate mode changes
+
+            if (Camobject.settings.ignoreaudio)
+            {
+                if (VolumeControl!=null)
+                    MainForm.InstanceReference.RemoveMicrophone(VolumeControl,false);
+            }
+            else
+            {
+                //add an event to check for audio
+                var audiostream = Camera?.VideoSource as ISupportsAudio;
+                if (audiostream != null)
+                {
+                    audiostream.HasAudioStream -= VideoSourceHasAudioStream;
+                    audiostream.HasAudioStream += VideoSourceHasAudioStream;
+                }
+            }
+
+            if (!Camobject.recorder.timelapseenabled)
+                CloseTimeLapseWriter();
         }
 
         void VideoSourceHasAudioStream(object sender, EventArgs eventArgs)
@@ -4748,20 +4957,14 @@ namespace iSpyApplication.Controls
 
                 Camera.NewFrame -= CameraNewFrame;
                 Camera.PlayingFinished -= VideoDeviceVideoFinished;
-                Camera.Alarm -= CameraAlarm;
+                Camera.Alarm -= Alarm;
                 Camera.ErrorHandler -= CameraWindow_ErrorHandler;
                     
                 Camera.NewFrame += CameraNewFrame;
                 Camera.PlayingFinished += VideoDeviceVideoFinished;
-                Camera.Alarm += CameraAlarm;
+                Camera.Alarm += Alarm;
                 Camera.ErrorHandler += CameraWindow_ErrorHandler;
-             
-                RotateFlipType rft;
-                if (Enum.TryParse(Camobject.rotateMode, out rft))
-                {
-                    Camera.RotateFlipType = rft;
-                }
-
+              
                 Calibrating = true;
                 _lastRun = Helper.Now.Ticks;
                 Camera.Start();
@@ -4817,7 +5020,7 @@ namespace iSpyApplication.Controls
                     Camera.PlayingFinished -= VideoDeviceVideoFinished;
                 }
                 Camera.NewFrame -= CameraNewFrame;
-                Camera.Alarm -= CameraAlarm;
+                Camera.Alarm -= Alarm;
 
                 if (VolumeControl != null)
                     VolumeControl.IsReconnect = true;
@@ -4871,10 +5074,10 @@ namespace iSpyApplication.Controls
                 }
 
                 Camera.NewFrame -= CameraNewFrame;
-                Camera.Alarm -= CameraAlarm;
+                Camera.Alarm -= Alarm;
 
                 Camera.NewFrame += CameraNewFrame;
-                Camera.Alarm += CameraAlarm;
+                Camera.Alarm += Alarm;
 
                 if (Camobject.settings.calibrateonreconnect)
                 {
@@ -4911,7 +5114,7 @@ namespace iSpyApplication.Controls
             if (kinectStream != null)
             {
                 kinectStream.InitTripWires(Camobject.alerts.pluginconfig);
-                kinectStream.TripWire += CameraAlarm;
+                kinectStream.TripWire += Alarm;
             }
 
             var kinectNetworkStream = source as KinectNetworkStream;
@@ -4930,20 +5133,15 @@ namespace iSpyApplication.Controls
             Camera = new Camera(source);
             Camera.NewFrame -= CameraNewFrame;
             Camera.PlayingFinished -= VideoDeviceVideoFinished;
-            Camera.Alarm -= CameraAlarm;
+            Camera.Alarm -= Alarm;
             Camera.ErrorHandler -= CameraWindow_ErrorHandler;
 
 
             Camera.NewFrame += CameraNewFrame;
             Camera.PlayingFinished += VideoDeviceVideoFinished;
-            Camera.Alarm += CameraAlarm;
+            Camera.Alarm += Alarm;
             Camera.ErrorHandler += CameraWindow_ErrorHandler;
 
-            RotateFlipType rft;
-            if (Enum.TryParse(Camobject.rotateMode, out rft))
-            {
-                Camera.RotateFlipType = rft;
-            }
             Camera.PiPConfig = Camobject.settings.pip.config;
 
             SetVideoSourceProperties();
@@ -5069,7 +5267,7 @@ namespace iSpyApplication.Controls
                         switch (action)
                         {
                             case "alarm":
-                                CameraAlarm(description, EventArgs.Empty);
+                                Alarm(description, EventArgs.Empty);
                                 break;
                             case "flash":
                                 FlashCounter = Helper.Now.AddSeconds(10);
@@ -5232,89 +5430,6 @@ namespace iSpyApplication.Controls
                 catch
                 {
                     // ignored
-                }
-            }
-        }
-
-        public void ApplySchedule()
-        {
-            //find most recent schedule entry
-            if (!Camobject.schedule.active || Camobject.schedule?.entries == null || !Camobject.schedule.entries.Any())
-                return;
-
-            DateTime dNow = DateTime.Now;
-            TimeSpan shortest = TimeSpan.MaxValue;
-            objectsCameraScheduleEntry mostrecent = null;
-            bool isstart = true;
-
-            foreach (objectsCameraScheduleEntry entry in Camobject.schedule.entries)
-            {
-                if (entry.active)
-                {
-                    string[] dows = entry.daysofweek.Split(',');
-                    foreach (int dow in dows.Select(dayofweek => Convert.ToInt32(dayofweek)))
-                    {
-                        //when did this last fire?
-                        if (entry.start.IndexOf("-", StringComparison.Ordinal) == -1)
-                        {
-                            string[] start = entry.start.Split(':');
-                            var dtstart = new DateTime(dNow.Year, dNow.Month, dNow.Day, Convert.ToInt32(start[0]),
-                                Convert.ToInt32(start[1]), 0);
-                            while ((int)dtstart.DayOfWeek != dow || dtstart > dNow)
-                                dtstart = dtstart.AddDays(-1);
-                            if (dNow - dtstart < shortest)
-                            {
-                                shortest = dNow - dtstart;
-                                mostrecent = entry;
-                                isstart = true;
-                            }
-                        }
-                        if (entry.stop.IndexOf("-", StringComparison.Ordinal) == -1)
-                        {
-                            string[] stop = entry.stop.Split(':');
-                            var dtstop = new DateTime(dNow.Year, dNow.Month, dNow.Day, Convert.ToInt32(stop[0]),
-                                Convert.ToInt32(stop[1]), 0);
-                            while ((int)dtstop.DayOfWeek != dow || dtstop > dNow)
-                                dtstop = dtstop.AddDays(-1);
-                            if (dNow - dtstop < shortest)
-                            {
-                                shortest = dNow - dtstop;
-                                mostrecent = entry;
-                                isstart = false;
-                            }
-                        }
-                    }
-                }
-            }
-            if (mostrecent != null)
-            {
-                if (isstart)
-                {
-                    if (!IsEnabled)
-                        Enable();
-
-                    Camobject.detector.recordondetect = mostrecent.recordondetect;
-                    Camobject.detector.recordonalert = mostrecent.recordonalert;
-                    Camobject.ftp.enabled = mostrecent.ftpenabled;
-                    Camobject.savelocal.enabled = mostrecent.savelocalenabled;
-                    Camobject.ptzschedule.active = mostrecent.ptz;
-                    Camobject.alerts.active = mostrecent.alerts;
-                    Camobject.settings.messaging = mostrecent.messaging;
-
-                    if (Camobject.recorder.timelapseenabled && !mostrecent.timelapseenabled)
-                    {
-                        CloseTimeLapseWriter();
-                    }
-                    Camobject.recorder.timelapseenabled = mostrecent.timelapseenabled;
-                    if (mostrecent.recordonstart)
-                    {
-                        ForcedRecording = true;
-                    }
-                }
-                else
-                {
-                    if (IsEnabled)
-                        Disable();
                 }
             }
         }

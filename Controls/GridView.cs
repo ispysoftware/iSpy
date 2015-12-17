@@ -896,7 +896,7 @@ namespace iSpyApplication.Controls
                         case 6:
                             if (Helper.HasFeature(Enums.Features.Access_Media))
                             {
-                                string url = MainForm.Webserver + "/watch_new.aspx";
+                                string url = MainForm.Webpage;
                                 if (WsWrapper.WebsiteLive && MainForm.Conf.ServicesEnabled)
                                 {
                                     MainForm.OpenUrl(url);

@@ -291,11 +291,6 @@ namespace iSpyApplication
            
             txtLocalFilename.Text = CameraControl.Camobject.savelocal.filename;
 
-            
-            
-            
-            ShowSchedule(-1);
-
             if (CameraControl.Camera==null)
             {
                 chkActive.Checked = false;
@@ -305,8 +300,7 @@ namespace iSpyApplication
             {
                 chkActive.Checked = CameraControl.Camobject.settings.active;
             }
-            pnlScheduler.Enabled = chkSchedule.Checked;
-
+            
             AreaControl.MotionZones = CameraControl.Camobject.detector.motionzones;
 
             chkActive.Enabled = !string.IsNullOrEmpty(CameraControl.Camobject.settings.videosourcestring);
@@ -330,17 +324,14 @@ namespace iSpyApplication
             txtMaxRecordTime.Value = CameraControl.Camobject.recorder.maxrecordtime;
             numMinRecordTime.Value = CameraControl.Camobject.recorder.minrecordtime;
             btnBack.Enabled = false;
-
-            ddlHourStart.SelectedIndex =
-                ddlHourEnd.SelectedIndex = ddlMinuteStart.SelectedIndex = ddlMinuteEnd.SelectedIndex = 0;
-
+            
             txtUploadEvery.Text = CameraControl.Camobject.ftp.intervalnew.ToString(CultureInfo.InvariantCulture);
             numSaveInterval.Text = CameraControl.Camobject.savelocal.intervalnew.ToString(CultureInfo.InvariantCulture);
             numFTPMinimumDelay.Text = CameraControl.Camobject.ftp.minimumdelay.ToString(CultureInfo.InvariantCulture);
             numSaveDelay.Text = CameraControl.Camobject.savelocal.minimumdelay.ToString(CultureInfo.InvariantCulture);
 
             txtFTPFilename.Text = CameraControl.Camobject.ftp.filename;
-            chkFTP.Checked = gbFTP.Enabled = CameraControl.Camobject.ftp.enabled;
+            chkFTP.Checked = CameraControl.Camobject.ftp.enabled;
             chkLocalSaving.Checked = gbLocal.Enabled = CameraControl.Camobject.savelocal.enabled;
             txtTimeLapseFrames.Text = CameraControl.Camobject.recorder.timelapseframes.ToString(CultureInfo.InvariantCulture);
 
@@ -469,6 +460,11 @@ namespace iSpyApplication
             }
             intervalConfig1.Init(CameraControl);
             ptzui1.CameraControl = CameraControl;
+            scheduleEditor1.Io = CameraControl;
+
+            chkFTPRecordingsEnabled.Checked = CameraControl.Camobject.recorder.ftpenabled;
+            txtFTPRecordingFilename.Text = CameraControl.Camobject.recorder.ftpfilename;
+            numFTPRecordingCounterMax.Value = CameraControl.Camobject.recorder.ftpcountermax;
             _loaded = true;
         }
 
@@ -580,44 +576,26 @@ namespace iSpyApplication
         private void RenderResources()
         {
             btnBack.Text = LocRm.GetString("Back");
-            btnDelete.Text = LocRm.GetString("Delete");
             btnFinish.Text = LocRm.GetString("Finish");
             btnMaskImage.Text = "...";
             btnNext.Text = LocRm.GetString("Next");
             btnAdvanced.Text = LocRm.GetString("AdvProperties");
             btnSelectSource.Text = "...";
-            btnUpdate.Text = LocRm.GetString("Update");
             llblClearAll.Text = LocRm.GetString("ClearAll");
-            button2.Text = LocRm.GetString("Add");
             chkActive.Text = LocRm.GetString("CameraActive");
-            chkFri.Text = LocRm.GetString("Fri");
-            chkFTP.Text = LocRm.GetString("FtpEnabled");
+            chkFTP.Text = LocRm.GetString("Enabled");
             
             
-            chkschedPTZ.Text = LocRm.GetString("SchedulePTZ");
             rdoMotion.Text = LocRm.GetString("WhenMotionDetected");
             rdoContinuous.Text = LocRm.GetString("Continuous");
-            chkMon.Text = LocRm.GetString("Mon");
             chkMovement.Text = LocRm.GetString("AlertsEnabled");
             chkPublic.Text = LocRm.GetString("PubliccheckThisToMakeYour");
             rdoRecordDetect.Text = LocRm.GetString("RecordOnMovementDetection");
             rdoRecordAlert.Text = LocRm.GetString("RecordOnAlert");
             rdoNoRecord.Text = LocRm.GetString("NoRecord");
-            chkRecordSchedule.Text = LocRm.GetString("RecordOnScheduleStart");
-            chkSat.Text = LocRm.GetString("Sat");
             chkSchedule.Text = LocRm.GetString("ScheduleCamera");
-            chkScheduleActive.Text = LocRm.GetString("ScheduleActive");
-            chkScheduleAlerts.Text = LocRm.GetString("AlertsEnabled");
-            chkScheduleRecordOnDetect.Text = LocRm.GetString("RecordOnDetect");
-            chkRecordAlertSchedule.Text = LocRm.GetString("RecordOnAlert");
-            chkSun.Text = LocRm.GetString("Sun");
             chkSuppressNoise.Text = LocRm.GetString("SupressNoise");
-            chkThu.Text = LocRm.GetString("Thu");
-            chkTue.Text = LocRm.GetString("Tue");
-            chkWed.Text = LocRm.GetString("Wed");
-            chkScheduleTimelapse.Text = LocRm.GetString("TimelapseEnabled");
             chkTimelapse.Text = LocRm.GetString("TimelapseEnabled");
-            gbFTP.Text = LocRm.GetString("FtpDetails");
             gbZones.Text = LocRm.GetString("DetectionZones");
             gpbSubscriber2.Text = LocRm.GetString("WebServiceOptions");
             groupBox1.Text = LocRm.GetString("TimelapseRecording");
@@ -627,7 +605,6 @@ namespace iSpyApplication
             label20.Text = gbLocal.Text = LocRm.GetString("Filename");
             label97.Text = LocRm.GetString("Seconds");
             label1.Text = LocRm.GetString("Name");
-            label10.Text = ":";
             label11.Text = LocRm.GetString("TimeStamp");
             label12.Text = LocRm.GetString("UseDetector");
             label13.Text = LocRm.GetString("Seconds");
@@ -636,7 +613,7 @@ namespace iSpyApplication
             label17.Text = LocRm.GetString("Frames");
             label19.Text = groupBox2.Text = LocRm.GetString("Microphone");
             label2.Text = LocRm.GetString("Source");
-            
+            gbFTP.Text = LocRm.GetString("Server");
             label24.Text = LocRm.GetString("Seconds");
             label25.Text = LocRm.GetString("CalibrationDelay");
             label26.Text = LocRm.GetString("PrebufferFrames");
@@ -661,8 +638,6 @@ namespace iSpyApplication
             label44.Text = LocRm.GetString("savesAFrameToAMovieFileNS");
             label46.Text = LocRm.GetString("DisplayStyle");
             label48.Text = LocRm.GetString("ColourFiltering");
-            label49.Text = LocRm.GetString("Days");
-            label50.Text = LocRm.GetString("ImportantMakeSureYourSche");
             label51.Text = LocRm.GetString("ProcessEvery");
             label56.Text = LocRm.GetString("Filename");
             label57.Text = label96.Text =LocRm.GetString("When");
@@ -673,7 +648,6 @@ namespace iSpyApplication
             label67.Text = LocRm.GetString("Images");
             label68.Text = LocRm.GetString("Interval");
             label69.Text = LocRm.GetString("Seconds");
-            label7.Text = LocRm.GetString("Start");
             label70.Text = LocRm.GetString("savesAFrameEveryNSecondsn");
             label71.Text = LocRm.GetString("Movie");
             label73.Text = LocRm.GetString("CameraModel");
@@ -681,20 +655,16 @@ namespace iSpyApplication
             label76.Text = LocRm.GetString("ExitThisToEnableAlertsAnd");
             label77.Text = LocRm.GetString("Tags");
             label79.Text = LocRm.GetString("UploadViaWebsite");
-            label8.Text = ":";
-            label80.Text = LocRm.GetString("TipToCreateAScheduleOvern");
             label83.Text = LocRm.GetString("ClickAndDragTodraw");
             label84.Text = LocRm.GetString("MaskImage");
             label86.Text = label100.Text = LocRm.GetString("OverlayText");
-            label9.Text = LocRm.GetString("Stop");
             linkLabel1.Text = LocRm.GetString("UsageTips");
-            groupBox7.Text = LocRm.GetString("Upload");
+            groupBox7.Text = LocRm.GetString("UploadImages");
+            groupBox11.Text = LocRm.GetString("UploadRecordings");
             groupBox10.Text = LocRm.GetString("Save");
             label6.Text = label95.Text = LocRm.GetString("MinimumDelay");
-            linkLabel2.Text = LocRm.GetString("ScriptToRenderThisImageOn");
             linkLabel6.Text = LocRm.GetString("GetLatestList");
             linkLabel8.Text = linkLabel14.Text = LocRm.GetString("help");
-            pnlScheduler.Text = LocRm.GetString("Scheduler");
             chkLocalSaving.Text = LocRm.GetString("LocalSavingEnabled");
             linkLabel11.Text = LocRm.GetString("OpenLocalFolder");
             tabPage1.Text = LocRm.GetString("Camera");
@@ -702,7 +672,9 @@ namespace iSpyApplication
             tabPage3.Text = rdoFTPMotion.Text = rdoSaveMotion.Text = LocRm.GetString("MotionDetection");
             tabPage4.Text = LocRm.GetString("Recording");
             tabPage5.Text = LocRm.GetString("Scheduling");
-            tabPage7.Text = LocRm.GetString("FTPImages");
+            chkFTPRecordingsEnabled.Text = LocRm.GetString("Enabled");
+            label9.Text = LocRm.GetString("Filename");
+            label50.Text = LocRm.GetString("CounterMax");
             tabPage10.Text = LocRm.GetString("Images");
             tabPage8.Text = LocRm.GetString("Ptz");
             tabPage9.Text = LocRm.GetString("Cloud");
@@ -715,7 +687,6 @@ namespace iSpyApplication
             toolTip1.SetToolTip(txtInactiveRecord, LocRm.GetString("ToolTip_InactiveRecord"));
             //toolTip1.SetToolTip(txtBuffer, LocRm.GetString("ToolTip_BufferFrames"));
             toolTip1.SetToolTip(txtCalibrationDelay, LocRm.GetString("ToolTip_DelayAlerts"));
-            toolTip1.SetToolTip(lbSchedule, LocRm.GetString("ToolTip_PressDelete"));
             label16.Text = LocRm.GetString("PTZNote");
             //chkRotate90.Text = LocRm.GetString("Rotate90");
             
@@ -725,9 +696,6 @@ namespace iSpyApplication
             
             llblHelp.Text = LocRm.GetString("help");
             
-            chkSchedFTPEnabled.Text = LocRm.GetString("FtpEnabled");
-            chkSchedSaveLocalEnabled.Text = LocRm.GetString("LocalSavingEnabled");
-
             chkColourProcessing.Text = LocRm.GetString("Apply");
             Text = LocRm.GetString("AddCamera");
             
@@ -883,23 +851,7 @@ namespace iSpyApplication
                 return Entry;
             }
         }
-
-        private void ShowSchedule(int selectedIndex)
-        {
-            lbSchedule.Items.Clear();
-            int i = 0;
-            foreach (string sched in CameraControl.ScheduleDetails)
-            {
-                if (sched != "")
-                {
-                    lbSchedule.Items.Add(new ListItem(sched, i.ToString(CultureInfo.InvariantCulture)));
-                    i++;
-                }
-            }
-            if (selectedIndex > -1 && selectedIndex < lbSchedule.Items.Count)
-                lbSchedule.SelectedIndex = selectedIndex;
-        }
-
+        
         private void CameraNewFrame(object sender, NewFrameEventArgs e)
         {
             AreaControl.LastFrame = e.Frame;
@@ -1258,7 +1210,11 @@ namespace iSpyApplication
             CameraControl.Camobject.settings.audiousername = txtTalkUsername.Text;
             CameraControl.Camobject.settings.audiopassword = txtTalkPassword.Text;
             CameraControl.Camobject.recorder.trigger = ((ListItem)ddlTriggerRecording.SelectedItem).Value;
-                
+
+            CameraControl.Camobject.recorder.ftpenabled = chkFTPRecordingsEnabled.Checked;
+            CameraControl.Camobject.recorder.ftpfilename = txtFTPRecordingFilename.Text;
+            CameraControl.Camobject.recorder.ftpcountermax = (int)numFTPRecordingCounterMax.Value;
+
             CameraControl.SetVideoSize();
 
             if (ddlFTPServer.Enabled)
@@ -1340,9 +1296,7 @@ namespace iSpyApplication
         
         private void ChkScheduleCheckedChanged(object sender, EventArgs e)
         {
-            pnlScheduler.Enabled = chkSchedule.Checked;
-            btnDelete.Enabled = btnUpdate.Enabled = lbSchedule.SelectedIndex > -1;
-            lbSchedule.Refresh();
+            scheduleEditor1.Enabled = chkSchedule.Checked;
         }
 
         private void TxtCameraNameKeyUp(object sender, KeyEventArgs e)
@@ -1462,120 +1416,6 @@ namespace iSpyApplication
             CameraControl.Camobject.detector.postprocessor = (string) _processortypes[ddlProcessor.SelectedIndex];
         }
 
-        private void Button2Click1(object sender, EventArgs e)
-        {
-            List<objectsCameraScheduleEntry> scheds = CameraControl.Camobject.schedule.entries.ToList();
-            var sched = new objectsCameraScheduleEntry();
-            if (ConfigureSchedule(sched))
-            {
-                scheds.Add(sched);
-                CameraControl.Camobject.schedule.entries = scheds.ToArray();
-                ShowSchedule(CameraControl.Camobject.schedule.entries.Count() - 1);
-            }
-        }
-
-        private bool ConfigureSchedule(objectsCameraScheduleEntry sched)
-        {
-            if (ddlHourStart.SelectedItem.ToString() != "-" && ddlMinuteStart.SelectedItem.ToString() == "-")
-            {
-                ddlMinuteStart.SelectedIndex = 1;
-            }
-            if (ddlHourEnd.SelectedItem.ToString() != "-" && ddlMinuteEnd.SelectedItem.ToString() == "-")
-            {
-                ddlMinuteEnd.SelectedIndex = 1;
-            }
-
-            if (ddlHourStart.SelectedItem.ToString() == "-" || ddlMinuteStart.SelectedItem.ToString() == "-")
-            {
-                sched.start = "-:-";
-            }
-            else
-                sched.start = ddlHourStart.SelectedItem + ":" + ddlMinuteStart.SelectedItem;
-            if (ddlHourEnd.SelectedItem.ToString() == "-" || ddlMinuteEnd.SelectedItem.ToString() == "-")
-            {
-                sched.stop = "-:-";
-            }
-            else
-                sched.stop = ddlHourEnd.SelectedItem + ":" + ddlMinuteEnd.SelectedItem;
-
-            sched.daysofweek = "";
-            if (chkMon.Checked)
-            {
-                sched.daysofweek += "1,";
-            }
-            if (chkTue.Checked)
-            {
-                sched.daysofweek += "2,";
-            }
-            if (chkWed.Checked)
-            {
-                sched.daysofweek += "3,";
-            }
-            if (chkThu.Checked)
-            {
-                sched.daysofweek += "4,";
-            }
-            if (chkFri.Checked)
-            {
-                sched.daysofweek += "5,";
-            }
-            if (chkSat.Checked)
-            {
-                sched.daysofweek += "6,";
-            }
-            if (chkSun.Checked)
-            {
-                sched.daysofweek += "0,";
-            }
-            sched.daysofweek = sched.daysofweek.Trim(',');
-            if (sched.daysofweek == "")
-            {
-                MessageBox.Show(LocRm.GetString("Validate_Camera_SelectOneDay"));
-                return false;
-            }
-
-            sched.recordonstart = chkRecordSchedule.Checked;
-            sched.active = chkScheduleActive.Checked;
-            sched.recordondetect = chkScheduleRecordOnDetect.Checked;
-            sched.recordonalert = chkRecordAlertSchedule.Checked;
-            sched.alerts = chkScheduleAlerts.Checked;
-            sched.timelapseenabled = chkScheduleTimelapse.Checked;
-            sched.ftpenabled = chkSchedFTPEnabled.Checked;
-            sched.savelocalenabled = chkSchedSaveLocalEnabled.Checked;
-            sched.ptz = chkschedPTZ.Checked;
-            sched.messaging = chkScheduleMessaging.Checked;
-
-            return true;
-        }
-
-        private void LbScheduleKeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Delete)
-            {
-                DeleteSchedule();
-            }
-        }
-
-        private void DeleteSchedule()
-        {
-            if (lbSchedule.SelectedIndex > -1)
-            {
-                int i = lbSchedule.SelectedIndex;
-                List<objectsCameraScheduleEntry> scheds = CameraControl.Camobject.schedule.entries.ToList();
-                scheds.RemoveAt(i);
-                CameraControl.Camobject.schedule.entries = scheds.ToArray();
-                int j = i;
-                if (j == scheds.Count)
-                    j--;
-                if (j < 0)
-                    j = 0;
-                ShowSchedule(j);
-                if (lbSchedule.Items.Count == 0)
-                    btnDelete.Enabled = btnUpdate.Enabled = false;
-                else
-                    btnDelete.Enabled = btnUpdate.Enabled = (lbSchedule.SelectedIndex > -1);
-            }
-        }
 
         private void DdlHourStartSelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1589,7 +1429,7 @@ namespace iSpyApplication
         
         private void CheckBox1CheckedChanged(object sender, EventArgs e)
         {
-            gbFTP.Enabled = chkFTP.Checked;
+
         }
 
         private void LinkLabel2LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -1607,54 +1447,6 @@ namespace iSpyApplication
             MainClass.Connect(MainForm.Website + "/subscribe.aspx", false);
         }
         
-        private void Button3Click(object sender, EventArgs e)
-        {
-            DeleteSchedule();
-        }
-
-        private void LbScheduleSelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (lbSchedule.Items.Count == 0)
-                btnDelete.Enabled = btnUpdate.Enabled = false;
-            else
-            {
-                btnUpdate.Enabled = btnDelete.Enabled = (lbSchedule.SelectedIndex > -1);
-                if (btnUpdate.Enabled)
-                {
-                    int i = lbSchedule.SelectedIndex;
-                    objectsCameraScheduleEntry sched = CameraControl.Camobject.schedule.entries[i];
-
-                    string[] start = sched.start.Split(':');
-                    string[] stop = sched.stop.Split(':');
-
-
-                    ddlHourStart.SelectedItem = start[0];
-                    ddlHourEnd.SelectedItem = stop[0];
-                    ddlMinuteStart.SelectedItem = start[1];
-                    ddlMinuteEnd.SelectedItem = stop[1];
-
-                    chkMon.Checked = sched.daysofweek.IndexOf("1", StringComparison.Ordinal) != -1;
-                    chkTue.Checked = sched.daysofweek.IndexOf("2", StringComparison.Ordinal) != -1;
-                    chkWed.Checked = sched.daysofweek.IndexOf("3", StringComparison.Ordinal) != -1;
-                    chkThu.Checked = sched.daysofweek.IndexOf("4", StringComparison.Ordinal) != -1;
-                    chkFri.Checked = sched.daysofweek.IndexOf("5", StringComparison.Ordinal) != -1;
-                    chkSat.Checked = sched.daysofweek.IndexOf("6", StringComparison.Ordinal) != -1;
-                    chkSun.Checked = sched.daysofweek.IndexOf("0", StringComparison.Ordinal) != -1;
-
-                    chkRecordSchedule.Checked = sched.recordonstart;
-                    chkScheduleActive.Checked = sched.active;
-                    chkScheduleRecordOnDetect.Checked = sched.recordondetect;
-                    chkScheduleAlerts.Checked = sched.alerts;
-                    chkRecordAlertSchedule.Checked = sched.recordonalert;
-                    chkScheduleTimelapse.Checked = sched.timelapseenabled;
-                    chkSchedFTPEnabled.Checked = sched.ftpenabled;
-                    chkSchedSaveLocalEnabled.Checked = sched.savelocalenabled;
-                    chkschedPTZ.Checked = sched.ptz;
-                    chkScheduleMessaging.Checked = sched.messaging;
-                }
-            }
-        }
-
         private void PnlPtzMouseDown(object sender, MouseEventArgs e)
         {
             
@@ -1904,75 +1696,9 @@ namespace iSpyApplication
         //    CameraControl.Camobject.flipx = chkFlipX.Checked;
         //}
 
-        private void BtnUpdateClick(object sender, EventArgs e)
-        {
-            int i = lbSchedule.SelectedIndex;
-            objectsCameraScheduleEntry sched = CameraControl.Camobject.schedule.entries[i];
-
-            if (ConfigureSchedule(sched))
-            {
-                ShowSchedule(i);
-            }
-        }
-
-        private void ChkScheduleActiveCheckedChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void LbScheduleDrawItem(object sender, DrawItemEventArgs e)
-        {
-            e.DrawBackground();
-            int i = e.Index;
-            if (i >= 0)
-            {
-                objectsCameraScheduleEntry sched = CameraControl.Camobject.schedule.entries[i];
-
-                Font f = sched.active ? new Font("Microsoft Sans Serif", 8.25f, FontStyle.Bold) : new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
-                Brush b = !chkSchedule.Checked ? Brushes.Gray : Brushes.Black;
-
-                e.Graphics.DrawString(lbSchedule.Items[i].ToString(), f, b, e.Bounds);
-                e.DrawFocusRectangle();
-            }
-        }
-
-
-        private void ChkRecordScheduleCheckedChanged(object sender, EventArgs e)
-        {
-            if (chkRecordSchedule.Checked)
-            {
-                chkScheduleRecordOnDetect.Checked = false;
-                chkRecordAlertSchedule.Checked = false;
-            }
-        }
-
-        private void ChkScheduleRecordOnDetectCheckedChanged(object sender, EventArgs e)
-        {
-            if (chkScheduleRecordOnDetect.Checked)
-            {
-                chkRecordSchedule.Checked = false;
-                chkRecordAlertSchedule.Checked = false;
-            }
-        }
-
         private void LinkLabel8LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             MainForm.OpenUrl( MainForm.Website+"/userguide-pairing.aspx");
-        }
-
-        private void ChkRecordAlertScheduleCheckedChanged(object sender, EventArgs e)
-        {
-            if (chkRecordAlertSchedule.Checked)
-            {
-                chkRecordSchedule.Checked = false;
-                chkScheduleRecordOnDetect.Checked = false;
-                chkScheduleAlerts.Checked = true;
-            }
-        }
-
-        private void ChkScheduleAlertsCheckedChanged(object sender, EventArgs e)
-        {
-            if (!chkScheduleAlerts.Checked)
-                chkRecordAlertSchedule.Checked = false;
         }
 
         private void RdoFtpIntervalCheckedChanged(object sender, EventArgs e)
@@ -2288,16 +2014,35 @@ namespace iSpyApplication
         {
             if (ddlCopyFrom.SelectedIndex>0)
             {
-                var cam =
-                    MainForm.Cameras.SingleOrDefault(
-                        p => p.id == Convert.ToInt32(((ListItem) ddlCopyFrom.SelectedItem).Value));
-                if (cam!=null)
+                if (MessageBox.Show(LocRm.GetString("Confirm"), "", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    List<objectsCameraScheduleEntry> scheds = cam.schedule.entries.ToList();
+                    var cam =
+                        MainForm.Cameras.SingleOrDefault(
+                            p => p.id == Convert.ToInt32(((ListItem) ddlCopyFrom.SelectedItem).Value));
+                    if (cam != null)
+                    {
+                        MainForm.Schedule.RemoveAll(p => p.objectid == CameraControl.ObjectID && p.objecttypeid == 2);
+                        List<objectsScheduleEntry> scheds =
+                            MainForm.Schedule.Where(p => p.objecttypeid == 2 && p.objectid == cam.id).ToList();
+                        foreach (var s in scheds)
+                        {
+                            var t = new objectsScheduleEntry
+                                    {
+                                        active = s.active,
+                                        daysofweek = s.daysofweek,
+                                        objectid = CameraControl.ObjectID,
+                                        objecttypeid = 2,
+                                        parameter = s.parameter,
+                                        time = s.time,
+                                        typeid = s.typeid
+                                    };
+                            MainForm.Schedule.Add(t);
+                        }
+                        scheduleEditor1.RenderSchedule();
 
-                    CameraControl.Camobject.schedule.entries = scheds.ToArray();
-                    ShowSchedule(CameraControl.Camobject.schedule.entries.Count() - 1);                    
+                    }
                 }
+                ddlCopyFrom.SelectedIndex = 0;
             }
         }
 
@@ -2754,6 +2499,11 @@ namespace iSpyApplication
                 pc.CameraControl = CameraControl;
                 pc.ShowDialog(this);
             }
+        }
+
+        private void scheduleEditor1_ClientSizeChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

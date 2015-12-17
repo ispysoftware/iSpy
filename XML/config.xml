@@ -105,7 +105,7 @@
   <IPv6_Support_Disabled>true</IPv6_Support_Disabled>
   <SpeechRecognition>false</SpeechRecognition>
   <DefaultManufacturer></DefaultManufacturer>
-  <AppendLinkText>http://www.ispyconnect.com/watch_new.aspx</AppendLinkText>
+  <AppendLinkText>http://www.ispyconnect.com/monitor/</AppendLinkText>
   <GridViews></GridViews>
   <Joystick></Joystick>
   <StartupForm>iSpy</StartupForm>

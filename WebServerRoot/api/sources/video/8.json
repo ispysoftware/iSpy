@@ -1,0 +1,4 @@
+﻿[
+    { "text": "iSpy Kinect", "value": "", "type": "Header" },
+    { "text": "URL", "value": "", "type": "String", "bindto": "settings.videosourcestring" }
+]

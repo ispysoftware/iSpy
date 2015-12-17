@@ -25,7 +25,7 @@ using iSpyApplication.Sources.Audio.streams;
 using iSpyApplication.Sources.Audio.talk;
 using iSpyApplication.Sources.Video;
 using iSpyApplication.Utilities;
-using RestSharp.Extensions.MonoHttp;
+using RestSharp.Contrib;
 using WaveFormat = NAudio.Wave.WaveFormat;
 
 namespace iSpyApplication.Controls
@@ -59,6 +59,10 @@ namespace iSpyApplication.Controls
             set { Interlocked.Exchange(ref _lastSoundDetected, value.Ticks); }
         }
 
+        public int ObjectTypeID => 1;
+
+        public int ObjectID => Micobject.id;
+
         public DateTime LastAlerted
         {
             get { return new DateTime(_lastAlerted); }
@@ -76,7 +80,6 @@ namespace iSpyApplication.Controls
             }
         }
 
-        private readonly DateTime _lastScheduleCheck = DateTime.MinValue;
         private List<FilesFile> _filelist = new List<FilesFile>();
         private Thread _recordingThread;
         private bool _requestRefresh;
@@ -149,7 +152,7 @@ namespace iSpyApplication.Controls
        
         public Rectangle RestoreRect = Rectangle.Empty;
         public DateTime FlashCounter = DateTime.MinValue;
-        public bool ForcedRecording;
+        public bool ForcedRecording { get; set; }
         public double InactiveRecord;
         public bool IsEdit;
         //public bool NoSource;
@@ -450,6 +453,16 @@ namespace iSpyApplication.Controls
             }
         }
 
+        public void Apply()
+        {
+            if (Micobject.settings.active)
+                Enable();
+            else
+            {
+                Disable();
+            }
+        }
+
         public float Gain
         {
             get { return Micobject.settings.gain; }
@@ -461,6 +474,158 @@ namespace iSpyApplication.Controls
             }
         }
         #endregion
+        #region schedule
+
+        private int _lastMinute = -1;
+        private List<objectsScheduleEntry> _schedule;
+        public List<objectsScheduleEntry> Schedule
+        {
+            get
+            {
+                if (_schedule != null && !_needsNewSchedule)
+                    return _schedule;
+                _schedule =
+                    MainForm.Schedule.Where(p => p.objectid == ObjectID && p.objecttypeid == ObjectTypeID && p.active)
+                        .ToList();
+                _needsNewSchedule = false;
+                return _schedule;
+            }
+        }
+
+        private bool _needsNewSchedule;
+        public void ReloadSchedule()
+        {
+            _needsNewSchedule = true;
+        }
+
+        private bool CheckSchedule()
+        {
+            var t = Convert.ToInt32(Math.Floor(DateTime.Now.TimeOfDay.TotalMinutes));
+            bool enable = false, disable = false;
+            if (_lastMinute != t)
+            {
+                _lastMinute = t;
+                var lRec = Schedule.Where(p => p.time == _lastMinute).ToList();
+                string dow = ((int)DateTime.Now.DayOfWeek).ToString(CultureInfo.InvariantCulture);
+                bool b = false;
+                foreach (var en in lRec)
+                {
+                    if (en.daysofweek.Contains(dow))
+                    {
+                        bool enable2, disable2;
+                        ActionSchedule(en, out enable2, out disable2);
+                        enable = enable || enable2;
+                        disable = disable || disable2;
+                        b = true;
+                    }
+                }
+                if (enable && !disable)
+                    Enable();
+                if (disable && !enable)
+                    Disable();
+                return b;
+            }
+            return false;
+        }
+
+        public bool ApplySchedule()
+        {
+            var t = Convert.ToInt32(Math.Floor(DateTime.Now.TimeOfDay.TotalMinutes));
+            bool enable = false, disable = false;
+            var lRec = Schedule.Where(p => p.time < t).OrderBy(p => p.time).ToList();
+            string dow = ((int)DateTime.Now.DayOfWeek).ToString(CultureInfo.InvariantCulture);
+
+            foreach (var en in lRec)
+            {
+                if (en.daysofweek.Contains(dow))
+                {
+                    bool enable2, disable2;
+                    ActionSchedule(en, out enable2, out disable2);
+                    if (enable2)
+                    {
+                        enable = true;
+                        disable = false;
+                    }
+                    else
+                    {
+                        if (disable2)
+                        {
+                            enable = false;
+                            disable = true;
+                        }
+                    }
+                }
+            }
+            if (enable)
+                Enable();
+            if (disable)
+                Disable();
+            return !(enable || disable);
+        }
+
+        private void ActionSchedule(objectsScheduleEntry en, out bool enable, out bool disable)
+        {
+            enable = false;
+            disable = false;
+            switch (en.typeid)
+            {
+                case 0:
+                    enable = true;
+                    break;
+                case 1:
+                    disable = true;
+                    break;
+                case 2:
+                    ForcedRecording = true;
+                    break;
+                case 3:
+                    ForcedRecording = false;
+                    break;
+                case 4:
+                    Micobject.detector.recordondetect = true;
+                    Micobject.detector.recordonalert = false;
+                    break;
+                case 5:
+                    Micobject.detector.recordondetect = false;
+                    Micobject.detector.recordonalert = true;
+                    break;
+                case 6:
+                    Micobject.detector.recordondetect = false;
+                    Micobject.detector.recordonalert = false;
+                    break;
+                case 7:
+                    Micobject.alerts.active = true;
+                    break;
+                case 8:
+                    Micobject.alerts.active = false;
+                    break;
+                case 9:
+                    {
+                        var a = MainForm.Actions.FirstOrDefault(p => p.ident == en.parameter);
+
+                        if (a != null)
+                            a.active = true;
+                    }
+                    break;
+                case 10:
+                    {
+                        var a = MainForm.Actions.FirstOrDefault(p => p.ident == en.parameter);
+
+                        if (a != null)
+                            a.active = false;
+                    }
+                    break;
+                case 21:
+                    Micobject.settings.messaging = true;
+                    break;
+                case 22:
+                    Micobject.settings.messaging = false;
+                    break;
+            }
+        }
+        #endregion
+
+
 
         #region SizingControls
 
@@ -523,7 +688,7 @@ namespace iSpyApplication.Controls
                             case 3:
                                 if (Helper.HasFeature(Enums.Features.Access_Media))
                                 {
-                                    string url = MainForm.Webserver + "/watch_new.aspx";
+                                    string url = MainForm.Webpage;
                                     if (WsWrapper.WebsiteLive && MainForm.Conf.ServicesEnabled)
                                     {
                                         MainForm.OpenUrl(url);
@@ -1083,64 +1248,6 @@ namespace iSpyApplication.Controls
             s = s.Replace("[SERVER]", MainForm.Conf.ServerName);
             
             return s;
-        }
-
-        private bool CheckSchedule()
-        {
-            DateTime dtnow = DateTime.Now;
-            foreach (objectsMicrophoneScheduleEntry entry in Micobject.schedule.entries.Where(p => p.active))
-            {
-                if (
-                    entry.daysofweek.IndexOf(
-                        ((int) dtnow.DayOfWeek).ToString(CultureInfo.InvariantCulture),
-                        StringComparison.Ordinal) != -1)
-                {
-                    string[] stop = entry.stop.Split(':');
-                    if (stop[0] != "-")
-                    {
-                        if (Convert.ToInt32(stop[0]) == dtnow.Hour)
-                        {
-                            if (Convert.ToInt32(stop[1]) == dtnow.Minute && dtnow.Second < 2)
-                            {
-                                Micobject.detector.recordondetect = entry.recordondetect;
-                                Micobject.detector.recordonalert = entry.recordonalert;
-                                Micobject.alerts.active = entry.alerts;
-                                Micobject.settings.messaging = entry.messaging;
-
-                                if (IsEnabled)
-                                    Disable();
-                                return true;
-                            }
-                        }
-                    }
-
-                    string[] start = entry.start.Split(':');
-                    if (start[0] != "-")
-                    {
-                        if (Convert.ToInt32(start[0]) == dtnow.Hour)
-                        {
-                            if (Convert.ToInt32(start[1]) == dtnow.Minute && dtnow.Second < 3)
-                            {
-                                if (!IsEnabled)
-                                    Enable();
-                                if ((dtnow - _lastScheduleCheck).TotalSeconds > 60)
-                                {
-                                    Micobject.detector.recordondetect = entry.recordondetect;
-                                    Micobject.detector.recordonalert = entry.recordonalert;
-                                    Micobject.alerts.active = entry.alerts;
-                                    Micobject.settings.messaging = entry.messaging;
-                                    if (entry.recordonstart)
-                                    {
-                                        ForcedRecording = true;
-                                    }
-                                }
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-            return false;
         }
 
         private void CheckAlert(double since)
@@ -2156,7 +2263,7 @@ namespace iSpyApplication.Controls
             _soundRecentlyDetected = true;
             InactiveRecord = 0;
             FlashCounter = Helper.Now.AddSeconds(10);
-            MicrophoneAlarm(sender, EventArgs.Empty);
+            Alarm(sender, EventArgs.Empty);
         }
 
         public void AudioDeviceDataAvailable(object sender, DataAvailableEventArgs e)
@@ -2465,11 +2572,11 @@ namespace iSpyApplication.Controls
                                 case "1":
                                     VolumeLevel vl = MainForm.InstanceReference.GetVolumeLevel(Convert.ToInt32(tid[1]));
                                     if (vl != null && vl != this) //prevent recursion
-                                        vl.MicrophoneAlarm(this, EventArgs.Empty);
+                                        vl.Alarm(this, EventArgs.Empty);
                                     break;
                                 case "2":
                                     CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(Convert.ToInt32(tid[1]));
-                                    cw?.CameraAlarm(this, EventArgs.Empty);
+                                    cw?.Alarm(this, EventArgs.Empty);
                                     break;
                             }
                             
@@ -2649,7 +2756,7 @@ namespace iSpyApplication.Controls
             }
         }
 
-        public void MicrophoneAlarm(object sender, EventArgs e)
+        public void Alarm(object sender, EventArgs e)
         {
             LastSoundDetected = Helper.Now.AddSeconds(0.3d);
 
@@ -2719,7 +2826,7 @@ namespace iSpyApplication.Controls
                 ScreenSaver.KillScreenSaver();
 
             int i = 0;
-            foreach (var ev in MainForm.Actions.Where(p => p.objectid == oid && p.objecttypeid == 1 && p.mode == mode))
+            foreach (var ev in MainForm.Actions.Where(p => p.objectid == oid && p.objecttypeid == 1 && p.mode == mode && p.active))
             {
                 ProcessAlertEvent(ev.mode, msg, ev.type, ev.param1, ev.param2, ev.param3, ev.param4);
                 i++;
@@ -2769,79 +2876,6 @@ namespace iSpyApplication.Controls
         {
             //throw new NotImplementedException();
             return "";
-        }
-
-        public void ApplySchedule()
-        {
-            if (!Micobject.schedule.active || Micobject.schedule?.entries == null || !Micobject.schedule.entries.Any())
-                return;
-            //find most recent schedule entry
-            DateTime dNow = DateTime.Now;
-            TimeSpan shortest = TimeSpan.MaxValue;
-            objectsMicrophoneScheduleEntry mostrecent = null;
-            bool isstart = true;
-
-            foreach (objectsMicrophoneScheduleEntry entry in Micobject.schedule.entries)
-            {
-                if (entry.active)
-                {
-                    string[] dows = entry.daysofweek.Split(',');
-                    foreach (string dayofweek in dows)
-                    {
-                        int dow = Convert.ToInt32(dayofweek);
-                        //when did this last fire?
-                        if (entry.start.IndexOf("-", StringComparison.Ordinal) == -1)
-                        {
-                            string[] start = entry.start.Split(':');
-                            var dtstart = new DateTime(dNow.Year, dNow.Month, dNow.Day, Convert.ToInt32(start[0]),
-                                                       Convert.ToInt32(start[1]), 0);
-                            while ((int) dtstart.DayOfWeek != dow || dtstart > dNow)
-                                dtstart = dtstart.AddDays(-1);
-                            if (dNow - dtstart < shortest)
-                            {
-                                shortest = dNow - dtstart;
-                                mostrecent = entry;
-                                isstart = true;
-                            }
-                        }
-                        if (entry.stop.IndexOf("-", StringComparison.Ordinal) == -1)
-                        {
-                            string[] stop = entry.stop.Split(':');
-                            var dtstop = new DateTime(dNow.Year, dNow.Month, dNow.Day, Convert.ToInt32(stop[0]),
-                                                      Convert.ToInt32(stop[1]), 0);
-                            while ((int) dtstop.DayOfWeek != dow || dtstop > dNow)
-                                dtstop = dtstop.AddDays(-1);
-                            if (dNow - dtstop < shortest)
-                            {
-                                shortest = dNow - dtstop;
-                                mostrecent = entry;
-                                isstart = false;
-                            }
-                        }
-                    }
-                }
-            }
-            if (mostrecent != null)
-            {
-                if (isstart)
-                {
-                    Micobject.detector.recordondetect = mostrecent.recordondetect;
-                    Micobject.detector.recordonalert = mostrecent.recordonalert;
-                    Micobject.settings.messaging = mostrecent.messaging;
-                    Micobject.alerts.active = mostrecent.alerts;
-                    if (!IsEnabled)
-                        Enable();
-                    if (mostrecent.recordonstart)
-                    {
-                        ForcedRecording = true;
-                    }
-                }
-                else
-                {
-                    if (IsEnabled)
-                        Disable();
-                }
-            }
         }
     }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.ServiceModel.Configuration;
 using System.Threading;
 using DropNet;
 using iSpyApplication.Utilities;
@@ -34,7 +35,25 @@ namespace iSpyApplication.Cloud
             }
         }
 
+        public static string GetAuthoriseURL(out string err)
+        {
+            err = "";
+            try
+            {
+                MainForm.Conf.DropBoxConfig = "";
 
+                _service = null;
+                Service.GetToken();
+                _gottoken = false;
+                return Service.BuildAuthorizeUrl();
+            }
+            catch (Exception ex)
+            {
+                err = ex.Message;
+                Logger.LogExceptionToFile(ex, "DropBox");
+                return "";
+            }
+        }
         public static DropNetClient Service
         {
             get
@@ -65,11 +84,12 @@ namespace iSpyApplication.Cloud
         {
             try
             {
-                MainForm.Conf.DropBoxConfig = "";
-                _service = null;
-                Service.GetToken();
-                var url = Service.BuildAuthorizeUrl();
+                string err;
+                var url = GetAuthoriseURL(out err);
+                if (err != "")
+                    throw new Exception(err);
                 MainForm.OpenUrl(url);
+                
                 _gottoken = false;
             }
             catch (Exception ex)
@@ -117,8 +137,9 @@ namespace iSpyApplication.Cloud
             }
         }
 
-        public static string Upload(string filename, string path)
+        public static string Upload(string filename, string path, out bool success)
         {
+            success = false;
             if (!Authorised)
             {
                 Logger.LogMessageToFile("Authorise dropbox in settings");
@@ -136,6 +157,7 @@ namespace iSpyApplication.Cloud
                 _uploading = true;
                 ThreadPool.QueueUserWorkItem(Upload, null);
             }
+            success = true;
             return LocRm.GetString("AddedToQueue");
 
         }

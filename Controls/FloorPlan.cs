@@ -29,6 +29,8 @@ namespace iSpyApplication.Controls
         private int _ttind = -1;
         private readonly object _lockobject = new object();
 
+        public bool ForcedRecording => false;
+
         private readonly SolidBrush _alertBrush = new SolidBrush(Color.FromArgb(200, 255, 0, 0));
         private readonly SolidBrush _noalertBrush = new SolidBrush(Color.FromArgb(200, 75, 172, 21));
         private readonly SolidBrush _offlineBrush = new SolidBrush(Color.FromArgb(200, 0, 0, 0));
@@ -42,6 +44,11 @@ namespace iSpyApplication.Controls
         private readonly Font _drawFont = new Font(FontFamily.GenericSansSerif, 9);
 
         private const int ButtonCount = 2;
+
+        public int ObjectTypeID => 3;
+
+        public int ObjectID => Fpobject.id;
+
         private Rectangle ButtonPanel
         {
             get
@@ -59,6 +66,10 @@ namespace iSpyApplication.Controls
             }
         }
 
+        public void Alarm(object sender, EventArgs e)
+        {
+
+        }
         public Bitmap ImgPlan
         {
             
@@ -80,6 +91,10 @@ namespace iSpyApplication.Controls
             }
         }
 
+        public void ReloadSchedule()
+        {
+
+        }
 
         public Bitmap ImgView => _imgview;
 
@@ -174,7 +189,7 @@ namespace iSpyApplication.Controls
                             case 1:
                                 if (Helper.HasFeature(Enums.Features.Access_Media))
                                 {
-                                    string url = MainForm.Webserver + "/watch_new.aspx";
+                                    string url = MainForm.Webpage;
                                     if (WsWrapper.WebsiteLive && MainForm.Conf.ServicesEnabled)
                                     {
                                         MainForm.OpenUrl(url);
@@ -748,6 +763,10 @@ namespace iSpyApplication.Controls
                 NeedsRefresh = false;
                 IsAlert = alert;
             }
+        }
+
+        public void Apply()
+        {
         }
 
         #region Nested type: ThreadSafeCommand

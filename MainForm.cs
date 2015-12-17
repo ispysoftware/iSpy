@@ -183,15 +183,12 @@ namespace iSpyApplication
         
         
         private static string _browser = String.Empty;
+
         
-        private static List<objectsMicrophone> _microphones;
-        private static List<objectsFloorplan> _floorplans;
-        private static List<objectsCommand> _remotecommands;
-        private static List<objectsCamera> _cameras;
         private MenuItem menuItem37;
         private ToolStripMenuItem tagsToolStripMenuItem;
         private ToolStripMenuItem openWebInterfaceToolStripMenuItem;
-        private static List<objectsActionsEntry> _actions;
+        
 
         public static void AddObject(object o)
         {
@@ -254,7 +251,8 @@ namespace iSpyApplication
         private ToolStripMenuItem _helpToolstripMenuItem;
         private Timer _houseKeepingTimer;
         private ToolStripMenuItem _iPCameraToolStripMenuItem;
-        private string _lastPath = Program.AppDataPath;
+        private static string _lastPath = Program.AppDataPath;
+        private static string _currentFileName = "";
         private ToolStripMenuItem _listenToolStripMenuItem;
         private ToolStripMenuItem _localCameraToolStripMenuItem;
         private PersistWindowState _mWindowState;
@@ -968,7 +966,7 @@ namespace iSpyApplication
             Menu = mainMenu;
             notifyIcon1.ContextMenuStrip = ctxtTaskbar;
             Identifier = Guid.NewGuid().ToString();
-            MWS = new LocalServer(this)
+            MWS = new LocalServer
                   {
                       ServerRoot = Program.AppDataPath + @"WebServerRoot\",
                   };
@@ -1206,6 +1204,7 @@ namespace iSpyApplication
                                     Webserver = nv[1].Trim().Trim('/');
                                     if (!setSecure)
                                         WebserverSecure = Webserver;
+                                    CustomWebserver = true;
                                     break;
                                 case "webserversecure":
                                     WebserverSecure = nv[1].Trim().Trim('/');
@@ -2820,33 +2819,42 @@ namespace iSpyApplication
 
         private void MenuItem19Click(object sender, EventArgs e)
         {
-            SaveObjectList();
+            SaveObjectList(true);
         }
 
-        private void SaveObjectList()
+        public void SaveObjectList(bool warn = true)
         {
             if (Cameras.Count == 0 && Microphones.Count == 0)
             {
-                MessageBox.Show(LocRm.GetString("NothingToExport"), LocRm.GetString("Error"));
+                if (warn)
+                    MessageBox.Show(LocRm.GetString("NothingToExport"), LocRm.GetString("Error"));
                 return;
             }
 
-            var saveFileDialog = new SaveFileDialog
-                                 {
-                                     InitialDirectory = _lastPath,
-                                     Filter = "iSpy Files (*.ispy)|*.ispy|XML Files (*.xml)|*.xml"
-                                 };
-
-            if (saveFileDialog.ShowDialog(this) == DialogResult.OK)
+            bool save = true;
+            string filename = _currentFileName;
+            if (warn)
             {
-                string fileName = saveFileDialog.FileName;
 
-                if (fileName.Trim() != "")
+                using (var saveFileDialog = new SaveFileDialog
+                                            {
+                                                InitialDirectory = _lastPath,
+                                                Filter = "iSpy Files (*.ispy)|*.ispy|XML Files (*.xml)|*.xml"
+                                            })
                 {
-                    SaveObjects(fileName);
+
+                    save = saveFileDialog.ShowDialog(this) == DialogResult.OK;
+                    filename = saveFileDialog.FileName;
+                }
+            }
+            if (save)
+            {
+                if (filename.Trim() != "")
+                {
+                    SaveObjects(filename);
                     try
                     {
-                        var fi = new FileInfo(fileName);
+                        var fi = new FileInfo(filename);
                         _lastPath = fi.DirectoryName;
                     }
                     catch
@@ -2854,7 +2862,6 @@ namespace iSpyApplication
                     }
                 }
             }
-            saveFileDialog.Dispose();
         }
 
 
@@ -2890,7 +2897,7 @@ namespace iSpyApplication
             if (ContextTarget is CameraWindow)
             {
                 //id = ((CameraWindow) ContextTarget).Camobject.id.ToString();
-                string url = Webserver + "/watch_new.aspx";
+                string url = Webpage;
                 if (WsWrapper.WebsiteLive && Conf.ServicesEnabled)
                 {
                     OpenUrl(url);
@@ -2902,7 +2909,7 @@ namespace iSpyApplication
             if (ContextTarget is VolumeLevel)
             {
                 //id = ((VolumeLevel) ContextTarget).Micobject.id.ToString();
-                string url = Webserver + "/watch_new.aspx";
+                string url = Webpage;
                 if (WsWrapper.WebsiteLive && Conf.ServicesEnabled)
                 {
                     OpenUrl(url);
@@ -2913,7 +2920,7 @@ namespace iSpyApplication
 
             if (ContextTarget is FloorPlanControl)
             {
-                string url = Webserver + "/watch_new.aspx";
+                string url = Webpage;
                 if (WsWrapper.WebsiteLive && Conf.ServicesEnabled)
                 {
                     OpenUrl(url);
@@ -2925,7 +2932,7 @@ namespace iSpyApplication
 
         public void Connect(bool silent)
         {
-            Connect(Webserver + "/watch_new.aspx", silent);
+            Connect(Webpage, silent);
         }
 
         public void Connect(string successUrl, bool silent)
@@ -3292,7 +3299,7 @@ namespace iSpyApplication
         {
             if (WsWrapper.WebsiteLive && Conf.ServicesEnabled)
             {
-                OpenUrl(Webserver + "/watch_new.aspx");
+                OpenUrl(Webpage);
             }
             else
                 WebConnect();
@@ -4248,7 +4255,7 @@ namespace iSpyApplication
                     {
                         OpenUrl(!Conf.Subscribed
                             ? Webserver + "/subscribe.aspx"
-                            : Webserver + "/watch_new.aspx");
+                            : Webpage);
                     }
                     else
                     {
@@ -4260,6 +4267,17 @@ namespace iSpyApplication
                     WebConnect();
                 }
                 
+            }
+        }
+
+        private static bool CustomWebserver = false;
+        public static string Webpage
+        {
+            get
+            {
+                if (CustomWebserver)
+                    return Webserver + "watch_new.aspx";
+                return Webserver + "/monitor/";
             }
         }
 
@@ -6550,7 +6568,8 @@ namespace iSpyApplication
                     var pb = flowPreview.Controls[i] as PreviewBox;
                     if (pb != null && pb.Selected)
                     {
-                        msg = YouTubeUploader.Upload(pb.Oid, pb.FileName);
+                        bool b;
+                        msg = YouTubeUploader.Upload(pb.Oid, pb.FileName, out b);
                     }
                 }                
             }

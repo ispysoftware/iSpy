@@ -1,0 +1,61 @@
+﻿{
+    "header": "Pelco",
+    "okResult": "UploadJSON",
+    "name": "EditPelco",
+    "sections": [
+        {
+            "header": "Settings",
+            "displayType": "Form",
+            "items": [
+                {
+                    "text": "COM Port",
+                    "value": "",
+                    "type": "Select",
+                    "bindto": "settings.pelco.comPort",
+                    "options": [
+                        COMPORTS
+                    ]
+                },
+                {
+                    "text": "BAUD Rate",
+                    "value": 0,
+                    "type": "Select",
+                    "bindto": "settings.pelco.baudRate",
+                    "options": [
+                        { "text": 75, "value": 75 },
+                        { "text": 110, "value": 110 },
+                        { "text": 300, "value": 300 },
+                        { "text": 1200, "value": 1200 },
+                        { "text": 2400, "value": 2400 },
+                        { "text": 4800, "value": 4800 },
+                        { "text": 9600, "value": 9600 },
+                        { "text": 19200, "value": 19200 },
+                        { "text": 38400, "value": 38400 },
+                        { "text": 54700, "value": 54700 },
+                        {"text": 115200, "value": 115200}
+                    ]
+                },
+                { "text": "Data Bit", "value": "", "type": "Select", "bindto": "settings.pelco.dataBit", "options": [
+                        { "text": 5, "value": 5 },
+                        { "text": 6, "value": 6 },
+                        { "text": 7, "value": 7 },
+                        { "text": 8, "value": 8 }
+                    ]},
+                { "text": "Stop Bit", "value": "", "type": "Select", "bindto": "settings.pelco.stopBit", "options": [
+                        { "text": "None", "value": "None" },
+                        { "text": "One", "value": "One" },
+                        { "text": "OnePointFive", "value": "OnePointFive" },
+                        { "text": "Two", "value": "Two" }
+                    ]},
+                { "text": "Parity", "value": "", "type": "Select", "bindto": "settings.pelco.parity" , "options": [
+                        { "text": "None", "value": "None" },
+                        { "text": "Odd", "value": "Odd" },
+                        { "text": "Even", "value": "Even" },
+                        { "text": "Mark", "value": "Mark" },
+                        { "text": "Space", "value": "Space" }
+                    ]},
+                { "text": "Address", "value": "", "type": "Int32", "min": 0, "max": 999, "bindto": "settings.pelco.address" }
+            ]
+        }
+    ]
+}

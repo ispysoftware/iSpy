@@ -264,10 +264,164 @@ namespace iSpyApplication.Controls
                                 param1 = config[0],
                                 param2 = config[1],
                                 param3 = config[2],
-                                param4 = config[3]
-                            };
+                                param4 = config[3],
+                                ident = Guid.NewGuid().ToString()
+            };
             MainForm.Actions.Add(oae);
             RenderEventList();
+        }
+
+        public class ActionEntry
+        {
+            public ActionEntry(objectsActionsEntry e)
+            {
+                OAE = e;
+            }
+
+            public objectsActionsEntry OAE { get; }
+
+            public bool Checked
+            {
+                get { return OAE.active; }
+                set
+                {
+                    OAE.active = value;
+                }
+            }
+
+            public string EditVisiblity
+            {
+                get
+                {
+                    switch (OAE.type)
+                    {
+                        case "SW":
+                        case "B":
+                        case "M":
+                        case "TM":
+                            return "Collapsed";
+                    }
+                    return "Visible";
+                }
+            }
+
+            public string Summary
+            {
+                get
+                {
+                    string t = "Unknown";
+                    switch (OAE.type)
+                    {
+                        case "Exe":
+                            t = LocRm.GetString("ExecuteFile") + ": " + OAE.param1;
+                            break;
+                        case "URL":
+                            t = LocRm.GetString("CallURL") + ": " + OAE.param1;
+                            if (Convert.ToBoolean(OAE.param2))
+                                t += " (POST grab)";
+                            break;
+                        case "NM":
+                            t = OAE.param1 + " " + OAE.param2 + ":" + OAE.param3 + " (" + OAE.param4 + ")";
+                            break;
+                        case "S":
+                            t = LocRm.GetString("PlaySound") + ": " + OAE.param1;
+                            break;
+                        case "ATC":
+                            t = LocRm.GetString("SoundThroughCamera") + ": " + OAE.param1;
+                            break;
+                        case "SW":
+                            t = LocRm.GetString("ShowWindow");
+                            break;
+                        case "B":
+                            t = LocRm.GetString("Beep");
+                            break;
+                        case "M":
+                            t = LocRm.GetString("Maximise");
+                            break;
+                        case "TA":
+                            {
+                                string[] op = OAE.param1.Split(',');
+                                string n = "[removed]";
+                                int id = Convert.ToInt32(op[1]);
+                                switch (op[0])
+                                {
+                                    case "1":
+                                        objectsMicrophone om = MainForm.Microphones.FirstOrDefault(p => p.id == id);
+                                        if (om != null)
+                                            n = om.name;
+                                        break;
+                                    case "2":
+                                        objectsCamera oc = MainForm.Cameras.FirstOrDefault(p => p.id == id);
+                                        if (oc != null)
+                                            n = oc.name;
+                                        break;
+                                }
+                                t = LocRm.GetString("TriggerAlertOn") + " " + n;
+                            }
+                            break;
+                        case "SOO":
+                            {
+                                string[] op = OAE.param1.Split(',');
+                                string n = "[removed]";
+                                int id = Convert.ToInt32(op[1]);
+                                switch (op[0])
+                                {
+                                    case "1":
+                                        objectsMicrophone om = MainForm.Microphones.FirstOrDefault(p => p.id == id);
+                                        if (om != null)
+                                            n = om.name;
+                                        break;
+                                    case "2":
+                                        objectsCamera oc = MainForm.Cameras.FirstOrDefault(p => p.id == id);
+                                        if (oc != null)
+                                            n = oc.name;
+                                        break;
+                                }
+                                t = LocRm.GetString("SwitchObjectOn") + " " + n;
+                            }
+                            break;
+                        case "SOF":
+                            {
+                                string[] op = OAE.param1.Split(',');
+                                string n = "[removed]";
+                                int id = Convert.ToInt32(op[1]);
+                                switch (op[0])
+                                {
+                                    case "1":
+                                        objectsMicrophone om = MainForm.Microphones.FirstOrDefault(p => p.id == id);
+                                        if (om != null)
+                                            n = om.name;
+                                        break;
+                                    case "2":
+                                        objectsCamera oc = MainForm.Cameras.FirstOrDefault(p => p.id == id);
+                                        if (oc != null)
+                                            n = oc.name;
+                                        break;
+                                }
+                                t = LocRm.GetString("SwitchObjectOff") + " " + n;
+                            }
+                            break;
+                        case "E":
+                            t = LocRm.GetString("SendEmail") + ": " + OAE.param1;
+                            if (OAE.param2 != "" && Convert.ToBoolean(OAE.param2))
+                                t += " (include grab)";
+                            break;
+                        case "SMS":
+                            t = LocRm.GetString("SendSMS") + ": " + OAE.param1;
+                            break;
+                        case "TM":
+                            t = LocRm.GetString("SendTwitterMessage");
+                            break;
+                        case "MO":
+                            {
+                                t = LocRm.GetString("SwitchMonitorOn");
+                            }
+                            break;
+                    }
+
+                    return t;
+                }
+            }
         }
 
         private string[] GetParamConfig(string typeName, out bool cancel, 

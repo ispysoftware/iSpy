@@ -20,6 +20,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using Google.Apis.Drive.v2.Data;
 using iSpyApplication.Cloud;
 using iSpyApplication.Controls;
 using iSpyApplication.Properties;
@@ -29,6 +30,11 @@ using iSpyApplication.Sources.Audio.talk;
 using iSpyApplication.Sources.Video;
 using iSpyApplication.Utilities;
 using NAudio.Wave;
+using Color = System.Drawing.Color;
+using DateTime = System.DateTime;
+using File = System.IO.File;
+using Image = System.Drawing.Image;
+using IPAddress = System.Net.IPAddress;
 using ThreadState = System.Threading.ThreadState;
 
 namespace iSpyApplication.Server
@@ -48,25 +54,22 @@ namespace iSpyApplication.Server
         }
     }
 
-    public class LocalServer
+    public partial class LocalServer: IDisposable
     {
         //private static readonly List<Socket> MySockets = new List<Socket>();
         private static List<String> _allowedIPs, _allowedReferers;
         private static readonly object StaticThreadLock = new object();
         //private static int _socketindex;
-        private readonly MainForm _parent;
         public string ServerRoot;
         private Hashtable _mimetypes;
         private TcpListener _myListener;
         public int NumErr;
         private Thread _th;
-        
-        //The constructor which make the TcpListener start listening on the
-        //given port. It also calls a Thread on the method StartListen(). 
-        public LocalServer(MainForm parent)
-        {
-            _parent = parent;
-        }
+        private readonly object _threadLock = new object();
+        public WebSocketServer WebSocketServer;
+
+        public bool ServerStartupFailed = false;
+
 
         public Hashtable MimeTypes
         {
@@ -100,7 +103,8 @@ namespace iSpyApplication.Server
                 return _mimetypes;
             }
         }
-        private readonly object _threadLock = new object();
+
+
         public bool Running
         {
             get
@@ -114,6 +118,7 @@ namespace iSpyApplication.Server
                 }
             }
         }
+
         private IPAddress ListenerAddress
         {
             get
@@ -134,28 +139,35 @@ namespace iSpyApplication.Server
 
         public string StartServer()
         {
-            if (!string.IsNullOrEmpty(MainForm.Conf.SSLCertificate))
+            bool ssl = MainForm.Conf.SSLEnabled;
+            if (ssl && !string.IsNullOrEmpty(MainForm.Conf.SSLCertificate))
                 X509.LoadCertificate(MainForm.Conf.SSLCertificate);
 
             string message = "";
             try
             {
                 _myListener = new TcpListener(ListenerAddress, MainForm.Conf.LANPort) { ExclusiveAddressUse = false };
-                if (MainForm.Conf.IPMode == "IPv6")
+                if (MainForm.Conf.IPMode=="IPv6")
                 {
-                    _myListener.AllowNatTraversal(true);
+                     _myListener.AllowNatTraversal(true);
                 }
                 _myListener.Start(200);
+
+                WebSocketServer?.Close();
+
+                WebSocketServer = new WebSocketServer(this);
+                ServerStartupFailed = false;
             }
             catch (Exception e)
             {
-                Logger.LogExceptionToFile(e);
+                Logger.LogExceptionToFile(e,"Server");
                 StopServer();
                 message = "Could not start local iSpy server - please select a different LAN port in settings. The port specified is in use. See the log file for more information.";
+                ServerStartupFailed = true;
             }
             if (message != "")
             {
-                Logger.LogMessageToFile(message);
+                Logger.LogMessageToFile(message, "Server");
                 return message;
             }
             try 
@@ -173,12 +185,12 @@ namespace iSpyApplication.Server
             catch (Exception e)
             {
                 message = e.Message;
-                Logger.LogExceptionToFile(e);
+                Logger.LogExceptionToFile(e, "Server");
             }
 
             lock (_threadLock)
             {
-                _th = new Thread(StartListen);
+                _th = new Thread(StartListen) {IsBackground = true};
                 _th.Start();
             }
             return message;
@@ -186,11 +198,13 @@ namespace iSpyApplication.Server
 
         public void StopServer()
         {
+        
             if (_connectedSockets != null)
             {
-                ClientConnected.Set();
+                    
                 try
                 {
+                    ClientConnected.Set();
                     lock (_connectedSocketsSyncHandle)
                     {
                         foreach (var req in _connectedSockets)
@@ -202,7 +216,7 @@ namespace iSpyApplication.Server
                 catch (SocketException ex)
                 {
                     //During one socket disconnected we can faced exception
-                    Logger.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex, "Server");
                 }
             }
 
@@ -210,23 +224,27 @@ namespace iSpyApplication.Server
             {
                 try
                 {
-                    _myListener.Server.Close();
+                    _myListener.Server.Close(0);
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex, "Server");
+                }
+                finally
+                {
+                    _myListener.Stop();
                 }
                 _myListener = null;
             }
-
-            Application.DoEvents();
+            WebSocketServer?.Close();
+            WebSocketServer = null;
         }
 
 
         /// <summary>
         /// This function takes FileName as Input and returns the mime type..
         /// </summary>
-        /// <param name="sRequestedFile">To identify the Mime Type</param>
+        /// <param name="sRequestedFile">To indentify the Mime Type</param>
         /// <returns>Mime Type</returns>
         public string GetMimeType(string sRequestedFile)
         {
@@ -242,16 +260,8 @@ namespace iSpyApplication.Server
                 return "text/javascript";
             string sFileExt = sRequestedFile.Substring(iStartPos);
 
-            MimeTypes.ContainsKey(sFileExt);
-            try
-            {
+            if (MimeTypes.ContainsKey(sFileExt))
                 sMimeType = MimeTypes[sFileExt].ToString();
-            }
-            catch
-            {
-                //Logger.LogErrorToFile("No mime type for request " + sRequestedFile);
-            }
-
 
             return sMimeType;
         }
@@ -269,7 +279,7 @@ namespace iSpyApplication.Server
         public void SendHeader(string sHttpVersion, string sMimeHeader, int iTotBytes, string sStatusCode, int cacheDays,
                                ref HttpRequest req, string fileName, bool gZip)
         {
-            String sBuffer = "";
+            string sBuffer = "";
 
             // if Mime type is not provided set default to text/html
             if (sMimeHeader.Length == 0)
@@ -307,7 +317,7 @@ namespace iSpyApplication.Server
             else
             {
                 sBuffer +=
-                    "Pragma: no-cache\r\nExpires: Fri, 30 Oct 1998 14:19:41 GMT\r\nCache-Control: no-cache, must-revalidate\r\n";
+                    "Pragma: no-cache\r\nExpires: Fri, 30 Oct 1998 14:19:41 GMT\r\nCache-directive: no-cache\r\nCache-control: no-cache\r\nPragma: no-cache\r\nExpires: 0\r\n";
             }
 
 
@@ -322,7 +332,7 @@ namespace iSpyApplication.Server
         public void SendHeaderWithRange(string sHttpVersion, string sMimeHeader, int iStartBytes, int iEndBytes,
                                         int iTotBytes, string sStatusCode, int cacheDays, HttpRequest req, string fileName)
         {
-            String sBuffer = "";
+            string sBuffer = "";
 
             // if Mime type is not provided set default to text/html
             if (sMimeHeader.Length == 0)
@@ -360,13 +370,7 @@ namespace iSpyApplication.Server
         }
 
 
-        /// <summary>
-        /// Overloaded Function, takes string, convert to bytes and calls 
-        /// overloaded sendToBrowserFunction.
-        /// </summary>
-        /// <param name="sData">The data to be sent to the browser(client)</param>
-        /// <param name="req">the http request</param>
-        public void SendToBrowser(String sData, HttpRequest req)
+        public void SendToBrowser(string sData, HttpRequest req)
         {
             SendToBrowser(Encoding.ASCII.GetBytes(sData), req);
         }
@@ -376,8 +380,8 @@ namespace iSpyApplication.Server
         /// Sends data to the browser (client)
         /// </summary>
         /// <param name="bSendData">Byte Array</param>
-        /// <param name="req"></param>
-        public void SendToBrowser(Byte[] bSendData, HttpRequest req)
+        /// <param name="req">HTTP Request</param>
+        public void SendToBrowser(byte[] bSendData, HttpRequest req)
         {
             try
             {
@@ -392,9 +396,9 @@ namespace iSpyApplication.Server
             {
                 //connection error
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Logger.LogExceptionToFile(e);
+                //dropped connection
             }
         }
 
@@ -403,8 +407,8 @@ namespace iSpyApplication.Server
         /// </summary>
         /// <param name="bSendData">Byte Array</param>
         /// <param name="datalength"></param>
-        /// <param name="req">the http request</param>
-        public void SendToBrowser(Byte[] bSendData, int datalength, HttpRequest req)
+        /// <param name="req">HTTP Request</param>
+        public void SendToBrowser(byte[] bSendData, int datalength, HttpRequest req)
         {
             try
             {
@@ -421,8 +425,13 @@ namespace iSpyApplication.Server
             }
             catch (Exception e)
             {
-                Logger.LogExceptionToFile(e);
+                Logger.LogExceptionToFile(e, "Server");
             }
+        }
+
+        public bool ThumbnailCallback()
+        {
+            return false;
         }
 
         public static AutoResetEvent ClientConnected = new AutoResetEvent(false);
@@ -441,7 +450,7 @@ namespace iSpyApplication.Server
             {
                 try
                 {
-                    _myListener.BeginAcceptTcpClient(DoAcceptClientCallback, _myListener);
+                    _myListener?.BeginAcceptTcpClient(DoAcceptClientCallback, _myListener);
 
                 }
                 catch (ObjectDisposedException)
@@ -450,13 +459,13 @@ namespace iSpyApplication.Server
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex, "Server");
                     break;
                 }
                 // Wait until a connection is made and processed before  
                 // continuing.
-                ClientConnected.WaitOne(); // Wait until a client has begun handling an event
-                ClientConnected.Reset();
+                ClientConnected?.WaitOne(); // Wait until a client has begun handling an event
+                ClientConnected?.Reset();
             }
         }
 
@@ -469,13 +478,13 @@ namespace iSpyApplication.Server
                 switch (sslPolicyErrors)
                 {
                     case SslPolicyErrors.RemoteCertificateNameMismatch:
-                        Logger.LogErrorToFile("Client name mismatch. End communication");
+                        Logger.LogErrorToFile("Client name mismatch. End communication", "Server");
                         return false;
                     case SslPolicyErrors.RemoteCertificateNotAvailable:
-                        Logger.LogErrorToFile("Client's certificate not available. End communication");
+                        Logger.LogErrorToFile("Client's certificate not available. End communication", "Server");
                         return false;
                     case SslPolicyErrors.RemoteCertificateChainErrors:
-                        Logger.LogErrorToFile("Client's certificate validation failed. End communication");
+                        Logger.LogErrorToFile("Client's certificate validation failed. End communication", "Server");
                         return false;
                 }
             }
@@ -501,8 +510,9 @@ namespace iSpyApplication.Server
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Logger.LogExceptionToFile(ex);
                 DisconnectRequest(req);
                 return;
             }
@@ -513,12 +523,14 @@ namespace iSpyApplication.Server
         public void DoAcceptClientCallback(IAsyncResult ar)
         {
             ClientConnected.Set();
+            if (MainForm.ShuttingDown)
+                return;
             try
             {
                 var listener = (TcpListener) ar.AsyncState;
                 TcpClient myClient = listener.EndAcceptTcpClient(ar);
 
-                var endPoint = (IPEndPoint) myClient.Client.RemoteEndPoint;
+                var endPoint = (IPEndPoint)myClient.Client.RemoteEndPoint;
                 var req = new HttpRequest
                           {EndPoint = endPoint, TcpClient = myClient, Buffer = new byte[myClient.ReceiveBufferSize]};
 
@@ -537,10 +549,10 @@ namespace iSpyApplication.Server
 
                 var mySocket = myClient.Client;
 
-                if (MainForm.Conf.IPMode == "IPv6")
+                if (MainForm.Conf.IPMode== "IPv6")
                     mySocket.SetIPProtectionLevel(IPProtectionLevel.Unrestricted);
-
-
+                    
+                   
                 if (mySocket.Connected)
                 {
                     mySocket.NoDelay = true;
@@ -548,14 +560,10 @@ namespace iSpyApplication.Server
                     mySocket.ReceiveTimeout = mySocket.SendTimeout = 4000;
                     try
                     {
-                        //make a byte array and receive data from the client                        
-
                         if (MainForm.Conf.SSLEnabled && X509.SslCertificate != null)
-                            //Then we have the ability to make an SSL connection (SSLCertificate is a X509Certificate2 object)
                         {
                             req.RestartableStream = new RestartableReadStream(req.TcpClient.GetStream());
                             req.Stream = new SslStream(req.RestartableStream, true, ClientValidationCallback);
-                            //Start Listening for incoming (secure) data
                             try
                             {
                                 ((SslStream) req.Stream).BeginAuthenticateAsServer(X509.SslCertificate,
@@ -579,7 +587,7 @@ namespace iSpyApplication.Server
                         //ignore connection timeout errors
                         if (ex.ErrorCode != 10060)
                         {
-                            Logger.LogExceptionToFile(ex);
+                            Logger.LogExceptionToFile(ex, "Server");
                             NumErr++;
 
                         }
@@ -592,14 +600,13 @@ namespace iSpyApplication.Server
                     }
                 }
             }
-            catch (ObjectDisposedException)
+            catch(ObjectDisposedException)
             {
                 //socket closed already
             }
-            
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex, "Server");
                 NumErr++;
             }
         }
@@ -613,39 +620,56 @@ namespace iSpyApplication.Server
                 {
                     var read = req.Stream.EndRead(result);
                     if (read > 0)
-                        req.Ascii += Encoding.ASCII.GetString(req.Buffer, 0, read);
+                        req.ASCII += Encoding.ASCII.GetString(req.Buffer, 0, read);
 
-                    if (req.Ascii.StartsWith("<policy-file-request/>"))
+                    
+
+                    //flash xml request
+                    if (req.ASCII.StartsWith("<policy-file-request/>"))
                     {
                         req.TcpClient.Client.SendFile(Program.AppPath + @"WebServerRoot\crossdomain.xml");
                         DisconnectRequest(req);
                         NumErr = 0;
                         return;
                     }
-                    if (req.Ascii.StartsWith("TALK,"))
+
+                    //talk in socket call
+                    if (req.ASCII.StartsWith("TALK,"))
                     {
-                        if (req.Ascii.Length > 10)
+                        if (req.ASCII.Length > 10)
                         {
-                            string[] cfg = req.Ascii.Substring(0, 10).Split(',');
+                            string[] cfg = req.ASCII.Substring(0, 10).Split(',');
                             int cid = Convert.ToInt32(cfg[1]);
 
-                            var feed = new Thread(p => AudioIn(req, cid));
+                            var feed = new Thread(p => AudioIn(req, cid)) {IsBackground = true};
                             feed.Start();
                             return;
                         }
                     }
 
-                    int iStartPos = req.Ascii.IndexOf(" HTTP", StringComparison.Ordinal);
-                    if (iStartPos > -1)
+                    int iStartPos = req.ASCII.IndexOf("\r\n\r\n", StringComparison.Ordinal);
+                    if (iStartPos>-1)
                     {
-                        ProcessRequest(req.Ascii, req);
+                        string[] headers = req.ASCII.Substring(0, iStartPos).Split('\n');
+                        if ((from h in headers where h.Trim().StartsWith("Content-Length",StringComparison.OrdinalIgnoreCase) select h.Split(':') into nv select Convert.ToInt32(nv[1].Trim())).Any(cl => req.ASCII.Length - iStartPos + 4 < cl))
+                        {
+                            req.Stream.BeginRead(req.Buffer, 0, req.Buffer.Length, ReadCallback, req);
+                            return;
+                        }
+                        ProcessRequest(req.ASCII, req);
                     }
                     else
                     {
                         if (read==0)
                             DisconnectRequest(req);
                         else
+                        {
+                            if (req.ASCII.Length>200000)
+                                throw new Exception("Incoming request is too long");
+                            
                             req.Stream.BeginRead(req.Buffer, 0, req.Buffer.Length, ReadCallback, req);
+                        }
+                            
                     }
                 }
                 catch
@@ -669,35 +693,66 @@ namespace iSpyApplication.Server
                 string sHttpVersion;
                 string resp;
                 String sMimeType;
-                bool bServe;
-
-                if (sBuffer.Substring(0, 3) != "GET")
-                {
+                bool bServe;               
+                
+                var iMeth = sBuffer.IndexOf(" ", StringComparison.Ordinal);
+                if (iMeth == -1)
                     goto Finish;
-                }
 
-                String sRequest;
-                String sPhysicalFilePath;
+                var m = sBuffer.Substring(0, iMeth);
+                switch (m)
+                {
+                    case "OPTIONS":
+                        string sResponse = "HTTP/1.1 200 OK\r\n";
+                        sResponse += "Server: iSpy\r\n";
+                        sResponse += "Access-Control-Allow-Origin: *\r\n";
+                        sResponse += "Access-Control-Allow-Methods: GET,POST,OPTIONS\r\n";
+                        sResponse += "Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept\r\n";
+                        sResponse += "Connection: close\r\n";
+                        sResponse += "\r\n";
+                        SendToBrowser(sResponse,req);
+                        goto Finish;
+                    case "GET":
+                    case "POST":
+                        break;                        
+                    default:
+                        goto Finish;
+
+                }
+                
+                string sRequest;
+                string sPhysicalFilePath;
+                string errMessage;
+                string sRequestedFile;
                 try
                 {
-                    String sRequestedFile;
-                    String sErrorMessage;
-                    String sLocalDir;
-                    String sDirName;
+                    
+                    string sErrorMessage;
+                    string sLocalDir;
+                    string sDirName;
                     string sFileName;
                     ParseRequest(ServerRoot, sBuffer, out sRequest, out sRequestedFile,
                                     out sErrorMessage,
                                     out sLocalDir, out sDirName, out sPhysicalFilePath, out sHttpVersion,
-                                    out sFileName, out sMimeType, out bServe, ref req);
+                                    out sFileName, out sMimeType, out bServe, out errMessage, ref req);
                 }
                 catch (Exception)
                 {
                     goto Finish;
                 }
+                if (!bServe && string.IsNullOrEmpty(sRequestedFile))
+                {
+                    resp = "iSpy is running. Access this server via the website";
+                    SendHeader(sHttpVersion, "text/text", resp.Length, " 200 OK", 0, ref req);
+                    SendToBrowser(resp, req);
+                    goto Finish;
+                }
 
                 if (!bServe)
                 {
-                    resp = "//Access this server via " + MainForm.Website + Environment.NewLine + "try{Denied();} catch(e){}";
+                    if (errMessage != "")
+                        errMessage = " (" + errMessage + ")";
+                resp = "{\"server\":\"iSpy\",\"error\":\"Authentication failed"+errMessage+"\",\"errorType\":\"authentication\"}";
                     SendHeader(sHttpVersion, "text/javascript", resp.Length, " 200 OK", 0, ref req);
                     SendToBrowser(resp, req);
                     goto Finish;
@@ -727,8 +782,11 @@ namespace iSpyApplication.Server
                     int i = cmd.IndexOf("?", StringComparison.Ordinal);
                     if (i > -1)
                         cmd = cmd.Substring(0, i);
+
                     if (cmd.StartsWith("get /"))
                         cmd = cmd.Substring(5);
+                    if (cmd.StartsWith("post /"))
+                        cmd = cmd.Substring(6);
 
                     int oid, otid;
                     int.TryParse(GetVar(sRequest, "oid"), out oid);
@@ -744,6 +802,9 @@ namespace iSpyApplication.Server
                         case "livefeed":
                             SendLiveFeed(sPhysicalFilePath, sHttpVersion, ref req);
                             break;
+                        case "desktopfeed":
+                            SendDesktop(sPhysicalFilePath, sHttpVersion, ref req);
+                            break;
                         case "loadgrab":
                         case "loadgrab.jpg":
                             SendGrab(sPhysicalFilePath, sHttpVersion, ref req);
@@ -755,15 +816,15 @@ namespace iSpyApplication.Server
                         case "floorplanfeed":
                             SendFloorPlanFeed(sPhysicalFilePath, sHttpVersion, ref req);
                             break;
-                        //case "audiofeed.m4a":
-                        //    SendAudioFeed(Enums.AudioStreamMode.M4A, sBuffer, sPhysicalFilePath, mySocket);
-                        //    break;
                         case "audiofeed.mp3":
                             SendAudioFeed(Enums.AudioStreamMode.MP3, sBuffer, sPhysicalFilePath, req);
                             return;
-                        //case "audiofeed.wav":
-                        //    SendAudioFeed(Enums.AudioStreamMode.PCM, sBuffer, sPhysicalFilePath, mySocket);
-                        //    return;
+                        case "loadobject.json":
+                            LoadJson(sPhysicalFilePath, sBuffer, sHttpVersion, ref req);
+                            break;
+                        case "saveobject.json":
+                            SaveJson(sPhysicalFilePath, sHttpVersion, sBuffer, ref req);
+                            break;
                         case "video.mjpg":
                         case "video.cgi":
                         case "video.mjpeg":
@@ -783,6 +844,9 @@ namespace iSpyApplication.Server
                         case "downloadclip.mp4":
                             SendClip(sPhysicalFilePath, sBuffer, sHttpVersion, ref req, true);
                             break;
+                        case "websocket":
+                            WebSocketServer.ConnectSocket(sBuffer, req);
+                            return;
                         default:
                             if (sPhysicalFilePath.IndexOf('?') != -1)
                             {
@@ -810,7 +874,7 @@ namespace iSpyApplication.Server
                 //ignore connection timeout errors
                 if (ex.ErrorCode != 10060)
                 {
-                    Logger.LogExceptionToFile(ex);
+                    Logger.LogExceptionToFile(ex, "Server");
                     NumErr++;
 
                 }
@@ -842,12 +906,10 @@ namespace iSpyApplication.Server
 
         private static byte[] Gzip(byte[] bytes)
         {
-            using (var ms = new MemoryStream())
+            var ms = new MemoryStream();
+            using (var gs = new GZipStream(ms,CompressionMode.Compress, true))
             {
-                using (var gs = new GZipStream(ms,CompressionMode.Compress, true))
-                {
-                    gs.Write(bytes, 0, bytes.Length);
-                }
+                gs.Write(bytes, 0, bytes.Length);
                 ms.Position = 0L;
                 return ms.ToArray();
             }
@@ -898,7 +960,7 @@ namespace iSpyApplication.Server
             }
             if (ot==2)
             {
-                dir += @"video\"+MainForm.Cameras.Single(p => p.id == oid).directory + @"\";
+                dir += @"video\" + MainForm.Cameras.Single(p => p.id == oid).directory + @"\";
             }
             string fn = dir+GetVar(sPhysicalFilePath, "fn");
 
@@ -941,34 +1003,28 @@ namespace iSpyApplication.Server
             }
             
             byte[] bytes;
-            using (var fs =
-                new FileStream(fn, FileMode.Open, FileAccess.Read, FileShare.Read))
+            var fs = new FileStream(fn, FileMode.Open, FileAccess.Read, FileShare.Read);
+            
+            using (var reader = new BinaryReader(fs))
             {
-                // Create a reader that can read bytes from the FileStream.
 
-                using (var reader = new BinaryReader(fs))
+                if (!isrange)
                 {
-
-                    if (!isrange)
+                    bytes = new byte[fs.Length];
+                    while ((reader.Read(bytes, 0, bytes.Length)) != 0)
                     {
-                        bytes = new byte[fs.Length];
-                        while ((reader.Read(bytes, 0, bytes.Length)) != 0)
-                        {
-                        }
                     }
-                    else
-                    {
-                        bytes = new byte[iEndBytes - iStartBytes + 1];
-                        reader.BaseStream.Seek(iStartBytes, SeekOrigin.Begin);
-                        bytes = reader.ReadBytes(bytes.Length);
-                    }
-
-                    reader.Close();
                 }
-                fs.Close();
+                else
+                {
+                    bytes = new byte[iEndBytes - iStartBytes + 1];
+                    reader.BaseStream.Seek(iStartBytes, SeekOrigin.Begin);
+                    bytes = reader.ReadBytes(bytes.Length);
+                }
             }
-            string sMimeType = GetMimeType(fn);
 
+            string sMimeType = GetMimeType(fn);
+            
             string filename = fi.Name;
 
             if (downloadFile)
@@ -1014,10 +1070,17 @@ namespace iSpyApplication.Server
                     return ips;
                 }
             }
-            set { _allowedIPs = value; }
         }
 
-        public static List<String> AllowedReferers
+        public static void ReloadAllowedIPs()
+        {
+            lock (StaticThreadLock)
+            {
+                _allowedIPs = null;
+            }
+        }
+
+        public static List<String> AllowedReferrers
         {
             get
             {
@@ -1040,6 +1103,14 @@ namespace iSpyApplication.Server
             set { _allowedReferers = value; }
         }
 
+        public static void ReloadAllowedReferrers()
+        {
+            lock (StaticThreadLock)
+            {
+                _allowedReferers = null;
+            }
+        }
+
         private static string GetFromBuffer(string buffer, string field)
         {
             var ba = buffer.Split(Environment.NewLine.ToCharArray());
@@ -1059,32 +1130,37 @@ namespace iSpyApplication.Server
             return "";
         }
 
-        private void ParseRequest(String sMyWebServerRoot, string sBuffer, out String sRequest,
-                                  out String sRequestedFile, out String sErrorMessage, out String sLocalDir,
-                                  out String sDirName, out String sPhysicalFilePath, out string sHttpVersion,
-                                  out string sFileName, out String sMimeType, out bool bServe, ref HttpRequest req)
+        private void ParseRequest(string sMyWebServerRoot, string sBuffer, out string sRequest,
+                                  out string sRequestedFile, out string sErrorMessage, out string sLocalDir,
+                                  out string sDirName, out string sPhysicalFilePath, out string sHttpVersion,
+                                  out string sFileName, out string sMimeType, out bool bServe, out string errMessage, ref HttpRequest req)
         {
             sErrorMessage = "";
-
+            bServe = false;
             bool bHasReferer = true;
+            errMessage = "";
 
-            if (AllowedReferers.Count>2)
+            if (AllowedReferrers.Count>2)
             {
                 string referer = GetFromBuffer(sBuffer,"Referer");
                 if (!string.IsNullOrEmpty(referer))
                 {
-                    bHasReferer = AllowedReferers.Any(r => Regex.IsMatch(referer, r));
-                    //check referrer (if not empty)
+                    bHasReferer = AllowedReferrers.Any(r => Regex.IsMatch(referer, r));
+                    if (!bHasReferer)
+                        errMessage = "Referer invalid";
                 }
 
             }
 
-            string sClientIP = req.EndPoint.ToString();
+            if (AllowedIPs.Count > 0)
+            {
+                string sClientIP = req.EndPoint.ToString();
 
-            sClientIP = sClientIP.Substring(0, sClientIP.LastIndexOf(":", StringComparison.Ordinal)).Trim();
-            sClientIP = sClientIP.Replace("[", "").Replace("]", "");
+                sClientIP = sClientIP.Substring(0, sClientIP.LastIndexOf(":", StringComparison.Ordinal)).Trim();
+                sClientIP = sClientIP.Replace("[", "").Replace("]", "");
 
-            bServe = AllowedIPs.Any(ip => Regex.IsMatch(sClientIP, ip));
+                bServe = AllowedIPs.Any(ip => Regex.IsMatch(sClientIP, ip));
+            }
 
             int iStartPos = sBuffer.IndexOf("HTTP", 1, StringComparison.Ordinal);
 
@@ -1097,11 +1173,13 @@ namespace iSpyApplication.Server
                 sRequest = sRequest.Replace("Video/", "Video|");
                 sRequest = sRequest.Replace("Audio/", "Audio|");
             }
+            
             iStartPos = sRequest.LastIndexOf("/", StringComparison.Ordinal) + 1;
-            sRequestedFile = Uri.UnescapeDataString(sRequest.Substring(iStartPos));
+
+            sRequestedFile = sRequest.Substring(iStartPos);
+
             GetDirectoryPath(sRequest, sMyWebServerRoot, out sLocalDir, out sDirName);
-
-
+            
             if (sLocalDir.Length == 0)
             {
                 sErrorMessage = "<H2>Error!! Requested Directory does not exists</H2><Br>";
@@ -1116,7 +1194,8 @@ namespace iSpyApplication.Server
 
             var bHasAuth = sPhysicalFilePath.EndsWith("crossdomain.xml") || CheckAuth(sPhysicalFilePath);
 
-            bServe = bServe || (bHasAuth && bHasReferer);
+
+            bServe = (sMimeType != "") && (bServe || (bHasAuth && bHasReferer));
         }
 
         private void ServeFile(string sHttpVersion, string sFileName, String sMimeType,
@@ -1126,20 +1205,14 @@ namespace iSpyApplication.Server
             int iTotBytes = Convert.ToInt32(fi.Length);
 
             byte[] bytes;
-            using (var fs =
-                new FileStream(sFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+            var fs = new FileStream(sFileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+            
+            using (var reader = new BinaryReader(fs))
             {
-
-                using (var reader = new BinaryReader(fs))
+                bytes = new byte[fs.Length];
+                while ((reader.Read(bytes, 0, bytes.Length)) != 0)
                 {
-
-                    bytes = new byte[fs.Length];
-                    while ((reader.Read(bytes, 0, bytes.Length)) != 0)
-                    {
-                    }
-                    reader.Close();
                 }
-                fs.Close();
             }
 
             SendHeader(sHttpVersion, sMimeType, iTotBytes, " 200 OK", 20, ref req);
@@ -1148,7 +1221,7 @@ namespace iSpyApplication.Server
 
         private static string GetVar(string url, string var)
         {
-            int i = url.IndexOf("&" + var + "=", StringComparison.OrdinalIgnoreCase);
+            int i = url.IndexOf("&"+ var + "=", StringComparison.OrdinalIgnoreCase);
             if (i == -1)
                 i = url.IndexOf("?" + var + "=", StringComparison.OrdinalIgnoreCase);
             if (i == -1)
@@ -1222,40 +1295,26 @@ namespace iSpyApplication.Server
             long sdl = 0, edl = 0;
             string sd, ed;
             int page;
+            var io = MainForm.InstanceReference.GetISpyControl(otid, oid);
             switch (cmd)
             {
                 case "command.txt": //legacy (test connection)
                 case "connect":
-                    resp = MainForm.Identifier + ",OK";
+                    resp = "{\"auth\":\"" + MainForm.Identifier + "\",\"status\":\"OK\"}";
                     break;
                 case "recordswitch":
-                    if (otid == 1)
+                    if (io != null)
                     {
-                        VolumeLevel vw = _parent.GetVolumeLevel(oid);
-
-                        if (vw != null)
-                        {
-                            resp = vw.RecordSwitch(!(vw.Recording || vw.ForcedRecording)) + ",OK";
-                        }
-                        else
-                            resp = "stopped,Microphone not found,OK";
+                        resp = io.RecordSwitch(!(io.Recording || io.ForcedRecording)) + ",OK";
                     }
-                    if (otid == 2)
-                    {
-                        CameraWindow cw = _parent.GetCameraWindow(oid);
-
-                        if (cw != null)
-                        {
-                            resp = cw.RecordSwitch(!(cw.Recording || cw.ForcedRecording)) + ",OK";
-                        }
-                        else
-                            resp = "stopped,Camera not found,OK";
-                    }
+                    else
+                        resp = "stopped,Control not found,OK";
+                    
                     break;
                 case "record":
                     if (otid == 1)
                     {
-                        VolumeLevel vw = _parent.GetVolumeLevel(oid);
+                        VolumeLevel vw = MainForm.InstanceReference.GetVolumeLevel(oid);
                         if (vw != null)
                         {
                             resp = vw.RecordSwitch(true) + ",OK";
@@ -1265,7 +1324,7 @@ namespace iSpyApplication.Server
                     }
                     if (otid == 2)
                     {
-                        CameraWindow cw = _parent.GetCameraWindow(oid);
+                        CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
                         if (cw != null)
                         {
                             resp = cw.RecordSwitch(true) + ",OK";
@@ -1275,16 +1334,16 @@ namespace iSpyApplication.Server
                     }
                     if (otid == 0)
                     {
-                        _parent.RecordAll(true);
+                        MainForm.InstanceReference.RecordAll(true);
                     }
                     break;
                 case "alert":
                     if (otid == 1)
                     {
-                        var vl = _parent.GetVolumeLevel(oid);
+                        var vl = MainForm.InstanceReference.GetVolumeLevel(oid);
                         if (vl != null)
                         {
-                            vl.MicrophoneAlarm(this, EventArgs.Empty);
+                            vl.Alarm(this, EventArgs.Empty);
                             resp = "OK";
                         }
                         else
@@ -1293,10 +1352,10 @@ namespace iSpyApplication.Server
 
                     if (otid == 2)
                     {
-                        var cw = _parent.GetCameraWindow(oid);
+                        var cw = MainForm.InstanceReference.GetCameraWindow(oid);
                         if (cw != null)
                         {
-                            cw.CameraAlarm(this, EventArgs.Empty);
+                            cw.Alarm(this, EventArgs.Empty);
                             resp = "OK";
                         }
                         else
@@ -1308,7 +1367,7 @@ namespace iSpyApplication.Server
                 case "recordstop":
                     if (otid == 1)
                     {
-                        var vw = _parent.GetVolumeLevel(oid);
+                        var vw = MainForm.InstanceReference.GetVolumeLevel(oid);
                         if (vw != null)
                         {
                             resp = vw.RecordSwitch(false) + ",OK";
@@ -1318,7 +1377,7 @@ namespace iSpyApplication.Server
                     }
                     if (otid == 2)
                     {
-                        var cw = _parent.GetCameraWindow(oid);
+                        var cw = MainForm.InstanceReference.GetCameraWindow(oid);
                         if (cw != null)
                         {
                             resp = cw.RecordSwitch(false) + ",OK";
@@ -1328,35 +1387,35 @@ namespace iSpyApplication.Server
                     }
                     if (otid == 0)
                     {
-                        _parent.RecordAll(false);
+                        MainForm.InstanceReference.RecordAll(false);
                     }
                     break;
                 case "snapshot":
                     if (otid == 2)
                     {
-                        var cw = _parent.GetCameraWindow(oid);
+                        var cw = MainForm.InstanceReference.GetCameraWindow(oid);
                         cw?.SaveFrame();
                     }
                     else
                     {
-                        _parent.SnapshotAll();
+                        MainForm.InstanceReference.SnapshotAll();
                     }
                     break;
                 case "ping":
                     resp = "OK";
                     break;
                 case "allon":
-                    _parent.SwitchObjects(false, true);
+                    MainForm.InstanceReference.SwitchObjects(false, true);
                     resp = "OK";
                     break;
                 case "alloff":
-                    _parent.SwitchObjects(false, false);
+                    MainForm.InstanceReference.SwitchObjects(false, false);
                     resp = "OK";
                     break;
                 case "recordondetecton":
                     if (otid == 1)
                     {
-                        VolumeLevel vw = _parent.GetVolumeLevel(oid);
+                        VolumeLevel vw = MainForm.InstanceReference.GetVolumeLevel(oid);
                         if (vw != null)
                         {
                             vw.Micobject.detector.recordondetect = true;
@@ -1365,7 +1424,7 @@ namespace iSpyApplication.Server
                     }
                     if (otid == 2)
                     {
-                        CameraWindow cw = _parent.GetCameraWindow(oid);
+                        CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
                         if (cw != null)
                         {
                             cw.Camobject.detector.recordondetect = true;
@@ -1374,17 +1433,17 @@ namespace iSpyApplication.Server
                     }
                     if (otid == 0)
                     {
-                        _parent.RecordOnDetect(true);
+                        MainForm.InstanceReference.RecordOnDetect(true);
                     }
                     resp = "OK";
                     break;
                 case "shutdown":
-                    (new Thread(() => _parent.ExternalClose())).Start();
+                    (new Thread(() => MainForm.InstanceReference.ExternalClose())).Start();
                     break;
                 case "recordonalerton":
                     if (otid == 1)
                     {
-                        VolumeLevel vw = _parent.GetVolumeLevel(oid);
+                        VolumeLevel vw = MainForm.InstanceReference.GetVolumeLevel(oid);
                         if (vw != null)
                         {
                             vw.Micobject.detector.recordonalert = true;
@@ -1393,7 +1452,7 @@ namespace iSpyApplication.Server
                     }
                     if (otid == 2)
                     {
-                        CameraWindow cw = _parent.GetCameraWindow(oid);
+                        CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
                         if (cw != null)
                         {
                             cw.Camobject.detector.recordonalert = true;
@@ -1402,14 +1461,14 @@ namespace iSpyApplication.Server
                     }
                     if (otid == 0)
                     {
-                        _parent.RecordOnAlert(true);
+                        MainForm.InstanceReference.RecordOnAlert(true);
                     }
                     resp = "OK";
                     break;
                 case "recordingoff":
                     if (otid == 1)
                     {
-                        VolumeLevel vw = _parent.GetVolumeLevel(oid);
+                        VolumeLevel vw = MainForm.InstanceReference.GetVolumeLevel(oid);
                         if (vw != null)
                         {
                             vw.Micobject.detector.recordonalert = false;
@@ -1418,7 +1477,7 @@ namespace iSpyApplication.Server
                     }
                     if (otid == 2)
                     {
-                        CameraWindow cw = _parent.GetCameraWindow(oid);
+                        CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
                         if (cw != null)
                         {
                             cw.Camobject.detector.recordonalert = false;
@@ -1427,15 +1486,15 @@ namespace iSpyApplication.Server
                     }
                     if (otid == 0)
                     {
-                        _parent.RecordOnAlert(false);
-                        _parent.RecordOnDetect(false);
+                        MainForm.InstanceReference.RecordOnAlert(false);
+                        MainForm.InstanceReference.RecordOnDetect(false);
                     }
                     resp = "OK";
                     break;
                 case "alerton":
                     if (otid == 1)
                     {
-                        VolumeLevel vw = _parent.GetVolumeLevel(oid);
+                        VolumeLevel vw = MainForm.InstanceReference.GetVolumeLevel(oid);
                         if (vw != null)
                         {
                             vw.Micobject.alerts.active = true;
@@ -1443,7 +1502,7 @@ namespace iSpyApplication.Server
                     }
                     if (otid == 2)
                     {
-                        CameraWindow cw = _parent.GetCameraWindow(oid);
+                        CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
                         if (cw != null)
                         {
                             cw.Camobject.alerts.active = true;
@@ -1451,14 +1510,14 @@ namespace iSpyApplication.Server
                     }
                     if (otid == 0)
                     {
-                        _parent.AlertsActive(true);
+                        MainForm.InstanceReference.AlertsActive(true);
                     }
                     resp = "OK";
                     break;
                 case "alertoff":
                     if (otid == 1)
                     {
-                        VolumeLevel vw = _parent.GetVolumeLevel(oid);
+                        VolumeLevel vw = MainForm.InstanceReference.GetVolumeLevel(oid);
                         if (vw != null)
                         {
                             vw.Micobject.alerts.active = false;
@@ -1466,7 +1525,7 @@ namespace iSpyApplication.Server
                     }
                     if (otid == 2)
                     {
-                        CameraWindow cw = _parent.GetCameraWindow(oid);
+                        CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
                         if (cw != null)
                         {
                             cw.Camobject.alerts.active = false;
@@ -1474,7 +1533,7 @@ namespace iSpyApplication.Server
                     }
                     if (otid == 0)
                     {
-                        _parent.AlertsActive(false);
+                        MainForm.InstanceReference.AlertsActive(false);
                     }
                     resp = "OK";
                     break;
@@ -1482,7 +1541,7 @@ namespace iSpyApplication.Server
                     resp = "NOK";
                     if (otid == 2)
                     {
-                        CameraWindow cw = _parent.GetCameraWindow(oid);
+                        CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
 
                         if (cw != null)
                         {
@@ -1512,83 +1571,65 @@ namespace iSpyApplication.Server
                     }
                     break;
                 case "allscheduledon":
-                    _parent.SwitchObjects(true, true);
+                    MainForm.InstanceReference.SwitchObjects(true, true);
                     resp = "OK";
                     break;
                 case "allscheduledoff":
-                    _parent.SwitchObjects(true, false);
+                    MainForm.InstanceReference.SwitchObjects(true, false);
                     resp = "OK";
                     break;
                 case "applyschedule":
-                    _parent.ApplySchedule();
-                    resp = "OK";
+                    MainForm.InstanceReference.ApplySchedule();
                     break;
                 case "bringonline":
-                    if (otid == 1)
-                    {
-                        VolumeLevel vw = _parent.GetVolumeLevel(oid);
-                        vw?.Enable();
-                    }
-                    else
-                    {
-                        CameraWindow cw = _parent.GetCameraWindow(oid);
-                        cw?.Enable();
-                    }
+                    io?.Enable();
                     resp = "OK";
                     break;
                 case "triggeralarm":
-                    if (otid == 1)
-                    {
-                        VolumeLevel vw = _parent.GetVolumeLevel(oid);
-                        vw?.MicrophoneAlarm(this, EventArgs.Empty);
-                    }
-                    else
-                    {
-                        CameraWindow cw = _parent.GetCameraWindow(oid);
-                        cw?.CameraAlarm(this, EventArgs.Empty);
-                    }
+                    io?.Alarm(this,EventArgs.Empty);
+
                     resp = "OK";
                     break;
                 case "setframerate":
-                {
-                    CameraWindow cw = _parent.GetCameraWindow(oid);
-                    if (cw?.Camera != null)
                     {
-                        int fr = Convert.ToInt32(GetVar(sRequest, "rate"));
-                        if (fr < 1) fr = 1;
-                        cw.Camobject.settings.maxframerate = fr;
+                        CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
+                        if (cw != null)
+                        {
+                            var fr = Convert.ToInt32(GetVar(sRequest, "rate"));
+                            if (fr < 1) fr = 1;
+                            cw.Camobject.settings.maxframerate = fr;
+                        }
+                        resp = "OK";
                     }
-                    resp = "OK";
-                }
                     break;
                 case "setrecordingframerate":
-                {
-                    CameraWindow cw = _parent.GetCameraWindow(oid);
-                    if (cw?.Camera != null)
                     {
-                        int fr = Convert.ToInt32(GetVar(sRequest, "rate"));
-                        if (fr < 1) fr = 1;
-                        cw.Camobject.settings.maxframeraterecord = fr;
+                        CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
+                        if (cw != null)
+                        {
+                            int fr = Convert.ToInt32(GetVar(sRequest, "rate"));
+                            if (fr < 1) fr = 1;
+                            cw.Camobject.settings.maxframeraterecord = fr;
+                        }
+                        resp = "OK";
                     }
-                    resp = "OK";
-                }
                     break;
                 case "triggerdetect":
                     if (otid == 1)
                     {
-                        VolumeLevel vw = _parent.GetVolumeLevel(oid);
+                        VolumeLevel vw = MainForm.InstanceReference.GetVolumeLevel(oid);
                         vw?.TriggerDetect(this);
                     }
                     else
                     {
-                        CameraWindow cw = _parent.GetCameraWindow(oid);
+                        CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
                         cw?.Camera?.TriggerDetect(this);
                     }
                     resp = "OK";
                     break;
                 case "triggerplugin":
                 {
-                    CameraWindow cw = _parent.GetCameraWindow(oid);
+                    CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
                     cw?.Camera?.TriggerPlugin();
                 }
                     resp = "OK";
@@ -1602,12 +1643,36 @@ namespace iSpyApplication.Server
                     {
                         try
                         {
-                            MainForm.InstanceReference.RunCommand(commandIndex);
+                            if (oc.command.StartsWith("ispy ") || oc.command.StartsWith("ispypro.exe "))
+                            {
+                                string cmd2 =
+                                    oc.command.Substring(oc.command.IndexOf(" ", StringComparison.Ordinal) + 1).Trim();
+
+                                int k = cmd2.ToLower().IndexOf("commands ", StringComparison.Ordinal);
+                                if (k != -1)
+                                {
+                                    cmd2 = cmd2.Substring(k + 9);
+                                }
+                                cmd2 = cmd2.Trim('"');
+                                string[] commands = cmd2.Split('|');
+                                foreach (string command2 in commands)
+                                {
+                                    if (!string.IsNullOrEmpty(command2))
+                                    {
+                                        MainForm.ProcessCommandInternal(command2.Trim('"'));
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                Process.Start(oc.command);
+                            }
+
                             resp = "Command Executed.,OK";
                         }
                         catch (Exception ex)
                         {
-                            Logger.LogExceptionToFile(ex);
+                            Logger.LogExceptionToFile(ex, "Server");
                             resp = "Command Failed: " + ex.Message + ",OK";
                         }
                     }
@@ -1615,16 +1680,8 @@ namespace iSpyApplication.Server
                         resp = "OK";
                     break;
                 case "takeoffline":
-                    if (otid == 1)
-                    {
-                        VolumeLevel vw = _parent.GetVolumeLevel(oid);
-                        vw?.Disable();
-                    }
-                    else
-                    {
-                        CameraWindow cw = _parent.GetCameraWindow(oid);
-                        cw?.Disable();
-                    }
+                    io?.Disable();
+
                     resp = "OK";
                     break;
                 case "deletefile":
@@ -1636,7 +1693,7 @@ namespace iSpyApplication.Server
                             if (subdir != "")
                             {
                                 FileOperations.Delete(Helper.GetMediaDirectory(1, oid) + "audio\\" + subdir + @"\" + fn);
-                                var vl = _parent.GetVolumeLevel(oid);
+                                var vl = MainForm.InstanceReference.GetVolumeLevel(oid);
                                 if (vl != null)
                                 {
                                     vl.RemoveFile(fn);
@@ -1657,7 +1714,7 @@ namespace iSpyApplication.Server
                             if (subdir != "")
                             {
                                 FileOperations.Delete(Helper.GetMediaDirectory(2, oid) + "video\\" + subdir + @"\" + fn);
-                                var vl = _parent.GetCameraWindow(oid);
+                                var vl = MainForm.InstanceReference.GetCameraWindow(oid);
                                 if (vl != null)
                                 {
                                     vl.RemoveFile(fn);
@@ -1677,7 +1734,7 @@ namespace iSpyApplication.Server
                         try
                         {
                             string subdir = Helper.GetDirectory(otid, oid);
-                            var filename = Helper.GetMediaDirectory(otid, oid);
+                            string filename = Helper.GetMediaDirectory(otid, oid);
                             switch (otid)
                             {
                                 case 1:
@@ -1688,21 +1745,21 @@ namespace iSpyApplication.Server
                                     break;
                             }
                             filename += subdir + @"\" + fn;
-                            switch ((Enums.PlaybackMode)MainForm.Conf.PlaybackMode)
-                            {
-                                case Enums.PlaybackMode.iSpy:
-                                    _parent.Play(filename, oid, "");
-                                    break;
-                                default:
-                                    Process.Start(filename);
-                                    break;
-                            }
 
+                            try
+                            {
+                                Process.Start(filename);
+                            }
+                            catch (Exception ex)
+                            {
+                                Logger.LogExceptionToFile(ex, "Playback");
+                                MessageBox.Show(ex.Message);
+                            }
                             resp = "OK";
                         }
                         catch (Exception ex)
                         {
-                            Logger.LogExceptionToFile(ex);
+                            Logger.LogExceptionToFile(ex, "Server");
                             return ex.Message;
                         }
                     }
@@ -1731,7 +1788,7 @@ namespace iSpyApplication.Server
                     Helper.DeleteAllContent(otid, oid);
                     if (otid == 1)
                     {
-                        var vl = _parent.GetVolumeLevel(oid);
+                        var vl = MainForm.InstanceReference.GetVolumeLevel(oid);
                         if (vl != null)
                         {
                             vl.ClearFileList();
@@ -1741,7 +1798,7 @@ namespace iSpyApplication.Server
 
                     if (otid == 2)
                     {
-                        var cw = _parent.GetCameraWindow(oid);
+                        var cw = MainForm.InstanceReference.GetCameraWindow(oid);
                         if (cw != null)
                         {
                             cw.ClearFileList();
@@ -1751,14 +1808,20 @@ namespace iSpyApplication.Server
                     resp = "OK";
                     break;
                 case "uploadyoutube":
-                    resp = YouTubeUploader.Upload(oid, Helper.GetFullPath(otid, oid) + fn) + ",OK";
+                {
+                    bool b;
+                    resp = YouTubeUploader.Upload(oid, Helper.GetFullPath(otid, oid) + fn, out b) + ",OK";
+                }
                     break;
                 case "uploadcloud":
-                    resp = CloudGateway.Upload(otid, oid, Helper.GetFullPath(otid, oid) + fn) + ",OK";
+                {
+                    bool b;
+                    resp = CloudGateway.Upload(otid, oid, Helper.GetFullPath(otid, oid) + fn, out b) + ",OK";
+                }
                     break;
                 case "kinect_tilt_up":
                 {
-                    var c = _parent.GetCameraWindow(oid);
+                    var c = MainForm.InstanceReference.GetCameraWindow(oid);
                     if (c != null)
                     {
                         try
@@ -1767,7 +1830,7 @@ namespace iSpyApplication.Server
                         }
                         catch (Exception ex)
                         {
-                            Logger.LogExceptionToFile(ex);
+                            Logger.LogExceptionToFile(ex, "Server");
                         }
                     }
 
@@ -1776,7 +1839,7 @@ namespace iSpyApplication.Server
                     break;
                 case "kinect_tilt_down":
                 {
-                    var c = _parent.GetCameraWindow(oid);
+                    var c = MainForm.InstanceReference.GetCameraWindow(oid);
                     if (c != null)
                     {
                         try
@@ -1785,46 +1848,16 @@ namespace iSpyApplication.Server
                         }
                         catch (Exception ex)
                         {
-                            Logger.LogExceptionToFile(ex);
+                            Logger.LogExceptionToFile(ex, "Server");
                         }
                     }
                     resp = "OK";
                 }
                     break;
-                case "removeobject":
-                    if (otid == 1)
-                    {
-                        VolumeLevel vw = _parent.GetVolumeLevel(oid);
-                        if (vw != null)
-                        {
-                            _parent.RemoveMicrophone(vw, false);
-                        }
-                    }
-                    else
-                    {
-                        CameraWindow cw = _parent.GetCameraWindow(oid);
-                        if (cw != null)
-                        {
-                            _parent.RemoveCamera(cw, false);
-                        }
-                    }
-                    MainForm.NeedsSync = true;
-                    resp = "OK";
-                    break;
-                case "addobject":
-                    int sourceIndex = Convert.ToInt32(GetVar(sRequest, "stid"));
-                    int width = Convert.ToInt32(GetVar(sRequest, "w"));
-                    int height = Convert.ToInt32(GetVar(sRequest, "h"));
-                    string name = GetVar(sRequest, "name");
-                    string url = GetVar(sRequest, "url").Replace("\\", "/");
-                    _parent.AddObjectExternal(otid, sourceIndex, width, height, name, url);
-                    MainForm.NeedsSync = true;
-                    resp = "OK";
-                    break;
                 case "synthtocam":
                 {
                     var txt = GetVar(sRequest, "text");                
-                    var cw = _parent.GetCameraWindow(oid);
+                    var cw = MainForm.InstanceReference.GetCameraWindow(oid);
                     if (cw != null)
                     {
                         SpeechSynth.Say(txt,cw);
@@ -1838,7 +1871,7 @@ namespace iSpyApplication.Server
 
                     if (otid == 1)
                     {
-                        VolumeLevel vw = _parent.GetVolumeLevel(oid);
+                        VolumeLevel vw = MainForm.InstanceReference.GetVolumeLevel(oid);
                         switch (field)
                         {
                             case "notifyondisconnect":
@@ -1885,7 +1918,7 @@ namespace iSpyApplication.Server
                     }
                     else
                     {
-                        CameraWindow cw = _parent.GetCameraWindow(oid);
+                        CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
                         switch (field)
                         {
                             case "notifyondisconnect":
@@ -1904,6 +1937,9 @@ namespace iSpyApplication.Server
                                 cw.Camobject.detector.recordonalert = Convert.ToBoolean(value);
                                 if (cw.Camobject.detector.recordonalert)
                                     cw.Camobject.detector.recordondetect = false;
+                                break;
+                            case "ftprecordings":
+                                cw.Camobject.recorder.ftpenabled = Convert.ToBoolean(value);
                                 break;
                             case "recordoff":
                                 cw.Camobject.detector.recordonalert = false;
@@ -1926,17 +1962,17 @@ namespace iSpyApplication.Server
                             case "timelapseframes":
                                 int tlf;
                                 int.TryParse(value, out tlf);
-                                cw.Camobject.recorder.timelapseframes = Math.Max(tlf, 1);
+                                cw.Camobject.recorder.timelapseframes = Math.Max(tlf,1);
                                 break;
                             case "maxframerate":
                                 int mfr;
                                 int.TryParse(value, out mfr);
-                                cw.Camobject.settings.maxframerate = Math.Max(mfr, 1);
+                                cw.Camobject.settings.maxframerate = Math.Max(mfr,1);
                                 break;
                             case "maxframeraterecord":
                                 int mfrr;
                                 int.TryParse(value, out mfrr);
-                                cw.Camobject.settings.maxframeraterecord = Math.Max(mfrr, 1);
+                                cw.Camobject.settings.maxframeraterecord = Math.Max(mfrr,1);
                                 break;                                    
                             case "localsaving":
                                 cw.Camobject.ftp.savelocal = Convert.ToBoolean(value);
@@ -1952,19 +1988,18 @@ namespace iSpyApplication.Server
                                 {
                                     try
                                     {
-                                        value = Uri.UnescapeDataString(value);
                                         if (value.StartsWith("ispydir_"))
                                         {
                                             cw.PTZ.SendPTZCommand(
                                                 (Enums.PtzCommand) Convert.ToInt32(value.Replace("ispydir_", "")));
                                         }
                                         else
-                                            cw.PTZ.SendPTZCommand(Uri.UnescapeDataString(value));
+                                            cw.PTZ.SendPTZCommand(value);
                                     }
                                     catch (Exception ex)
                                     {
                                         Logger.LogErrorToFile(LocRm.GetString("Validate_Camera_PTZIPOnly") + ": " +
-                                                                ex.Message);
+                                                                ex.Message, "Server");
                                     }
                                 }
                                 break;
@@ -1999,7 +2034,7 @@ namespace iSpyApplication.Server
                     switch (otid)
                     {
                         case 1:
-                            VolumeLevel vl = _parent.GetVolumeLevel(oid);
+                            VolumeLevel vl = MainForm.InstanceReference.GetVolumeLevel(oid);
                             if (vl != null)
                             {
                                 List<FilesFile> lFi = vl.FileList.Where(f => f.Filename.EndsWith(".mp3")).ToList();
@@ -2038,7 +2073,7 @@ namespace iSpyApplication.Server
                             }
                             break;
                         case 2:
-                            CameraWindow cw = _parent.GetCameraWindow(oid);
+                            CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
                             if (cw != null)
                             {
                                 List<FilesFile> lFi2 = cw.FileList.ToList();
@@ -2087,7 +2122,7 @@ namespace iSpyApplication.Server
                     string oclall = "";
                     foreach (objectsCamera oc1 in MainForm.Cameras)
                     {
-                        CameraWindow cw = _parent.GetCameraWindow(oc1.id);
+                        CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oc1.id);
 
                         List<FilesFile> lFi2 = cw.FileList.ToList();
                         if (sdl > 0)
@@ -2098,7 +2133,7 @@ namespace iSpyApplication.Server
                     }
                     foreach (objectsMicrophone om1 in MainForm.Microphones)
                     {
-                        VolumeLevel vl = _parent.GetVolumeLevel(om1.id);
+                        VolumeLevel vl = MainForm.InstanceReference.GetVolumeLevel(om1.id);
                         List<FilesFile> lFi = vl.FileList.Where(f => f.Filename.EndsWith(".mp3")).ToList();
                         if (sdl > 0)
                             lFi = lFi.FindAll(f => f.CreatedDateTicks > sdl).ToList();
@@ -2108,28 +2143,13 @@ namespace iSpyApplication.Server
                     }
                     resp = oclall.Trim('|');
                     break;
-                case "getfloorplanalerts":
-                    foreach (objectsFloorplan ofp in MainForm.FloorPlans)
-                    {
-                        FloorPlanControl fpc = _parent.GetFloorPlan(ofp.id);
-                        if (fpc?.ImgPlan != null)
-                        {
-                            var lat = fpc.LastAlertTimestamp;
-                            var lrt = fpc.LastRefreshTimestamp;
-                            temp += ofp.id + "," + lat.ToString(CultureInfo.InvariantCulture) + "," +
-                                    lrt.ToString(CultureInfo.InvariantCulture) + "," +
-                                    fpc.LastOid + "," + fpc.LastOtid + "|";
-                        }
-                    }
-                    resp = temp.Trim('|');
-                    break;
                 case "getfloorplanalerts2":
                     {
                         string cfg = "";
 
                         foreach (objectsFloorplan ofp in MainForm.FloorPlans)
                         {
-                            FloorPlanControl fpc = _parent.GetFloorPlan(ofp.id);
+                            FloorPlanControl fpc = MainForm.InstanceReference.GetFloorPlan(ofp.id);
                             if (fpc?.ImgPlan != null)
                             {
                                 var lat = fpc.LastAlertTimestamp;
@@ -2146,33 +2166,13 @@ namespace iSpyApplication.Server
 
                     resp = "OK";
                     break;
-                case "getfloorplans":
-                    foreach (objectsFloorplan ofp in MainForm.FloorPlans)
-                    {
-                        FloorPlanControl fpc = _parent.GetFloorPlan(ofp.id);
-                        if (fpc?.ImgPlan != null)
-                        {
-                            temp += ofp.id + "," + ofp.name.Replace(",", "").Replace("|", "").Replace("^", "") + "," +
-                                    ofp.width + "," + ofp.height + "|";
-
-                            temp = ofp.objects.@object.Aggregate(temp,
-                                                                 (current, ofpo) =>
-                                                                 current +
-                                                                 (ofpo.id + "," + ofpo.type + "," + (ofpo.x) + "," +
-                                                                  (ofpo.y) + "_"));
-                            temp = temp.Trim('_');
-                            temp += "^";
-                        }
-                    }
-                    resp = temp.Replace("\"", "");
-                    break;
                 case "getfloorplans2":
                     {
                         string cfg = "";
 
                         foreach (objectsFloorplan ofp in MainForm.FloorPlans)
                         {
-                            FloorPlanControl fpc = _parent.GetFloorPlan(ofp.id);
+                            FloorPlanControl fpc = MainForm.InstanceReference.GetFloorPlan(ofp.id);
                             if (fpc?.ImgPlan != null)
                             {
                                 var lat = fpc.LastAlertTimestamp;
@@ -2204,14 +2204,14 @@ namespace iSpyApplication.Server
                     switch (otid)
                     {
                         case 1:
-                            VolumeLevel vl = _parent.GetVolumeLevel(oid);
+                            VolumeLevel vl = MainForm.InstanceReference.GetVolumeLevel(oid);
                             if (vl != null)
                             {
                                 ff = vl.FileList.FirstOrDefault(p => p.Filename == fn);
                             }
                             break;
                         case 2:
-                            CameraWindow cw = _parent.GetCameraWindow(oid);
+                            CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
                             if (cw != null)
                             {
                                 ff = cw.FileList.FirstOrDefault(p => p.Filename == fn);
@@ -2240,14 +2240,14 @@ namespace iSpyApplication.Server
                         switch (otid)
                         {
                             case 1:
-                                VolumeLevel vl = _parent.GetVolumeLevel(oid);
+                                VolumeLevel vl = MainForm.InstanceReference.GetVolumeLevel(oid);
                                 if (vl != null)
                                 {
                                     ffs = vl.FileList.ToList();
                                 }
                                 break;
                             case 2:
-                                CameraWindow cw = _parent.GetCameraWindow(oid);
+                                CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
                                 if (cw != null)
                                 {
                                     ffs = cw.FileList.ToList();
@@ -2435,54 +2435,7 @@ namespace iSpyApplication.Server
                     func = func.Replace("data", "\"" + grablist.ToString().Trim(',') + "\"");
                     resp = "OK";
                 }
-                    break;
-                case "getcameragrabs2":
-                {
-                    sd = GetVar(sRequest, "startdate");
-                    ed = GetVar(sRequest, "enddate");
-                    int pagesize = Convert.ToInt32(GetVar(sRequest, "pagesize"));
-                    page = Convert.ToInt32(GetVar(sRequest, "page"));
-                    if (sd != "")
-                        sdl = Convert.ToInt64(sd);
-                    if (ed != "")
-                        edl = Convert.ToInt64(ed);
-
-                    var grablist = new StringBuilder("");
-                    var ocgrab = MainForm.Cameras.FirstOrDefault(p => p.id == oid);
-                    if (ocgrab != null)
-                    {
-                        var dirinfo = new DirectoryInfo(Helper.GetMediaDirectory(2, oid) + "video\\" +
-                                                        ocgrab.directory + "\\grabs\\");
-
-                        var lFi = new List<FileInfo>();
-                        lFi.AddRange(dirinfo.GetFiles());
-                        lFi =
-                            lFi.FindAll(
-                                f =>
-                                    f.Extension.ToLower() == ".jpg" && (sdl == 0 || f.CreationTime.Ticks > sdl) &&
-                                    (edl == 0 || f.CreationTime.Ticks < edl));
-                        lFi = lFi.OrderByDescending(f => f.CreationTime).ToList();
-                        func = func.Replace("total", lFi.Count.ToString(CultureInfo.InvariantCulture));
-                        lFi = lFi.Skip(page*pagesize).Take(pagesize).ToList();
-
-                        int max = 10000;
-                        if (lFi.Count > 0)
-                        {
-                            foreach (var f in lFi)
-                            {
-                                grablist.Append(f.Name+"|"+f.CreationTime.UnixTicks()+",");
-                                max--;
-                                if (max == 0)
-                                    break;
-                            }
-                        }
-                    }
-                    else
-                        func = func.Replace("total", "0");
-                    func = func.Replace("data", "\"" + grablist.ToString().Trim(',') + "\"");
-                    resp = "OK";
-                }
-                    break;
+                    break;                    
                 case "getptzcommands":
                     int ptzid = Convert.ToInt32(GetVar(sRequest, "ptzid"));
                     string cmdlist = "";
@@ -2514,7 +2467,7 @@ namespace iSpyApplication.Server
                                                                              "</option>"));
                             break;
                         case -5:
-                            CameraWindow cw = _parent.GetCameraWindow(oid);
+                            CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
                             if (cw?.PTZ?.ONVIFPresets.Length > 0)
                             {
                                 cmdlist = cw.PTZ.ONVIFPresets.Aggregate(cmdlist,
@@ -2547,7 +2500,7 @@ namespace iSpyApplication.Server
                     break;
                 case "stoplisten":
                     {
-                        VolumeLevel vw = _parent.GetVolumeLevel(oid);
+                        VolumeLevel vw = MainForm.InstanceReference.GetVolumeLevel(oid);
                         if (vw != null && vw.Listening)
                         {
                             var cc = vw.CameraControl;
@@ -2561,7 +2514,7 @@ namespace iSpyApplication.Server
                     break;
                 case "startlisten":
                     {
-                        VolumeLevel vw = _parent.GetVolumeLevel(oid);
+                        VolumeLevel vw = MainForm.InstanceReference.GetVolumeLevel(oid);
                         if (vw != null && !vw.Listening)
                         {
                             var cc = vw.CameraControl;
@@ -2577,7 +2530,7 @@ namespace iSpyApplication.Server
                     break;
                 case "stoptalk":
                     {
-                        CameraWindow cw = _parent.GetCameraWindow(oid);
+                        CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
                         if (cw != null && cw.Talking)
                         {
                             cw.Talk();
@@ -2587,7 +2540,7 @@ namespace iSpyApplication.Server
                     break;
                 case "starttalk":
                     {
-                        CameraWindow cw = _parent.GetCameraWindow(oid);
+                        CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
                         if (cw != null && !cw.Talking)
                         {
                             cw.Talk();
@@ -2608,7 +2561,7 @@ namespace iSpyApplication.Server
                     CameraWindow cwUpdate = null;
                     if (otid == 1)
                     {
-                        vlUpdate = _parent.GetVolumeLevel(oid);
+                        vlUpdate = MainForm.InstanceReference.GetVolumeLevel(oid);
                         if (vlUpdate == null)
                         {
                             resp = "OK";
@@ -2617,7 +2570,7 @@ namespace iSpyApplication.Server
                     }
                     if (otid == 2)
                     {
-                        cwUpdate = _parent.GetCameraWindow(oid);
+                        cwUpdate = MainForm.InstanceReference.GetCameraWindow(oid);
                         if (cwUpdate == null)
                         {
                             resp = "OK";
@@ -2664,7 +2617,7 @@ namespace iSpyApplication.Server
 
                     if (otid == 1)
                     {
-                        VolumeLevel vw = _parent.GetVolumeLevel(oid);
+                        VolumeLevel vw = MainForm.InstanceReference.GetVolumeLevel(oid);
                         string html = "<table cellspacing=\"3px\">";
                         string strChecked = "";
 
@@ -2740,7 +2693,7 @@ namespace iSpyApplication.Server
                     }
                     else
                     {
-                        CameraWindow cw = _parent.GetCameraWindow(oid);
+                        CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
                         string html = "<table cellspacing=\"3px\">";
                         string strChecked = "";
                         if (cw.Camobject.alerts.active) strChecked = "checked=\"checked\"";
@@ -2777,6 +2730,7 @@ namespace iSpyApplication.Server
                         html += "<tr><td valign=\"top\">" + LocRm.GetString("ScheduleActive") +
                                 "</td><td><input type=\"checkbox\" onclick=\"send_changesetting(" + otid + "," +
                                 oid + "," + port + ",'scheduler',this.checked)\" " + strChecked + "/>";
+
                         string schedule = cw.ScheduleDetails.Where(s => s != "").Aggregate("", (current, s) => current + (s + "<br/>"));
                         if (schedule != "")
                             html +=
@@ -2811,6 +2765,12 @@ namespace iSpyApplication.Server
                                 "</td><td><input type=\"radio\" name=\"record_opts\" onclick=\"send_changesetting(" + otid + "," +
                                 oid + "," + port + ",'recordonalert',this.checked)\" " + strChecked + "/></td></tr>";
 
+                        strChecked = "";
+                        if (cw.Camobject.recorder.ftpenabled) strChecked = "checked=\"checked\"";
+                        html += "<tr><td>" + LocRm.GetString("RecordingFTP");
+                        html += "</td><td><input type=\"checkbox\" onclick=\"send_changesetting(" + otid + "," +
+                                oid + "," + port + ",'ftprecordings',this.checked)\" " + strChecked + "/></td></tr>";
+
                         html += "<tr><td colspan=\"2\"><strong>" + LocRm.GetString("TimelapseRecording") +
                                 "</strong></td></tr>";
 
@@ -2830,9 +2790,8 @@ namespace iSpyApplication.Server
                                 oid + "," + port + ",'timelapseframes',this.value)\"/> " +
                                 LocRm.GetString("savesAFrameEveryNSecondsn") + "</td></tr>";
 
-
                         html += "<tr><td colspan=\"2\"><strong>" + LocRm.GetString("FrameLimits") +
-                               "</strong></td></tr>";
+                                "</strong></td></tr>";
 
                         html += "<tr><td>" + LocRm.GetString("Viewing") +
                                 "</td><td><input style=\"width:50px\" type=\"text\" value=\"" +
@@ -2844,6 +2803,7 @@ namespace iSpyApplication.Server
                                 oid + "," + port + ",'maxframeraterecord',this.value)\"/></td></tr>";
 
 
+
                         html += "<tr><td colspan=\"2\"><strong>" + LocRm.GetString("SaveFramesFtp") +
                                 "</strong></td></tr>";
 
@@ -2853,7 +2813,7 @@ namespace iSpyApplication.Server
                         if (cw.Camobject.ftp.enabled)
                             strChecked = "checked=\"checked\"";
 
-                        html += "<tr><td>" + LocRm.GetString("FtpEnabled") +
+                        html += "<tr><td>" + LocRm.GetString("Enabled") +
                                 "</td><td><input type=\"checkbox\" onclick=\"send_changesetting(" + otid + "," +
                                 oid + "," + port + ",'ftpenabled',this.checked)\" " + strChecked + "/></td></tr>";
 
@@ -2921,8 +2881,8 @@ namespace iSpyApplication.Server
                         switch (otid)
                         {
                             case 1:
-                                VolumeLevel vl = _parent.GetVolumeLevel(oid);
-                                if (vl != null)
+                                VolumeLevel vl = MainForm.InstanceReference.GetVolumeLevel(oid);
+                                if(vl != null)
                                 {
                                     var ie = vl.IsEnabled;
                                     var fr = vl.ForcedRecording;
@@ -2932,7 +2892,7 @@ namespace iSpyApplication.Server
                                 }
                                 break;
                             case 2:
-                                CameraWindow cw = _parent.GetCameraWindow(oid);
+                                CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
                                 if (cw != null)
                                 {
                                     var fr = cw.ForcedRecording;
@@ -2958,7 +2918,7 @@ namespace iSpyApplication.Server
                         switch (otid)
                         {
                             case 1:
-                                VolumeLevel vl = _parent.GetVolumeLevel(oid);
+                                VolumeLevel vl = MainForm.InstanceReference.GetVolumeLevel(oid);
                                 if (vl != null)
                                 {
                                     switch (vl.Micobject.alerts.mode)
@@ -2973,7 +2933,7 @@ namespace iSpyApplication.Server
                                 }
                                 break;
                             case 2:
-                                CameraWindow cw = _parent.GetCameraWindow(oid);
+                                CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
                                 if (cw != null)
                                 {
                                     switch (cw.Camobject.alerts.mode)
@@ -3035,7 +2995,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                Logger.LogErrorToFile("Failed to get path for request: "+sRequest+" ("+sMyWebServerRoot+") - "+ex.Message);
+                Logger.LogErrorToFile("Failed to get path for request: " + sRequest + " (" + sMyWebServerRoot + ") - " + ex.Message, "Server");
                 sLocalDir = "";
                 sDirName = "";
             }
@@ -3053,13 +3013,11 @@ namespace iSpyApplication.Server
                 sFileName = sFileName.Substring(0, i);
             
             sMimeType = GetMimeType(sFileName);
-            if (sMimeType=="")
-                sMimeType = "text/javascript";
         }
 
-        private static bool CheckAuth(String sPhysicalFilePath)
+        private static bool CheckAuth(string sPhysicalFilePath)
         {
-            return GetVar(sPhysicalFilePath,"auth") == MainForm.Identifier;
+            return GetVar(sPhysicalFilePath, "auth") == MainForm.Identifier;
         }
 
         private void SendLogFile(string sHttpVersion, ref HttpRequest req)
@@ -3067,24 +3025,19 @@ namespace iSpyApplication.Server
             var fi = new FileInfo(Program.AppDataPath + "log_" + Logger.NextLog + ".htm");
             int iTotBytes = Convert.ToInt32(fi.Length);
             byte[] bytes;
-            using (var fs = new FileStream(fi.FullName, FileMode.Open, FileAccess.Read, FileShare.Read))
+            var fs = new FileStream(fi.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
+            using (var reader = new BinaryReader(fs))
             {
-
-                using (var reader = new BinaryReader(fs))
-                {
-                    bytes = new byte[iTotBytes];
-                    reader.BaseStream.Seek(0, SeekOrigin.Begin);
-                    bytes = reader.ReadBytes(bytes.Length);
-                    reader.Close();
-                }
-                fs.Close();
+                bytes = new byte[iTotBytes];
+                reader.BaseStream.Seek(0, SeekOrigin.Begin);
+                bytes = reader.ReadBytes(bytes.Length);
             }
 
             SendHeader(sHttpVersion, "text/html", iTotBytes, " 200 OK", 20, ref req);
             SendToBrowser(bytes, req);
         }
 
-        private void SendLogFile(String sPhysicalFilePath, string sHttpVersion, ref HttpRequest req)
+        private void SendLogFile(string sPhysicalFilePath, string sHttpVersion, ref HttpRequest req)
         {
             string fn = GetVar(sPhysicalFilePath, "fn");
             //prevent filesystem access
@@ -3094,15 +3047,14 @@ namespace iSpyApplication.Server
             var fi = new FileInfo(Program.AppDataPath + fn);
             int iTotBytes = Convert.ToInt32(fi.Length);
             byte[] bytes;
-            using (var fs = new FileStream(fi.FullName, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
+            var fs = new FileStream(fi.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
+            
 
-                using (var reader = new BinaryReader(fs))
-                {
-                    bytes = new byte[iTotBytes];
-                    reader.BaseStream.Seek(0, SeekOrigin.Begin);
-                    bytes = reader.ReadBytes(bytes.Length);
-               }
+            using (var reader = new BinaryReader(fs))
+            {
+                bytes = new byte[iTotBytes];
+                reader.BaseStream.Seek(0, SeekOrigin.Begin);
+                bytes = reader.ReadBytes(bytes.Length);
             }
 
             SendHeader(sHttpVersion, "text/html", iTotBytes, " 200 OK", 20, ref req);
@@ -3123,7 +3075,6 @@ namespace iSpyApplication.Server
                         ms.Position = 0;
                         // load the byte array with the image
                         ms.Read(_cameraRemoved, 0, (int)ms.Length);
-                        ms.Close();
                     }
                 }
                 return _cameraRemoved;
@@ -3151,139 +3102,216 @@ namespace iSpyApplication.Server
             }   
         }
 
-        private static byte[] _cameraOffline;
-        private static byte[] CameraOffline
+        private void SendDesktop(String sPhysicalFilePath, string sHttpVersion, ref HttpRequest req)
         {
-            get
+            int oid = Convert.ToInt32(GetVar(sPhysicalFilePath, "oid"));
+            string size = GetVar(sPhysicalFilePath, "size");
+            int w, h;
+            var oc = MainForm.Cameras.FirstOrDefault(p=>p.id==oid);
+            GetWidthHeight(size, out w, out h);
+            if (oc != null)
             {
-                if (_cameraOffline == null)
-                {
-                    using (var ms = new MemoryStream())
-                    {
-                        Resources.cam_offline.Save(ms, ImageFormat.Jpeg);
-                        _cameraOffline = new Byte[ms.Length];
-                        ms.Position = 0;
-                        // load the byte array with the image
-                        ms.Read(_cameraOffline, 0, (int)ms.Length);
-                    }
-                }
-                return _cameraOffline;
-            }
-        }
+                int si;
+                int.TryParse(oc.settings.videosourcestring, out si);
+                if (Screen.AllScreens.Length <= si)
+                    si = 0;
 
-        private void SendLiveFeed(String sPhysicalFilePath, string sHttpVersion, ref HttpRequest req)
-        {
-            string cameraId = GetVar(sPhysicalFilePath, "oid");
-            
-            try
-            {
-                CameraWindow cw = _parent.GetCameraWindow(Convert.ToInt32(cameraId));
-                if (cw == null)
+                Screen s = Screen.AllScreens[si];
+                using (var imageStream = new MemoryStream())
                 {
-                    SendHeader(sHttpVersion, "image/jpeg", CameraRemoved.Length, " 200 OK", 0, ref req);
-                    SendToBrowser(CameraRemoved, req);
-                }
-                else
-                {
-                    if (!cw.IsEnabled)
+                    using (var target = new Bitmap(w, h, PixelFormat.Format24bppRgb))
                     {
-                        SendHeader(sHttpVersion, "image/jpeg", CameraOffline.Length, " 200 OK", 0, ref req);
-                        SendToBrowser(CameraOffline, req);
-                    }
-                    else
-                    {
-                        using (var imageStream = new MemoryStream())
+                        using (var scr = new Bitmap(s.WorkingArea.Width, s.WorkingArea.Height, PixelFormat.Format24bppRgb))
                         {
-                            bool connecting = false;
-
-                            bool disposeFrame = false;
-
-                            Bitmap img = cw.LastFrame;
-                            if (img == null)
+                            using (Graphics g = Graphics.FromImage(scr))
                             {
-                                connecting = true;
-                            }
-                            else
-                            {
-                                if (cw.VideoSourceErrorState)
+                                try
                                 {
-                                    using (Graphics g2 = Graphics.FromImage(img))
-                                    {
-                                        var img2 = Resources.connecting;
-                                        g2.DrawImage(img2, img.Width - img2.Width - 2, 2, img2.Width, img2.Height);
-                                    }
+                                    g.CopyFromScreen(s.Bounds.X, s.Bounds.Y, 0, 0,
+                                        new Size(s.WorkingArea.Width, s.WorkingArea.Height));
                                 }
-                                disposeFrame = true;
-                            }
-
-                            
-
-                            int w = 320, h = 240;
-                            bool done = false;
-                            if (sPhysicalFilePath.IndexOf("thumb", StringComparison.Ordinal) != -1)
-                            {
-                                w = 96;
-                                h = 72;
-                                if (connecting)
+                                catch (Exception ex)
                                 {
-                                    img = Resources.cam_connecting;
-                                    img.Save(imageStream, ImageFormat.Jpeg);
-                                    done = true;
+                                    throw new Exception("Error grabbing screen (" + ex.Message +
+                                                        ") - disable screensaver.");
+                                    //probably remote desktop or screensaver has kicked in
+
                                 }
                             }
-                            else
+                            using (Graphics g = Graphics.FromImage(target))
                             {
-                                if (connecting)
-                                    img = Resources.cam_connecting_large;
+                                g.CompositingMode = CompositingMode.SourceCopy;
+                                g.CompositingQuality = CompositingQuality.HighSpeed;
+                                g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                                g.SmoothingMode = SmoothingMode.None;
+                                g.InterpolationMode = InterpolationMode.Default;
+                                g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
-                                if (sPhysicalFilePath.IndexOf("full", StringComparison.Ordinal) != -1)
+                                try
                                 {
-                                    img.Save(imageStream, ImageFormat.Jpeg);
-                                    done = true;
+                                    g.DrawImage(scr,0,0,w,h);
+
+                                    target.Save(imageStream, ImageFormat.Jpeg);
+
+                                    // make byte array the same size as the image
+
+                                    var imageContent = new Byte[imageStream.Length];
+                                    imageStream.Position = 0;
+                                    // load the byte array with the image
+                                    imageStream.Read(imageContent, 0, (int)imageStream.Length);
+
+                                    // rewind the memory stream
+                                    SendHeader(sHttpVersion, "image/jpeg", (int)imageStream.Length, " 200 OK", 0,
+                                        ref req);
+
+                                    SendToBrowser(imageContent, req);
                                 }
-                                else
+                                catch
                                 {
-                                    string size = GetVar(sPhysicalFilePath, "size");
-                                    GetWidthHeight(size, out w, out h);
+                                    //probably remote desktop or screensaver has kicked in
+
                                 }
                             }
-
-                            if (!done)
-                            {
-                                using (Image myThumbnail = img.GetThumbnailImage(w, h, null, IntPtr.Zero))
-                                {
-                                    // put the image into the memory stream
-                                    myThumbnail.Save(imageStream, ImageFormat.Jpeg);
-                                }
-                            }
-
-
-                            // make byte array the same size as the image
-
-                            var imageContent = new Byte[imageStream.Length];
-                            imageStream.Position = 0;
-                            // load the byte array with the image
-                            imageStream.Read(imageContent, 0, (int) imageStream.Length);
-
-                            // rewind the memory stream
-
-
-                            SendHeader(sHttpVersion, "image/jpeg", (int) imageStream.Length, " 200 OK", 0, ref req);
-
-                            SendToBrowser(imageContent, req);
-                            if (disposeFrame)
-                                img.Dispose();
-                            imageStream.Close();
                         }
                     }
                 }
 
             }
+            
+        }
+
+        private void SendLiveFeed(String sPhysicalFilePath, string sHttpVersion, ref HttpRequest req)
+        {
+            string cameraId = GetVar(sPhysicalFilePath, "oid");
+            string size = GetVar(sPhysicalFilePath, "size");
+            bool maintainAR = GetVar(sPhysicalFilePath, "keepAR") == "true";
+            bool overlay = GetVar(sPhysicalFilePath, "overlay") != "";
+            bool thumb = GetVar(sPhysicalFilePath, "thumb") != "";
+            bool full = !thumb && GetVar(sPhysicalFilePath, "full") != "";
+            bool disposeFrame = false;
+            Bitmap img = null;
+            int w = 320, h = 240;
+            try
+            {
+                CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(Convert.ToInt32(cameraId));
+                
+                using (var imageStream = new MemoryStream())
+                {
+                    if (cw == null)
+                    {
+                        img = Resources.cam_removed;
+                    }
+                    else
+                    {
+                        if (cw.IsEnabled)
+                        {
+                            img = cw.LastFrame;
+                            if (img == null || cw.VideoSourceErrorState)
+                            {
+                                img = thumb ? Resources.cam_connecting : Resources.cam_connecting_large;
+                            }
+                            else
+                                disposeFrame = true;
+                        }
+                        else
+                        {
+                            img = thumb ? Resources.cam_offline : Resources.cam_offline_large;
+                        }    
+                    }
+                    
+                    if (thumb)
+                    {
+                        w = 96;
+                        h = 72;
+                    }
+                    else
+                    {
+                        if (full)
+                        {
+                            w = img.Width;
+                            h = img.Height;
+                        }
+                        else
+                        {
+                            if (size!="")
+                                GetWidthHeight(size, out w, out h);
+                        }
+                    }
+
+                    var bmpFinal = new Bitmap(w, h);
+                    using (Graphics g = Graphics.FromImage(bmpFinal))
+                    {
+                        g.CompositingMode = CompositingMode.SourceCopy;
+                        g.CompositingQuality = CompositingQuality.HighSpeed;
+                        g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                        g.SmoothingMode = SmoothingMode.None;
+                        g.InterpolationMode = InterpolationMode.Default;
+                        g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+
+                        g.Clear(Color.White);
+
+                        
+                        if (maintainAR)
+                        {
+                            double ar = Convert.ToDouble(img.Height)/Convert.ToDouble(img.Width);
+                            int neww = w;
+                            int newh = Convert.ToInt32(w*ar);
+                            if (newh > h)
+                            {
+                                newh = h;
+                                neww = Convert.ToInt32(h/ar);
+                            }
+                            //offset for centering
+                            try
+                            {
+                                g.DrawImage(img, (w - neww)/2, (h - newh)/2, neww, newh);
+                            }
+                            catch
+                            {
+                                //cam offline?
+                            }
+                        }
+                        else
+                        {
+                            g.DrawImage(img, 0, 0, w, h);
+                        }
+                        
+                        
+                        g.CompositingMode = CompositingMode.SourceOver;
+                        if (overlay && cw!=null)
+                        {
+                            g.FillRectangle(MainForm.OverlayBackgroundBrush, 0, 0 + h - 20, w, 20);
+                            g.DrawString(cw.Camobject.name, MainForm.Drawfont, Brushes.White, 2, h - 17);
+                        }
+
+                    }
+                    bmpFinal.Save(imageStream, ImageFormat.Jpeg);
+                            
+                    // make byte array the same size as the image
+
+                    var imageContent = new Byte[imageStream.Length];
+                    imageStream.Position = 0;
+                    // load the byte array with the image
+                    imageStream.Read(imageContent, 0, (int) imageStream.Length);
+
+                    // rewind the memory stream
+
+
+                    SendHeader(sHttpVersion, "image/jpeg", (int) imageStream.Length, " 200 OK", 0, ref req);
+
+                    SendToBrowser(imageContent, req);
+                }
+            }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex, "Server");
             }
+
+            if (disposeFrame)
+                img?.Dispose();
         }
+
+        
 
         private void SendImage(String sPhysicalFilePath, string sHttpVersion, ref HttpRequest req)
         {
@@ -3292,7 +3320,7 @@ namespace iSpyApplication.Server
             
             try
             {
-                CameraWindow cw = _parent.GetCameraWindow(Convert.ToInt32(oid));
+                CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(Convert.ToInt32(oid));
                 if (cw == null)
                 {
                     SendHeader(sHttpVersion, "image/jpeg", CameraRemoved.Length, " 200 OK", 0, ref req);
@@ -3309,49 +3337,49 @@ namespace iSpyApplication.Server
                     }
 
 
-                    using (var fs = new FileStream(sFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    var fs = new FileStream(sFileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    
+                    string size = GetVar(sPhysicalFilePath, "size");
+                    byte[] bytes;
+                    if (size != "")
                     {
-                        string size = GetVar(sPhysicalFilePath, "size");
-                        byte[] bytes;
-                        if (size != "")
-                        {
-                            int w,h;
+                        int w,h;
                             
-                            GetWidthHeight(size, out w, out h);
-                            Image myThumbnail = Image.FromStream(fs).GetThumbnailImage(w, h, null, IntPtr.Zero);
+                        GetWidthHeight(size, out w, out h);
+                        Image myThumbnail = Image.FromStream(fs).GetThumbnailImage(w, h, ThumbnailCallback,
+                                                                                    IntPtr.Zero);
 
-                            // put the image into the memory stream
-                            using (var ms = new MemoryStream())
-                            {
-                                myThumbnail.Save(ms, ImageFormat.Jpeg);
-                                myThumbnail.Dispose();
-
-                                bytes = new Byte[ms.Length];
-                                ms.Position = 0;
-                                // load the byte array with the image
-                                ms.Read(bytes, 0, (int) ms.Length);
-                            }
-                        }
-                        else
+                        // put the image into the memory stream
+                        using (var ms = new MemoryStream())
                         {
+                            myThumbnail.Save(ms, ImageFormat.Jpeg);
+                            myThumbnail.Dispose();
 
-                            using (var reader = new BinaryReader(fs))
+                            bytes = new Byte[ms.Length];
+                            ms.Position = 0;
+                            // load the byte array with the image
+                            ms.Read(bytes, 0, (int) ms.Length);
+                        }
+                    }
+                    else
+                    {
+
+                        using (var reader = new BinaryReader(fs))
+                        {
+                            bytes = new byte[fs.Length];
+                            while ((reader.Read(bytes, 0, bytes.Length)) != 0)
                             {
-                                bytes = new byte[fs.Length];
-                                while ((reader.Read(bytes, 0, bytes.Length)) != 0)
-                                {
-                                }
                             }
                         }
-                        SendHeader(sHttpVersion, "image/jpeg", bytes.Length, " 200 OK", 30, ref req);
-                        SendToBrowser(bytes, req);
                     }
+                    SendHeader(sHttpVersion, "image/jpeg", bytes.Length, " 200 OK", 30, ref req);
+                    SendToBrowser(bytes, req);
                 }
 
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex, "Server");
             }
         }
 
@@ -3376,7 +3404,7 @@ namespace iSpyApplication.Server
             string fn = GetVar(sPhysicalFilePath, "fn");
             try
             {
-                CameraWindow cw = _parent.GetCameraWindow(Convert.ToInt32(oid));
+                CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(Convert.ToInt32(oid));
                 if (cw == null)
                 {
                     SendHeader(sHttpVersion, "image/jpeg", CameraRemoved.Length, " 200 OK", 0, ref req);
@@ -3391,54 +3419,49 @@ namespace iSpyApplication.Server
                     {
                         sFileName = Program.AppPath + @"WebServerRoot\notfound.jpg";
                     }
-                    using (var fs =
-                        new FileStream(sFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    var fs = new FileStream(sFileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    
+                    // Create a reader that can read bytes from the FileStream.
+                    string size = GetVar(sPhysicalFilePath, "size");
+                    byte[] bytes;
+                    if (size != "")
                     {
-                        // Create a reader that can read bytes from the FileStream.
-                        string size = GetVar(sPhysicalFilePath, "size");
-                        byte[] bytes;
-                        if (size != "")
+                        int w, h;
+                        GetWidthHeight(size, out w, out h);
+                        using (var myThumbnail = Image.FromStream(fs).GetThumbnailImage(w, h, ThumbnailCallback,
+                            IntPtr.Zero))
                         {
-                            int w, h;
-                            GetWidthHeight(size, out w, out h);
-                            Image myThumbnail = Image.FromStream(fs).GetThumbnailImage(w, h, null, IntPtr.Zero);
-
                             // put the image into the memory stream
-                            var ms = new MemoryStream();
-                            myThumbnail.Save(ms, ImageFormat.Jpeg);
-                            myThumbnail.Dispose();
-
-                            bytes = new Byte[ms.Length];
-                            ms.Position = 0;
-                            // load the byte array with the image
-                            ms.Read(bytes, 0, (int) ms.Length);
-                            ms.Close();
-                            ms.Dispose();
-                        }
-                        else
-                        {
-
-                            using (var reader = new BinaryReader(fs))
+                            using (var ms = new MemoryStream())
                             {
-                                bytes = new byte[fs.Length];
-                                while ((reader.Read(bytes, 0, bytes.Length)) != 0)
-                                {
-                                }
+                                myThumbnail.Save(ms, ImageFormat.Jpeg);
 
-
-                                reader.Close();
-                                fs.Close();
+                                bytes = new Byte[ms.Length];
+                                ms.Position = 0;
+                                // load the byte array with the image
+                                ms.Read(bytes, 0, (int) ms.Length);
                             }
                         }
-                        SendHeader(sHttpVersion, "image/jpeg", bytes.Length, " 200 OK", 30, ref req);
-                        SendToBrowser(bytes, req);
                     }
+                    else
+                    {
+
+                        using (var reader = new BinaryReader(fs))
+                        {
+                            bytes = new byte[fs.Length];
+                            while ((reader.Read(bytes, 0, bytes.Length)) != 0)
+                            {
+                            }
+                        }
+                    }
+                    SendHeader(sHttpVersion, "image/jpeg", bytes.Length, " 200 OK", 30, ref req);
+                    SendToBrowser(bytes, req);
                 }
 
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex, "Server");
             }
         }
 
@@ -3447,7 +3470,7 @@ namespace iSpyApplication.Server
             string floorplanid = GetVar(sPhysicalFilePath, "floorplanid");
             try
             {
-                FloorPlanControl fpc = _parent.GetFloorPlan(Convert.ToInt32(floorplanid));
+                var fpc = MainForm.InstanceReference.GetFloorPlan(Convert.ToInt32(floorplanid));
                 if (fpc == null)
                 {
                     SendHeader(sHttpVersion, "image/jpeg", CameraRemoved.Length, " 200 OK", 0, ref req);
@@ -3456,7 +3479,7 @@ namespace iSpyApplication.Server
                 }
                 else
                 {
-                    if (fpc.ImgPlan==null)
+                    if (fpc.ImgPlan == null)
                     {
                         SendHeader(sHttpVersion, "image/jpeg", CameraConnecting.Length, " 200 OK", 0, ref req);
                         SendToBrowser(CameraConnecting, req);
@@ -3467,32 +3490,32 @@ namespace iSpyApplication.Server
                         bool done = false;
                         using (var ms = new MemoryStream())
                         {
-                                if (sPhysicalFilePath.IndexOf("thumb", StringComparison.Ordinal) != -1)
-                                {
+                            if (sPhysicalFilePath.IndexOf("thumb", StringComparison.Ordinal) != -1)
+                            {
                                 w = 96;
                                 h = 72;
+                            }
+                            else
+                            {
+                                if (sPhysicalFilePath.IndexOf("full", StringComparison.Ordinal) != -1)
+                                {
+                                    fpc.ImgView.Save(ms, ImageFormat.Jpeg);
+                                    done = true;
                                 }
                                 else
                                 {
-                                    if (sPhysicalFilePath.IndexOf("full", StringComparison.Ordinal) != -1)
+                                    string size = GetVar(sPhysicalFilePath, "size");
+                                    if (size != "")
                                     {
-                                        fpc.ImgView.Save(ms, ImageFormat.Jpeg);
-                                        done = true;
-                                    }
-                                    else
-                                    {
-                                        string size = GetVar(sPhysicalFilePath, "size");
-                                        if (size!="")
-                                        {
-                                            GetWidthHeight(size, out w, out h);
-                                        }
+                                        GetWidthHeight(size, out w, out h);
                                     }
                                 }
+                            }
 
 
                             if (!done)
                             {
-                                var img = (Image) fpc.ImgView.Clone();
+                                var img = (Image)fpc.ImgView.Clone();
                                 var myThumbnail = img.GetThumbnailImage(w, h, null, IntPtr.Zero);
 
                                 // put the image into the memory stream
@@ -3508,7 +3531,7 @@ namespace iSpyApplication.Server
                             var imageContent = new Byte[ms.Length];
                             ms.Position = 0;
                             // load the byte array with the image
-                            ms.Read(imageContent, 0, (int) ms.Length);
+                            ms.Read(imageContent, 0, (int)ms.Length);
 
                             // rewind the memory stream
 
@@ -3519,12 +3542,13 @@ namespace iSpyApplication.Server
                             ms.Close();
                         }
                     }
+
                 }
 
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex,"Server");
             }
         }
 
@@ -3557,12 +3581,12 @@ namespace iSpyApplication.Server
 
             try
             {
-                var feed2 = new Thread(p => MJPEGFeedMulti(scamid, req, w, h, basicCt, maintainAR, overlay));
+                var feed2 = new Thread(p => MJPEGFeedMulti(scamid, req, w, h, basicCt, maintainAR, overlay)) {IsBackground = true};
                 feed2.Start();
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex, "Server");
             }
         }
 
@@ -3577,161 +3601,167 @@ namespace iSpyApplication.Server
             sResponse += "Server: iSpy\r\n";
             sResponse += "Expires: 0\r\n";
             sResponse += "Pragma: no-cache\r\n";
-            sResponse += "Access-Control-Allow-Origin: *\r\n";
             sResponse += "Cache-Control: no-cache, must-revalidate\r\n";
+            sResponse += "Access-Control-Allow-Origin: *\r\n";
             if (!basicContentType)
                 sResponse += "Content-Type: multipart/x-mixed-replace; boundary=--myboundary";
             else
                 sResponse += "Content-Type: text/html; boundary=--myboundary";
             var overlayBackgroundBrush = new SolidBrush(Color.FromArgb(128, 0, 0, 0));
             var drawfont = new Font(FontFamily.GenericSansSerif, 10, FontStyle.Regular, GraphicsUnit.Pixel);
+            
+            
             try
             {
                 var cams = GetCameraWindows(cameraids, ref w, ref h);
-                
-                int cols = Convert.ToInt32(Math.Ceiling(Math.Sqrt(cams.Count)));
-                int rows = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(cams.Count)/cols));
-                
-                int camw = Convert.ToInt32(Convert.ToDouble(w)/Convert.ToDouble(cols));
-                int camh = Convert.ToInt32(Convert.ToDouble(h) / Convert.ToDouble(rows));
-
-
-                while (req.TcpClient.Client.Connected)
+                if (cams.Count > 0)
                 {
-                    if (useDefault)
+
+                    int cols = Convert.ToInt32(Math.Ceiling(Math.Sqrt(cams.Count)));
+                    int rows = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(cams.Count)/cols));
+
+                    int camw = Convert.ToInt32(Convert.ToDouble(w)/Convert.ToDouble(cols));
+                    int camh = Convert.ToInt32(Convert.ToDouble(h)/Convert.ToDouble(rows));
+
+
+                    while (req.TcpClient.Client.Connected)
                     {
-                        if (cameraids != MainForm.Conf.DeviceDriverDefault && !string.IsNullOrEmpty(MainForm.Conf.DeviceDriverDefault))
+                        if (useDefault)
                         {
-                            cams = GetCameraWindows(MainForm.Conf.DeviceDriverDefault, ref w, ref h);
+                            if (cameraids != MainForm.Conf.DeviceDriverDefault &&
+                                !string.IsNullOrEmpty(MainForm.Conf.DeviceDriverDefault))
+                            {
+                                cams = GetCameraWindows(MainForm.Conf.DeviceDriverDefault, ref w, ref h);
 
-                            cols = Convert.ToInt32(Math.Ceiling(Math.Sqrt(cams.Count)));
-                            rows = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(cams.Count) / cols));
+                                cols = Convert.ToInt32(Math.Ceiling(Math.Sqrt(cams.Count)));
+                                rows = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(cams.Count)/cols));
 
-                            camw = Convert.ToInt32(Convert.ToDouble(w) / Convert.ToDouble(cols));
-                            camh = Convert.ToInt32(Convert.ToDouble(h) / Convert.ToDouble(rows));
-                            cameraids = MainForm.Conf.DeviceDriverDefault;
+                                camw = Convert.ToInt32(Convert.ToDouble(w)/Convert.ToDouble(cols));
+                                camh = Convert.ToInt32(Convert.ToDouble(h)/Convert.ToDouble(rows));
+                                cameraids = MainForm.Conf.DeviceDriverDefault;
+                            }
                         }
-                    }
-                    var bmpFinal = new Bitmap(w, h);
-                    Graphics g = Graphics.FromImage(bmpFinal);
-                    g.CompositingMode = CompositingMode.SourceCopy;
-                    g.CompositingQuality = CompositingQuality.HighSpeed;
-                    g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                    g.SmoothingMode = SmoothingMode.None;
-                    g.InterpolationMode = InterpolationMode.Default;
-                    g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+                        var bmpFinal = new Bitmap(w, h);
+                        Graphics g = Graphics.FromImage(bmpFinal);
+                        g.CompositingMode = CompositingMode.SourceCopy;
+                        g.CompositingQuality = CompositingQuality.HighSpeed;
+                        g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                        g.SmoothingMode = SmoothingMode.None;
+                        g.InterpolationMode = InterpolationMode.Default;
+                        g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
-                    g.Clear(Color.White);
-                    int j = 0, k = 0;
+                        g.Clear(Color.White);
 
-                    foreach (CameraWindow cw in cams)
-                    {
-                        int x = j*camw;
-                        int y = k*camh;
-                        j++;
-                        if (j == cols)
+                        int j = 0, k = 0;
+
+                        foreach (CameraWindow cw in cams)
                         {
-                            j = 0;
-                            k++;
-                        }
+                            int x = j*camw;
+                            int y = k*camh;
+                            j++;
+                            if (j == cols)
+                            {
+                                j = 0;
+                                k++;
+                            }
 
-                        bool disposeFrame = false;
+                            bool disposeFrame = false;
 
-                        Bitmap img = Resources.cam_offline_large;
-                        if (cw.IsEnabled)
-                        {
-                            img = cw.LastFrame;
-                            if (img == null)
-                                img = Resources.cam_connecting_large;
+                            Bitmap img = Resources.cam_offline_large;
+                            if (cw.IsEnabled)
+                            {
+                                img = cw.LastFrame;
+                                if (img == null)
+                                    img = Resources.cam_connecting_large;
+                                else
+                                {
+                                    if (cw.VideoSourceErrorState)
+                                    {
+                                        using (Graphics g2 = Graphics.FromImage(img))
+                                        {
+                                            var img2 = Resources.connecting;
+                                            g2.DrawImage(img2, img.Width - img2.Width - 2, 2, img2.Width, img2.Height);
+                                        }
+                                    }
+                                    disposeFrame = true;
+                                }
+
+                            }
+
+
+                            if (maintainAspectRatio)
+                            {
+                                double ar = Convert.ToDouble(img.Height)/Convert.ToDouble(img.Width);
+                                int neww = camw;
+                                int newh = Convert.ToInt32(camw*ar);
+                                if (newh > camh)
+                                {
+                                    newh = camh;
+                                    neww = Convert.ToInt32(camh/ar);
+                                }
+                                //offset for centering
+                                try
+                                {
+                                    g.DrawImage(img, x + (camw - neww)/2, y + (camh - newh)/2, neww, newh);
+                                }
+                                catch (Exception)
+                                {
+                                    //cam offline?
+                                }
+
+                            }
                             else
                             {
-                                if (cw.VideoSourceErrorState)
+                                try
                                 {
-                                    using (Graphics g2 = Graphics.FromImage(img))
-                                    {
-                                        var img2 = Resources.connecting;
-                                        g2.DrawImage(img2, img.Width - img2.Width - 2, 2, img2.Width, img2.Height);
-                                    }
+                                    g.CompositingMode = CompositingMode.SourceCopy;
+                                    g.DrawImage(img, x, y, camw, camh);
                                 }
-                                disposeFrame = true;
+                                catch (Exception)
+                                {
+                                    //cam offline?
+                                }
                             }
+
+                            g.CompositingMode = CompositingMode.SourceOver;
+                            if (includeOverlay)
+                            {
+                                g.FillRectangle(overlayBackgroundBrush, x, y + camh - 20, camw, 20);
+                                g.DrawString(cw.Camobject.name, drawfont, Brushes.White, x + 2, y + camh - 17);
+                            }
+
+                            if (disposeFrame)
+                                img.Dispose();
 
                         }
 
-
-                        if (maintainAspectRatio)
+                        using (var imageStream = new MemoryStream())
                         {
-                            double ar = Convert.ToDouble(img.Height)/Convert.ToDouble(img.Width);
-                            int neww = camw;
-                            int newh = Convert.ToInt32(camw*ar);
-                            if (newh > camh)
-                            {
-                                newh = camh;
-                                neww = Convert.ToInt32(camh/ar);
-                            }
-                            //offset for centering
-                            try
-                            {
-                                g.DrawImage(img, x + (camw - neww)/2, y + (camh - newh)/2, neww, newh);
-                            }
-                            catch
-                            {
-                                //cam offline?
-                            }
+                            bmpFinal.Save(imageStream, ImageFormat.Jpeg);
 
-                        }
-                        else
-                        {
-                            try
-                            {
-                                g.CompositingMode = CompositingMode.SourceCopy;
-                                g.DrawImage(img, x, y, camw, camh);
-                            }
-                            catch
-                            {
-                                //cam offline?
-                            }
+                            imageStream.Position = 0;
+                            // load the byte array with the image             
+                            bmpFinal.Dispose();
+                            Byte[] imageArray = imageStream.GetBuffer();
+                            sResponse +=
+                                "\r\n\r\n--myboundary\r\nContent-type: image/jpeg\r\nContent-length: " +
+                                imageArray.Length + "\r\n\r\n";
+
+                            Byte[] bSendData = Encoding.ASCII.GetBytes(sResponse);
+
+                            SendToBrowser(bSendData, req);
+                            sResponse = "";
+                            SendToBrowser(imageArray, req);
                         }
 
-                        g.CompositingMode = CompositingMode.SourceOver;
-                        if (includeOverlay)
-                        {
-                            g.FillRectangle(overlayBackgroundBrush, x, y + camh - 20, camw, y + camh);
-                            g.DrawString(cw.Camobject.name, drawfont, Brushes.White, x + 2, y + camh - 17);
-                        }
-
-                        if (disposeFrame)
-                            img.Dispose();
-
+                        Thread.Sleep(MainForm.Conf.MJPEGStreamInterval); //throttle it
                     }
-
-                    using (var imageStream = new MemoryStream())
-                    {
-                        bmpFinal.Save(imageStream, ImageFormat.Jpeg);
-
-                        imageStream.Position = 0;
-                        // load the byte array with the image             
-                        bmpFinal.Dispose();
-                        Byte[] imageArray = imageStream.GetBuffer();
-                        sResponse +=
-                            "\r\n\r\n--myboundary\r\nContent-type: image/jpeg\r\nContent-length: " +
-                            imageArray.Length + "\r\n\r\n";
-
-                        Byte[] bSendData = Encoding.ASCII.GetBytes(sResponse);
-
-                        SendToBrowser(bSendData, req);
-                        sResponse = "";
-                        SendToBrowser(imageArray, req);
-                        imageStream.Close();
-                    }
-                    
-                    Thread.Sleep(MainForm.Conf.MJPEGStreamInterval); //throttle it
                 }
 
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex, "Server");
             }
             overlayBackgroundBrush.Dispose();
             drawfont.Dispose();
@@ -3753,7 +3783,7 @@ namespace iSpyApplication.Server
             {
                 if (!string.IsNullOrEmpty(c))
                 {
-                    var cw = _parent.GetCameraWindow(Convert.ToInt32(c));
+                    var cw = MainForm.InstanceReference.GetCameraWindow(Convert.ToInt32(c));
                     if (cw != null)
                     {
                         if (nw)
@@ -3767,12 +3797,12 @@ namespace iSpyApplication.Server
             }
             if (cams.Count == 0)
             {
-                throw new Exception("No cameras found");
+                Logger.LogErrorToFile("Camera list invalid","MJPEG multi feed");
             }
             return cams;
         }
 
-        private void DisconnectRequest(HttpRequest req)
+        public void DisconnectRequest(HttpRequest req)
         {
             lock (_connectedSocketsSyncHandle)
             {
@@ -3786,15 +3816,14 @@ namespace iSpyApplication.Server
             string micId = GetVar(sPhysicalFilePath, "micid");
             try
             {
-                VolumeLevel vl = _parent.GetVolumeLevel(Convert.ToInt32(micId));
-                if (vl.Micobject.settings.active)
+                VolumeLevel vl = MainForm.InstanceReference.GetVolumeLevel(Convert.ToInt32(micId));
+                if (vl!=null && vl.IsEnabled)
                 {
-                    String sResponse = "";
+                    string sResponse = "";
 
                     sResponse += "HTTP/1.1 200 OK\r\n";
                     sResponse += "Server: iSpy\r\n";
                     sResponse += "Access-Control-Allow-Origin: *\r\n";
-
                     bool sendend = false;
 
                     int iStartBytes = 0;
@@ -3803,12 +3832,10 @@ namespace iSpyApplication.Server
                         var headers = sBuffer.Split(Environment.NewLine.ToCharArray());
                         foreach (string h in headers)
                         {
-                            if (h.StartsWith("Range:"))
-                            {
-                                string[] range = (h.Substring(h.IndexOf("=", StringComparison.Ordinal) + 1)).Split('-');
-                                iStartBytes = Convert.ToInt32(range[0]);
-                                break;
-                            }
+                            if (!h.StartsWith("Range:")) continue;
+                            string[] range = (h.Substring(h.IndexOf("=", StringComparison.Ordinal) + 1)).Split('-');
+                            iStartBytes = Convert.ToInt32(range[0]);
+                            break;
                         }
                     }
                     if (iStartBytes != 0)
@@ -3862,7 +3889,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogExceptionToFile(ex, "Server");
             }
         }
         
@@ -3885,18 +3912,17 @@ namespace iSpyApplication.Server
 
         internal string GetObjectList()
         {
-            
             string resp = "";
             if (MainForm.Cameras != null)
             {
-                foreach (objectsCamera oc in MainForm.Cameras.OrderBy(p=>p.name))
+                var l = MainForm.Cameras.OrderBy(p => p.name).ToList();
+                foreach (objectsCamera oc in l)
                 {
-                    CameraWindow cw = _parent.GetCameraWindow(oc.id);
+                    CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oc.id);
                     if (cw != null)
                     {
                         bool onlinestatus = oc.settings.active;
                         bool talkconfigured = oc.settings.audiomodel != "None";
-
                         resp += "2," + oc.id + "," + onlinestatus.ToString().ToLower() + "," +
                                 oc.name.Replace(",", "&comma;") + "," + GetStatus(onlinestatus) + "," +
                                 oc.description.Replace(",", "&comma;").Replace("\n", " ") + "," +
@@ -3906,9 +3932,10 @@ namespace iSpyApplication.Server
             }
             if (MainForm.Microphones != null)
             {
-                foreach (objectsMicrophone om in MainForm.Microphones.OrderBy(p => p.name))
+                var l = MainForm.Microphones.OrderBy(p => p.name).ToList();
+                foreach (objectsMicrophone om in l)
                 {
-                    VolumeLevel vl = _parent.GetVolumeLevel(om.id);
+                    VolumeLevel vl = MainForm.InstanceReference.GetVolumeLevel(om.id);
                     if (vl!=null)
                     {
                         bool onlinestatus = om.settings.active;
@@ -3926,39 +3953,31 @@ namespace iSpyApplication.Server
 
         internal static string GetStatus(bool active)
         {
-            string sts = "Online";
-            if (!active)
-            {
-                sts = "Offline";
-            }
-            return sts;
+            return active ? "Online" : "Offline";
         }
 
         private void AudioIn(HttpRequest req, int cameraId)
         {
-            CameraWindow cw = _parent.GetCameraWindow(cameraId);
-            var ds = new AudioInStream { RecordingFormat = new WaveFormat(22050, 16, 1) };
-            ITalkTarget talkTarget = TalkHelper.GetTalkTarget(cw.Camobject, ds); 
+            CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(cameraId);
+            if (cw == null)
+                return;
+            var wf = new WaveFormat(22050, 16, 1);
+            var ds = new AudioInStream {RecordingFormat = wf};
+            var talkTarget = TalkHelper.GetTalkTarget(cw.Camobject, ds); 
             
             ds.Start();
             talkTarget.Start();
             ds.PacketSize = 4410;
             var bBuffer = new byte[ds.PacketSize*4];
-            //IWavePlayer WaveOut = new DirectSoundOut(100);
-            //WaveOut.Init(ds.WaveOutProvider);
-            //WaveOut.Play();
             try
             {
                 int j = 0;
-                //DateTime dtStart = Helper.Now;
                 bool pktComplete = false;
                 DateTime dt = Helper.Now;
                 while (req.TcpClient.Client.Connected) // && talkTarget.Connected)
                 {
                     while (!pktComplete && req.TcpClient.Client.Connected)
                     {
-                        // DateTime sR = Helper.Now;
-
                         int i = req.TcpClient.Client.Receive(bBuffer, j, ds.PacketSize, SocketFlags.None);
                         if (i == 0)
                             goto Finish;
@@ -3979,13 +3998,11 @@ namespace iSpyApplication.Server
                         }
                     }
                     pktComplete = false;
-
-                    //Thread.Sleep(50);
                 }
             }
-            catch(Exception ex)
+            catch
             {
-                Logger.LogExceptionToFile(ex,"Talk (network)");
+                // ignored
             }
             Finish:
                 DisconnectRequest(req);
@@ -3995,6 +4012,32 @@ namespace iSpyApplication.Server
         }
 
 
-        
+
+        private bool _disposed;
+        // Public implementation of Dispose pattern callable by consumers. 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        // Protected implementation of Dispose pattern. 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            if (disposing)
+            {
+                WebSocketServer?.Close();
+            }
+
+            // Free any unmanaged objects here. 
+            //
+            _disposed = true;
+        }
+
     }
+
+   
 }

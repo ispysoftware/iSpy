@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 
-namespace iSpyApplication
+namespace iSpyApplication.Server
 {
     public class HttpRequest
     {
@@ -11,7 +11,7 @@ namespace iSpyApplication
         public Stream Stream; //SSLStream or NetworkStream depending on client
         public RestartableReadStream RestartableStream;
         public byte[] Buffer;
-        public string Ascii="";
+        public string ASCII = "";
 
         public void Destroy()
         {
@@ -22,7 +22,8 @@ namespace iSpyApplication
 
                 RestartableStream?.Close();
                 RestartableStream = null;
-
+                
+                
                 Stream?.Close();
                 Stream = null;
                 
@@ -30,8 +31,11 @@ namespace iSpyApplication
             }
             catch
             {
-                // ignored
+
             }
+
+
+
         }
     }
 }

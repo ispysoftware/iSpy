@@ -18,7 +18,8 @@ namespace iSpyApplication.Controls
         {
             Oae = oae;
             InitializeComponent();
-            lblSummary.Text = GetSummary(Oae.type, Oae.param1, Oae.param2, Oae.param3, Oae.param4);
+            chkSummary.Text = GetSummary(Oae.type, Oae.param1, Oae.param2, Oae.param3, Oae.param4);
+            chkSummary.Checked = Oae.active;
             BackColor = DefaultBackColor;
         }
 
@@ -168,5 +169,9 @@ namespace iSpyApplication.Controls
             Invalidate();
         }
 
+        private void chkSummary_CheckedChanged(object sender, EventArgs e)
+        {
+            Oae.active = chkSummary.Checked;
+        }
     }
 }

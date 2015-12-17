@@ -129,17 +129,13 @@ namespace iSpyApplication
             txtNoSound.Text = VolumeLevel.Micobject.detector.nosoundinterval.ToString(CultureInfo.InvariantCulture);
             txtSound.Text = VolumeLevel.Micobject.detector.soundinterval.ToString(CultureInfo.InvariantCulture);
             pnlSound.Enabled = chkSound.Checked;
-            pnlScheduler.Enabled = chkSchedule.Checked;
 
             txtBuffer.Text = VolumeLevel.Micobject.settings.buffer.ToString(CultureInfo.InvariantCulture);
             txtInactiveRecord.Text = VolumeLevel.Micobject.recorder.inactiverecord.ToString(CultureInfo.InvariantCulture);
             txtMaxRecordTime.Text = VolumeLevel.Micobject.recorder.maxrecordtime.ToString(CultureInfo.InvariantCulture);
 
-            ddlHourStart.SelectedIndex =
-                ddlHourEnd.SelectedIndex = ddlMinuteStart.SelectedIndex = ddlMinuteEnd.SelectedIndex = 0;
-            
-            ShowSchedule(-1);
-            
+            scheduleEditor1.Io = VolumeLevel;
+
             txtAccessGroups.Text = VolumeLevel.Micobject.settings.accessgroups;
             txtDirectory.Text = VolumeLevel.Micobject.directory;
             
@@ -241,35 +237,19 @@ namespace iSpyApplication
         private void RenderResources()
         {
             btnBack.Text = LocRm.GetString("Back");
-            btnDelete.Text = LocRm.GetString("Delete");
             btnFinish.Text = LocRm.GetString("Finish");
             btnNext.Text = LocRm.GetString("Next");
             btnSelectSource.Text = "...";
-            btnUpdate.Text = LocRm.GetString("Update");
-            button2.Text = LocRm.GetString("Add");
             chkActive.Text = LocRm.GetString("MicrophoneActive");
-            chkFri.Text = LocRm.GetString("Fri");
-            chkMon.Text = LocRm.GetString("Mon");
             groupBox1.Text = LocRm.GetString("RecordingSettings");
             groupBox6.Text = LocRm.GetString("RecordingSettings");
             groupBox6.Text = LocRm.GetString("RecordingMode");
             rdoRecordDetect.Text = LocRm.GetString("RecordOnSoundDetection");
             rdoRecordAlert.Text = LocRm.GetString("RecordOnAlert");
             rdoNoRecord.Text = LocRm.GetString("NoRecord");
-            chkRecordSchedule.Text = LocRm.GetString("RecordOnScheduleStart");
-            chkSat.Text = LocRm.GetString("Sat");
             chkSchedule.Text = LocRm.GetString("ScheduleMicrophone");
-            chkScheduleActive.Text = LocRm.GetString("ScheduleActive");
-            chkScheduleAlerts.Text = LocRm.GetString("AlertsEnabled");
-            chkScheduleRecordOnDetect.Text = LocRm.GetString("RecordOnDetect");
-            chkRecordAlertSchedule.Text = LocRm.GetString("RecordOnAlert");
             chkSound.Text = LocRm.GetString("AlertsEnabled");
-            chkSun.Text = LocRm.GetString("Sun");
-            chkThu.Text = LocRm.GetString("Thu");
-            chkTue.Text = LocRm.GetString("Tue");
-            chkWed.Text = LocRm.GetString("Wed");
             label1.Text = LocRm.GetString("Name");
-            label10.Text = label18.Text = ":";
             label12.Text = LocRm.GetString("MaxRecordTime");
             label6.Text = LocRm.GetString("MinRecordTime");
             label13.Text = LocRm.GetString("Seconds");
@@ -284,15 +264,9 @@ namespace iSpyApplication
             label3.Text = LocRm.GetString("Sensitivity");
             label4.Text = LocRm.GetString("WhenSound");
             label48.Text = LocRm.GetString("Seconds");
-            label49.Text = LocRm.GetString("Days");
             label5.Text = LocRm.GetString("Seconds");
-            label50.Text = LocRm.GetString("ImportantMakeSureYourSche");
-            label8.Text = LocRm.GetString("Start");
             label15.Text = LocRm.GetString("Intervals");
-            label9.Text = ":";
-            label7.Text = LocRm.GetString("TipToCreateAScheduleOvern");
-            label10.Text = LocRm.GetString("Stop");
-
+            
             lblAudioSource.Text = LocRm.GetString("Audiosource");
             rdoMovement.Text = LocRm.GetString("IsDetectedFor");
             rdoNoMovement.Text = LocRm.GetString("IsNotDetectedFor");
@@ -305,7 +279,6 @@ namespace iSpyApplication
             toolTip1.SetToolTip(txtMicrophoneName, LocRm.GetString("ToolTip_MicrophoneName"));
             toolTip1.SetToolTip(txtInactiveRecord, LocRm.GetString("ToolTip_InactiveRecordAudio"));
             toolTip1.SetToolTip(txtBuffer, LocRm.GetString("ToolTip_BufferAudio"));
-            toolTip1.SetToolTip(lbSchedule, LocRm.GetString("ToolTip_PressDelete"));
             llblHelp.Text = LocRm.GetString("help");
             lblAccessGroups.Text = LocRm.GetString("AccessGroups");
             toolTip1.SetToolTip(ranger1, LocRm.GetString("ToolTip_MotionSensitivity"));
@@ -576,9 +549,7 @@ namespace iSpyApplication
 
         private void ChkScheduleCheckedChanged(object sender, EventArgs e)
         {
-            pnlScheduler.Enabled = chkSchedule.Checked;
-            btnDelete.Enabled = btnUpdate.Enabled = lbSchedule.SelectedIndex > -1;
-            lbSchedule.Refresh();
+            scheduleEditor1.Enabled = chkSchedule.Checked;
         }
 
         private void TxtMicrophoneNameTextChanged(object sender, EventArgs e)
@@ -636,197 +607,12 @@ namespace iSpyApplication
             btnNext.Enabled = tcMicrophone.SelectedIndex != tcMicrophone.TabCount - 1;
         }
 
-        private void Button2Click(object sender, EventArgs e)
-        {
-            List<objectsMicrophoneScheduleEntry> scheds = VolumeLevel.Micobject.schedule.entries.ToList();
-            var sched = new objectsMicrophoneScheduleEntry();
-            if (ConfigureSchedule(sched))
-            {
-                scheds.Add(sched);
-                VolumeLevel.Micobject.schedule.entries = scheds.ToArray();
-                ShowSchedule(VolumeLevel.Micobject.schedule.entries.Count() - 1);
-            }
-        }
-
-        private bool ConfigureSchedule(objectsMicrophoneScheduleEntry sched)
-        {
-            if (ddlHourStart.SelectedItem.ToString() == "-" || ddlMinuteStart.SelectedItem.ToString() == "-")
-            {
-                sched.start = "-:-";
-            }
-            else
-                sched.start = ddlHourStart.SelectedItem + ":" + ddlMinuteStart.SelectedItem;
-            if (ddlHourEnd.SelectedItem.ToString() == "-" || ddlMinuteEnd.SelectedItem.ToString() == "-")
-            {
-                sched.stop = "-:-";
-            }
-            else
-                sched.stop = ddlHourEnd.SelectedItem + ":" + ddlMinuteEnd.SelectedItem;
-
-            sched.daysofweek = "";
-            if (chkMon.Checked)
-            {
-                sched.daysofweek += "1,";
-            }
-            if (chkTue.Checked)
-            {
-                sched.daysofweek += "2,";
-            }
-            if (chkWed.Checked)
-            {
-                sched.daysofweek += "3,";
-            }
-            if (chkThu.Checked)
-            {
-                sched.daysofweek += "4,";
-            }
-            if (chkFri.Checked)
-            {
-                sched.daysofweek += "5,";
-            }
-            if (chkSat.Checked)
-            {
-                sched.daysofweek += "6,";
-            }
-            if (chkSun.Checked)
-            {
-                sched.daysofweek += "0,";
-            }
-            sched.daysofweek = sched.daysofweek.Trim(',');
-            if (sched.daysofweek == "")
-            {
-                MessageBox.Show(LocRm.GetString("Validate_Camera_SelectOneDay")); //"Please select at least one day");
-                return false;
-            }
-
-            sched.recordonstart = chkRecordSchedule.Checked;
-            sched.active = chkScheduleActive.Checked;
-            sched.recordondetect = chkScheduleRecordOnDetect.Checked;
-            sched.alerts = chkScheduleAlerts.Checked;
-            sched.messaging = chkScheduleMessaging.Checked;
-            return true;
-        }
-
-        private void LbScheduleKeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Delete)
-            {
-                DeleteSchedule();
-            }
-        }
-
-        private void ShowSchedule(int selectedIndex)
-        {
-            lbSchedule.Items.Clear();
-            int i = 0;
-            foreach (string sched in VolumeLevel.ScheduleDetails)
-            {
-                if (sched != "")
-                {
-                    lbSchedule.Items.Add(new ListItem(sched, i.ToString(CultureInfo.InvariantCulture)));
-                    i++;
-                }
-            }
-            if (selectedIndex > -1 && selectedIndex < lbSchedule.Items.Count)
-                lbSchedule.SelectedIndex = selectedIndex;
-        }
 
         private void Login()
         {
             MainClass.Connect(MainForm.Website + "/subscribe.aspx", false);
         }
-
-
-        private void BtnDeleteClick(object sender, EventArgs e)
-        {
-            DeleteSchedule();
-        }
-
-        private void DeleteSchedule()
-        {
-            if (lbSchedule.SelectedIndex > -1)
-            {
-                int i = lbSchedule.SelectedIndex;
-                List<objectsMicrophoneScheduleEntry> scheds = VolumeLevel.Micobject.schedule.entries.ToList();
-                scheds.RemoveAt(i);
-                VolumeLevel.Micobject.schedule.entries = scheds.ToArray();
-                int j = i - 1;
-                if (j < 0)
-                    j = 0;
-                ShowSchedule(j);
-                if (lbSchedule.Items.Count == 0)
-                    btnDelete.Enabled = btnUpdate.Enabled = false;
-                else
-                    btnDelete.Enabled = btnUpdate.Enabled = (lbSchedule.SelectedIndex > -1);
-            }
-        }
-
-        private void LbScheduleSelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (lbSchedule.Items.Count == 0)
-                btnDelete.Enabled = btnUpdate.Enabled = false;
-            else
-            {
-                btnUpdate.Enabled = btnDelete.Enabled = (lbSchedule.SelectedIndex > -1);
-                if (btnUpdate.Enabled)
-                {
-                    int i = lbSchedule.SelectedIndex;
-                    objectsMicrophoneScheduleEntry sched = VolumeLevel.Micobject.schedule.entries[i];
-
-                    string[] start = sched.start.Split(':');
-                    string[] stop = sched.stop.Split(':');
-
-
-                    ddlHourStart.SelectedItem = start[0];
-                    ddlHourEnd.SelectedItem = stop[0];
-                    ddlMinuteStart.SelectedItem = start[1];
-                    ddlMinuteEnd.SelectedItem = stop[1];
-
-                    chkMon.Checked = sched.daysofweek.IndexOf("1", StringComparison.Ordinal) != -1;
-                    chkTue.Checked = sched.daysofweek.IndexOf("2", StringComparison.Ordinal) != -1;
-                    chkWed.Checked = sched.daysofweek.IndexOf("3", StringComparison.Ordinal) != -1;
-                    chkThu.Checked = sched.daysofweek.IndexOf("4", StringComparison.Ordinal) != -1;
-                    chkFri.Checked = sched.daysofweek.IndexOf("5", StringComparison.Ordinal) != -1;
-                    chkSat.Checked = sched.daysofweek.IndexOf("6", StringComparison.Ordinal) != -1;
-                    chkSun.Checked = sched.daysofweek.IndexOf("0", StringComparison.Ordinal) != -1;
-
-                    chkRecordSchedule.Checked = sched.recordonstart;
-                    chkScheduleActive.Checked = sched.active;
-                    chkScheduleRecordOnDetect.Checked = sched.recordondetect;
-                    chkScheduleAlerts.Checked = sched.alerts;
-                }
-            }
-        }
-
-        private void BtnUpdateClick(object sender, EventArgs e)
-        {
-            int i = lbSchedule.SelectedIndex;
-            objectsMicrophoneScheduleEntry sched = VolumeLevel.Micobject.schedule.entries[i];
-
-            if (ConfigureSchedule(sched))
-            {
-                ShowSchedule(i);
-            }
-        }
-
-        private void LbScheduleDrawItem(object sender, DrawItemEventArgs e)
-        {
-            e.DrawBackground();
-            int i = e.Index;
-            if (i >= 0)
-            {
-                objectsMicrophoneScheduleEntry sched = VolumeLevel.Micobject.schedule.entries[i];
-
-                Font f = sched.active ? new Font("Microsoft Sans Serif", 8.25f, FontStyle.Bold) : new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
-                Brush b = !chkSchedule.Checked ? Brushes.Gray : Brushes.Black;
-
-                e.Graphics.DrawString(lbSchedule.Items[i].ToString(), f, b, e.Bounds);
-                e.DrawFocusRectangle();
-            } 
-            
-        }
-
-        
+       
 
         #region Nested type: ListItem
 
@@ -874,16 +660,34 @@ namespace iSpyApplication
         {
             if (ddlCopyFrom.SelectedIndex > 0)
             {
-                var mic =
+                if (MessageBox.Show(LocRm.GetString("Confirm"), "", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    var mic =
                     MainForm.Microphones.SingleOrDefault(
                         p => p.id == Convert.ToInt32(((ListItem)ddlCopyFrom.SelectedItem).Value));
-                if (mic != null)
-                {
-                    List<objectsMicrophoneScheduleEntry> scheds = mic.schedule.entries.ToList();
+                    if (mic != null)
+                    {
+                        MainForm.Schedule.RemoveAll(p => p.objectid == VolumeLevel.ObjectID && p.objecttypeid == 1);
+                        List<objectsScheduleEntry> scheds = MainForm.Schedule.Where(p => p.objecttypeid == 1 && p.objectid == mic.id).ToList();
+                        foreach (var s in scheds)
+                        {
+                            var t = new objectsScheduleEntry
+                            {
+                                active = s.active,
+                                daysofweek = s.daysofweek,
+                                objectid = VolumeLevel.ObjectID,
+                                objecttypeid = 2,
+                                parameter = s.parameter,
+                                time = s.time,
+                                typeid = s.typeid
+                            };
+                            MainForm.Schedule.Add(t);
+                        }
+                        scheduleEditor1.RenderSchedule();
 
-                    VolumeLevel.Micobject.schedule.entries = scheds.ToArray();
-                    ShowSchedule(VolumeLevel.Micobject.schedule.entries.Count() - 1);
+                    }
                 }
+                ddlCopyFrom.SelectedIndex = 0;
             }
         }
 

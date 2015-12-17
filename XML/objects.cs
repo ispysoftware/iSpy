@@ -34,6 +34,8 @@ public partial class objects {
     
     private objectsCommand[] remotecommandsField;
     
+    private objectsSchedule scheduleField;
+    
     private objectsActions actionsField;
     
     public objects() {
@@ -91,6 +93,16 @@ public partial class objects {
         }
         set {
             this.remotecommandsField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public objectsSchedule schedule {
+        get {
+            return this.scheduleField;
+        }
+        set {
+            this.scheduleField = value;
         }
     }
     
@@ -169,12 +181,15 @@ public partial class objectsCamera {
     
     private int surfaceIDField;
     
+    private bool deletedField;
+    
     public objectsCamera() {
         this.rotate90Field = false;
         this.rotateModeField = "";
         this.ptzentryindexField = 0;
         this.newrecordingcountField = 0;
         this.surfaceIDField = 0;
+        this.deletedField = false;
     }
     
     /// <remarks/>
@@ -477,6 +492,18 @@ public partial class objectsCamera {
         }
         set {
             this.surfaceIDField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute(false)]
+    public bool deleted {
+        get {
+            return this.deletedField;
+        }
+        set {
+            this.deletedField = value;
         }
     }
 }
@@ -2583,6 +2610,14 @@ public partial class objectsCameraRecorder {
     
     private string triggerField;
     
+    private bool ftpenabledField;
+    
+    private string ftpfilenameField;
+    
+    private int ftpcounterField;
+    
+    private int ftpcountermaxField;
+    
     public objectsCameraRecorder() {
         this.minrecordtimeField = 0;
         this.timelapseenabledField = false;
@@ -2592,6 +2627,10 @@ public partial class objectsCameraRecorder {
         this.profileField = 0;
         this.crfField = true;
         this.triggerField = "";
+        this.ftpenabledField = false;
+        this.ftpfilenameField = "";
+        this.ftpcounterField = 0;
+        this.ftpcountermaxField = 20;
     }
     
     /// <remarks/>
@@ -2742,6 +2781,54 @@ public partial class objectsCameraRecorder {
         }
         set {
             this.triggerField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute(false)]
+    public bool ftpenabled {
+        get {
+            return this.ftpenabledField;
+        }
+        set {
+            this.ftpenabledField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute("")]
+    public string ftpfilename {
+        get {
+            return this.ftpfilenameField;
+        }
+        set {
+            this.ftpfilenameField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute(0)]
+    public int ftpcounter {
+        get {
+            return this.ftpcounterField;
+        }
+        set {
+            this.ftpcounterField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute(20)]
+    public int ftpcountermax {
+        get {
+            return this.ftpcountermaxField;
+        }
+        set {
+            this.ftpcountermaxField = value;
         }
     }
 }
@@ -3511,10 +3598,13 @@ public partial class objectsMicrophone {
     
     private int newrecordingcountField;
     
+    private bool deletedField;
+    
     private int surfaceIDField;
     
     public objectsMicrophone() {
         this.newrecordingcountField = 0;
+        this.deletedField = false;
         this.surfaceIDField = 0;
     }
     
@@ -3685,6 +3775,18 @@ public partial class objectsMicrophone {
         }
         set {
             this.newrecordingcountField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute(false)]
+    public bool deleted {
+        get {
+            return this.deletedField;
+        }
+        set {
+            this.deletedField = value;
         }
     }
     
@@ -4822,6 +4924,8 @@ public partial class objectsFloorplan {
     
     private bool needsupdateField;
     
+    private bool deletedField;
+    
     private int surfaceIDField;
     
     public objectsFloorplan() {
@@ -4829,6 +4933,7 @@ public partial class objectsFloorplan {
         this.originalsizeField = false;
         this.fovField = 90;
         this.radiusField = 80;
+        this.deletedField = false;
         this.surfaceIDField = 0;
     }
     
@@ -4975,6 +5080,18 @@ public partial class objectsFloorplan {
         }
         set {
             this.needsupdateField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute(false)]
+    public bool deleted {
+        get {
+            return this.deletedField;
+        }
+        set {
+            this.deletedField = value;
         }
     }
     
@@ -5284,6 +5401,135 @@ public partial class objectsCommand {
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+public partial class objectsSchedule {
+    
+    private objectsScheduleEntry[] entriesField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlArrayItemAttribute("entry", IsNullable=false)]
+    public objectsScheduleEntry[] entries {
+        get {
+            return this.entriesField;
+        }
+        set {
+            this.entriesField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+public partial class objectsScheduleEntry {
+    
+    private int timeField;
+    
+    private int typeidField;
+    
+    private string daysofweekField;
+    
+    private string parameterField;
+    
+    private bool activeField;
+    
+    private int objecttypeidField;
+    
+    private int objectidField;
+    
+    public objectsScheduleEntry() {
+        this.parameterField = "";
+        this.activeField = true;
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public int time {
+        get {
+            return this.timeField;
+        }
+        set {
+            this.timeField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public int typeid {
+        get {
+            return this.typeidField;
+        }
+        set {
+            this.typeidField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string daysofweek {
+        get {
+            return this.daysofweekField;
+        }
+        set {
+            this.daysofweekField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute("")]
+    public string parameter {
+        get {
+            return this.parameterField;
+        }
+        set {
+            this.parameterField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute(true)]
+    public bool active {
+        get {
+            return this.activeField;
+        }
+        set {
+            this.activeField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public int objecttypeid {
+        get {
+            return this.objecttypeidField;
+        }
+        set {
+            this.objecttypeidField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public int objectid {
+        get {
+            return this.objectidField;
+        }
+        set {
+            this.objectidField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class objectsActions {
     
     private objectsActionsEntry[] entriesField;
@@ -5324,11 +5570,17 @@ public partial class objectsActionsEntry {
     
     private string param4Field;
     
+    private string identField;
+    
+    private bool activeField;
+    
     public objectsActionsEntry() {
         this.param1Field = "";
         this.param2Field = "";
         this.param3Field = "";
         this.param4Field = "";
+        this.identField = "";
+        this.activeField = true;
     }
     
     /// <remarks/>
@@ -5420,6 +5672,30 @@ public partial class objectsActionsEntry {
         }
         set {
             this.param4Field = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute("")]
+    public string ident {
+        get {
+            return this.identField;
+        }
+        set {
+            this.identField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute(true)]
+    public bool active {
+        get {
+            return this.activeField;
+        }
+        set {
+            this.activeField = value;
         }
     }
 }

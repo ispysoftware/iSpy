@@ -4,7 +4,10 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using iSpyApplication.Utilities;
 
@@ -12,6 +15,30 @@ namespace iSpyApplication
 {
     public static class Helper
     {
+
+        public class ListItem
+        {
+            public string Name { get; set; }
+
+            public bool Restricted { get; set; }
+
+            public string Value { get; set; }
+
+            public int Index { get; set; }
+
+            public override string ToString()
+            {
+                return Name;
+            }
+
+            public ListItem(string name = "", string value = "", int index = 0)
+            {
+                Name = name;
+                Value = value;
+                Index = index;
+            }
+        }
+
         public static double CalculateTrigger(double percent)
         {
             const double minimum = 0.00000001;
@@ -62,7 +89,13 @@ namespace iSpyApplication
             return d;
         }
 
-        static public void CopyFolder(string sourceFolder, string destFolder)
+        public static Boolean IsAlphaNumeric(string strToCheck)
+        {
+            Regex rg = new Regex(@"^[a-zA-Z0-9\s,]*$");
+            return rg.IsMatch(strToCheck);
+        }
+
+        public static void CopyFolder(string sourceFolder, string destFolder)
         {
             if (!Directory.Exists(destFolder))
                 Directory.CreateDirectory(destFolder);
@@ -442,6 +475,287 @@ namespace iSpyApplication
             {
                 LastReset = Now;
                 Name = name;
+            }
+        }
+
+        public static string AlertSummary(objectsActionsEntry e)
+        {
+            string t = "Unknown";
+            bool b;
+            switch (e.type.ToUpperInvariant())
+            {
+                case "EXE":
+                    t = LocRm.GetString("ExecuteFile") + ": " + e.param1;
+                    break;
+                case "URL":
+                    t = LocRm.GetString("CallURL") + ": " + e.param1;
+                    Boolean.TryParse(e.param2, out b);
+                    if (b)
+                        t += " (POST grab)";
+                    break;
+                case "NM":
+                    t = e.param1 + " " + e.param2 + ":" + e.param3 + " (" + e.param4 + ")";
+                    break;
+                case "S":
+                    t = LocRm.GetString("PlaySound") + ": " + e.param1;
+                    break;
+                case "ATC":
+                    t = LocRm.GetString("SoundThroughCamera") + ": " + e.param1;
+                    break;
+                case "SW":
+                    t = LocRm.GetString("ShowWindow");
+                    break;
+                case "B":
+                    t = LocRm.GetString("Beep");
+                    break;
+                case "M":
+                    t = LocRm.GetString("Maximise");
+                    break;
+                case "MO":
+                    t = LocRm.GetString("SwitchMonitorOn");
+                    break;
+                case "TA":
+                    {
+                        string[] op = e.param1.Split(',');
+                        string n = "[removed]";
+                        int id = Convert.ToInt32(op[1]);
+                        switch (op[0])
+                        {
+                            case "1":
+                                objectsMicrophone om = MainForm.Microphones.FirstOrDefault(p => p.id == id);
+                                if (om != null)
+                                    n = om.name;
+                                break;
+                            case "2":
+                                objectsCamera oc = MainForm.Cameras.FirstOrDefault(p => p.id == id);
+                                if (oc != null)
+                                    n = oc.name;
+                                break;
+                        }
+                        t = LocRm.GetString("TriggerAlertOn") + " " + n;
+                    }
+                    break;
+                case "SOO":
+                    {
+                        string[] op = e.param1.Split(',');
+                        string n = "[removed]";
+                        int id = Convert.ToInt32(op[1]);
+                        switch (op[0])
+                        {
+                            case "1":
+                                objectsMicrophone om = MainForm.Microphones.FirstOrDefault(p => p.id == id);
+                                if (om != null)
+                                    n = om.name;
+                                break;
+                            case "2":
+                                objectsCamera oc = MainForm.Cameras.FirstOrDefault(p => p.id == id);
+                                if (oc != null)
+                                    n = oc.name;
+                                break;
+                        }
+                        t = LocRm.GetString("SwitchObjectOn") + " " + n;
+                    }
+                    break;
+                case "SOF":
+                    {
+                        string[] op = e.param1.Split(',');
+                        string n = "[removed]";
+                        int id;
+                        int.TryParse(op[1], out id);
+                        switch (op[0])
+                        {
+                            case "1":
+                                objectsMicrophone om = MainForm.Microphones.FirstOrDefault(p => p.id == id);
+                                if (om != null)
+                                    n = om.name;
+                                break;
+                            case "2":
+                                objectsCamera oc = MainForm.Cameras.FirstOrDefault(p => p.id == id);
+                                if (oc != null)
+                                    n = oc.name;
+                                break;
+                        }
+                        t = LocRm.GetString("SwitchObjectOff") + " " + n;
+                    }
+                    break;
+                case "E":
+                    t = LocRm.GetString("SendEmail") + ": " + e.param1;
+                    if (e.param2 != "")
+                    {
+                        bool.TryParse(e.param2, out b);
+                        if (b)
+                            t += " (include grab)";
+                    }
+
+                    break;
+                case "SMS":
+                    t = LocRm.GetString("SendSMS") + ": " + e.param1;
+                    break;
+                case "TM":
+                    t = LocRm.GetString("SendTwitterMessage");
+                    break;
+            }
+
+            return t;
+        }
+
+        public static bool TestHttpurl(string source, string cookies, string login, string password)
+        {
+            bool b = false;
+            HttpStatusCode sc = 0;
+
+            HttpWebRequest req;
+            var res = ConnectionFactory.GetResponse(source, cookies, "", "", login, password, "GET", "", false, out req);
+            if (res != null)
+            {
+                sc = res.StatusCode;
+                if (sc == HttpStatusCode.OK)
+                {
+                    string ct = res.ContentType.ToLower();
+                    if (ct.IndexOf("text", StringComparison.Ordinal) == -1)
+                    {
+                        b = true;
+                    }
+                }
+                res.Close();
+            }
+
+            Logger.LogMessageToFile("Status " + sc + " at " + source, "Uri Checker");
+
+            return b;
+        }
+
+        public static bool TestRtspurl(Uri uri, string login, string password)
+        {
+            bool b = false;
+            try
+            {
+
+                var request = "OPTIONS " + uri + " RTSP/1.0\r\n" +
+                              "CSeq: 1\r\n" +
+                              "User-Agent: iSpy\r\n" +
+                              "Accept: */*\r\n";
+
+                if (!string.IsNullOrEmpty(login))
+                {
+                    var authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(login + ":" + password));
+                    request += "Authorization: Basic " + authInfo + "\r\n";
+                }
+
+                request += "\r\n";
+
+                IPAddress host = IPAddress.Parse(uri.DnsSafeHost);
+                var hostep = new IPEndPoint(host, uri.Port);
+
+                var sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp) { ReceiveTimeout = 2000 };
+                sock.Connect(hostep);
+
+                var response = sock.Send(Encoding.UTF8.GetBytes(request));
+                if (response > 0)
+                {
+                    var bytesReceived = new byte[200];
+                    var bytes = sock.Receive(bytesReceived, bytesReceived.Length, 0);
+                    string resp = Encoding.ASCII.GetString(bytesReceived, 0, bytes);
+                    if (resp.IndexOf("200 OK", StringComparison.Ordinal) != -1)
+                    {
+                        b = true;
+                    }
+                    Logger.LogMessageToFile("RTSP attempt: " + resp + " at " + uri, "Uri Checker");
+                }
+                sock.Close();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogErrorToFile(ex.Message, "Uri Checker");
+            }
+            return b;
+        }
+
+        public static readonly ScheduleAction[] Actions =
+            {
+                new ScheduleAction("Power: ON",0,ScheduleAction.ActionTypeID.All),
+                new ScheduleAction("Power: OFF",1,ScheduleAction.ActionTypeID.All),
+                new ScheduleAction("Recording: Start",2,ScheduleAction.ActionTypeID.CameraAndMic),
+                new ScheduleAction("Recording: Stop",3,ScheduleAction.ActionTypeID.CameraAndMic),
+                new ScheduleAction("Mode: Record on Detect",4,ScheduleAction.ActionTypeID.CameraAndMic),
+                new ScheduleAction("Mode: Record on Alert",5,ScheduleAction.ActionTypeID.CameraAndMic),
+                new ScheduleAction("Mode: No Recording",6,ScheduleAction.ActionTypeID.CameraAndMic),
+                new ScheduleAction("Alerts: ON",7,ScheduleAction.ActionTypeID.All),
+                new ScheduleAction("Alerts: OFF",8,ScheduleAction.ActionTypeID.All),
+                new ScheduleAction("Alert Action: ON",9,ScheduleAction.ActionTypeID.All,"Action"),
+                new ScheduleAction("Alert Action: OFF",10,ScheduleAction.ActionTypeID.All,"Action"),
+                new ScheduleAction("Time lapse: ON",11,ScheduleAction.ActionTypeID.CameraOnly),
+                new ScheduleAction("Time lapse: OFF",12,ScheduleAction.ActionTypeID.CameraOnly),
+                new ScheduleAction("FTP Images: ON",13,ScheduleAction.ActionTypeID.CameraOnly),
+                new ScheduleAction("FTP Images: OFF",14,ScheduleAction.ActionTypeID.CameraOnly),
+                new ScheduleAction("FTP Recordings: ON",15,ScheduleAction.ActionTypeID.CameraOnly),
+                new ScheduleAction("FTP Recordings: OFF",16,ScheduleAction.ActionTypeID.CameraOnly),
+                new ScheduleAction("Grabs: ON",17,ScheduleAction.ActionTypeID.CameraOnly),
+                new ScheduleAction("Grabs: OFF",18,ScheduleAction.ActionTypeID.CameraOnly),
+                new ScheduleAction("PTZ Scheduler: ON",19,ScheduleAction.ActionTypeID.CameraOnly),
+                new ScheduleAction("PTZ Scheduler: OFF",20,ScheduleAction.ActionTypeID.CameraOnly),
+                new ScheduleAction("Messaging: ON",21,ScheduleAction.ActionTypeID.All),
+                new ScheduleAction("Messaging: OFF",22,ScheduleAction.ActionTypeID.All),
+                new ScheduleAction("PTZ Tracking: ON",23,ScheduleAction.ActionTypeID.CameraOnly),
+                new ScheduleAction("PTZ Tracking: OFF",24,ScheduleAction.ActionTypeID.CameraOnly)
+            };
+        public static string[] WebRestrictedAlertTypes = { "S", "EXE" };
+        public static string ScheduleDescription(int id)
+        {
+            return Actions.Single(p => p.ID == id).ToString();
+        }
+
+        internal static bool CanArchive
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(MainForm.Conf.Archive))
+                {
+                    try
+                    {
+                        if (Directory.Exists(MainForm.Conf.Archive))
+                            return true;
+                    }
+                    catch
+                    {
+                        //invalid location
+                    }
+
+                }
+                return false;
+            }
+        }
+
+        public class ScheduleAction
+        {
+            private readonly string _action;
+            public readonly string ParameterName;
+            public readonly int ID;
+            public readonly ActionTypeID TypeID;
+
+            public enum ActionTypeID
+            {
+                All, CameraOnly, CameraAndMic
+            }
+
+            public ScheduleAction(string action, int id, ActionTypeID typeID)
+            {
+                _action = action;
+                ID = id;
+                TypeID = typeID;
+            }
+
+            public ScheduleAction(string action, int id, ActionTypeID typeID, string param)
+            {
+                _action = action;
+                ID = id;
+                TypeID = typeID;
+                ParameterName = param;
+            }
+
+            public override string ToString()
+            {
+                return _action;
             }
         }
 

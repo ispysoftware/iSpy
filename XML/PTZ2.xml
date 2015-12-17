@@ -354,6 +354,7 @@
   <Camera id="11">
     <Makes>
       <Make Name="TENVIS" Model="PT7131" />
+      <Make Name="ROCAM" Model="NC300" />
     </Makes>
     <CommandURL>/decoder_control.cgi</CommandURL>
     <Commands>
@@ -6109,6 +6110,102 @@ copy or delete as many lines as you need.-->
       <Command Name="Stop horizon patrol">command=29</Command>
       <Command Name="Vertical patrol">command=26</Command>
       <Command Name="Stop vertical patrol">command=27</Command>
+    </ExtendedCommands>
+  </Camera>
+<Camera id="220">
+    <Makes>
+      <Make Name="KaiCong" Model="SIP1602W" />
+    </Makes>
+    <CommandURL>/decoder_control.cgi?</CommandURL>
+    <Commands>
+      <Center>command=25</Center>
+      <Left>command=4</Left>
+      <LeftUp>command=90</LeftUp>
+      <Right>command=6</Right>
+      <RightUp>command=91</RightUp>
+      <Up>command=0</Up>
+      <Down>command=2</Down>
+      <LeftDown>command=92</LeftDown>
+      <RightDown>command=93</RightDown>
+      <Stop>command=1</Stop>
+      <ZoomIn>
+      </ZoomIn>
+      <ZoomOut>
+      </ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Stop">command=1</Command>
+      <Command Name="Horizon patrol">command=28</Command>
+      <Command Name="Stop horizon patrol">command=29</Command>
+      <Command Name="Vertical patrol">command=26</Command>
+      <Command Name="Stop vertical patrol">command=27</Command>
+      <Command Name="IO On">command=94</Command>
+      <Command Name="IO Off">command=95</Command>
+    </ExtendedCommands>
+  </Camera>
+  <Camera id="221">
+    <Makes>
+      <Make Name="SunEyes" Model="SP-FJ01W" />
+    </Makes>
+    <CommandURL></CommandURL>
+    <Commands>
+      <Center>/decoder_control.cgi?command=25</Center>
+      <Left>/decoder_control.cgi?command=4</Left>
+      <LeftUp>/decoder_control.cgi?command=90</LeftUp>
+      <Right>/decoder_control.cgi?command=6</Right>
+      <RightUp>/decoder_control.cgi?command=91</RightUp>
+      <Up>/decoder_control.cgi?command=0</Up>
+      <Down>/decoder_control.cgi?command=2</Down>
+      <LeftDown>/decoder_control.cgi?command=92</LeftDown>
+      <RightDown>/decoder_control.cgi?command=93</RightDown>
+      <Stop>/decoder_control.cgi?command=1</Stop>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Stop">/decoder_control.cgi?command=1</Command>
+      <Command Name="Horizon patrol">/decoder_control.cgi?command=28</Command>
+      <Command Name="Stop horizon patrol">/decoder_control.cgi?command=29</Command>
+      <Command Name="Vertical patrol">/decoder_control.cgi?command=26</Command>
+      <Command Name="Stop vertical patrol">/decoder_control.cgi?command=27</Command>
+      <Command Name="Set 1">/decoder_control.cgi?command=30</Command>
+      <Command Name="Set 2">/decoder_control.cgi?command=32</Command>
+      <Command Name="Set 3">/decoder_control.cgi?command=34</Command>
+      <Command Name="Set 4">/decoder_control.cgi?command=36</Command>
+      <Command Name="Set 5">/decoder_control.cgi?command=38</Command>
+      <Command Name="Set 6">/decoder_control.cgi?command=40</Command>
+      <Command Name="Set 7">/decoder_control.cgi?command=42</Command>
+      <Command Name="Set 8">/decoder_control.cgi?command=44</Command>
+      <Command Name="Set 9">/decoder_control.cgi?command=46</Command>
+      <Command Name="Set 10">/decoder_control.cgi?command=48</Command>
+      <Command Name="Set 11">/decoder_control.cgi?command=50</Command>
+      <Command Name="Set 12">/decoder_control.cgi?command=52</Command>
+      <Command Name="Set 13">/decoder_control.cgi?command=54</Command>
+      <Command Name="Set 14">/decoder_control.cgi?command=56</Command>
+      <Command Name="Get 1">/decoder_control.cgi?command=31</Command>
+      <Command Name="Get 2">/decoder_control.cgi?command=33</Command>
+      <Command Name="Get 3">/decoder_control.cgi?command=35</Command>
+      <Command Name="Get 4">/decoder_control.cgi?command=37</Command>
+      <Command Name="Get 5">/decoder_control.cgi?command=39</Command>
+      <Command Name="Get 6">/decoder_control.cgi?command=41</Command>
+      <Command Name="Get 7">/decoder_control.cgi?command=43</Command>
+      <Command Name="Get 8">/decoder_control.cgi?command=45</Command>
+      <Command Name="Get 9">/decoder_control.cgi?command=47</Command>
+      <Command Name="Get 10">/decoder_control.cgi?command=49</Command>
+      <Command Name="Get 11">/decoder_control.cgi?command=51</Command>
+      <Command Name="Get 12">/decoder_control.cgi?command=53</Command>
+      <Command Name="Get 13">/decoder_control.cgi?command=55</Command>
+      <Command Name="Get 14">/decoder_control.cgi?command=57</Command>
+      <Command Name="Get 15">/decoder_control.cgi?command=59</Command>
+      <Command Name="0">/set_misc.cgi?ptz_patrol_rate=0</Command>
+      <Command Name="1">/set_misc.cgi?ptz_patrol_rate=1</Command>
+      <Command Name="2">/set_misc.cgi?ptz_patrol_rate=2</Command>
+      <Command Name="3">/set_misc.cgi?ptz_patrol_rate=3</Command>
+      <Command Name="4">/set_misc.cgi?ptz_patrol_rate=4</Command>
+      <Command Name="5">/set_misc.cgi?ptz_patrol_rate=5</Command>
+      <Command Name="6">/set_misc.cgi?ptz_patrol_rate=6</Command>
+      <Command Name="7">/set_misc.cgi?ptz_patrol_rate=7</Command>
+      <Command Name="8">/set_misc.cgi?ptz_patrol_rate=8</Command>
+      <Command Name="9">/set_misc.cgi?ptz_patrol_rate=9</Command>
+      <Command Name="10">/set_misc.cgi?ptz_patrol_rate=10</Command>
     </ExtendedCommands>
   </Camera>
 </PTZSettings2>

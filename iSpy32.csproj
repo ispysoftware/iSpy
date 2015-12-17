@@ -236,6 +236,7 @@
       <HintPath>$(SolutionDir)packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Kinect, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>DLLS\Microsoft.Kinect.dll</HintPath>
@@ -297,8 +298,8 @@
     <Reference Include="Renderers">
       <HintPath>DLLS\Renderers.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp">
-      <HintPath>$(SolutionDir)packages\RestSharp.105.2.3\lib\net4\RestSharp.dll</HintPath>
+    <Reference Include="RestSharp, Version=105.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\RestSharp.105.0.1\lib\net4\RestSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SharpDX, Version=2.6.3.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
@@ -420,6 +421,18 @@
     <Compile Include="Controls\ActionEditor.Designer.cs">
       <DependentUpon>ActionEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ScheduleEntryEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\ScheduleEntryEditor.Designer.cs">
+      <DependentUpon>ScheduleEntryEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ScheduleRow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ScheduleRow.Designer.cs">
+      <DependentUpon>ScheduleRow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\AlertEventRow.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -511,6 +524,12 @@
     </Compile>
     <Compile Include="Controls\PTZTracking.Designer.cs">
       <DependentUpon>PTZTracking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ScheduleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ScheduleEditor.Designer.cs">
+      <DependentUpon>ScheduleEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\SelectObjects.cs">
       <SubType>Form</SubType>
@@ -687,7 +706,6 @@
     <Compile Include="Controls\GridViewModeConfig.Designer.cs">
       <DependentUpon>GridViewModeConfig.cs</DependentUpon>
     </Compile>
-    <Compile Include="HttpRequest.cs" />
     <Compile Include="Importer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -885,7 +903,19 @@
     </Compile>
     <Compile Include="RestartableStream.cs" />
     <Compile Include="SerializableFont.cs" />
+    <Compile Include="Server\CameraScanner.cs" />
+    <Compile Include="Server\Conf.cs" />
+    <Compile Include="Server\ConnectionOption.cs" />
+    <Compile Include="Server\HTTPRequest.cs" />
+    <Compile Include="Server\JSONServer.cs" />
     <Compile Include="Server\LocalServer.cs" />
+    <Compile Include="Server\NetworkDeviceList.cs" />
+    <Compile Include="Server\RestartableStream.cs" />
+    <Compile Include="Server\Scanner.cs" />
+    <Compile Include="Server\SourceItem.cs" />
+    <Compile Include="Server\WebSocketConnection.cs" />
+    <Compile Include="Server\WebSocketServer.cs" />
+    <Compile Include="Server\X509.cs" />
     <Compile Include="ShareCamera.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1171,9 +1201,6 @@
       <DependentUpon>Sources.xsd</DependentUpon>
     </Compile>
     <Compile Include="Cloud\YouTubeUploader.cs" />
-    <Content Include="backgrounds\demo_mask.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="backgrounds\FloorPlan_House.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1184,6 +1211,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="chk.png" />
+    <Content Include="Commands\example.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <None Include="Resources\cam_connecting.png" />
     <None Include="Resources\cam_offline.png" />
@@ -1194,6 +1224,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="libmp3lame.64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Masks\demo_mask.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Onvif\onvif.discovery.dll" />
@@ -1427,6 +1460,12 @@
     <EmbeddedResource Include="Controls\ActionEditor.resx">
       <DependentUpon>ActionEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ScheduleEntryEditor.resx">
+      <DependentUpon>ScheduleEntryEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ScheduleRow.resx">
+      <DependentUpon>ScheduleRow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\AlertEventRow.resx">
       <DependentUpon>AlertEventRow.cs</DependentUpon>
     </EmbeddedResource>
@@ -1466,6 +1505,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\PTZTracking.resx">
       <DependentUpon>PTZTracking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ScheduleEditor.resx">
+      <DependentUpon>ScheduleEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\SelectObjects.resx">
       <DependentUpon>SelectObjects.cs</DependentUpon>
@@ -1698,6 +1740,105 @@
     <Content Include="nothing.png" />
     <None Include="Web References\iSpyWS\ispyapi.wsdl" />
     <None Include="Web References\Reporting\reporting.wsdl" />
+    <Content Include="WebServerRoot\api\api.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\editaction.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\editaudiosource.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\editcamera.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\editftp.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\editmicrophone.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\editpelco.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\editptzschedule.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\editschedule.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\editstorage.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\editvideosource.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\settings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\showactions.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\showptzschedule.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\showschedule.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\audio\0.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\audio\1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\audio\2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\audio\3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\audio\4.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\audio\5.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\0.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\10.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\12.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\4.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\5.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\6.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\7.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\8.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\9.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="XML\config.xsd">
       <SubType>Designer</SubType>
     </None>

@@ -86,13 +86,13 @@ namespace iSpyApplication
 
             
 
-            string localserver = "http://" + MainForm.IPAddress + ":" + MainForm.Conf.LANPort;
+            string localserver = (MainForm.Conf.SSLEnabled?"https":"http")+"://" + MainForm.IPAddress + ":" + MainForm.Conf.LANPort;
             
-            UISync.Execute(() => rtbOutput.Text = string.Format("Local iSpy Server: {0}{1}", localserver, NL));
+            UISync.Execute(() => rtbOutput.Text = $"Local iSpy Server: {localserver}{NL}");
             if (webports.IndexOf(","+MainForm.Conf.LANPort+",", StringComparison.Ordinal)==-1)
             {
                 UISync.Execute(() => rtbOutput.Text +=
-                    string.Format("Warning: Running a local server on a non-standard port ({0}) may cause web-browser security errors. Click the link above to test in your web browser.{1}", MainForm.Conf.LANPort, NL));
+                    $"Warning: Running a local server on a non-standard port ({MainForm.Conf.LANPort}) may cause web-browser security errors. Click the link above to test in your web browser.{NL}");
             }
             if (MainForm.IPAddress.StartsWith("169.254"))
             {
@@ -113,7 +113,7 @@ namespace iSpyApplication
             if (!loadurl(localserver+"/ping", out res))
             {
                 string res1 = res;
-                UISync.Execute(() => rtbOutput.Text += string.Format("Failed: {0}{1}", res1, NL));
+                UISync.Execute(() => rtbOutput.Text += $"Failed: {res1}{NL}");
                 if (MainForm.MWS.Running)
                 {
                     UISync.Execute(() => rtbOutput.Text += "Server reports it IS running" + NL);
@@ -129,14 +129,14 @@ namespace iSpyApplication
             else
             {
                 res = res.ToLower();
-                if (res.IndexOf("access", StringComparison.Ordinal)!=-1 || res.IndexOf("ok", StringComparison.Ordinal)!=-1)
+                if (res.IndexOf("ispy", StringComparison.Ordinal)!=-1)
                 {
                     UISync.Execute(() => rtbOutput.Text += "OK");
                 }
                 else
                 {
                     string res1 = res;
-                    UISync.Execute(() => rtbOutput.Text += string.Format("Unexpected output: {0}", res1));
+                    UISync.Execute(() => rtbOutput.Text += $"Unexpected output: {res1}");
                 }
             }
             UISync.Execute(() => rtbOutput.Text += NL);

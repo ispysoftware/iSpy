@@ -1193,7 +1193,7 @@ namespace iSpyApplication.Sources.Video
                 {
                     videoControl = (IAMVideoControl) _sourceObject;
                 }
-                catch
+                catch(InvalidCastException)
                 {
                     // some camera drivers may not support IAMVideoControl interface
                 }

@@ -137,7 +137,8 @@ namespace iSpyApplication.Controls
                     param1 = oa.param1,
                     param2 = oa.param2,
                     param3 = oa.param3,
-                    param4 = oa.param4
+                    param4 = oa.param4,
+                    ident = Guid.NewGuid().ToString()
                 };
                 MainForm.Actions.Add(oae);
             }

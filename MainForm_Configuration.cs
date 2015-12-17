@@ -32,6 +32,13 @@ namespace iSpyApplication
         private static Color _noActivityColor = Color.Empty;
         public static string[] AlertNotifications = { "alert", "disconnect", "reconnect" };
 
+        private static List<objectsActionsEntry> _actions;
+        private static List<objectsScheduleEntry> _schedule;
+        private static List<objectsMicrophone> _microphones;
+        private static List<objectsFloorplan> _floorplans;
+        private static List<objectsCommand> _remotecommands;
+        private static List<objectsCamera> _cameras;
+
         public static void ReloadColors()
         {
             _backColor =
@@ -342,6 +349,19 @@ namespace iSpyApplication
                 return _actions;
             }
             set { _actions = value; }
+        }
+
+        public static List<objectsScheduleEntry> Schedule
+        {
+            get
+            {
+                if (_cameras == null)
+                {
+                    LoadObjects(Program.AppDataPath + @"XML\objects.xml");
+                }
+                return _schedule;
+            }
+            set { _schedule = value; }
         }
 
         public static List<PTZSettings2Camera> PTZs
@@ -656,6 +676,7 @@ namespace iSpyApplication
                 _floorplans = o.floorplans.ToList();
                 _remotecommands = o.remotecommands.ToList();
                 _actions = o.actions.entries.ToList();
+                _schedule = o.schedule.entries.ToList();
             }
             catch (Exception ex)
             {
@@ -665,12 +686,14 @@ namespace iSpyApplication
                 _microphones = new List<objectsMicrophone>();
                 _remotecommands = GenerateRemoteCommands().ToList();
                 _actions = new List<objectsActionsEntry>();
+                _schedule = new List<objectsScheduleEntry>();
                 _floorplans = new List<objectsFloorplan>();
             }
 
             Filter.CheckedCameraIDs = new List<int>();
             Filter.CheckedMicIDs = new List<int>();
             Filter.Filtered = false;
+            _currentFileName = path;
         }
 
         public static objects GetObjects(string path)
@@ -704,9 +727,15 @@ namespace iSpyApplication
             if (c.cameras==null)
                 c.cameras = new objectsCamera[] {};
 
-            bool addActions = c.actions?.entries == null;
+            bool addActions = c.actions == null;
             if (addActions)
-                c.actions = new objectsActions {entries = new objectsActionsEntry[] {}};
+                c.actions = new objectsActions { entries = new objectsActionsEntry[] { } };
+
+
+            bool addSchedule = c.schedule == null;
+            if (addSchedule)
+                c.schedule = new objectsSchedule {entries = new objectsScheduleEntry[] {}};
+
 
 
             if (c.cameras.Select(oc => oc.settings.desktopresizewidth).Any(rw => rw == 0))
@@ -852,8 +881,9 @@ namespace iSpyApplication
                                                                         param1 = a.param1, 
                                                                         param2 = a.param2, 
                                                                         param3 = a.param3, 
-                                                                        param4 = a.param4
-                                                                    }));
+                                                                        param4 = a.param4,
+                                                                        ident = Guid.NewGuid().ToString()
+                    }));
                     if (!string.IsNullOrEmpty(cam.settings.emailondisconnect))
                     {
                         l.Add(new objectsActionsEntry
@@ -863,7 +893,8 @@ namespace iSpyApplication
                             objecttypeid = 2,
                             type = "E",
                             param1 = cam.settings.emailondisconnect,
-                            param2 = "False"
+                            param2 = "False",
+                            ident = Guid.NewGuid().ToString()
                         });
                     }
                     c.actions.entries = l.ToArray();
@@ -1205,7 +1236,9 @@ namespace iSpyApplication
                         param1 = a.param1,
                         param2 = a.param2,
                         param3 = a.param3,
-                        param4 = a.param4
+                        param4 = a.param4,
+                        ident = Guid.NewGuid().ToString()
+
                     }));
                     if (!string.IsNullOrEmpty(mic.settings.emailondisconnect))
                     {
@@ -1216,8 +1249,9 @@ namespace iSpyApplication
                                     objecttypeid = 1,
                                     type = "E",
                                     param1 = mic.settings.emailondisconnect,
-                                    param2 = "False"
-                                });
+                                    param2 = "False",
+                                    ident = Guid.NewGuid().ToString()
+                        });
                     }
                     c.actions.entries = l.ToArray();
                 }
@@ -1232,6 +1266,12 @@ namespace iSpyApplication
 
                 if (mic.alerts.trigger == null)
                     mic.alerts.trigger = "";
+            }
+
+            foreach (var aa in c.actions.entries)
+            {
+                if (string.IsNullOrEmpty(aa.ident))
+                    aa.ident = Guid.NewGuid().ToString();
             }
             int fpid = 0;
             foreach (objectsFloorplan ofp in c.floorplans)
@@ -1253,6 +1293,142 @@ namespace iSpyApplication
                     rcid = ocmd.id + 1;
             }
 
+            if (addSchedule)
+            {
+                var l = new List<objectsScheduleEntry>();
+                foreach (var o in c.cameras)
+                {
+                    foreach (var se in o.schedule.entries)
+                    {
+                        for (int i = 0; i < 10; i++)
+                        {
+                            bool startSpecified = se.start.Split(':')[0] != "-";
+                            bool stopSpecified = se.stop.Split(':')[0] != "-";
+                            if (!startSpecified && !stopSpecified)
+                                continue;
+
+
+                            var ose = new objectsScheduleEntry
+                                      {
+                                          objectid = o.id,
+                                          objecttypeid = 2,
+                                          daysofweek = se.daysofweek,
+                                          active = se.active,
+                                          parameter = "",
+                                          typeid = -1,
+                                          time = ParseTime(startSpecified ? se.start : se.stop)
+                                      };
+
+
+                            switch (i)
+                            {
+                                case 0: //power on
+                                    if (startSpecified)
+                                        ose.typeid = 0;
+                                    break;
+                                case 1: //power off
+                                    if (stopSpecified)
+                                    {
+                                        ose.time = ParseTime(se.stop);
+                                        ose.typeid = 1;
+                                    }
+                                    break;
+                                case 2:
+                                    ose.typeid = se.alerts ? 7 : 8;
+                                    break;
+                                case 3:
+                                    ose.typeid = se.ftpenabled ? 13 : 14;
+                                    break;
+                                case 4:
+                                    ose.typeid = se.messaging ? 21 : 22;
+                                    break;
+                                case 5:
+                                    ose.typeid = se.ptz ? 19 : 20;
+                                    break;
+                                case 6:
+                                    if (se.recordonalert)
+                                        ose.typeid = 5;
+                                    else
+                                    {
+                                        ose.typeid = se.recordondetect ? 4 : 6;
+                                    }
+                                    break;
+                                case 7:
+                                    if (se.recordonstart)
+                                        ose.typeid = 2;
+                                    break;
+                                case 8:
+                                    ose.typeid = se.savelocalenabled ? 17 : 18;
+                                    break;
+                                case 9:
+                                    ose.typeid = se.timelapseenabled ? 11 : 12;
+                                    break;
+                            }
+                            if (ose.typeid > -1)
+                                l.Add(ose);
+                        }
+                    }
+                }
+
+                foreach (var o in c.microphones)
+                {
+                    foreach (var se in o.schedule.entries)
+                    {
+                        for (int i = 0; i < 10; i++)
+                        {
+                            var ose = new objectsScheduleEntry
+                                      {
+                                          objectid = o.id,
+                                          objecttypeid = 1,
+                                          daysofweek = se.daysofweek,
+                                          active = se.active,
+                                          parameter = "",
+                                          typeid = -1
+                                      };
+                            bool startSpecified = se.start.Split(':')[0] != "-";
+                            bool stopSpecified = se.stop.Split(':')[0] != "-";
+                            ose.time = ParseTime(startSpecified ? se.start : se.stop);
+                            switch (i)
+                            {
+                                case 0: //power on
+                                    if (startSpecified)
+                                        ose.typeid = 0;
+                                    break;
+                                case 1: //power off
+                                    if (stopSpecified)
+                                    {
+                                        ose.time = ParseTime(se.stop);
+                                        ose.typeid = 1;
+                                    }
+                                    break;
+                                case 2:
+                                    ose.typeid = se.alerts ? 7 : 8;
+                                    break;
+                                case 4:
+                                    ose.typeid = se.messaging ? 21 : 22;
+                                    break;
+                                case 6:
+                                    if (se.recordonalert)
+                                        ose.typeid = 5;
+                                    else
+                                    {
+                                        ose.typeid = se.recordondetect ? 4 : 6;
+                                    }
+                                    break;
+                                case 7:
+                                    if (se.recordonstart)
+                                        ose.typeid = 2;
+                                    break;
+                            }
+                            if (ose.typeid > -1)
+                                l.Add(ose);
+                        }
+                    }
+                }
+
+                c.schedule = new objectsSchedule() {entries = l.ToArray()};
+            }
+
 
 
             if (bAlertVlc)
@@ -1268,6 +1444,15 @@ namespace iSpyApplication
             Logger.LogMessageToFile("Loaded " + c.cameras.Length + " cameras, " + c.microphones.Length + " mics and " + c.floorplans.Length + " floorplans");
             return c;
 
+        }
+
+        private static int ParseTime(string time)
+        {
+            var d = DateTime.Now;
+            var s = time.Split(':');
+            var ts = new TimeSpan(Convert.ToInt32(s[0]), Convert.ToInt32(s[1]), 0);
+            d = d.Date + ts;
+            return Convert.ToInt32(d.TimeOfDay.TotalMinutes);
         }
 
         internal static int NextCameraId
@@ -1353,6 +1538,15 @@ namespace iSpyApplication
                 }
                 _sources = c.Manufacturer?.Distinct().ToList() ?? new List<ManufacturersManufacturer>();
 
+                int i = 0;
+                foreach (var m in _sources)
+                {
+                    foreach (var u in m.url)
+                    {
+                        u.id = i;
+                        i++;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -2009,6 +2203,25 @@ namespace iSpyApplication
                 return fp;
             }
             return null;
+        }
+
+        public void RemoveObject(ISpyControl io, bool confirm = false)
+        {
+            var cw = io as CameraWindow;
+            if (cw != null)
+                RemoveCamera(cw, confirm);
+            else
+            {
+                var vl = io as VolumeLevel;
+                if (vl != null)
+                    RemoveMicrophone(vl, confirm);
+                else
+                {
+                    var fp = io as FloorPlanControl;
+                    if (fp!=null)
+                        RemoveFloorplan(fp,confirm);
+                }
+            }
         }
 
         public void RemoveCamera(CameraWindow cameraControl, bool confirm)
@@ -2936,6 +3149,7 @@ namespace iSpyApplication
             }
             c.floorplans = FloorPlans.ToArray();
             c.remotecommands = RemoteCommands.ToArray();
+            c.schedule = new objectsSchedule {entries = _schedule.ToArray()};
             lock (ThreadLock)
             {
                 var s = new XmlSerializer(typeof(objects));
@@ -2953,9 +3167,10 @@ namespace iSpyApplication
                     }
                 }
             }
+            _currentFileName = fileName;
         }
 
-        private static void SaveConfig()
+        public static void SaveConfig()
         {
             lock (ThreadLock)
             {
@@ -3036,37 +3251,41 @@ namespace iSpyApplication
             }
         }
 
-        public void AddObjectExternal(int objectTypidId, int sourceIndex, int width, int height, string name, string url)
+        public object AddObjectExternal(int objectTypeId, int sourceIndex, int width, int height, string name, string url)
         {
             if (!VlcHelper.VlcInstalled && sourceIndex == 5)
-                return;
-            switch (objectTypidId)
+                return null;
+            object oret = null;
+            switch (objectTypeId)
             {
                 case 2:
                     if (Cameras.FirstOrDefault(p => p.settings.videosourcestring == url) == null)
                     {
+                        if (name == "") name = "Camera " + NextCameraId;
                         if (InvokeRequired)
-                            Invoke(new Delegates.AddObjectExternalDelegate(AddCameraExternal), sourceIndex, url, width, height,
+                            oret =  Invoke(new Delegates.AddObjectExternalDelegate(AddCameraExternal), sourceIndex, url, width, height,
                                    name);
                         else
-                            AddCameraExternal(sourceIndex, url, width, height, name);
+                            oret = AddCameraExternal(sourceIndex, url, width, height, name);
                     }
                     break;
                 case 1:
                     if (Microphones.FirstOrDefault(p => p.settings.sourcename == url) == null)
                     {
+                        if (name == "") name = "Mic " + NextMicrophoneId;
                         if (InvokeRequired)
-                            Invoke(new Delegates.AddObjectExternalDelegate(AddMicrophoneExternal), sourceIndex, url, width, height,
+                            oret = Invoke(new Delegates.AddObjectExternalDelegate(AddMicrophoneExternal), sourceIndex, url, width, height,
                                    name);
                         else
-                            AddMicrophoneExternal(sourceIndex, url, width, height, name);
+                            oret = AddMicrophoneExternal(sourceIndex, url, width, height, name);
                     }
                     break;
             }
             NeedsSync = true;
+            return oret;
         }
 
-        private void AddCameraExternal(int sourceIndex, string url, int width, int height, string name)
+        private CameraWindow AddCameraExternal(int sourceIndex, string url, int width, int height, string name)
         {
             CameraWindow cw = NewCameraWindow(sourceIndex);
             cw.Camobject.settings.desktopresizewidth = width;
@@ -3097,9 +3316,10 @@ namespace iSpyApplication
             SetNewStartPosition();
             cw.Enable();
             cw.NeedSizeUpdate = true;
+            return cw;
         }
 
-        private void AddMicrophoneExternal(int sourceIndex, string url, int width, int height, string name)
+        private VolumeLevel AddMicrophoneExternal(int sourceIndex, string url, int width, int height, string name)
         {
             VolumeLevel vl = NewVolumeLevel(sourceIndex);
             vl.Micobject.name = name;
@@ -3114,6 +3334,7 @@ namespace iSpyApplication
             vl.Micobject.settings.accessgroups = "";
             SetNewStartPosition();
             vl.Enable();
+            return vl;
         }
 
         internal VolumeLevel AddCameraMicrophone(int cameraid, string name)
@@ -3724,6 +3945,7 @@ namespace iSpyApplication
         public int Duration;
         public string Name;
         public long CreatedDateTicks;
+        public long CreatedDateTicksUTC;
         public int ObjectTypeId;
         public int ObjectId;
         public double MaxAlarm;
@@ -3741,6 +3963,7 @@ namespace iSpyApplication
             MaxAlarm = maxAlarm;
             IsMerged = isMerged;
             IsTimeLapse = isTimelapse;
+            CreatedDateTicksUTC = (new DateTime(CreatedDateTicks)).ToUniversalTime().AddSeconds(0-Duration).Ticks;
         }
     }
 }

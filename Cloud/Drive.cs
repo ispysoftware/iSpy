@@ -192,8 +192,9 @@ namespace iSpyApplication.Cloud
             public string DestinationPath;
         }
 
-        public static string Upload(string filename, string path)
+        public static string Upload(string filename, string path, out bool success)
         {
+            success = false;
             if (UploadList.SingleOrDefault(p => p.SourceFilename == filename) != null)
                 return LocRm.GetString("FileInQueue");
 
@@ -206,6 +207,7 @@ namespace iSpyApplication.Cloud
                 _uploading = true;
                 ThreadPool.QueueUserWorkItem(Upload, null);
             }
+            success = true;
             return LocRm.GetString("AddedToQueue");
 
         }

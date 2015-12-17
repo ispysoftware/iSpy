@@ -22,7 +22,7 @@ namespace iSpyApplication
 
         public delegate void RunStorageManagementDelegate(bool abortIfRunning);
 
-        public delegate void AddObjectExternalDelegate(int sourceIndex, string url, int width, int height, string name);
+        public delegate object AddObjectExternalDelegate(int sourceIndex, string url, int width, int height, string name);
 
         public delegate void CameraCommandDelegate(CameraWindow target);
 

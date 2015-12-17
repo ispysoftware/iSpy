@@ -20,6 +20,7 @@
                                     <xs:attribute name="cookies" type="xs:string" default=""/>
                                     <xs:attribute name="AudioSource" type="xs:string" use="optional"/>
                                     <xs:attribute name="AudioURL" type="xs:string" use="optional"/>
+                                    <xs:attribute name="id" type="xs:int" use="optional"/>
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>

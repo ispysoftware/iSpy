@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
@@ -14,6 +15,7 @@ using iSpyApplication.Sources;
 using iSpyApplication.Sources.Video;
 using iSpyApplication.Utilities;
 using iSpyApplication.Vision;
+using Image = System.Drawing.Image;
 using Point = System.Drawing.Point;
 
 namespace iSpyApplication.Controls
@@ -442,6 +444,53 @@ namespace iSpyApplication.Controls
                 VideoSource.NewFrame -= VideoNewFrame;
         }
 
+        private bool _updateResources = true;
+        public void UpdateResources()
+        {
+            _updateResources = true;
+        }
+
+        private void SetMaskImage()
+        {
+            var p = CW.Camobject.settings.maskimage;
+            if (!string.IsNullOrEmpty(p))
+            {
+
+                bool abs = false;
+                try
+                {
+                    if (File.Exists(p))
+                    {
+                        Mask = (Bitmap)Image.FromFile(p);
+                        abs = true;
+                    }
+                }
+                catch
+                {
+                    // ignored
+                }
+                if (abs) return;
+                p = Program.AppPath + "Masks\\" + p;
+                try
+                {
+                    if (File.Exists(p))
+                    {
+                        Mask = (Bitmap)Image.FromFile(p);
+                    }
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+            else
+            {
+                if (Mask == null) return;
+                Mask.Dispose();
+                Mask = null;
+            }
+        }
+
         private void VideoNewFrame(object sender, NewFrameEventArgs e)
         {
             var nf = NewFrame;
@@ -459,8 +508,30 @@ namespace iSpyApplication.Controls
                 CalculateFramerates();
             }
             
-            _lastframeEvent = Helper.Now;           
+            _lastframeEvent = Helper.Now;
+
+            if (_updateResources)
+            {
+                _updateResources = false;
+                DrawFont.Dispose();
+                DrawFont = null;
+                ForeBrush.Dispose();
+                ForeBrush = null;
+                BackBrush.Dispose();
+                BackBrush = null;
+                SetMaskImage();
+                RotateFlipType rft;
+                if (Enum.TryParse(CW.Camobject.rotateMode, out rft))
+                {
+                    RotateFlipType = rft;
+                }
+                else
+                {
+                    RotateFlipType = RotateFlipType.RotateNoneFlipNone;
+                }
+            }
             
+
             Bitmap bmOrig = null;
             bool bMotion = false;
             lock (_sync)
@@ -667,19 +738,6 @@ namespace iSpyApplication.Controls
         {
             public CameraWindow CW;
             public Rectangle R;
-        }
-
-        private string NV(string name)
-        {
-            if (string.IsNullOrEmpty(CW.Camobject.settings.tagsnv))
-                return "";
-            name = name.ToLower().Trim();
-            string[] settings = CW.Camobject.settings.tagsnv.Split(',');
-            foreach (string[] nv in settings.Select(s => s.Split('=')).Where(nv => nv[0].ToLower().Trim() == name))
-            {
-                return nv[1];
-            }
-            return "";
         }
 
         private Dictionary<string, string> _tags; 

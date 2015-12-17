@@ -164,12 +164,12 @@ namespace iSpyApplication
             var ips = rtbAccessList.Text.Trim().Split(',');
             var t = ips.Select(ip => ip.Trim()).Where(ip2 => ip2 != "").Aggregate("", (current, ip2) => current + (ip2 + ","));
             MainForm.Conf.AllowedIPList = t.Trim(',');
-            LocalServer.AllowedIPs = null;
+            LocalServer.ReloadAllowedIPs();
 
             var refs = rtbReferrers.Text.Trim().Split(',');
             var t2 = refs.Select(ip => ip.Trim()).Where(ip2 => ip2 != "").Aggregate("", (current, ip2) => current + (ip2 + ","));
             MainForm.Conf.Referers = t2.Trim(',');
-            LocalServer.AllowedReferers = null;
+            LocalServer.ReloadAllowedReferrers();
 
             
             MainForm.Conf.ShowOverlayControls = chkOverlay.Checked;

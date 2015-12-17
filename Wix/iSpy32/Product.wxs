@@ -31,7 +31,12 @@
       <ComponentGroupRef Id="plugins" />
       <ComponentGroupRef Id="sounds" />
       <ComponentGroupRef Id="webserverroot" />
+      <ComponentGroupRef Id="masks" />
       <ComponentGroupRef Id="data" />
+      <ComponentGroupRef Id="api" />
+      <ComponentGroupRef Id="commands" />
+      <ComponentGroupRef Id="audio" />
+      <ComponentGroupRef Id="video" />
       <ComponentRef Id="ApplicationShortcut" />
       <ComponentRef Id="ApplicationShortcutDesktop" />
     </Feature>
@@ -72,11 +77,19 @@
             <Directory Id="XML" Name="XML" />
             <Directory Id="WebServerRoot" Name="WebServerRoot">
               <Directory Id="Data" Name="data" />
+              <Directory Id="api" Name="api">
+                <Directory Id="Sources" Name="sources">
+                  <Directory Id="audio" Name="audio" />
+                  <Directory Id="video" Name="video" />
+                </Directory>
+              </Directory>
             </Directory>
             <Directory Id="Sounds" Name="Sounds" />
             <Directory Id="Plugins" Name="Plugins" />
             <Directory Id="iSpyServer" Name="iSpyServer" />
             <Directory Id="Backgrounds" Name="Backgrounds" />
+            <Directory Id="Masks" Name="Masks" />
+            <Directory Id="Commands" Name="Commands" />
           </Directory>
         </Directory>
       </Directory>
@@ -342,9 +355,6 @@
       </Component>
     </ComponentGroup>
     <ComponentGroup Id="backgrounds" Directory="Backgrounds">
-      <Component Id="Component107" Guid="{12C58405-9C09-4735-B922-9D1FA14F940B}">
-        <File Id="demo_mask.png" Source="$(var.OutputDir)\backgrounds\demo_mask.png" KeyPath="yes" Checksum="yes" />
-      </Component>
       <Component Id="Component108" Guid="{A6047927-5B89-4362-B814-8762DA422DE9}">
         <File Id="FloorPlan_House.jpg" Source="$(var.OutputDir)\backgrounds\FloorPlan_House.jpg" KeyPath="yes" Checksum="yes" />
       </Component>
@@ -353,6 +363,11 @@
       </Component>
       <Component Id="Component110" Guid="{33CF1933-58D8-4D65-BA32-69B36090D9A2}">
         <File Id="FloorPlan_Planet.jpg" Source="$(var.OutputDir)\backgrounds\FloorPlan_Planet.jpg" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </ComponentGroup>
+    <ComponentGroup Id="masks" Directory="Masks">
+      <Component Id="Component133" Guid="{5239bb7f-279d-4283-afca-d3a63da8150d}">
+        <File Id="demo_mask.png" Source="$(var.OutputDir)\Masks\demo_mask.png" KeyPath="yes" Checksum="yes" />
       </Component>
     </ComponentGroup>
     <ComponentGroup Id="plugins" Directory="Plugins">
@@ -406,9 +421,119 @@
         <File Id="notfound.jpg" Source="$(var.OutputDir)\webserverroot\notfound.jpg" KeyPath="yes" Checksum="yes" />
       </Component>
     </ComponentGroup>
+    <ComponentGroup Id="api" Directory="api">
+      <Component Id="Component155" Guid="{B86BC788-AF20-40E7-A08B-16BC007A25A2}">
+        <File Id="api.json" Source="$(var.OutputDir)\WebServerRoot\api\api.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component156" Guid="{6098258E-DFBC-4802-946C-4BDF8F3DCFD4}">
+        <File Id="editaction.json" Source="$(var.OutputDir)\WebServerRoot\api\editaction.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component157" Guid="{C4EC0AA3-6C12-42AF-A5D7-BE5B28A31854}">
+        <File Id="editaudiosource.json" Source="$(var.OutputDir)\WebServerRoot\api\editaudiosource.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component158" Guid="{7211F111-672C-43A1-9992-30E372639763}">
+        <File Id="editcamera.json" Source="$(var.OutputDir)\WebServerRoot\api\editcamera.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component159" Guid="{4BBD7631-3F20-4A12-9E40-B4595D6E0FE9}">
+        <File Id="editftp.json" Source="$(var.OutputDir)\WebServerRoot\api\editftp.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component160" Guid="{8B9762E7-5C7D-48B7-B9E0-512BD083F3EF}">
+        <File Id="editmicrophone.json" Source="$(var.OutputDir)\WebServerRoot\api\editmicrophone.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component161" Guid="{73AEDB4C-2B96-46C8-AB93-E364551B268A}">
+        <File Id="editpelco.json" Source="$(var.OutputDir)\WebServerRoot\api\editpelco.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component162" Guid="{53D4B499-8350-4144-9979-3CA33E350C4A}">
+        <File Id="editptzschedule.json" Source="$(var.OutputDir)\WebServerRoot\api\editptzschedule.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component163" Guid="{0594B227-EDC7-4743-88EB-7F631B854AE1}">
+        <File Id="editschedule.json" Source="$(var.OutputDir)\WebServerRoot\api\editschedule.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component164" Guid="{18420E58-769F-4778-B549-6D68C7127646}">
+        <File Id="editstorage.json" Source="$(var.OutputDir)\WebServerRoot\api\editstorage.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component165" Guid="{8929CFEE-663B-4558-95B6-B62B334E6DDF}">
+        <File Id="editvideosource.json" Source="$(var.OutputDir)\WebServerRoot\api\editvideosource.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component166" Guid="{611C241B-9BD5-4F96-8181-F14996B42326}">
+        <File Id="settings.json" Source="$(var.OutputDir)\WebServerRoot\api\settings.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component167" Guid="{A487CDB9-85A7-48D4-A15D-8347B92844C1}">
+        <File Id="showactions.json" Source="$(var.OutputDir)\WebServerRoot\api\showactions.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component168" Guid="{7B24068A-75AE-4D36-A606-016D3460E71E}">
+        <File Id="showptzschedule.json" Source="$(var.OutputDir)\WebServerRoot\api\showptzschedule.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component169" Guid="{35096DC8-1E6D-4AC7-AA04-123DAC2F0C4B}">
+        <File Id="showschedule.json" Source="$(var.OutputDir)\WebServerRoot\api\showschedule.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </ComponentGroup>
+    <ComponentGroup Id="audio" Directory="audio">
+      <Component Id="Component170" Guid="{7BAE575E-E0CD-44FA-B2D2-B50D0E61B8E6}">
+        <File Id="a_0json" Source="$(var.OutputDir)\WebServerRoot\api\sources\audio\0.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component171" Guid="{253DA905-1D29-41D2-8CAD-C242BC8AE18C}">
+        <File Id="a_1json" Source="$(var.OutputDir)\WebServerRoot\api\sources\audio\1.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component172" Guid="{B2E169BA-603C-47B0-AFA7-1DC7A8560D05}">
+        <File Id="a_2json" Source="$(var.OutputDir)\WebServerRoot\api\sources\audio\2.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component173" Guid="{860B8D81-6D47-4363-A306-E8851DED9022}">
+        <File Id="a_3json" Source="$(var.OutputDir)\WebServerRoot\api\sources\audio\3.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component174" Guid="{BE388955-AF7F-4BA1-9A0F-C92C3E8EA7D2}">
+        <File Id="a_4json" Source="$(var.OutputDir)\WebServerRoot\api\sources\audio\4.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component175" Guid="{A7527C8C-3CD1-40EC-B188-1586948A5C79}">
+        <File Id="a_5json" Source="$(var.OutputDir)\WebServerRoot\api\sources\audio\5.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </ComponentGroup>
+    <ComponentGroup Id="video" Directory="video">
+      <Component Id="Component176" Guid="{EBBA8600-F049-43FA-BDA6-3DC511BABB4E}">
+        <File Id="v_0json" Source="$(var.OutputDir)\WebServerRoot\api\sources\video\0.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component177" Guid="{3D23E618-0B79-4CB1-AD1B-D458EAD2C05C}">
+        <File Id="v_1json" Source="$(var.OutputDir)\WebServerRoot\api\sources\video\1.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component178" Guid="{2AB49810-E76B-4924-AEDE-A74E65A3B670}">
+        <File Id="v_10json" Source="$(var.OutputDir)\WebServerRoot\api\sources\video\10.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component179" Guid="{2BAD75E7-304B-4D01-AD8F-42712D86A5C1}">
+        <File Id="v_12json" Source="$(var.OutputDir)\WebServerRoot\api\sources\video\12.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component180" Guid="{0D98234E-7C80-4D3A-9A39-1417D943AEA8}">
+        <File Id="v_2json" Source="$(var.OutputDir)\WebServerRoot\api\sources\video\2.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component181" Guid="{13C219B2-1A5B-448E-A10A-DE3D435A287B}">
+        <File Id="v_3json" Source="$(var.OutputDir)\WebServerRoot\api\sources\video\3.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component182" Guid="{5AA6442E-C1FC-4042-A893-79FCB1248160}">
+        <File Id="v_4json" Source="$(var.OutputDir)\WebServerRoot\api\sources\video\4.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component183" Guid="{C2860DB0-FD30-44F4-8569-F963187C5208}">
+        <File Id="v_5json" Source="$(var.OutputDir)\WebServerRoot\api\sources\video\5.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component184" Guid="{09B84814-C038-485F-A02F-37BDD48E38E1}">
+        <File Id="v_6json" Source="$(var.OutputDir)\WebServerRoot\api\sources\video\6.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component185" Guid="{AD47D118-ECAC-427A-9D3F-3D3A44508396}">
+        <File Id="v_7json" Source="$(var.OutputDir)\WebServerRoot\api\sources\video\7.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component186" Guid="{FB7CD4F3-B7B7-4F5A-A0BC-C64B798FDE2E}">
+        <File Id="v_8json" Source="$(var.OutputDir)\WebServerRoot\api\sources\video\8.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component187" Guid="{220CE382-B0A7-4DA7-B1A5-C19C21F37E3E}">
+        <File Id="v_9json" Source="$(var.OutputDir)\WebServerRoot\api\sources\video\9.json" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </ComponentGroup>
     <ComponentGroup Id="data" Directory="Data">
       <Component Id="Component132" Guid="{B6E9DCDB-D525-4357-85B6-2D692D9030C5}">
         <File Id="mime.dat" Source="$(var.OutputDir)\webserverroot\data\mime.dat" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </ComponentGroup>
+    <ComponentGroup Id="commands" Directory="Commands">
+      <Component Id="Component189" Guid="{8ED14B16-827A-46C2-BD8A-4906F40FBBE4}">
+        <File Id="example.bat" Source="$(var.OutputDir)\Commands\example.bat" KeyPath="yes" Checksum="yes" />
       </Component>
     </ComponentGroup>
   </Fragment>
