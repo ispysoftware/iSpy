@@ -16,7 +16,7 @@ namespace iSpyApplication.Cloud
         {
             success = false;
             if (!MainForm.Conf.Subscribed)
-                return LocRm.GetString("AccessDenied");
+                return LocRm.GetString("NotSubscribed");
 
             string dstPath = "";
             string provider = "";

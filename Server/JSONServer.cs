@@ -430,30 +430,38 @@ namespace iSpyApplication.Server
                         string provider = GetVar(sPhysicalFilePath, "provider");
                         t = "{{\"provider\":\"{0}\",\"url\":\"{1}\",\"message\":\"{2}\",\"error\":\"{3}\"}}";
                         string url = "", message = "", error = "";
-                        switch (provider)
+                        if (!MainForm.Conf.Subscribed)
                         {
-                            case "dropbox":
-                                url = Dropbox.GetAuthoriseURL(out error);
-                                break;
-                            case "drive":
-                                if (Drive.Authorise())
-                                {
-                                    message = "Authorised";
-                                }
-                                else
-                                    error = "Failed";
-                                break;
-                            case "youtube":
-                                if (YouTubeUploader.Authorise())
-                                {
-                                    message = "Authorised";
-                                }
-                                else
-                                    error = "Failed";
-                                break;
-
+                            error = LocRm.GetString("NotSubscribed");
                         }
-                        resp = String.Format(t, provider, url, message, error);
+                        else
+                        { 
+                            switch (provider)
+                            {
+                                case "dropbox":
+                                    url = Dropbox.GetAuthoriseURL(out error);
+                                    break;
+                                case "drive":
+                                    if (Drive.Authorise())
+                                    {
+                                        message = "Authorised";
+                                    }
+                                    else
+                                        error = "Failed";
+                                    break;
+                                case "youtube":
+                                    if (YouTubeUploader.Authorise())
+                                    {
+                                        message = "Authorised";
+                                    }
+                                    else
+                                        error = "Failed";
+                                    break;
+
+                            }
+                        }
+
+                        resp = string.Format(t, provider, url, message, error);
                     }
                     break;
                 case "onvifdiscover":

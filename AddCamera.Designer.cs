@@ -295,6 +295,7 @@ namespace iSpyApplication
             this.label77 = new System.Windows.Forms.Label();
             this.txtTags = new System.Windows.Forms.TextBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.scheduleEditor1 = new iSpyApplication.Controls.ScheduleEditor();
             this.panel7 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel19 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel20 = new System.Windows.Forms.FlowLayoutPanel();
@@ -336,7 +337,6 @@ namespace iSpyApplication
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.linkLabel4 = new System.Windows.Forms.LinkLabel();
-            this.scheduleEditor1 = new iSpyApplication.Controls.ScheduleEditor();
             this.tcCamera.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox8.SuspendLayout();
@@ -3789,6 +3789,16 @@ namespace iSpyApplication
             this.tabPage5.Text = "Scheduling";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
+            // scheduleEditor1
+            // 
+            this.scheduleEditor1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.scheduleEditor1.Io = null;
+            this.scheduleEditor1.Location = new System.Drawing.Point(6, 51);
+            this.scheduleEditor1.Margin = new System.Windows.Forms.Padding(4);
+            this.scheduleEditor1.Name = "scheduleEditor1";
+            this.scheduleEditor1.Size = new System.Drawing.Size(645, 568);
+            this.scheduleEditor1.TabIndex = 24;
+            // 
             // panel7
             // 
             this.panel7.Controls.Add(this.tableLayoutPanel19);
@@ -4254,16 +4264,6 @@ namespace iSpyApplication
             this.linkLabel4.TabStop = true;
             this.linkLabel4.Text = "Copy To...";
             this.linkLabel4.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel4_LinkClicked);
-            // 
-            // scheduleEditor1
-            // 
-            this.scheduleEditor1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.scheduleEditor1.Io = null;
-            this.scheduleEditor1.Location = new System.Drawing.Point(6, 51);
-            this.scheduleEditor1.Margin = new System.Windows.Forms.Padding(4);
-            this.scheduleEditor1.Name = "scheduleEditor1";
-            this.scheduleEditor1.Size = new System.Drawing.Size(645, 568);
-            this.scheduleEditor1.TabIndex = 24;
             // 
             // AddCamera
             // 

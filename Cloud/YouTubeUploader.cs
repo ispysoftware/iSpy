@@ -42,6 +42,9 @@ namespace iSpyApplication.Cloud
         public static string Upload(int objectId, string filename, out bool success)
         {
             success = false;
+            if (!MainForm.Conf.Subscribed)
+                return LocRm.GetString("NotSubscribed");
+
             if (UploadList.SingleOrDefault(p => p.Filename == filename) != null)
                 return LocRm.GetString("FileInQueue");
 
