@@ -50,7 +50,7 @@
   <CompressorOptions>NotUsed</CompressorOptions>
   <NextCommandID>5</NextCommandID>
   <LogFFMPEGCommands>false</LogFFMPEGCommands>
-  <BalloonTips>true</BalloonTips>
+  <BalloonTips>false</BalloonTips>
   <TrayIconText>iSpy</TrayIconText>
   <AutoLayout>false</AutoLayout>
   <UpnpDevice />

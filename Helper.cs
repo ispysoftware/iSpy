@@ -53,6 +53,35 @@ namespace iSpyApplication
             return ((1L & FeatureSet) != 0) || (((long)feature & FeatureSet) != 0);
         }
 
+        public static string AvailableActionsJson
+        {
+            get
+            {
+                const string t = "{{ \"value\": \"{0}\", \"text\": \"{1}\" }},";
+                var r = "";
+                r += string.Format(t, "EXE", "Execute File");
+                r += string.Format(t, "URL", "Call URL");
+                r += string.Format(t, "NM", "Network Message");
+                r += string.Format(t, "S", "Play Sound");
+                r += string.Format(t, "ATC", "Sound Through Camera");
+                r += string.Format(t, "SW", "Show Window");
+                r += string.Format(t, "B", "Beep");
+                r += string.Format(t, "M", "Maximise");
+                r += string.Format(t, "SOO", "Switch Object On");
+                r += string.Format(t, "SOF", "Switch Object Off");
+                r += string.Format(t, "TA", "Trigger Alert On");
+                if (MainForm.Conf.UseSMTP || MainForm.Conf.Subscribed)
+                    r += string.Format(t, "E", "Send Email");
+                if (MainForm.Conf.Subscribed)
+                {
+                    r += string.Format(t, "SMS", "Send SMS");
+                    r += string.Format(t, "TM", "Send Twitter Message");
+                }
+                return r.Trim(',');
+
+            }
+        }
+
         private static long FeatureSet
         {
             get

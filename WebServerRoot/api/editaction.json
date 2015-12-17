@@ -37,20 +37,7 @@
                     "type": "Select",
                     "bindto": "type",
                     "options": [
-                        { "value": "EXE", "text": "Execute File" },
-                        { "value": "URL", "text": "Call URL" },
-                        { "value": "NM", "text": "Network Message" },
-                        { "value": "S", "text": "Play Sound" },
-                        { "value": "ATC", "text": "Sound Through Camera" },
-                        { "value": "SW", "text": "Show Window" },
-                        { "value": "B", "text": "Beep" },
-                        { "value": "M", "text": "Maximise" },
-                        { "value": "SOO", "text": "Switch Object On" },
-                        { "value": "SOF", "text": "Switch Object Off" },
-                        { "value": "TA", "text": "Trigger Alert On" },
-                        { "value": "E", "text": "Send Email" },
-                        { "value": "SMS", "text": "Send SMS" },
-                        { "value": "TM", "text": "Send Twitter Message" }
+                        ACTIONS
                     ],
                     "command": "editaction"
                 }PARAMS

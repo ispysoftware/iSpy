@@ -896,7 +896,8 @@ namespace iSpyApplication.Server
                     {
                         string ident = GetVar(sPhysicalFilePath, "ident");
                         resp = File.ReadAllText(r + @"api\editaction.json");
-                        template = "{{\"text\":\"{0}\",\"value\":{1},\"type\":\"{2}\",\"bindto\":\"{3}\"{4}}},";
+                        resp = resp.Replace("ACTIONS", Helper.AvailableActionsJson);
+                            template = "{{\"text\":\"{0}\",\"value\":{1},\"type\":\"{2}\",\"bindto\":\"{3}\"{4}}},";
 
                         var par = "";
                         bool bGrab;

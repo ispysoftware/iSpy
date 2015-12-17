@@ -97,7 +97,7 @@ namespace iSpyApplication.Server
         void ClientDisconnected(object sender, EventArgs e)
         {
             var sconn = sender as WebSocketConnection;
-            if (sconn != null && Connections != null)
+            if (sconn != null && Connections != null && Connections.Count>0)
             {
                 Connections.Remove(sconn);
                 _localServer.DisconnectRequest(sconn.Request);
