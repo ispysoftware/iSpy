@@ -1033,7 +1033,7 @@ namespace iSpyApplication
             this.tabPage1.Margin = new System.Windows.Forms.Padding(6);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(6);
-            this.tabPage1.Size = new System.Drawing.Size(783, 601);
+            this.tabPage1.Size = new System.Drawing.Size(852, 644);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Colors";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -1052,7 +1052,7 @@ namespace iSpyApplication
             this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel3.Location = new System.Drawing.Point(6, 6);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(771, 589);
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(840, 632);
             this.flowLayoutPanel3.TabIndex = 25;
             // 
             // btnDetectColor
@@ -1171,7 +1171,7 @@ namespace iSpyApplication
             this.tabPage2.Margin = new System.Windows.Forms.Padding(6);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(6);
-            this.tabPage2.Size = new System.Drawing.Size(783, 601);
+            this.tabPage2.Size = new System.Drawing.Size(852, 644);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Storage";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -1193,7 +1193,7 @@ namespace iSpyApplication
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(771, 375);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(840, 375);
             this.tableLayoutPanel2.TabIndex = 39;
             // 
             // label11
@@ -1224,7 +1224,7 @@ namespace iSpyApplication
             this.flowLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel8.Location = new System.Drawing.Point(133, 197);
             this.flowLayoutPanel8.Name = "flowLayoutPanel8";
-            this.flowLayoutPanel8.Size = new System.Drawing.Size(664, 65);
+            this.flowLayoutPanel8.Size = new System.Drawing.Size(704, 65);
             this.flowLayoutPanel8.TabIndex = 41;
             // 
             // txtArchive
@@ -2567,7 +2567,7 @@ namespace iSpyApplication
             this.tabPage11.Controls.Add(this.tableLayoutPanel3);
             this.tabPage11.Location = new System.Drawing.Point(4, 25);
             this.tabPage11.Name = "tabPage11";
-            this.tabPage11.Size = new System.Drawing.Size(783, 601);
+            this.tabPage11.Size = new System.Drawing.Size(852, 644);
             this.tabPage11.TabIndex = 13;
             this.tabPage11.Text = "Plugins";
             this.tabPage11.UseVisualStyleBackColor = true;
@@ -2587,7 +2587,7 @@ namespace iSpyApplication
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 300F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(783, 601);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(852, 644);
             this.tableLayoutPanel3.TabIndex = 1;
             // 
             // lbPlugins
@@ -2617,7 +2617,7 @@ namespace iSpyApplication
             this.flowLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel7.Location = new System.Drawing.Point(123, 303);
             this.flowLayoutPanel7.Name = "flowLayoutPanel7";
-            this.flowLayoutPanel7.Size = new System.Drawing.Size(657, 25);
+            this.flowLayoutPanel7.Size = new System.Drawing.Size(726, 25);
             this.flowLayoutPanel7.TabIndex = 3;
             // 
             // linkLabel3
@@ -2648,7 +2648,7 @@ namespace iSpyApplication
             this.tabPage14.Location = new System.Drawing.Point(4, 25);
             this.tabPage14.Name = "tabPage14";
             this.tabPage14.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage14.Size = new System.Drawing.Size(783, 601);
+            this.tabPage14.Size = new System.Drawing.Size(852, 644);
             this.tabPage14.TabIndex = 16;
             this.tabPage14.Text = "Logging";
             this.tabPage14.UseVisualStyleBackColor = true;
@@ -2671,7 +2671,7 @@ namespace iSpyApplication
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(777, 140);
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(846, 140);
             this.tableLayoutPanel10.TabIndex = 0;
             // 
             // label66
@@ -2696,7 +2696,7 @@ namespace iSpyApplication
             // 
             // numKeepLogs
             // 
-            this.numKeepLogs.Location = new System.Drawing.Point(143, 65);
+            this.numKeepLogs.Location = new System.Drawing.Point(155, 65);
             this.numKeepLogs.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -2718,7 +2718,7 @@ namespace iSpyApplication
             // 
             // numMaxLogSize
             // 
-            this.numMaxLogSize.Location = new System.Drawing.Point(143, 34);
+            this.numMaxLogSize.Location = new System.Drawing.Point(155, 34);
             this.numMaxLogSize.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -2744,7 +2744,7 @@ namespace iSpyApplication
             this.chkEnableLogging.Location = new System.Drawing.Point(6, 6);
             this.chkEnableLogging.Margin = new System.Windows.Forms.Padding(6);
             this.chkEnableLogging.Name = "chkEnableLogging";
-            this.chkEnableLogging.Size = new System.Drawing.Size(128, 19);
+            this.chkEnableLogging.Size = new System.Drawing.Size(129, 19);
             this.chkEnableLogging.TabIndex = 5;
             this.chkEnableLogging.Text = "Enable Logging";
             this.chkEnableLogging.UseVisualStyleBackColor = true;

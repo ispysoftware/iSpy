@@ -1477,10 +1477,10 @@ namespace iSpyApplication
                 {
                     if (!string.IsNullOrEmpty(cmd))
                     {
-                        string ext = "?";
-                        if (pandq.IndexOf("?", StringComparison.Ordinal) != -1)
+                        string ext = "";
+                        if (!pandq.EndsWith("/"))
                         {
-                            ext = "&";
+                            ext = pandq.IndexOf("?", StringComparison.Ordinal) != -1 ? "&" : "?";
                         }
                         pandq += ext + cmd;
                     }

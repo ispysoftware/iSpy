@@ -46,19 +46,20 @@
             // 
             // txtSSLCertificate
             // 
-            this.txtSSLCertificate.Location = new System.Drawing.Point(127, 6);
-            this.txtSSLCertificate.Margin = new System.Windows.Forms.Padding(6);
+            this.txtSSLCertificate.Location = new System.Drawing.Point(168, 7);
+            this.txtSSLCertificate.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.txtSSLCertificate.Name = "txtSSLCertificate";
             this.txtSSLCertificate.ReadOnly = true;
-            this.txtSSLCertificate.Size = new System.Drawing.Size(119, 20);
+            this.txtSSLCertificate.Size = new System.Drawing.Size(157, 22);
             this.txtSSLCertificate.TabIndex = 0;
             // 
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.Location = new System.Drawing.Point(289, 3);
+            this.btnOK.Location = new System.Drawing.Point(385, 4);
+            this.btnOK.Margin = new System.Windows.Forms.Padding(4);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(72, 23);
+            this.btnOK.Size = new System.Drawing.Size(96, 28);
             this.btnOK.TabIndex = 3;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
@@ -66,9 +67,10 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(255, 3);
+            this.button2.Location = new System.Drawing.Point(338, 4);
+            this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(34, 23);
+            this.button2.Size = new System.Drawing.Size(45, 28);
             this.button2.TabIndex = 4;
             this.button2.Text = "...";
             this.button2.UseVisualStyleBackColor = true;
@@ -79,7 +81,7 @@
             this.tlpSSL.ColumnCount = 3;
             this.tlpSSL.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 47.94007F));
             this.tlpSSL.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 52.05993F));
-            this.tlpSSL.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tlpSSL.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 162F));
             this.tlpSSL.Controls.Add(this.button2, 2, 0);
             this.tlpSSL.Controls.Add(this.txtSSLCertificate, 1, 0);
             this.tlpSSL.Controls.Add(this.label1, 0, 0);
@@ -87,24 +89,25 @@
             this.tlpSSL.Controls.Add(this.chkIgnorePolicyErrors, 1, 2);
             this.tlpSSL.Controls.Add(this.chkCheckRevocation, 1, 3);
             this.tlpSSL.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpSSL.Location = new System.Drawing.Point(0, 29);
+            this.tlpSSL.Location = new System.Drawing.Point(0, 35);
+            this.tlpSSL.Margin = new System.Windows.Forms.Padding(4);
             this.tlpSSL.Name = "tlpSSL";
             this.tlpSSL.RowCount = 4;
-            this.tlpSSL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tlpSSL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tlpSSL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tlpSSL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tlpSSL.Size = new System.Drawing.Size(373, 164);
+            this.tlpSSL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
+            this.tlpSSL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
+            this.tlpSSL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
+            this.tlpSSL.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
+            this.tlpSSL.Size = new System.Drawing.Size(497, 203);
             this.tlpSSL.TabIndex = 5;
             this.tlpSSL.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel2_Paint);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 6);
-            this.label1.Margin = new System.Windows.Forms.Padding(6);
+            this.label1.Location = new System.Drawing.Point(8, 7);
+            this.label1.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(54, 13);
+            this.label1.Size = new System.Drawing.Size(71, 17);
             this.label1.TabIndex = 5;
             this.label1.Text = "Certificate";
             // 
@@ -112,10 +115,10 @@
             // 
             this.chkRequireClientCertificate.AutoSize = true;
             this.tlpSSL.SetColumnSpan(this.chkRequireClientCertificate, 2);
-            this.chkRequireClientCertificate.Location = new System.Drawing.Point(127, 37);
-            this.chkRequireClientCertificate.Margin = new System.Windows.Forms.Padding(6);
+            this.chkRequireClientCertificate.Location = new System.Drawing.Point(168, 45);
+            this.chkRequireClientCertificate.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.chkRequireClientCertificate.Name = "chkRequireClientCertificate";
-            this.chkRequireClientCertificate.Size = new System.Drawing.Size(142, 17);
+            this.chkRequireClientCertificate.Size = new System.Drawing.Size(186, 21);
             this.chkRequireClientCertificate.TabIndex = 8;
             this.chkRequireClientCertificate.Text = "Require Client Certificate";
             this.chkRequireClientCertificate.UseVisualStyleBackColor = true;
@@ -124,10 +127,10 @@
             // 
             this.chkIgnorePolicyErrors.AutoSize = true;
             this.tlpSSL.SetColumnSpan(this.chkIgnorePolicyErrors, 2);
-            this.chkIgnorePolicyErrors.Location = new System.Drawing.Point(127, 68);
-            this.chkIgnorePolicyErrors.Margin = new System.Windows.Forms.Padding(6);
+            this.chkIgnorePolicyErrors.Location = new System.Drawing.Point(168, 83);
+            this.chkIgnorePolicyErrors.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.chkIgnorePolicyErrors.Name = "chkIgnorePolicyErrors";
-            this.chkIgnorePolicyErrors.Size = new System.Drawing.Size(109, 17);
+            this.chkIgnorePolicyErrors.Size = new System.Drawing.Size(143, 21);
             this.chkIgnorePolicyErrors.TabIndex = 9;
             this.chkIgnorePolicyErrors.Text = "Ignore SSL Errors";
             this.chkIgnorePolicyErrors.UseVisualStyleBackColor = true;
@@ -136,10 +139,10 @@
             // 
             this.chkCheckRevocation.AutoSize = true;
             this.tlpSSL.SetColumnSpan(this.chkCheckRevocation, 2);
-            this.chkCheckRevocation.Location = new System.Drawing.Point(127, 99);
-            this.chkCheckRevocation.Margin = new System.Windows.Forms.Padding(6);
+            this.chkCheckRevocation.Location = new System.Drawing.Point(168, 121);
+            this.chkCheckRevocation.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.chkCheckRevocation.Name = "chkCheckRevocation";
-            this.chkCheckRevocation.Size = new System.Drawing.Size(138, 17);
+            this.chkCheckRevocation.Size = new System.Drawing.Size(174, 21);
             this.chkCheckRevocation.TabIndex = 10;
             this.chkCheckRevocation.Text = "Check SSL Revocation";
             this.chkCheckRevocation.UseVisualStyleBackColor = true;
@@ -149,9 +152,10 @@
             this.chkEnableSSL.AutoSize = true;
             this.chkEnableSSL.Dock = System.Windows.Forms.DockStyle.Top;
             this.chkEnableSSL.Location = new System.Drawing.Point(0, 0);
+            this.chkEnableSSL.Margin = new System.Windows.Forms.Padding(4);
             this.chkEnableSSL.Name = "chkEnableSSL";
-            this.chkEnableSSL.Padding = new System.Windows.Forms.Padding(6);
-            this.chkEnableSSL.Size = new System.Drawing.Size(373, 29);
+            this.chkEnableSSL.Padding = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.chkEnableSSL.Size = new System.Drawing.Size(497, 35);
             this.chkEnableSSL.TabIndex = 11;
             this.chkEnableSSL.Text = "Enable SSL";
             this.chkEnableSSL.UseVisualStyleBackColor = true;
@@ -164,26 +168,29 @@
             this.panel1.Controls.Add(this.chkEnableSSL);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(373, 229);
+            this.panel1.Size = new System.Drawing.Size(497, 282);
             this.panel1.TabIndex = 6;
             // 
             // panel2
             // 
             this.panel2.Controls.Add(this.btnOK);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 193);
+            this.panel2.Location = new System.Drawing.Point(0, 238);
+            this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(373, 36);
+            this.panel2.Size = new System.Drawing.Size(497, 44);
             this.panel2.TabIndex = 12;
             // 
             // SSLConfig
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(373, 229);
+            this.ClientSize = new System.Drawing.Size(497, 282);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "SSLConfig";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "SSLConfig";

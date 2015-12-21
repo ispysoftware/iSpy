@@ -1,6 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Security.Principal;
 using System.Windows.Forms;
+using iSpyApplication.Server;
+using iSpyApplication.Utilities;
 
 namespace iSpyApplication
 {
@@ -88,5 +91,33 @@ namespace iSpyApplication
         {
             tlpSSL.Enabled = chkEnableSSL.Checked;
         }
+
+        //private void button1_Click_1(object sender, EventArgs e)
+        //{
+
+        //    //todo:possible future stuff
+        //    if (!IsAdministrator())
+        //    {
+        //        MessageBox.Show(this, "Please restart ispy with administrator permissions");
+        //        return;
+        //    }
+
+        //    try
+        //    {
+        //        X509.CreateSelfSignedCertificate("ispy");
+        //        MessageBox.Show(this,"Certificate Created");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logger.LogExceptionToFile(ex);
+        //    }
+        //}
+
+        //static bool IsAdministrator()
+        //{
+        //    WindowsIdentity identity = WindowsIdentity.GetCurrent();
+        //    WindowsPrincipal principal = new WindowsPrincipal(identity);
+        //    return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        //}
     }
 }

@@ -298,6 +298,7 @@
     <Makes>
       <Make Name="D-Link" Model="DCS-5605" />
       <Make Name="TrendNet" Model="TV-IP672PI" />
+      <Make Name="TrendNet" Model="TV-IP862IC" />
     </Makes>
     <CommandURL>/cgi/ptdc.cgi</CommandURL>
     <Commands>
@@ -4892,55 +4893,43 @@
     <Makes>
       <Make Name="Tenvis" Model="IPROBOT 3" />
     </Makes>
-    <CommandURL></CommandURL>
-    <port>8001</port>
+    <CommandURL>/cgi-bin/hi3510/</CommandURL>
     <Commands>
-      <Center>
-      </Center>
-      <Left>/ptzctrl?act=left</Left>
-      <Right>/ptzctrl?act=right</Right>
-      <Up>/ptzctrl?act=up</Up>
-      <Down>/ptzctrl?act=down</Down>
-      <Stop>/ptzctrl?act=stop</Stop>
+      <Center>ptzctrl.cgi?-step=0&amp;-act=home</Center>
+      <Left>ptzctrl.cgi?-step=1&amp;-act=left</Left>
+      <Right>ptzctrl.cgi?-step=1&amp;-act=right</Right>
+      <Up>ptzctrl.cgi?-step=1&amp;-act=up</Up>
+      <Down>ptzctrl.cgi?-step=1&amp;-act=down</Down>
+      <Stop>ptzctrl.cgi?-step=0&amp;-act=stop</Stop>
+      <ZoomIn>
+      </ZoomIn>
+      <ZoomOut>
+      </ZoomOut>
     </Commands>
     <ExtendedCommands>
-      <Command Name="Auto">/ptzctrl?act=auto</Command>
-      <Command Name="Auto A">/ptzctrl?act=cruise&amp;para=1</Command>
-      <Command Name="Auto B">/ptzctrl?act=cruise&amp;para=2</Command>
-      <Command Name="Auto C">/ptzctrl?act=cruise&amp;para=3</Command>
-      <Command Name="Auto D">/ptzctrl?act=cruise&amp;para=4</Command>
-      <Command Name="Position A1">/ptzctrl?act=callpsp&amp;para=1</Command>
-      <Command Name="Position A2">/ptzctrl?act=callpsp&amp;para=2</Command>
-      <Command Name="Position A3">/ptzctrl?act=callpsp&amp;para=3</Command>
-      <Command Name="Position A4">/ptzctrl?act=callpsp&amp;para=4</Command>
-      <Command Name="Position B1">/ptzctrl?act=callpsp&amp;para=5</Command>
-      <Command Name="Position B2">/ptzctrl?act=callpsp&amp;para=6</Command>
-      <Command Name="Position B3">/ptzctrl?act=callpsp&amp;para=7</Command>
-      <Command Name="Position B4">/ptzctrl?act=callpsp&amp;para=8</Command>
-      <Command Name="Position C1">/ptzctrl?act=callpsp&amp;para=9</Command>
-      <Command Name="Position C2">/ptzctrl?act=callpsp&amp;para=10</Command>
-      <Command Name="Position C3">/ptzctrl?act=callpsp&amp;para=11</Command>
-      <Command Name="Position C4">/ptzctrl?act=callpsp&amp;para=12</Command>
-      <Command Name="Position D1">/ptzctrl?act=callpsp&amp;para=13</Command>
-      <Command Name="Position D2">/ptzctrl?act=callpsp&amp;para=14</Command>
-      <Command Name="Position D3">/ptzctrl?act=callpsp&amp;para=15</Command>
-      <Command Name="Position D4">/ptzctrl?act=callpsp&amp;para=16</Command>
-      <Command Name="Position A1 Set">/ptzctrl?act=setpsp&amp;para=1</Command>
-      <Command Name="Position A2 Set">/ptzctrl?act=setpsp&amp;para=2</Command>
-      <Command Name="Position A3 Set">/ptzctrl?act=setpsp&amp;para=3</Command>
-      <Command Name="Position A4 Set">/ptzctrl?act=setpsp&amp;para=4</Command>
-      <Command Name="Position B1 Set">/ptzctrl?act=setpsp&amp;para=5</Command>
-      <Command Name="Position B2 Set">/ptzctrl?act=setpsp&amp;para=6</Command>
-      <Command Name="Position B3 Set">/ptzctrl?act=setpsp&amp;para=7</Command>
-      <Command Name="Position B4 Set">/ptzctrl?act=setpsp&amp;para=8</Command>
-      <Command Name="Position C1 Set">/ptzctrl?act=setpsp&amp;para=9</Command>
-      <Command Name="Position C2 Set">/ptzctrl?act=setpsp&amp;para=10</Command>
-      <Command Name="Position C3 Set">/ptzctrl?act=setpsp&amp;para=11</Command>
-      <Command Name="Position C4 Set">/ptzctrl?act=setpsp&amp;para=12</Command>
-      <Command Name="Position D1 Set">/ptzctrl?act=setpsp&amp;para=13</Command>
-      <Command Name="Position D2 Set">/ptzctrl?act=setpsp&amp;para=14</Command>
-      <Command Name="Position D3 Set">/ptzctrl?act=setpsp&amp;para=15</Command>
-      <Command Name="Position D4 Set">/ptzctrl?act=setpsp&amp;para=16</Command>
+      <Command Name="Stop">ptzctrl.cgi?-step=0&amp;-act=stop</Command>
+      <Command Name="H Patrol">ptzctrl.cgi?-step=0&amp;-act=hscan</Command>
+      <Command Name="V Patrol">ptzctrl.cgi?-step=0&amp;-act=vscan</Command>
+      <Command Name="Go Preset 1">preset.cgi?-act=goto&amp;-number=0</Command>
+      <Command Name="Go Preset 2">preset.cgi?-act=goto&amp;-number=1</Command>
+      <Command Name="Go Preset 3">preset.cgi?-act=goto&amp;-number=2</Command>
+      <Command Name="Go Preset 4">preset.cgi?-act=goto&amp;-number=3</Command>
+      <Command Name="Go Preset 5">preset.cgi?-act=goto&amp;-number=4</Command>
+      <Command Name="Go Preset 6">preset.cgi?-act=goto&amp;-number=5</Command>
+      <Command Name="Go Preset 7">preset.cgi?-act=goto&amp;-number=6</Command>
+      <Command Name="Go Preset 8">preset.cgi?-act=goto&amp;-number=7</Command>
+      <Command Name="Set Preset 1">preset.cgi?-act=set&amp;-status=1&amp;-number=0</Command>
+      <Command Name="Set Preset 2">preset.cgi?-act=set&amp;-status=1&amp;-number=1</Command>
+      <Command Name="Set Preset 3">preset.cgi?-act=set&amp;-status=1&amp;-number=2</Command>
+      <Command Name="Set Preset 4">preset.cgi?-act=set&amp;-status=1&amp;-number=3</Command>
+      <Command Name="Set Preset 5">preset.cgi?-act=set&amp;-status=1&amp;-number=4</Command>
+      <Command Name="Set Preset 6">preset.cgi?-act=set&amp;-status=1&amp;-number=5</Command>
+      <Command Name="Set Preset 7">preset.cgi?-act=set&amp;-status=1&amp;-number=6</Command>
+      <Command Name="Set Preset 8">preset.cgi?-act=set&amp;-status=1&amp;-number=7</Command>
+      <Command Name="Show Time Overlay">param.cgi?cmd=setoverlayattr&amp;-region=0&amp;-show=1</Command>
+      <Command Name="Hide Time Overlay">param.cgi?cmd=setoverlayattr&amp;-region=0&amp;-show=0</Command>
+      <Command Name="Show Name Overlay">param.cgi?cmd=setoverlayattr&amp;-region=1&amp;-show=1</Command>
+      <Command Name="Hide Name Overlay">param.cgi?cmd=setoverlayattr&amp;-region=1&amp;-show=0</Command>
     </ExtendedCommands>
   </Camera>
   <Camera id="187">
