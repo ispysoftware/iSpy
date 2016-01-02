@@ -1,1 +1,2 @@
-﻿echo This is an example timeout 3 
+echo This is an example 
+timeout 3 

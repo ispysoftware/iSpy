@@ -913,7 +913,7 @@ namespace iSpyApplication
             this.scheduleEditor1.Dock = System.Windows.Forms.DockStyle.Top;
             this.scheduleEditor1.Io = null;
             this.scheduleEditor1.Location = new System.Drawing.Point(0, 41);
-            this.scheduleEditor1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.scheduleEditor1.Margin = new System.Windows.Forms.Padding(4);
             this.scheduleEditor1.Name = "scheduleEditor1";
             this.scheduleEditor1.Size = new System.Drawing.Size(657, 330);
             this.scheduleEditor1.TabIndex = 25;

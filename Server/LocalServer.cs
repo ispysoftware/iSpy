@@ -906,12 +906,12 @@ namespace iSpyApplication.Server
 
         private static byte[] Gzip(byte[] bytes)
         {
-            var ms = new MemoryStream();
-            using (var gs = new GZipStream(ms,CompressionMode.Compress, true))
+            using (MemoryStream outStream = new MemoryStream())
             {
-                gs.Write(bytes, 0, bytes.Length);
-                ms.Position = 0L;
-                return ms.ToArray();
+                using (GZipStream gzipStream = new GZipStream(outStream, CompressionMode.Compress))
+                using (MemoryStream srcStream = new MemoryStream(bytes))
+                    srcStream.CopyTo(gzipStream);
+                return outStream.ToArray();
             }
         }
 
@@ -3921,7 +3921,7 @@ namespace iSpyApplication.Server
                     CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oc.id);
                     if (cw != null)
                     {
-                        bool onlinestatus = oc.settings.active;
+                        bool onlinestatus = cw.IsEnabled;
                         bool talkconfigured = oc.settings.audiomodel != "None";
                         resp += "2," + oc.id + "," + onlinestatus.ToString().ToLower() + "," +
                                 oc.name.Replace(",", "&comma;") + "," + GetStatus(onlinestatus) + "," +
@@ -3938,9 +3938,9 @@ namespace iSpyApplication.Server
                     VolumeLevel vl = MainForm.InstanceReference.GetVolumeLevel(om.id);
                     if (vl!=null)
                     {
-                        bool onlinestatus = om.settings.active;
+                        bool onlinestatus = vl.IsEnabled;
                         resp += "1," + om.id + "," + onlinestatus.ToString().ToLower() + "," +
-                            om.name.Replace(",", "&comma;") + "," + GetStatus(om.settings.active) + "," +
+                            om.name.Replace(",", "&comma;") + "," + GetStatus(onlinestatus) + "," +
                             om.description.Replace(",", "&comma;").Replace("\n", " ") + "," +
                             om.settings.accessgroups.Replace(",", "&comma;").Replace("\n", " ") + Environment.NewLine;
                     }
