@@ -1,7 +1,7 @@
 // iSpy FFMPEG Library
 // http://www.ispyconnect.com
 //
-// Copyright © ispyconnect.com, 2013
+// Copyright © ispyconnect.com, 2016
 #include "StdAfx.h"
 #include "AudioCodec.h"
 
