@@ -1,0 +1,380 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FF31DD24-127D-4EB1-929C-F5738147E886}</ProjectGuid>
+    <RootNamespace>VideoFFMPEG</RootNamespace>
+    <Keyword>ManagedCProj</Keyword>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <ProjectName>iSpy.Video.FFMPEG</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>true</CLRSupport>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140_xp</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>true</CLRSupport>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>true</CLRSupport>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>true</CLRSupport>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\bin\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\bin\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\bin64\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Configuration)\x64\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">iSpy.Video.FFMPEG</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">iSpy.Video.FFMPEG</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">iSpy.Video.FFMPEG</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">iSpy.Video.FFMPEG</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.\ffmpeg\include\;.\msinttypes\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;__STDC_CONSTANT_MACROS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>avformat.lib;avcodec.lib;avutil.lib;swscale.lib;swresample.lib;avfilter.lib;postproc.lib;avdevice.lib</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(TargetName).dll</OutputFile>
+      <AdditionalLibraryDirectories>.\ffmpeg\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AssemblyDebug>true</AssemblyDebug>
+      <TargetMachine>MachineX86</TargetMachine>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <Xdcmake>
+      <DocumentLibraryDependencies>false</DocumentLibraryDependencies>
+    </Xdcmake>
+    <PostBuildEvent>
+      <Command>sn -R ".\bin\iSpy.Video.FFMPEG.dll" ".\iSpy.Video.FFMPEG.snk"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.\ffmpeg\include\;.\msinttypes\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;__STDC_CONSTANT_MACROS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>avformat.lib;avcodec.lib;avutil.lib;swscale.lib</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(TargetName).dll</OutputFile>
+      <AdditionalLibraryDirectories>.\ffmpeg\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AssemblyDebug>true</AssemblyDebug>
+      <SubSystem>Windows</SubSystem>
+      <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
+    </Link>
+    <Xdcmake>
+      <DocumentLibraryDependencies>false</DocumentLibraryDependencies>
+    </Xdcmake>
+    <PostBuildEvent>
+      <Command>sn -R ".\bin\iSpy.Video.FFMPEG.dll" ".\\iSpy.Video.FFMPEG.snk"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\ffmpeg\include;.\msinttypes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;__STDC_CONSTANT_MACROS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>avformat.lib;avcodec.lib;avutil.lib;swscale.lib;swresample.lib;avfilter.lib;postproc.lib;avdevice.lib</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(TargetName).dll</OutputFile>
+      <AdditionalLibraryDirectories>.\ffmpeg\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <TargetMachine>MachineX86</TargetMachine>
+      <KeyFile>iSpy.Video.FFMPEG.snk</KeyFile>
+      <DelaySign>true</DelaySign>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <Xdcmake>
+      <DocumentLibraryDependencies>false</DocumentLibraryDependencies>
+    </Xdcmake>
+    <PostBuildEvent>
+      <Command>sn -R ".\bin\iSpy.Video.FFMPEG.dll" ".\\iSpy.Video.FFMPEG.snk"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\ffmpeg64\include;.\msinttypes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;__STDC_CONSTANT_MACROS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>avformat.lib;avcodec.lib;avutil.lib;swscale.lib;swresample.lib;avfilter.lib;postproc.lib;avdevice.lib;msvcrt.lib</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(TargetName).dll</OutputFile>
+      <AdditionalLibraryDirectories>.\ffmpeg64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <KeyFile>iSpy.Video.FFMPEG.snk</KeyFile>
+      <DelaySign>true</DelaySign>
+      <AdditionalOptions>/NOENTRY /ignore:4248 %(AdditionalOptions)</AdditionalOptions>
+      <ForceSymbolReferences>_DllMainCRTStartup</ForceSymbolReferences>
+    </Link>
+    <Xdcmake>
+      <DocumentLibraryDependencies>false</DocumentLibraryDependencies>
+    </Xdcmake>
+    <PostBuildEvent>
+      <Command>sn -R ".\bin64\iSpy.Video.FFMPEG.dll" ".\\iSpy.Video.FFMPEG.snk"
+xcopy ".\ffmpeg64\bin\*.*" ".\bin64" /Y</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="AudioCodec.cpp" />
+    <ClCompile Include="AudioFileReader.cpp" />
+    <ClCompile Include="AudioFileWriter.cpp" />
+    <ClCompile Include="IMA_ADPCM.cpp" />
+    <ClCompile Include="Init.cpp" />
+    <ClCompile Include="Stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="VideoCodec.cpp" />
+    <ClCompile Include="VideoFileReader.cpp" />
+    <ClCompile Include="VideoFileWriter.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AudioCodec.h" />
+    <ClInclude Include="AudioFileReader.h" />
+    <ClInclude Include="AudioFileWriter.h" />
+    <ClInclude Include="ffmpeg64\include\libavcodec\avcodec.h" />
+    <ClInclude Include="ffmpeg64\include\libavcodec\avfft.h" />
+    <ClInclude Include="ffmpeg64\include\libavcodec\dv_profile.h" />
+    <ClInclude Include="ffmpeg64\include\libavcodec\dxva2.h" />
+    <ClInclude Include="ffmpeg64\include\libavcodec\old_codec_ids.h" />
+    <ClInclude Include="ffmpeg64\include\libavcodec\qsv.h" />
+    <ClInclude Include="ffmpeg64\include\libavcodec\vaapi.h" />
+    <ClInclude Include="ffmpeg64\include\libavcodec\vda.h" />
+    <ClInclude Include="ffmpeg64\include\libavcodec\vdpau.h" />
+    <ClInclude Include="ffmpeg64\include\libavcodec\version.h" />
+    <ClInclude Include="ffmpeg64\include\libavcodec\vorbis_parser.h" />
+    <ClInclude Include="ffmpeg64\include\libavcodec\xvmc.h" />
+    <ClInclude Include="ffmpeg64\include\libavdevice\avdevice.h" />
+    <ClInclude Include="ffmpeg64\include\libavdevice\version.h" />
+    <ClInclude Include="ffmpeg64\include\libavfilter\asrc_abuffer.h" />
+    <ClInclude Include="ffmpeg64\include\libavfilter\avcodec.h" />
+    <ClInclude Include="ffmpeg64\include\libavfilter\avfilter.h" />
+    <ClInclude Include="ffmpeg64\include\libavfilter\avfiltergraph.h" />
+    <ClInclude Include="ffmpeg64\include\libavfilter\buffersink.h" />
+    <ClInclude Include="ffmpeg64\include\libavfilter\buffersrc.h" />
+    <ClInclude Include="ffmpeg64\include\libavfilter\version.h" />
+    <ClInclude Include="ffmpeg64\include\libavformat\avformat.h" />
+    <ClInclude Include="ffmpeg64\include\libavformat\avio.h" />
+    <ClInclude Include="ffmpeg64\include\libavformat\version.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\adler32.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\aes.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\attributes.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\audioconvert.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\audio_fifo.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\avassert.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\avconfig.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\avstring.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\avutil.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\base64.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\blowfish.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\bprint.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\bswap.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\buffer.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\camellia.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\cast5.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\channel_layout.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\common.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\cpu.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\crc.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\dict.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\display.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\downmix_info.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\error.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\eval.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\ffversion.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\fifo.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\file.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\frame.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\hash.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\hmac.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\imgutils.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\intfloat.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\intreadwrite.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\lfg.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\log.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\lzo.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\macros.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\mathematics.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\md5.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\mem.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\motion_vector.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\murmur3.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\old_pix_fmts.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\opt.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\parseutils.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\pixdesc.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\pixelutils.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\pixfmt.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\random_seed.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\rational.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\replaygain.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\ripemd.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\samplefmt.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\sha.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\sha512.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\stereo3d.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\threadmessage.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\time.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\timecode.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\timestamp.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\twofish.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\version.h" />
+    <ClInclude Include="ffmpeg64\include\libavutil\xtea.h" />
+    <ClInclude Include="ffmpeg64\include\libpostproc\postprocess.h" />
+    <ClInclude Include="ffmpeg64\include\libpostproc\version.h" />
+    <ClInclude Include="ffmpeg64\include\libswresample\swresample.h" />
+    <ClInclude Include="ffmpeg64\include\libswresample\version.h" />
+    <ClInclude Include="ffmpeg64\include\libswscale\swscale.h" />
+    <ClInclude Include="ffmpeg64\include\libswscale\version.h" />
+    <ClInclude Include="IMA_ADPCM.h" />
+    <ClInclude Include="Init.h" />
+    <ClInclude Include="msinttypes\inttypes.h" />
+    <ClInclude Include="msinttypes\stdint.h" />
+    <ClInclude Include="Stdafx.h" />
+    <ClInclude Include="VideoCodec.h" />
+    <ClInclude Include="VideoFileReader.h" />
+    <ClInclude Include="VideoFileWriter.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ffmpeg64\bin\avcodec-56.dll" />
+    <None Include="ffmpeg64\bin\avdevice-56.dll" />
+    <None Include="ffmpeg64\bin\avfilter-5.dll" />
+    <None Include="ffmpeg64\bin\avformat-56.dll" />
+    <None Include="ffmpeg64\bin\avutil-54.dll" />
+    <None Include="ffmpeg64\bin\ffmpeg.exe" />
+    <None Include="ffmpeg64\bin\postproc-53.dll" />
+    <None Include="ffmpeg64\bin\swresample-1.dll" />
+    <None Include="ffmpeg64\bin\swscale-3.dll" />
+    <None Include="ffmpeg64\lib\avcodec-56.def" />
+    <None Include="ffmpeg64\lib\avdevice-56.def" />
+    <None Include="ffmpeg64\lib\avfilter-5.def" />
+    <None Include="ffmpeg64\lib\avformat-56.def" />
+    <None Include="ffmpeg64\lib\avutil-54.def" />
+    <None Include="ffmpeg64\lib\postproc-53.def" />
+    <None Include="ffmpeg64\lib\swresample-1.def" />
+    <None Include="ffmpeg64\lib\swscale-3.def" />
+    <None Include="iSpy.Video.FFMPEG.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ffmpeg64\ReadMe.txt" />
+    <Text Include="msinttypes\ChangeLog.txt" />
+    <Text Include="UPDATE INSTRUCTIONS.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="ffmpeg64\lib\avcodec.lib" />
+    <Library Include="ffmpeg64\lib\avdevice.lib" />
+    <Library Include="ffmpeg64\lib\avfilter.lib" />
+    <Library Include="ffmpeg64\lib\avformat.lib" />
+    <Library Include="ffmpeg64\lib\avutil.lib" />
+    <Library Include="ffmpeg64\lib\libavcodec.dll.a" />
+    <Library Include="ffmpeg64\lib\libavdevice.dll.a" />
+    <Library Include="ffmpeg64\lib\libavfilter.dll.a" />
+    <Library Include="ffmpeg64\lib\libavformat.dll.a" />
+    <Library Include="ffmpeg64\lib\libavutil.dll.a" />
+    <Library Include="ffmpeg64\lib\libpostproc.dll.a" />
+    <Library Include="ffmpeg64\lib\libswresample.dll.a" />
+    <Library Include="ffmpeg64\lib\libswscale.dll.a" />
+    <Library Include="ffmpeg64\lib\postproc.lib" />
+    <Library Include="ffmpeg64\lib\swresample.lib" />
+    <Library Include="ffmpeg64\lib\swscale.lib" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
