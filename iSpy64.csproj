@@ -240,9 +240,6 @@
       <HintPath>DLLS\x64\Interop.NETWORKLIST.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="iSpy.Video.FFMPEG">
-      <HintPath>Supporting\x64\iSpy.Video.FFMPEG.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -1241,6 +1238,7 @@
     <Content Include="Commands\example.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Merge Modules\Microsoft_VC100_CRT_x64.msm" />
     <None Include="packages.config" />
     <None Include="redist\Windows6.0-KB942288-v2-x64.msu" />
     <None Include="redist\Windows6.0-KB942288-v2-x86.msu" />
@@ -1370,18 +1368,6 @@
     <None Include="Supporting\iSpyServerSetup.msi" />
     <None Include="Web References\iSpyWS\ispysecure.disco" />
     <Content Include="Supporting\iSpyMonitor.exe" />
-    <Content Include="Supporting\x64\avcodec-56.dll" />
-    <Content Include="Supporting\x64\avdevice-56.dll" />
-    <Content Include="Supporting\x64\avfilter-5.dll" />
-    <Content Include="Supporting\x64\avformat-56.dll" />
-    <Content Include="Supporting\x64\avutil-54.dll" />
-    <Content Include="Supporting\x64\ffmpeg.exe" />
-    <Content Include="Supporting\x64\ffplay.exe" />
-    <Content Include="Supporting\x64\ffprobe.exe" />
-    <Content Include="Supporting\x64\iSpy.Video.FFMPEG.dll" />
-    <Content Include="Supporting\x64\postproc-53.dll" />
-    <Content Include="Supporting\x64\swresample-1.dll" />
-    <Content Include="Supporting\x64\swscale-3.dll" />
     <Content Include="VLC64\readme.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1990,11 +1976,17 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="FFMPEG\Video.FFMPEG.64.vcxproj">
+      <Project>{ff31dd24-127d-4eb1-929c-f5738147e886}</Project>
+      <Name>iSpy.Video.FFMPEG</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>xcopy "$(ProjectDir)Supporting\x64\*.*" "$(ProjectDir)$(OutDir)" /Y
+    <PostBuildEvent>xcopy "$(ProjectDir)FFMPEG\ffmpeg64\bin\*.*" "$(ProjectDir)$(OutDir)" /Y
 if NOT %25ComputerName%25 == DEVPC GOTO end
 call "D:\projects\ispy\signing\iSpy64.bat"
 :end

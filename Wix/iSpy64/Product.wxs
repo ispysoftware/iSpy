@@ -118,7 +118,7 @@
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="TARGETDIR">
-      <Merge Id="VCRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\Microsoft_VC100_CRT_x64.msm" DiskId="1" Language="0" />
+      <Merge Id="VCRedist" SourceFile="$(var.SourceCodeDir)\Merge Modules\Microsoft_VC100_CRT_x64.msm" DiskId="1" Language="0" />
     </DirectoryRef>
   </Fragment>
 
@@ -153,12 +153,6 @@
       </Component>
       <Component Win64="yes" Id="Component15" Guid="{8A5AA74F-8654-4E41-A3AF-9D419FB090BE}">
         <File Id="ffmpeg.exe" Source="$(var.OutputDir)\ffmpeg.exe" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Win64="yes" Id="Component16" Guid="{67A069D8-B640-4F70-BAB6-DAE8B8224AA0}">
-        <File Id="ffplay.exe" Source="$(var.OutputDir)\ffplay.exe" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Win64="yes" Id="Component17" Guid="{531AD858-658C-4022-BCE7-83E2B051C2FC}">
-        <File Id="ffprobe.exe" Source="$(var.OutputDir)\ffprobe.exe" KeyPath="yes" Checksum="yes" />
       </Component>
       <Component Win64="yes" Id="Component18" Guid="{DD43A487-0BF6-45C7-BED3-744589E5E1F3}">
         <File Id="FSharp.Core.dll" Source="$(var.OutputDir)\FSharp.Core.dll" KeyPath="yes" Checksum="yes" />

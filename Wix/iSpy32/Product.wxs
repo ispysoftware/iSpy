@@ -6,7 +6,7 @@
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of iSpy is already installed." AllowDowngrades="no" />
     <MediaTemplate EmbedCab="yes" />
-    <Binary Id="WixCA.CA.dll" src="..\WixCA\bin\$(var.Configuration)\WixCA.CA.dll" />
+    <Binary Id="WixCA.CA.dll" SourceFile="..\WixCA\bin\$(var.Configuration)\WixCA.CA.dll" />
     <Property Id="CONFIGFILELOCATION" Value="[SourceDir]" />
     <CustomAction Id="SetProperty" Execute="immediate"
                         Property="CA_myCustomAction"
@@ -116,7 +116,7 @@
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="TARGETDIR">
-      <Merge Id="VCRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\Microsoft_VC100_CRT_x86.msm" DiskId="1" Language="0" />
+      <Merge Id="VCRedist" SourceFile="$(var.SourceCodeDir)\Merge Modules\Microsoft_VC100_CRT_x86.msm" DiskId="1" Language="0" />
     </DirectoryRef>
   </Fragment>
   <Fragment>
@@ -150,12 +150,6 @@
       </Component>
       <Component Id="Component15" Guid="{30C799E8-EB65-4F9A-9333-554745F39F56}">
         <File Id="ffmpeg.exe" Source="$(var.OutputDir)\ffmpeg.exe" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component16" Guid="{719617F9-24EE-4765-8762-A7C29D316B4D}">
-        <File Id="ffplay.exe" Source="$(var.OutputDir)\ffplay.exe" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component17" Guid="{8F9395D9-9BC6-4C31-BF3C-3D53721580BF}">
-        <File Id="ffprobe.exe" Source="$(var.OutputDir)\ffprobe.exe" KeyPath="yes" Checksum="yes" />
       </Component>
       <Component Id="Component18" Guid="{F4EAFFF8-965C-4C7E-AF53-F4C54B64DE1B}">
         <File Id="FSharp.Core.dll" Source="$(var.OutputDir)\FSharp.Core.dll" KeyPath="yes" Checksum="yes" />

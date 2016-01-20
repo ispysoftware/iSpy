@@ -6197,4 +6197,44 @@ copy or delete as many lines as you need.-->
       <Command Name="10">/set_misc.cgi?ptz_patrol_rate=10</Command>
     </ExtendedCommands>
   </Camera>
+  <Camera id="222">
+    <Makes>
+      <Make Name="Wansview" Model="X Series" />
+      <Make Name="DBPower" Model="HD024P" />
+      <Make Name="DBPower" Model="HD027P" />
+      <Make Name="Wansview" Model="NCM620GB" />
+      <Make Name="Wansview" Model="NCM625GB" />
+      <Make Name="Wansview" Model="NCM630GB" />
+    </Makes>
+    <CommandURL></CommandURL>
+    <Commands>
+      <Center>/hy-cgi/ptz.cgi?cmd=ptzctrl&amp;act=home</Center>
+      <Left>/hy-cgi/ptz.cgi?cmd=ptzctrl&amp;act=left&amp;speed=1</Left>
+      <Right>/hy-cgi/ptz.cgi?cmd=ptzctrl&amp;act=right&amp;speed=1</Right>
+      <Up>/hy-cgi/ptz.cgi?cmd=ptzctrl&amp;act=up&amp;speed=1</Up>
+      <Down>/hy-cgi/ptz.cgi?cmd=ptzctrl&amp;act=down&amp;speed=1</Down>
+      <Stop>/hy-cgi/ptz.cgi?cmd=ptzctrl&amp;act=stop</Stop>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Stop">/hy-cgi/ptz.cgi?cmd=ptzctrl&amp;act=stop</Command>
+      <Command Name="Horizon patrol">/hy-cgi/ptz.cgi?cmd=ptzctrl&amp;act=hscan</Command>
+      <Command Name="Vertical patrol">/hy-cgi/ptz.cgi?cmd=ptzctrl&amp;act=vscan</Command>
+      <Command Name="Set Position 1">/hy-cgi/ptz.cgi?cmd=preset&amp;number=1&amp;act=set&amp;status=1</Command>
+      <Command Name="Set Position 2">/hy-cgi/ptz.cgi?cmd=preset&amp;number=2&amp;act=set&amp;status=1</Command>
+      <Command Name="Set Position 3">/hy-cgi/ptz.cgi?cmd=preset&amp;number=3&amp;act=set&amp;status=1</Command>
+      <Command Name="Set Position 4">/hy-cgi/ptz.cgi?cmd=preset&amp;number=4&amp;act=set&amp;status=1</Command>
+      <Command Name="Set Position 5">/hy-cgi/ptz.cgi?cmd=preset&amp;number=5&amp;act=set&amp;status=1</Command>
+      <Command Name="Set Position 6">/hy-cgi/ptz.cgi?cmd=preset&amp;number=6&amp;act=set&amp;status=1</Command>
+      <Command Name="Set Position 7">/hy-cgi/ptz.cgi?cmd=preset&amp;number=7&amp;act=set&amp;status=1</Command>
+      <Command Name="Set Position 8">/hy-cgi/ptz.cgi?cmd=preset&amp;number=8&amp;act=set&amp;status=1</Command>
+      <Command Name="Get Position 1">/hy-cgi/ptz.cgi?cmd=preset&amp;number=2&amp;act=goto</Command>
+      <Command Name="Get Position 2">/hy-cgi/ptz.cgi?cmd=preset&amp;number=2&amp;act=goto</Command>
+      <Command Name="Get Position 3">/hy-cgi/ptz.cgi?cmd=preset&amp;number=2&amp;act=goto</Command>
+      <Command Name="Get Position 4">/hy-cgi/ptz.cgi?cmd=preset&amp;number=2&amp;act=goto</Command>
+      <Command Name="Get Position 5">/hy-cgi/ptz.cgi?cmd=preset&amp;number=2&amp;act=goto</Command>
+      <Command Name="Get Position 6">/hy-cgi/ptz.cgi?cmd=preset&amp;number=2&amp;act=goto</Command>
+      <Command Name="Get Position 7">/hy-cgi/ptz.cgi?cmd=preset&amp;number=2&amp;act=goto</Command>
+      <Command Name="Get Position 8">/hy-cgi/ptz.cgi?cmd=preset&amp;number=2&amp;act=goto</Command>
+    </ExtendedCommands>
+  </Camera>
 </PTZSettings2>

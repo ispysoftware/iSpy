@@ -7,3 +7,4 @@ wix/ispy64/bin
 .vs
 packages/
 VLC64/
+*.opensdf

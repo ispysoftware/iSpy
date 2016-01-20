@@ -1202,7 +1202,7 @@ namespace iSpyApplication
 
             if (url.IndexOf("[AUTH]", StringComparison.Ordinal)!=-1)
             {
-                string credentials = String.Format("{0}:{1}", Uri.EscapeDataString(Username), Uri.EscapeDataString(Password));
+                string credentials = string.Format("{0}:{1}", Uri.EscapeDataString(Username), Uri.EscapeDataString(Password));
                 byte[] bytes = Encoding.ASCII.GetBytes(credentials);
                 url = url.Replace("[AUTH]", Convert.ToBase64String(bytes));
             }

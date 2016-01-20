@@ -80,6 +80,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -102,6 +103,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -128,6 +130,7 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <Optimize>false</Optimize>
     <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -147,6 +150,7 @@
     <CodeAnalysisRuleDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -227,10 +231,6 @@
     <Reference Include="Interop.NETWORKLIST">
       <HintPath>DLLS\Interop.NETWORKLIST.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="iSpy.Video.FFMPEG, Version=3.6.4.0, Culture=neutral, PublicKeyToken=81785fde1d5460f5, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Supporting\iSpy.Video.FFMPEG.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
@@ -1214,6 +1214,7 @@
     <Content Include="Commands\example.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Merge Modules\Microsoft_VC100_CRT_x86.msm" />
     <None Include="packages.config" />
     <None Include="Resources\cam_connecting.png" />
     <None Include="Resources\cam_offline.png" />
@@ -1376,18 +1377,6 @@
     <None Include="Supporting\iSpyServerSetup.msi" />
     <None Include="Web References\iSpyWS\ispyapi.disco" />
     <Content Include="Supporting\iSpyMonitor.exe" />
-    <Content Include="Supporting\x86\avcodec-56.dll" />
-    <Content Include="Supporting\x86\avdevice-56.dll" />
-    <Content Include="Supporting\x86\avfilter-5.dll" />
-    <Content Include="Supporting\x86\avformat-56.dll" />
-    <Content Include="Supporting\x86\avutil-54.dll" />
-    <Content Include="Supporting\x86\ffmpeg.exe" />
-    <Content Include="Supporting\x86\ffplay.exe" />
-    <Content Include="Supporting\x86\ffprobe.exe" />
-    <Content Include="Supporting\x86\iSpy.Video.FFMPEG.dll" />
-    <Content Include="Supporting\x86\postproc-53.dll" />
-    <Content Include="Supporting\x86\swresample-1.dll" />
-    <Content Include="Supporting\x86\swscale-3.dll" />
     <Content Include="VLC64\readme.txt" />
     <None Include="Web References\Reporting\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
@@ -1993,11 +1982,17 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="FFMPEG\Video.FFMPEG.vcxproj">
+      <Project>{ff31dd24-127d-4eb1-929c-f5738147e886}</Project>
+      <Name>iSpy.Video.FFMPEG</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>xcopy "$(ProjectDir)Supporting\x86\*.*" "$(ProjectDir)$(OutDir)" /Y
+    <PostBuildEvent>xcopy "$(ProjectDir)FFMPEG\ffmpeg\bin\*.*" "$(ProjectDir)$(OutDir)" /Y
 if NOT %25ComputerName%25 == DEVPC GOTO end
 REM signing certificate is not part of the solution
 call "D:\projects\ispy\signing\iSpy.bat"
