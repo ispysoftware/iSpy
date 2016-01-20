@@ -245,6 +245,15 @@ xcopy ".\ffmpeg\bin\*.*" ".\bin" /Y</Command>
     <ClInclude Include="VideoFileWriter.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ffmpeg\bin\avcodec-56.dll" />
+    <None Include="ffmpeg\bin\avdevice-56.dll" />
+    <None Include="ffmpeg\bin\avfilter-5.dll" />
+    <None Include="ffmpeg\bin\avformat-56.dll" />
+    <None Include="ffmpeg\bin\avutil-54.dll" />
+    <None Include="ffmpeg\bin\ffmpeg.exe" />
+    <None Include="ffmpeg\bin\postproc-53.dll" />
+    <None Include="ffmpeg\bin\swresample-1.dll" />
+    <None Include="ffmpeg\bin\swscale-3.dll" />
     <None Include="ffmpeg\lib\avcodec-56.def" />
     <None Include="ffmpeg\lib\avdevice-56.def" />
     <None Include="ffmpeg\lib\avfilter-5.def" />
