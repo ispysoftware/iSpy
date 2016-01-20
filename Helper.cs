@@ -161,18 +161,6 @@ namespace iSpyApplication
             {
                 ttl += $" ({MainForm.Conf.WSUsername})";
             }
-
-            if (!string.IsNullOrEmpty(MainForm.Conf.Reseller))
-            {
-                ttl += $" Powered by {MainForm.Conf.Reseller.Split('|')[0]}";
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(MainForm.Conf.Vendor))
-                {
-                    ttl += $" with {MainForm.Conf.Vendor}";
-                }
-            }
             f.Text = ttl;
         }
 
