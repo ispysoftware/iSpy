@@ -6,7 +6,7 @@
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of iSpy is already installed." AllowDowngrades="no" />
     <MediaTemplate EmbedCab="yes" />
-    <Binary Id="WixCA.CA.dll" SourceFile="..\WixCA\bin\$(var.Configuration)\WixCA.CA.dll" />
+    <Binary Id="WixCA.CA.dll" src="..\WixCA\bin\$(var.Configuration)\WixCA.CA.dll" />
     <Property Id="CONFIGFILELOCATION" Value="[SourceDir]" />
     <CustomAction Id="SetProperty" Execute="immediate"
                         Property="CA_myCustomAction"
@@ -22,7 +22,7 @@
       <Custom Action="CA_myCustomAction" Before="InstallFinalize">Not Installed</Custom>
     </InstallExecuteSequence>
 
- 
+
     <Feature Id="ProductFeature" Title="iSpy" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
       <ComponentGroupRef Id="XML" />
@@ -116,7 +116,8 @@
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="TARGETDIR">
-      <Merge Id="VCRedist" SourceFile="$(var.SourceCodeDir)\Merge Modules\Microsoft_VC100_CRT_x86.msm" DiskId="1" Language="0" />
+      <!--Merge file path doesn't process variables for some reason so has to be an explicit path-->
+      <Merge Id="VCRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\Microsoft_VC100_CRT_x86.msm" DiskId="1" Language="0" />
     </DirectoryRef>
   </Fragment>
   <Fragment>
