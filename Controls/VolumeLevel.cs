@@ -120,7 +120,6 @@ namespace iSpyApplication.Controls
         public string AudioSourceErrorMessage = "";
         private bool _audioSourceErrorState;
         public bool LoadedFiles;
-        internal Color BackgroundColor;
         public event Delegates.ErrorHandler ErrorHandler;
 
         public bool AudioSourceErrorState
@@ -169,7 +168,7 @@ namespace iSpyApplication.Controls
         private Thread _tFiles;
         public void GetFiles()
         {
-            if (_tFiles == null || _tFiles.Join(TimeSpan.Zero))
+            if (!Helper.ThreadRunning(_tFiles))
             {
                 _tFiles = new Thread(GenerateFileList);
                 _tFiles.Start();
@@ -343,7 +342,7 @@ namespace iSpyApplication.Controls
         private Thread _tScan;
         private void ScanForMissingFiles()
         {
-            if (_tScan == null || _tScan.Join(TimeSpan.Zero))
+            if (!Helper.ThreadRunning(_tScan))
             {
                 _tScan = new Thread(ScanFiles);
                 _tScan.Start();
@@ -405,7 +404,7 @@ namespace iSpyApplication.Controls
             FileListUpdated?.Invoke(this);
         }
 
-        public bool Recording => _recordingThread != null && !_recordingThread.Join(TimeSpan.Zero);
+        public bool Recording => Helper.ThreadRunning(_recordingThread);
         
 
         public string ObjectName => Micobject.name;
@@ -496,6 +495,12 @@ namespace iSpyApplication.Controls
         public void ReloadSchedule()
         {
             _needsNewSchedule = true;
+        }
+
+        public int Order
+        {
+            get { return Micobject.settings.order; }
+            set { Micobject.settings.order = value; }
         }
 
         private bool CheckSchedule()
@@ -643,6 +648,20 @@ namespace iSpyApplication.Controls
             return result;
         }
 
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+
+            base.OnMouseUp(e);
+
+            switch (e.Button)
+            {
+                case MouseButtons.Left:
+                    ((LayoutPanel)Parent).ISpyControlUp(new Point(this.Left + e.X, this.Top + e.Y));
+                    break;
+            }
+
+        }
+
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
@@ -663,6 +682,10 @@ namespace iSpyApplication.Controls
                         int bpi = GetButtonIndexByLocation(e.Location);
                         switch (bpi)
                         {
+                            case -999:
+                                var layoutPanel = (LayoutPanel)Parent;
+                                layoutPanel?.ISpyControlDown(new Point(this.Left + e.X, this.Top + e.Y));
+                                break;
                             case 0:
                                 if (IsEnabled)
                                 {
@@ -707,7 +730,7 @@ namespace iSpyApplication.Controls
                     }
                     return;
                 }
-                if (CameraControl!=null ||  MainForm.Conf.LockLayout) return;
+                if (CameraControl!=null ||  MainForm.LockLayout) return;
                 switch (mousePos)
                 {
                     case MousePos.Right:
@@ -896,7 +919,7 @@ namespace iSpyApplication.Controls
             Margin = new Padding(0, 0, 0, 0);
             Padding = new Padding(0, 0, 5, 5);
             BorderStyle = BorderStyle.None;
-            BackgroundColor = MainForm.BackgroundColor;
+            BackColor = MainForm.BackgroundColor;
             Micobject = om;
             MainClass = mainForm;
             ErrorHandler += VolumeLevel_ErrorHandler;
@@ -1027,11 +1050,6 @@ namespace iSpyApplication.Controls
 
                 }
             
-                if (IsEnabled)
-                {
-                    FlashBackground();
-                }
-            
                 _tickThrottle += _secondCountNew;
 
                 if (_tickThrottle > 1 && IsEnabled) //every second
@@ -1075,47 +1093,6 @@ namespace iSpyApplication.Controls
                 _requestRefresh = false;
                 Invalidate();
             }
-        }
-
-        private DateTime _lastFlash = DateTime.MinValue;
-        private void FlashBackground()
-        {
-            bool b = true;
-            if (Micobject.alerts.active)
-            {
-                b = BackgroundColor != MainForm.BackgroundColor;
-                var dt = Helper.Now;
-                if ((dt - _lastFlash).TotalMilliseconds < 500)
-                    return;
-                _lastFlash = dt;
-
-                if (FlashCounter > Helper.Now)
-                {
-                    BackgroundColor = (BackgroundColor == MainForm.ActivityColor)
-                                          ? MainForm.BackgroundColor
-                                          : MainForm.ActivityColor;
-                    b = false;
-                }
-                else
-                {
-                    switch (Micobject.alerts.mode.ToLower())
-                    {
-                        case "nosound":
-                            if (!SoundDetected)
-                            {
-                                BackgroundColor = (BackgroundColor == MainForm.NoActivityColor)
-                                                      ? MainForm.BackgroundColor
-                                                      : MainForm.NoActivityColor;
-                                b = false;
-                            }
-
-                            break;
-                    }
-                }
-            }
-            if (b)
-                BackgroundColor = MainForm.BackgroundColor;
-
         }
 
         private void CheckReconnectInterval(double since)
@@ -1369,6 +1346,9 @@ namespace iSpyApplication.Controls
         {
             get
             {
+                if (FlashCounter > Helper.Now)
+                    return MainForm.ActivityColor;
+
                 if (Highlighted)
                     return MainForm.FloorPlanHighlightColor;
 
@@ -1389,11 +1369,6 @@ namespace iSpyApplication.Controls
             var rc = ClientRectangle;
 
             
-            var grabBrush = new SolidBrush(BorderColor);
-            var borderPen = new Pen(grabBrush,BorderWidth);
-            var lgb = new SolidBrush(MainForm.VolumeLevelColor);
-
-            gMic.Clear(BackgroundColor);
             string m = "", txt = Micobject.name;
             if (IsEnabled)
             {
@@ -1403,39 +1378,39 @@ namespace iSpyApplication.Controls
                     int bh = (rc.Height - 20)/Micobject.settings.channels - (Micobject.settings.channels - 1)*2;
                     if (bh <= 2)
                         bh = 2;
-                    for (int j = 0; j < Micobject.settings.channels; j++)
+                    using (var lgb = new SolidBrush(MainForm.VolumeLevelColor))
                     {
-                        float f = 0f;
-                        if (j < l.Length)
-                            f = l[j];
-                        if (f > 1) f = 1;
-                        int drawW = Convert.ToInt32(Convert.ToDouble(rc.Width * f) - 1.0);
-                        if (drawW < 1)
-                            drawW = 1;
+                        for (int j = 0; j < Micobject.settings.channels; j++)
+                        {
+                            float f = 0f;
+                            if (j < l.Length)
+                                f = l[j];
+                            if (f > 1) f = 1;
+                            int drawW = Convert.ToInt32(Convert.ToDouble(rc.Width*f) - 1.0);
+                            if (drawW < 1)
+                                drawW = 1;
 
-                        gMic.FillRectangle(lgb, rc.X + 2, rc.Y + 2 + j*bh + (j*2), drawW - 4, bh);
+                            gMic.FillRectangle(lgb, rc.X + 2, rc.Y + 2 + j*bh + (j*2), drawW - 4, bh);
 
+                        }
+                        var d = (Convert.ToDouble(rc.Width - 4)/100.00);
+                        var mx1 = (float) (d*Micobject.detector.minsensitivity);
+                        var mx2 = (float) (d*Micobject.detector.maxsensitivity);
+
+                        gMic.DrawLine(_vline, mx1, 2, mx1, rc.Height - 20);
+                        gMic.DrawLine(_vline, mx2, 2, mx2, rc.Height - 20);
+
+                        if (Listening)
+                        {
+                            gMic.DrawString("LIVE", MainForm.Drawfont, MainForm.CameraDrawBrush, new PointF(5, 4));
+                        }
+
+
+                        if (Recording)
+                        {
+                            gMic.FillEllipse(MainForm.RecordBrush, new Rectangle(rc.Width - 14, 2, 8, 8));
+                        }
                     }
-                    var d = (Convert.ToDouble(rc.Width - 4) / 100.00);
-                    var mx1 =(float)(d*Micobject.detector.minsensitivity);
-                    var mx2 = (float)(d * Micobject.detector.maxsensitivity);
-
-                    gMic.DrawLine(_vline, mx1, 2, mx1, rc.Height - 20);
-                    gMic.DrawLine(_vline, mx2, 2, mx2, rc.Height - 20);
-
-                    if (Listening)
-                    {
-                        gMic.DrawString("LIVE", MainForm.Drawfont, MainForm.CameraDrawBrush, new PointF(5, 4));
-                    }
-
-
-                    if (Recording)
-                    {
-                        gMic.FillEllipse(MainForm.RecordBrush, new Rectangle(rc.Width - 14, 2, 8, 8));
-                    }
-
-
-                    lgb.Dispose();
                 }
                 else
                 {
@@ -1485,29 +1460,28 @@ namespace iSpyApplication.Controls
             }
 
 
-            if (!Paired)
+            using (var grabBrush = new SolidBrush(BorderColor))
+            using (var borderPen = new Pen(grabBrush, BorderWidth))
             {
-                var grabPoints = new[]
-                                 {
-                                     new Point(rc.Width - 15, rc.Height), new Point(rc.Width, rc.Height - 15),
-                                     new Point(rc.Width, rc.Height)
-                                 };
-                gMic.FillPolygon(grabBrush, grabPoints);
+                if (!Paired && !MainForm.LockLayout)
+                {
+                    var grabPoints = new[]
+                                     {
+                                         new Point(rc.Width - 15, rc.Height), new Point(rc.Width, rc.Height - 15),
+                                         new Point(rc.Width, rc.Height)
+                                     };
+                    gMic.FillPolygon(grabBrush, grabPoints);
+                }
+
+                if (!Paired)
+                    gMic.DrawRectangle(borderPen, 0, 0, rc.Width - 1, rc.Height - 1);
+                else
+                {
+                    gMic.DrawLine(borderPen, 0, 0, 0, rc.Height - 1);
+                    gMic.DrawLine(borderPen, 0, rc.Height - 1, rc.Width - 1, rc.Height - 1);
+                    gMic.DrawLine(borderPen, rc.Width - 1, rc.Height - 1, rc.Width - 1, 0);
+                }
             }
-
-            if (!Paired)
-                gMic.DrawRectangle(borderPen, 0, 0, rc.Width - 1, rc.Height - 1);
-            else
-            {
-                gMic.DrawLine(borderPen, 0, 0, 0, rc.Height - 1);
-                gMic.DrawLine(borderPen, 0, rc.Height - 1, rc.Width - 1, rc.Height - 1);
-                gMic.DrawLine(borderPen, rc.Width - 1, rc.Height - 1, rc.Width - 1, 0);
-            }
-
-
-
-            borderPen.Dispose();
-            grabBrush.Dispose();
 
             base.OnPaint(pe);
         }
@@ -1532,12 +1506,9 @@ namespace iSpyApplication.Controls
                 }
                 try
                 {
-                    if (_recordingThread != null && !_recordingThread.Join(TimeSpan.Zero))
+                    if (Helper.ThreadRunning(_recordingThread,3000))
                     {
-                        if (!_recordingThread.Join(3000))
-                        {
-                            _stopWrite.Set();
-                        }
+                        _stopWrite.Set();                        
                     }
                 }
                 catch
@@ -1959,7 +1930,7 @@ namespace iSpyApplication.Controls
 
                 MainForm.NeedsSync = true;
                 _errorTime = _reconnectTime = DateTime.MinValue;
-                BackgroundColor = MainForm.BackgroundColor;
+                BackColor = MainForm.BackgroundColor;
                 if (!ShuttingDown)
                     _requestRefresh = true;
 
@@ -2560,7 +2531,7 @@ namespace iSpyApplication.Controls
                         Console.Beep();
                         break;
                     case "M":
-                        MainForm.InstanceReference.Maximise(this, false);
+                        MainForm.InstanceReference._pnlCameras.Maximise(this, false);
                         
                         break;
                     case "TA":

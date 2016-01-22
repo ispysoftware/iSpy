@@ -852,9 +852,6 @@
     <Compile Include="MainForm_Configuration.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm_Layout.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="MainForm_Media.cs">
       <SubType>Form</SubType>
     </Compile>

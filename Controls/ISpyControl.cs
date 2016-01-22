@@ -32,6 +32,7 @@ namespace iSpyApplication.Controls
         void Apply();
         void ReloadSchedule();
 
+        int Order { get; set; }
 
     }
 }

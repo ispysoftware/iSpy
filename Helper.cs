@@ -6,8 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 using iSpyApplication.Utilities;
 
@@ -15,7 +17,15 @@ namespace iSpyApplication
 {
     public static class Helper
     {
-
+        public static bool ThreadRunning(Thread thread, int timeout = 0)
+        {
+            var t = thread;
+            if (t?.ThreadState != ThreadState.WaitSleepJoin)
+            {
+                return t != null && !t.Join(timeout);
+            }
+            return false;
+        }
         public class ListItem
         {
             public string Name { get; set; }
@@ -37,6 +47,35 @@ namespace iSpyApplication
                 Value = value;
                 Index = index;
             }
+        }
+
+        public static Rectangle GetArea(Rectangle container, int imageW, int imageH)
+        {
+            int contH = container.Height;
+            int contW = container.Width;
+            int x = container.X;
+            int y = container.Y;
+            if (contH > 0 && contW > 0)
+            {
+                double arw = Convert.ToDouble(contW) / Convert.ToDouble(imageW);
+                double arh = Convert.ToDouble(contH) / Convert.ToDouble(imageH);
+                int w;
+                int h;
+                if (arh <= arw)
+                {
+                    w = Convert.ToInt32(((Convert.ToDouble(contW) * arh) / arw));
+                    h = contH;
+                }
+                else
+                {
+                    w = contW;
+                    h = Convert.ToInt32((Convert.ToDouble(contH) * arw) / arh);
+                }
+                int x2 = x + ((contW - w) / 2);
+                int y2 = y + ((contH - h) / 2);
+                return new Rectangle(x2, y2, w, h);
+            }
+            return container;
         }
 
         public static double CalculateTrigger(double percent)

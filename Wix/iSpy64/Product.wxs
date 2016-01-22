@@ -118,7 +118,7 @@
       </Component>
     </DirectoryRef>
     <DirectoryRef Id="TARGETDIR">
-      <Merge Id="VCRedist" SourceFile="$(var.SourceCodeDir)\Merge Modules\Microsoft_VC100_CRT_x64.msm" DiskId="1" Language="0" />
+      <Merge Id="VCRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\Microsoft_VC100_CRT_x64.msm" DiskId="1" Language="0" />
     </DirectoryRef>
   </Fragment>
 

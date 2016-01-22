@@ -192,7 +192,7 @@ namespace iSpyApplication
             if (CameraControl.Camobject.id == -1)
             {
                 CameraControl.Camobject.id = MainForm.NextCameraId;
-                MainForm.Cameras.Add(CameraControl.Camobject);
+                MainForm.AddObject(CameraControl.Camobject);
             }
             _loaded = false;
             CameraControl.NewFrame -= CameraNewFrame;
@@ -206,6 +206,7 @@ namespace iSpyApplication
             chkPublic.Checked = CameraControl.Camobject.settings.youtube.@public;
             txtTags.Text = CameraControl.Camobject.settings.youtube.tags;
             chkMovement.Checked = CameraControl.Camobject.alerts.active;
+            chkFill.Checked = CameraControl.Camobject.settings.fillMode == 1;
             
             foreach(string dt in _detectortypes)
             {
@@ -584,8 +585,8 @@ namespace iSpyApplication
             llblClearAll.Text = LocRm.GetString("ClearAll");
             chkActive.Text = LocRm.GetString("CameraActive");
             chkFTP.Text = LocRm.GetString("Enabled");
-            
-            
+
+            chkFill.Text = LocRm.GetString("Fill");
             rdoMotion.Text = LocRm.GetString("WhenMotionDetected");
             rdoContinuous.Text = LocRm.GetString("Continuous");
             chkMovement.Text = LocRm.GetString("AlertsEnabled");
@@ -2504,6 +2505,12 @@ namespace iSpyApplication
         private void scheduleEditor1_ClientSizeChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void chkFill_CheckedChanged(object sender, EventArgs e)
+        {
+            CameraControl.Camobject.settings.fillMode = chkFill.Checked ? 1 : 0;
+            CameraControl.RC = Rectangle.Empty;
         }
     }
 }

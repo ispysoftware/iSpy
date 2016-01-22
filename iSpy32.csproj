@@ -851,9 +851,6 @@
     <Compile Include="MainForm_Commands.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm_Layout.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="MainForm_Media.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1448,6 +1445,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ActionEditor.resx">
       <DependentUpon>ActionEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\LayoutPanel.resx">
+      <DependentUpon>LayoutPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ScheduleEntryEditor.resx">
       <DependentUpon>ScheduleEntryEditor.cs</DependentUpon>

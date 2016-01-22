@@ -96,6 +96,12 @@ namespace iSpyApplication.Controls
 
         }
 
+        public int Order
+        {
+            get { return Fpobject.order; }
+            set { Fpobject.order = value; }
+        }
+
         public Bitmap ImgView => _imgview;
 
         public bool NeedsRefresh = true, RefreshImage = true;
@@ -162,6 +168,19 @@ namespace iSpyApplication.Controls
             base.Dispose(disposing);
         }
 
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+
+            base.OnMouseUp(e);
+
+            switch (e.Button)
+            {
+                case MouseButtons.Left:
+                    ((LayoutPanel)Parent).ISpyControlUp(new Point(this.Left + e.X, this.Top + e.Y));
+                    break;
+            }
+
+        }
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
@@ -183,6 +202,10 @@ namespace iSpyApplication.Controls
                         int bpi = GetButtonIndexByLocation(e.Location);
                         switch (bpi)
                         {
+                            case -999:
+                                var layoutPanel = (LayoutPanel)Parent;
+                                layoutPanel?.ISpyControlDown(new Point(this.Left + e.X, this.Top + e.Y));
+                                break;
                             case 0:
                                MainClass.EditFloorplan(Fpobject);
                                 break;
@@ -201,7 +224,7 @@ namespace iSpyApplication.Controls
                         }
                     }
                 }
-                if (MainForm.Conf.LockLayout) return;
+                if (MainForm.LockLayout) return;
                 switch (mousePos)
                 {
                     case MousePos.Right:
@@ -396,7 +419,7 @@ namespace iSpyApplication.Controls
             if (changeHighlight)
             {
                 bool hl = Highlighted;
-                MainClass.ClearHighlights();
+                MainClass._pnlCameras.ClearHighlights();
 
                 Highlighted = !hl;
             }
@@ -463,8 +486,8 @@ namespace iSpyApplication.Controls
            
             int textpos = rc.Height - 20;
 
-            var grabBrush = new SolidBrush(BorderColor);
-            var borderPen = new Pen(grabBrush, BorderWidth);
+           
+            
             
             
             try
@@ -494,15 +517,22 @@ namespace iSpyApplication.Controls
                 DrawOverlay(gPlan);
             }
 
-            gPlan.DrawRectangle(borderPen, 0, 0, rc.Width - 1, rc.Height - 1);
-            var borderPoints = new[]
+            using (var grabBrush = new SolidBrush(BorderColor))
+            using (var borderPen = new Pen(grabBrush, BorderWidth))
+            {
+                gPlan.DrawRectangle(borderPen, 0, 0, rc.Width - 1, rc.Height - 1);
+
+                if (!MainForm.LockLayout)
                 {
-                    new Point(rc.Width - 15, rc.Height), new Point(rc.Width, rc.Height - 15),
-                    new Point(rc.Width, rc.Height)
-                };
-            gPlan.FillPolygon(grabBrush, borderPoints);
-            grabBrush.Dispose();  
-            borderPen.Dispose();
+                    var borderPoints = new[]
+                                        {
+                                            new Point(rc.Width - 15, rc.Height), new Point(rc.Width, rc.Height - 15),
+                                            new Point(rc.Width, rc.Height)
+                                        };
+                    gPlan.FillPolygon(grabBrush, borderPoints);
+                    
+                }
+            }
 
             base.OnPaint(pe);
         }

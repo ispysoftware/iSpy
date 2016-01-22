@@ -55,7 +55,7 @@ namespace iSpyApplication
                 //}
             }
             if (MainForm.Conf.AutoLayout)
-                mainForm.LayoutObjects(0, 0);
+                mainForm._pnlCameras.LayoutObjects(0, 0);
             Close();
         }
 

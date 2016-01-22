@@ -4,6 +4,11 @@ namespace iSpyApplication
 {
     public class Enums
     {
+        public enum LayoutMode
+        {
+            Freeform,
+            AutoGrid
+        };
         public enum AlertMode { Movement, NoMovement };
 
         public enum PtzCommand
@@ -78,7 +83,8 @@ namespace iSpyApplication
             Edit =              1073741824,
             View_File_Menu =    8589934592,
             View_Ispy_Links =   17179869184,
-            View_Status_Bar =   34359738368
+            View_Status_Bar =   34359738368,
+            View_Layout_Options = 68719476736
         }
 
     }

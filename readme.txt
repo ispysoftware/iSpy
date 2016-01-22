@@ -20,4 +20,5 @@ for 64 bit:
 For building the Setup project [Wix Toolset 3.10+](http://wixtoolset.org/) must be installed. (Make sure you restart Visual Studio after installing)
 
 To build the full installer compile the Bootstrap32 or Bootstrap64 project
+If there is an error finding a merge module building the setup project then the merge modules are available in the Merge Modules directory
 

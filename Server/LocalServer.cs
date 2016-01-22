@@ -763,7 +763,7 @@ namespace iSpyApplication.Server
                 if (resp != "")
                 {
                     bool gzip = resp.Length > 400 && MainForm.Conf.EnableGZip && HeaderEnabled(sBuffer, "Accept-Encoding", "gzip");
-
+                    
                     if (gzip)
                     {
                         var arr = Gzip(Encoding.UTF8.GetBytes(resp));

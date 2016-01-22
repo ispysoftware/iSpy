@@ -597,7 +597,7 @@ namespace iSpyApplication
                     {
                         if (cw.Camobject.settings.active)
                         {
-                            Maximise(cw);
+                            _pnlCameras.Maximise(cw);
                         }
                         else
                             cw.Enable();
@@ -606,7 +606,7 @@ namespace iSpyApplication
                     {
                         if (vl.Micobject.settings.active)
                         {
-                            Maximise(vl);
+                            _pnlCameras.Maximise(vl);
                         }
                         else
                             vl.Enable();
@@ -624,7 +624,7 @@ namespace iSpyApplication
                 case "zoom":
                     if (c is CameraWindow || c is VolumeLevel || c is FloorPlanControl)
                     {
-                        Maximise(c);
+                        _pnlCameras.Maximise(c);
                     }
                     break;
                 case "delete":

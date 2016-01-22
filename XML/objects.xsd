@@ -118,6 +118,8 @@
                                                     <xs:element name="procAmpConfig" type="xs:string" default=""/>
                                                     <xs:element name="messaging" type="xs:boolean" default="true"/>
                                                     <xs:element name="directoryIndex" type="xs:int" default="0"/>
+                                                    <xs:element name="fillMode" type="xs:int" default="0"/>
+                                                    <xs:element name="order" type="xs:int" default="-1"/>
                                                     <xs:element name="youtube">
                                                         <xs:complexType>
                                                             <xs:sequence>
@@ -437,6 +439,7 @@
                                                     <xs:element name="volume" type="xs:int" default="50" />
                                                     <xs:element name="gain" type="xs:float" default="1" />
                                                     <xs:element name="messaging" type="xs:boolean" default="true"/>
+                                                    <xs:element name="order" type="xs:int" default="-1"/>
                                                     <xs:element name="username">
                                                       <xs:simpleType>
                                                         <xs:restriction base="xs:string">
@@ -626,6 +629,7 @@
                                     <xs:attribute name="needsupdate" type="xs:boolean" use="required" />
                                     <xs:attribute name="deleted" type="xs:boolean" default="false" />
                                     <xs:attribute name="surfaceID" type="xs:int" default="0"/>
+                                    <xs:attribute name="order" type="xs:int" default="-1"/>
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>
