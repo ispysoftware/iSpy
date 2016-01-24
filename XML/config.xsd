@@ -145,7 +145,7 @@
         <xs:element name="EncryptCode" type="xs:string" default=""/>
         <xs:element name="Tags" type="xs:string" default=""/>
         <xs:element name="PortMapperMode" type="xs:int" default="2"/>
-        <xs:element name="ArrangeMode" type="xs:int" default="1"/>
+        <xs:element name="ArrangeMode" type="xs:int" default="0"/>
         <xsd:element name="Logging">
           <xsd:complexType>
             <xsd:attribute name="FileSize" type="xsd:int" default="100" />

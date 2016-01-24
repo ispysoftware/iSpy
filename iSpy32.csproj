@@ -1976,6 +1976,7 @@
   <ItemGroup>
     <Folder Include="bin\x86\" />
     <Folder Include="DLLS\" />
+    <Folder Include="obj\" />
     <Folder Include="WebServerRoot\Media\Audio\" />
     <Folder Include="WebServerRoot\Media\Video\" />
   </ItemGroup>

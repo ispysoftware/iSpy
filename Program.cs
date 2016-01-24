@@ -125,7 +125,7 @@ internal static class Program
             string command = "";
             if (args.Length > 0)
             {
-                if (args[0].ToLower().Trim() == " - reset" && !ei)
+                if (args[0].ToLower().Trim() == "-reset" && !ei)
                 {
                     if (firstInstance)
                     {
