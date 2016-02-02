@@ -14,7 +14,6 @@
     <url version="ipcam" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="Maginon" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]*[HEIGHT]" />
     <url version="ipcam" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]*[HEIGHT]" />
-    <url version="Foscam F181918W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]*[HEIGHT]" />
     <url version="EagleEye" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]*[HEIGHT]" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="D92DA" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]*[HEIGHT]" />
@@ -125,7 +124,6 @@
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="rtsp://" Source="VLC" url="cam[CHANNEL]/h264" />
-    <url version="00b0040018f1" prefix="rtsp://" Source="VLC" url="ch0_0.h264" port="554" />
     <url version="Other" prefix="http://" Source="VLC" url="ipcam/avc.cgi?audiostream=[CHANNEL]" />
     <url version="Other" prefix="rtsp://" Source="VLC" url="ch0_0.h264" port="554" />
     <url version="Other" prefix="rtsp://" Source="VLC" url="cam/realmonitor?channel=[CHANNEL]&amp;subtype=1" port="554" />

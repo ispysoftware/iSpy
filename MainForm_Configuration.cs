@@ -2706,7 +2706,7 @@ namespace iSpyApplication
                 _pnlCameras.LayoutObjects(0, 0);
 
             cameraControl.Tag = GetControlIndex();
-            NeedsRedraw = true;
+            LayoutPanel.NeedsRedraw = true;
 
             return cameraControl;
         }
@@ -2840,7 +2840,7 @@ namespace iSpyApplication
                 _pnlCameras.LayoutObjects(0, 0);
 
             volumeControl.Tag = GetControlIndex();
-            NeedsRedraw = true;
+            LayoutPanel.NeedsRedraw = true;
             return volumeControl;
         }
 
@@ -2882,7 +2882,7 @@ namespace iSpyApplication
             fpc.BringToFront();
             fpc.Tag = GetControlIndex();
 
-            NeedsRedraw = true;
+            LayoutPanel.NeedsRedraw = true;
 
             var afp = new AddFloorPlan { Fpc = fpc, Owner = this, MainClass = this };
             afp.ShowDialog(this);
@@ -3262,7 +3262,7 @@ namespace iSpyApplication
             LoadObjects(fileName);
             RenderObjects();
             Application.DoEvents();
-            NeedsRedraw = true;
+            LayoutPanel.NeedsRedraw = true;
             try
             {
                 _houseKeepingTimer.Start();

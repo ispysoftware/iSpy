@@ -96,7 +96,7 @@ namespace iSpyApplication
             {
                 var li = (ListItem)ddlMic.SelectedItem;
                 CameraControl.Camobject.settings.micpair = Convert.ToInt32(li.Value);
-                MainForm.NeedsRedraw = true;
+                LayoutPanel.NeedsRedraw = true;
             }
             if (radioButton3.Checked)
             {
@@ -104,7 +104,7 @@ namespace iSpyApplication
                 if (micid!=-1)
                 {
                     CameraControl.Camobject.settings.micpair = micid;
-                    MainForm.NeedsRedraw = true;
+                    LayoutPanel.NeedsRedraw = true;
                 }
             }
             if (vl!=null && vl!=CameraControl.VolumeControl)

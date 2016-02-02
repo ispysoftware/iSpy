@@ -6237,4 +6237,32 @@ copy or delete as many lines as you need.-->
       <Command Name="Get Position 8">/hy-cgi/ptz.cgi?cmd=preset&amp;number=2&amp;act=goto</Command>
     </ExtendedCommands>
   </Camera>
+  <Camera id="223">
+    <Makes>
+      <Make Name="ABUS" Model="TVIP21500" />
+    </Makes>
+    <CommandURL>
+    </CommandURL>
+    <Commands>
+      <Center>/cgi-bin/operator/ptzset?move=stop</Center>
+      <Left>/cgi-bin/operator/ptzset?move=left&amp;move=repeat</Left>
+      <Right>/cgi-bin/operator/ptzset?move=right&amp;move=repeat</Right>
+      <Up>/cgi-bin/operator/ptzset?move=up&amp;move=repeat</Up>
+      <Down>/cgi-bin/operator/ptzset?move=down&amp;move=repeat</Down>
+      <LeftUp>cgi-bin/operator/ptzset?move=upleft&amp;move=repeat</LeftUp>
+      <LeftDown>cgi-bin/operator/ptzset?move=downleft&amp;move=repeat</LeftDown>
+      <RightUp>cgi-bin/operator/ptzset?move=upright&amp;move=repeat</RightUp>
+      <RightDown>cgi-bin/operator/ptzset?move=downright&amp;move=repeat</RightDown>
+      <Stop>/cgi-bin/operator/ptzset?move=stop</Stop>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Go Preset 1">/cgi-bin/operator/ptzset?gotoserverpresetname=Preset1</Command>
+      <Command Name="Go Preset 2">/cgi-bin/operator/ptzset?gotoserverpresetname=Preset2</Command>
+      <Command Name="Go Preset 3">/cgi-bin/operator/ptzset?gotoserverpresetname=Preset3</Command>
+      <Command Name="Go Preset 4">/cgi-bin/operator/ptzset?gotoserverpresetname=Preset4</Command>
+      <Command Name="Go Preset 5">/cgi-bin/operator/ptzset?gotoserverpresetname=Preset5</Command>
+      <Command Name="Go Preset 6">/cgi-bin/operator/ptzset?gotoserverpresetname=Preset6</Command>
+      <Command Name="Go Preset 7">/cgi-bin/operator/ptzset?gotoserverpresetname=Preset7</Command>
+    </ExtendedCommands>
+  </Camera>
 </PTZSettings2>

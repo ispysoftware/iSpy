@@ -1336,7 +1336,7 @@ namespace iSpyApplication.Controls
             if (Width < MinimumSize.Width) Width = MinimumSize.Width;
             if (Height < MinimumSize.Height) Height = MinimumSize.Height;
             if (VolumeControl != null)
-                MainForm.NeedsRedraw = true;
+                LayoutPanel.NeedsRedraw = true;
 
             _minimised = Size.Equals(MinimumSize);
             _rc = Rectangle.Empty;
@@ -2891,6 +2891,7 @@ namespace iSpyApplication.Controls
                     var vlc = Camera.VideoSource as VlcStream;
                     if (vlc != null)
                         Seekable = vlc.Seekable;
+                    RC = Rectangle.Empty;
                 }
 
                 if (VideoSourceErrorState)

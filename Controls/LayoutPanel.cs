@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -67,67 +66,79 @@ namespace iSpyApplication.Controls
                 BrandedImage.Left = Width / 2 - BrandedImage.Width / 2;
                 BrandedImage.Top = Height / 2 - BrandedImage.Height / 2;
             }
+            
+            AutoGrid();
+            
+            base.OnPaint(pe);
+        }
 
-            if (MainForm.LayoutMode == Enums.LayoutMode.AutoGrid && _maximised==null)
+        public void AutoGrid()
+        {
+            AutoScroll = MainForm.LayoutMode != Enums.LayoutMode.AutoGrid;
+
+            if (MainForm.LayoutMode == Enums.LayoutMode.AutoGrid)
             {
                 HorizontalScroll.Value = 0;
                 VerticalScroll.Value = 0;
-
-                var lc = new List<ISpyControl>();
-                foreach (var c in Controls)
+                if (_maximised != null)
                 {
-                    if (c is CameraWindow || c is FloorPlanControl)
-                    {
-                        lc.Add((ISpyControl)c);
-                        continue;
-                    }
-                    var vl = c as VolumeLevel;
-                    if (vl?.Paired==false)
-                        lc.Add(vl);
+                    Maximise(_maximised, false);
                 }
-
-                int aw = Width - Padding.Horizontal;
-                int ah = Height - Padding.Vertical;
-
-                int rows;
-                int cols;
-                GetRowsCols(lc.Count, aw, ah, out rows, out cols);
-                double w = Convert.ToDouble(aw) / cols;
-                double h = Convert.ToDouble(ah) / rows;
-                
-                int row = 0;
-                int col = 0;
-                var l = lc.OrderBy(p => p.Order).ToList();
-                int ind = 0;
-                foreach (var io in l)
+                else
                 {
-                    io.Order = ind;
-                    ind++;
-                    var c = (PictureBox)io;
-                    c.Location = new Point(Convert.ToInt32(col*w),Convert.ToInt32(row*h));
-                    c.Width = Convert.ToInt32(Math.Max(2, w - GridPadding));
-                    var hc = Convert.ToInt32(Math.Max(2, h - GridPadding));
-                    var cw = c as CameraWindow;
-                    var vc = cw?.VolumeControl;
-                    if (vc?.IsDisposed == false)
-                    {
-                        hc = Math.Max(40, hc - 40);
-                        vc.Location = new Point(Convert.ToInt32(col * w), Convert.ToInt32(row * h)+hc);
-                        vc.Width = c.Width;
-                        vc.Height = 40;
-                    }
-                    c.Height = hc;
 
-                    col++;
-                    if (col >= cols)
+                    var lc = new List<ISpyControl>();
+                    foreach (var c in Controls)
                     {
+                        if (c is CameraWindow || c is FloorPlanControl)
+                        {
+                            lc.Add((ISpyControl) c);
+                            continue;
+                        }
+                        var vl = c as VolumeLevel;
+                        if (vl?.Paired == false)
+                            lc.Add(vl);
+                    }
+
+                    int aw = DisplayRectangle.Width - Padding.Horizontal;
+                    int ah = DisplayRectangle.Height - Padding.Vertical;
+
+                    int rows;
+                    int cols;
+                    GetRowsCols(lc.Count, aw, ah, out rows, out cols);
+                    double w = Convert.ToDouble(aw)/cols;
+                    double h = Convert.ToDouble(ah)/rows;
+
+                    int row = 0;
+                    int col = 0;
+                    var l = lc.OrderBy(p => p.Order).ToList();
+                    int ind = 0;
+                    foreach (var io in l)
+                    {
+                        io.Order = ind;
+                        ind++;
+                        var c = (PictureBox) io;
+                        c.Location = new Point(Convert.ToInt32(col*w), Convert.ToInt32(row*h));
+                        c.Width = Convert.ToInt32(Math.Max(2, w - GridPadding));
+                        var hc = Convert.ToInt32(Math.Max(2, h - GridPadding));
+                        var cw = c as CameraWindow;
+                        var vc = cw?.VolumeControl;
+                        if (vc?.IsDisposed == false)
+                        {
+                            hc = Math.Max(40, hc - 40);
+                            vc.Location = new Point(Convert.ToInt32(col*w), Convert.ToInt32(row*h) + hc);
+                            vc.Width = c.Width;
+                            vc.Height = 40;
+                        }
+                        c.Height = hc;
+
+                        col++;
+                        if (col < cols) continue;
                         row++;
                         col = 0;
                     }
                 }
             }
-            
-            base.OnPaint(pe);
         }
 
         public void LayoutObjects(int w, int h)
@@ -350,7 +361,6 @@ namespace iSpyApplication.Controls
 
                 var cameraControl = window;
                 cameraControl.BringToFront();
-
 
                 try
                 {
@@ -625,6 +635,7 @@ namespace iSpyApplication.Controls
             // 
             // LayoutPanel
             // 
+            this.SizeChanged += new System.EventHandler(this.LayoutPanel_SizeChanged);
             this.ResumeLayout(false);
 
         }
@@ -685,6 +696,11 @@ namespace iSpyApplication.Controls
                 }
                 _mDown = false;
             }
+        }
+
+        private void LayoutPanel_SizeChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
