@@ -21,6 +21,9 @@ namespace iSpyApplication
 {
     public partial class MainForm
     {
+        //do not remove - used for translation indexing
+        //LocRm.GetString("movement");LocRm.GetString( "nomovement");LocRm.GetString( "objectcount");LocRm.GetString( "Two Frames");LocRm.GetString( "Custom Frame");LocRm.GetString( "Background Modeling");LocRm.GetString( "Two Frames (Color)");LocRm.GetString( "Custom Frame (Color)");LocRm.GetString( "Background Modeling (Color)");LocRm.GetString( "None");LocRm.GetString("Grid Processing");LocRm.GetString( "Object Tracking");LocRm.GetString( "Border Highlighting");LocRm.GetString( "Area Highlighting");LocRm.GetString( "None");LocRm.GetString("Alert");LocRm.GetString( "Connection Lost");LocRm.GetString( "Reconnect");LocRm.GetString( "Normal");LocRm.GetString("Minimised");LocRm.GetString("Maximised");LocRm.GetString("FullScreen");LocRm.GetString( "ExecuteFile");LocRm.GetString("CallURL");LocRm.GetString("NetworkMessage");LocRm.GetString("PlaySound");LocRm.GetString("ShowWindow");LocRm.GetString("Beep");LocRm.GetString("Maximise");LocRm.GetString("SwitchObjectOn");LocRm.GetString("SoundThroughCamera");LocRm.GetString("TriggerAlertOn");LocRm.GetString("SendEmail");LocRm.GetString( "SendSMS");LocRm.GetString("SendTwitterMessage");LocRm.GetString("Normal");LocRm.GetString("AboveNormal");LocRm.GetString("High");LocRm.GetString("RealTime");LocRm.GetString("NewRecording");LocRm.GetString("disconnect");LocRm.GetString("reconnect");LocRm.GetString("alert");LocRm.GetString("Webservices_CouldNotConnect");LocRm.GetString( "Webservices_LoginFailed");LocRm.GetString("AlertStopped");LocRm.GetString("RecordingAlertStarted");LocRm.GetString("RecordingAlertStopped");LocRm.GetString("ReconnectFailed")
+
         private static configuration _conf;
         private static FilterInfoCollection _videoFilters;
         private static Color _backColor = Color.Empty;
@@ -645,17 +648,17 @@ namespace iSpyApplication
             }
         }
 
-        public static string IPAddressExternal(out bool success)
+        public static string IPAddressExternal(bool refresh, out bool success)
         {
             if (Conf.IPMode == "IPv4")
-                    return WsWrapper.ExternalIPv4(false, out success);
+                    return WsWrapper.ExternalIPv4(refresh, out success);
             success = true;
             return MakeIPv6Url(AddressIPv6);
         }
 
         public static string ExternalURL(out bool success)
         {
-            return (X509.SslEnabled ? "https" : "http") + "://" + IPAddressExternal(out success) + "/";
+            return (X509.SslEnabled ? "https" : "http") + "://" + IPAddressExternal(false, out success) + "/";
         } 
 
         private static string MakeIPv6Url(string ip)

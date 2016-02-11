@@ -1207,6 +1207,9 @@
     <Content Include="backgrounds\FloorPlan_Planet.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="XML\Translations.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="chk.png" />
     <Content Include="Commands\example.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -1395,11 +1398,11 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="XML\Sources.xml">
+    <Content Include="XML\SourcesBackup.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="XML\Translations.xml">
+    <Content Include="XML\Sources.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1826,6 +1829,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="WebServerRoot\api\sources\video\9.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\audio\6.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="XML\config.xsd">

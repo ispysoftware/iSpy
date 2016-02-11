@@ -266,17 +266,12 @@ namespace iSpyApplication.Server
             return sMimeType;
         }
 
-        public void SendHeader(string sHttpVersion, string sMimeHeader, int iTotBytes, string sStatusCode, int cacheDays,
-                               ref HttpRequest req, bool gZip)
-        {
-            SendHeader(sHttpVersion, sMimeHeader, iTotBytes, sStatusCode, cacheDays, ref req, "", gZip);
-        }
-        public void SendHeader(string sHttpVersion, string sMimeHeader, int iTotBytes, string sStatusCode, int cacheDays,
+        private bool SendHeader(string sHttpVersion, string sMimeHeader, int iTotBytes, string sStatusCode, int cacheDays,
                                ref HttpRequest req)
         {
-            SendHeader(sHttpVersion, sMimeHeader, iTotBytes, sStatusCode, cacheDays, ref req, "", false);
+            return SendHeader(sHttpVersion, sMimeHeader, iTotBytes, sStatusCode, cacheDays, ref req, "", false);
         }
-        public void SendHeader(string sHttpVersion, string sMimeHeader, int iTotBytes, string sStatusCode, int cacheDays,
+        private bool SendHeader(string sHttpVersion, string sMimeHeader, int iTotBytes, string sStatusCode, int cacheDays,
                                ref HttpRequest req, string fileName, bool gZip)
         {
             string sBuffer = "";
@@ -299,6 +294,7 @@ namespace iSpyApplication.Server
             //sBuffer += "X-Content-Type-Options: nosniff\r\n";
             sBuffer += "Accept-Ranges: bytes\r\n";
             sBuffer += "Access-Control-Allow-Origin: *\r\n";
+
             if (iTotBytes > -1)
                 sBuffer += "Content-Length: " + iTotBytes + "\r\n";
             if (gZip)
@@ -323,13 +319,11 @@ namespace iSpyApplication.Server
 
             sBuffer += "\r\n";
 
-            Byte[] bSendData = Encoding.ASCII.GetBytes(sBuffer);
-
-            SendToBrowser(bSendData, req);
+            return SendToBrowser(sBuffer, ref req);
         }
 
 
-        public void SendHeaderWithRange(string sHttpVersion, string sMimeHeader, int iStartBytes, int iEndBytes,
+        private bool SendHeaderWithRange(string sHttpVersion, string sMimeHeader, int iStartBytes, int iEndBytes,
                                         int iTotBytes, string sStatusCode, int cacheDays, HttpRequest req, string fileName)
         {
             string sBuffer = "";
@@ -364,32 +358,45 @@ namespace iSpyApplication.Server
             }
 
             sBuffer += "\r\n";
-            Byte[] bSendData = Encoding.ASCII.GetBytes(sBuffer);
+            byte[] bSendData = Encoding.UTF8.GetBytes(sBuffer);
 
-            SendToBrowser(bSendData, req);
+            return SendToBrowser(bSendData, ref req);
         }
 
-
-        public void SendToBrowser(string sData, HttpRequest req)
+        public bool SendResponse(string sHttpVersion, string sMimeType, string sData, string statusCode, int cacheDays, ref HttpRequest req, bool gZip = false)
         {
-            SendToBrowser(Encoding.ASCII.GetBytes(sData), req);
+            var b = Encoding.UTF8.GetBytes(sData);
+            return SendResponse(sHttpVersion, sMimeType, b, statusCode, cacheDays, ref req, gZip);
         }
 
+        public bool SendResponse(string sHttpVersion, string sMimeType, byte[] bData, string statusCode, int cacheDays, ref HttpRequest req, bool gZip = false)
+        {
+            if (SendHeader(sHttpVersion, sMimeType, bData.Length, statusCode, cacheDays, ref req))
+                return SendToBrowser(bData, ref req);
+            return false;
+
+        }
+
+        public bool SendToBrowser(string sData, ref HttpRequest req)
+        {
+            return SendToBrowser(Encoding.UTF8.GetBytes(sData), ref req);
+        }
 
         /// <summary>
         /// Sends data to the browser (client)
         /// </summary>
         /// <param name="bSendData">Byte Array</param>
         /// <param name="req">HTTP Request</param>
-        public void SendToBrowser(byte[] bSendData, HttpRequest req)
+        public bool SendToBrowser(byte[] bSendData, ref HttpRequest req)
         {
             try
             {
                 if (req.TcpClient.Client.Connected)
                 {
                     req.Stream.Write(bSendData,0,bSendData.Length);
+                    return true;
                     //if (req.TcpClient.Client.Send(bSendData) == -1)
-                      //  Logger.LogExceptionToFile(new Exception("Socket Error cannot Send Packet"));
+                    //  Logger.LogExceptionToFile(new Exception("Socket Error cannot Send Packet"));
                 }
             }
             catch (SocketException)
@@ -400,6 +407,7 @@ namespace iSpyApplication.Server
             {
                 //dropped connection
             }
+            return false;
         }
 
         /// <summary>
@@ -620,7 +628,7 @@ namespace iSpyApplication.Server
                 {
                     var read = req.Stream.EndRead(result);
                     if (read > 0)
-                        req.ASCII += Encoding.ASCII.GetString(req.Buffer, 0, read);
+                        req.ASCII += Encoding.UTF8.GetString(req.Buffer, 0, read);
 
                     
 
@@ -710,7 +718,7 @@ namespace iSpyApplication.Server
                         sResponse += "Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept\r\n";
                         sResponse += "Connection: close\r\n";
                         sResponse += "\r\n";
-                        SendToBrowser(sResponse,req);
+                        SendToBrowser(sResponse,ref req);
                         goto Finish;
                     case "GET":
                     case "POST":
@@ -743,8 +751,7 @@ namespace iSpyApplication.Server
                 if (!bServe && string.IsNullOrEmpty(sRequestedFile))
                 {
                     resp = "iSpy is running. Access this server via the website";
-                    SendHeader(sHttpVersion, "text/text", resp.Length, " 200 OK", 0, ref req);
-                    SendToBrowser(resp, req);
+                    SendResponse(sHttpVersion, "text/text", resp, " 200 OK", 0, ref req);
                     goto Finish;
                 }
 
@@ -752,9 +759,8 @@ namespace iSpyApplication.Server
                 {
                     if (errMessage != "")
                         errMessage = " (" + errMessage + ")";
-                resp = "{\"server\":\"iSpy\",\"error\":\"Authentication failed"+errMessage+"\",\"errorType\":\"authentication\"}";
-                    SendHeader(sHttpVersion, "text/javascript", resp.Length, " 200 OK", 0, ref req);
-                    SendToBrowser(resp, req);
+                    resp = "{\"server\":\"iSpy\",\"error\":\"Authentication failed"+errMessage+"\",\"errorType\":\"authentication\"}";
+                    SendResponse(sHttpVersion, "text/javascript", resp, " 200 OK", 0, ref req);
                     goto Finish;
                 }
 
@@ -767,13 +773,11 @@ namespace iSpyApplication.Server
                     if (gzip)
                     {
                         var arr = Gzip(Encoding.UTF8.GetBytes(resp));
-                        SendHeader(sHttpVersion, "text/javascript", arr.Length, " 200 OK", 0, ref req, true);
-                        SendToBrowser(arr, req);
+                        SendResponse(sHttpVersion, "text/javascript", resp, " 200 OK", 0, ref req, true);
                     }
                     else
                     {
-                        SendHeader(sHttpVersion, "text/javascript", resp.Length, " 200 OK", 0, ref req, false);
-                        SendToBrowser(resp, req);
+                        SendResponse(sHttpVersion, "text/javascript", resp, " 200 OK", 0, ref req, false);
                     }
                 }
                 else //not a js request
@@ -1038,17 +1042,14 @@ namespace iSpyApplication.Server
             {
                 SendHeader(sHttpVersion, sMimeType, iTotBytes, " 200 OK", 20, ref req, filename, false);
             }
-
-
-
-            SendToBrowser(bytes, req);
+            
+            SendToBrowser(bytes, ref req);
         }
 
         private void ServeNotFound(string sHttpVersion, ref HttpRequest req)
         {
             const string resp = "iSpy server is running";
-            SendHeader(sHttpVersion, "", resp.Length, " 200 OK", 0, ref req);
-            SendToBrowser(resp, req);
+            SendResponse(sHttpVersion, "", resp, " 200 OK", 0, ref req);
         }
 
         public static List<String> AllowedIPs
@@ -1183,8 +1184,7 @@ namespace iSpyApplication.Server
             if (sLocalDir.Length == 0)
             {
                 sErrorMessage = "<H2>Error!! Requested Directory does not exists</H2><Br>";
-                SendHeader(sHttpVersion, "", sErrorMessage.Length, " 404 Not Found", 0, ref req);
-                SendToBrowser(sErrorMessage, req);
+                SendResponse(sHttpVersion, "", sErrorMessage, " 404 Not Found", 0, ref req);
                 throw new Exception("Requested Directory does not exist (" + sLocalDir + ")");
             }
 
@@ -1215,8 +1215,7 @@ namespace iSpyApplication.Server
                 }
             }
 
-            SendHeader(sHttpVersion, sMimeType, iTotBytes, " 200 OK", 20, ref req);
-            SendToBrowser(bytes, req);
+            SendResponse(sHttpVersion, "", bytes, " 200 OK", 20, ref req);
         }
 
         private static string GetVar(string url, string var)
@@ -3033,8 +3032,7 @@ namespace iSpyApplication.Server
                 bytes = reader.ReadBytes(bytes.Length);
             }
 
-            SendHeader(sHttpVersion, "text/html", iTotBytes, " 200 OK", 20, ref req);
-            SendToBrowser(bytes, req);
+            SendResponse(sHttpVersion, "text/html", bytes, " 200 OK", 20, ref req);
         }
 
         private void SendLogFile(string sPhysicalFilePath, string sHttpVersion, ref HttpRequest req)
@@ -3057,8 +3055,7 @@ namespace iSpyApplication.Server
                 bytes = reader.ReadBytes(bytes.Length);
             }
 
-            SendHeader(sHttpVersion, "text/html", iTotBytes, " 200 OK", 20, ref req);
-            SendToBrowser(bytes, req);
+            SendResponse(sHttpVersion, "text/html", bytes, " 200 OK", 20, ref req);
         }
         
         private static byte[] _cameraRemoved;
@@ -3161,10 +3158,8 @@ namespace iSpyApplication.Server
                                     imageStream.Read(imageContent, 0, (int)imageStream.Length);
 
                                     // rewind the memory stream
-                                    SendHeader(sHttpVersion, "image/jpeg", (int)imageStream.Length, " 200 OK", 0,
-                                        ref req);
 
-                                    SendToBrowser(imageContent, req);
+                                    SendResponse(sHttpVersion, "image/jpeg", imageContent, " 200 OK", 0, ref req);
                                 }
                                 catch
                                 {
@@ -3294,12 +3289,9 @@ namespace iSpyApplication.Server
                     // load the byte array with the image
                     imageStream.Read(imageContent, 0, (int) imageStream.Length);
 
-                    // rewind the memory stream
 
+                    SendResponse(sHttpVersion, "image/jpeg", imageContent, " 200 OK", 0, ref req);
 
-                    SendHeader(sHttpVersion, "image/jpeg", (int) imageStream.Length, " 200 OK", 0, ref req);
-
-                    SendToBrowser(imageContent, req);
                 }
             }
             catch (Exception ex)
@@ -3323,8 +3315,7 @@ namespace iSpyApplication.Server
                 CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(Convert.ToInt32(oid));
                 if (cw == null)
                 {
-                    SendHeader(sHttpVersion, "image/jpeg", CameraRemoved.Length, " 200 OK", 0, ref req);
-                    SendToBrowser(CameraRemoved, req);
+                    SendResponse(sHttpVersion, "image/jpeg", CameraRemoved, " 200 OK", 0, ref req);
                 }
                 else
                 {
@@ -3372,8 +3363,7 @@ namespace iSpyApplication.Server
                             }
                         }
                     }
-                    SendHeader(sHttpVersion, "image/jpeg", bytes.Length, " 200 OK", 30, ref req);
-                    SendToBrowser(bytes, req);
+                    SendResponse(sHttpVersion, "image/jpeg", bytes, " 200 OK", 30, ref req);
                 }
 
             }
@@ -3407,8 +3397,7 @@ namespace iSpyApplication.Server
                 CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(Convert.ToInt32(oid));
                 if (cw == null)
                 {
-                    SendHeader(sHttpVersion, "image/jpeg", CameraRemoved.Length, " 200 OK", 0, ref req);
-                    SendToBrowser(CameraRemoved, req);
+                    SendResponse(sHttpVersion, "image/jpeg", CameraRemoved, " 200 OK", 0, ref req);
                 }
                 else
                 {
@@ -3454,8 +3443,7 @@ namespace iSpyApplication.Server
                             }
                         }
                     }
-                    SendHeader(sHttpVersion, "image/jpeg", bytes.Length, " 200 OK", 30, ref req);
-                    SendToBrowser(bytes, req);
+                    SendResponse(sHttpVersion, "image/jpeg", bytes, " 200 OK", 30, ref req);
                 }
 
             }
@@ -3473,16 +3461,13 @@ namespace iSpyApplication.Server
                 var fpc = MainForm.InstanceReference.GetFloorPlan(Convert.ToInt32(floorplanid));
                 if (fpc == null)
                 {
-                    SendHeader(sHttpVersion, "image/jpeg", CameraRemoved.Length, " 200 OK", 0, ref req);
-                    SendToBrowser(CameraRemoved, req);
-
+                    SendResponse(sHttpVersion, "image/jpeg", CameraRemoved, " 200 OK", 0, ref req);
                 }
                 else
                 {
                     if (fpc.ImgPlan == null)
                     {
-                        SendHeader(sHttpVersion, "image/jpeg", CameraConnecting.Length, " 200 OK", 0, ref req);
-                        SendToBrowser(CameraConnecting, req);
+                        SendResponse(sHttpVersion, "image/jpeg", CameraConnecting, " 200 OK", 0, ref req);
                     }
                     else
                     {
@@ -3535,11 +3520,7 @@ namespace iSpyApplication.Server
 
                             // rewind the memory stream
 
-
-                            SendHeader(sHttpVersion, "image/jpeg", (int)ms.Length, " 200 OK", 0, ref req);
-
-                            SendToBrowser(imageContent, req);
-                            ms.Close();
+                            SendResponse(sHttpVersion, "image/jpeg", imageContent, " 200 OK", 0, ref req);
                         }
                     }
 
@@ -3742,16 +3723,16 @@ namespace iSpyApplication.Server
                             imageStream.Position = 0;
                             // load the byte array with the image             
                             bmpFinal.Dispose();
-                            Byte[] imageArray = imageStream.GetBuffer();
+                            byte[] imageArray = imageStream.GetBuffer();
                             sResponse +=
                                 "\r\n\r\n--myboundary\r\nContent-type: image/jpeg\r\nContent-length: " +
                                 imageArray.Length + "\r\n\r\n";
 
-                            Byte[] bSendData = Encoding.ASCII.GetBytes(sResponse);
+                            byte[] bSendData = Encoding.UTF8.GetBytes(sResponse);
 
-                            SendToBrowser(bSendData, req);
+                            SendToBrowser(bSendData, ref req);
                             sResponse = "";
-                            SendToBrowser(imageArray, req);
+                            SendToBrowser(imageArray, ref req);
                         }
 
                         Thread.Sleep(MainForm.Conf.MJPEGStreamInterval); //throttle it
@@ -3866,13 +3847,13 @@ namespace iSpyApplication.Server
                     }
 
 
-                    Byte[] bSendData = Encoding.ASCII.GetBytes(sResponse);
+                    byte[] bSendData = Encoding.UTF8.GetBytes(sResponse);
 
-                    SendToBrowser(bSendData, req);
+                    SendToBrowser(bSendData, ref req);
 
                     if (sendend)
                     {
-                        SendToBrowser(Encoding.ASCII.GetBytes(0.ToString("X") + "\r\n"), req);
+                        SendToBrowser(Encoding.UTF8.GetBytes(0.ToString("X") + "\r\n"), ref req);
                     }
                     else
                     {

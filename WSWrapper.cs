@@ -144,12 +144,13 @@ namespace iSpyApplication
                 success = true;
                 return _externalIP;
             }
-            if (WebsiteLive)
+            if (WebsiteLive || refresh)
             {
                 try
                 {
                     Debug.WriteLine("WEBSERVICE CALL: RemoteAddress");
                     _externalIP = Wsa.RemoteAddress();
+                    WebsiteLive = true;
 
                 }
                 catch (Exception ex)
@@ -230,7 +231,7 @@ namespace iSpyApplication
                 port = MainForm.Conf.LANPort;
 
             bool success;
-            string ip = MainForm.IPAddressExternal(out success);
+            string ip = MainForm.IPAddressExternal(false, out success);
             Debug.WriteLine("WEBSERVICE CALL: ForceSync");
             if (success)
                 Wsa.SyncAsync(MainForm.Conf.WSUsername, MainForm.Conf.WSPassword, port, internalIPAddress, internalPort, settings, MainForm.Conf.IPMode == "IPv4", ip, Guid.NewGuid());
@@ -250,9 +251,13 @@ namespace iSpyApplication
                 LastLiveCheck = Helper.Now;
                 Debug.WriteLine("WEBSERVICE CALL: PingServer");
                 bool success;
-                string ip = MainForm.IPAddressExternal(out success);
+                string ip = MainForm.IPAddressExternal(true, out success);
                 if (success)
-                    Wsa.PingAliveAsync(MainForm.Conf.WSUsername, MainForm.Conf.WSPassword, port, MainForm.Conf.IPMode == "IPv4", ip, MainForm.IPAddress, Guid.NewGuid());
+                {
+                    WebsiteLive = true;
+                    Wsa.PingAliveAsync(MainForm.Conf.WSUsername, MainForm.Conf.WSPassword, port,
+                        MainForm.Conf.IPMode == "IPv4", ip, MainForm.IPAddress, Guid.NewGuid());
+                }
 
             }
             catch (Exception ex)
@@ -427,7 +432,7 @@ namespace iSpyApplication
                 try
                 {
                     bool success;
-                    string ip = MainForm.IPAddressExternal(out success);
+                    string ip = MainForm.IPAddressExternal(false, out success);
                     if (success)
                     {
                         r = Wsa.Connect2(MainForm.Conf.WSUsername, MainForm.Conf.WSPassword, port,
@@ -474,7 +479,7 @@ namespace iSpyApplication
             try
             {
                 bool success;
-                string ip = MainForm.IPAddressExternal(out success);
+                string ip = MainForm.IPAddressExternal(false, out success);
                 if (success)
                 {
                     r = Wsa.TestConnection2(username, password, port, MainForm.Identifier, tryLoopback, MainForm.Conf.IPMode == "IPv4", ip, X509.SslEnabled);

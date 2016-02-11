@@ -6265,4 +6265,79 @@ copy or delete as many lines as you need.-->
       <Command Name="Go Preset 7">/cgi-bin/operator/ptzset?gotoserverpresetname=Preset7</Command>
     </ExtendedCommands>
   </Camera>
+<Camera id="224">
+    <Makes>
+      <Make Name="Avacom" Model="H5060W" />
+    </Makes>
+    <CommandURL>/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;onestep=0&amp;</CommandURL>
+    <Commands>
+      <Center>command=25</Center>
+      <Left>command=4</Left>
+      <LeftUp>command=90</LeftUp>
+      <Right>command=6</Right>
+      <RightUp>command=91</RightUp>
+      <Up>command=0</Up>
+      <Down>command=2</Down>
+      <LeftDown>command=92</LeftDown>
+      <RightDown>command=93</RightDown>
+      <Stop>command=1</Stop>
+      <ZoomIn>
+      </ZoomIn>
+      <ZoomOut>
+      </ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Stop">command=1</Command>
+      <Command Name="Horizon patrol">command=28</Command>
+      <Command Name="Stop horizon patrol">command=29</Command>
+      <Command Name="Vertical patrol">command=26</Command>
+      <Command Name="Stop vertical patrol">command=27</Command>
+      <Command Name="Go 1">command=31</Command>
+      <Command Name="Go 2">command=33</Command>
+      <Command Name="Go 3">command=35</Command>
+      <Command Name="Go 4">command=37</Command>
+      <Command Name="Go 5">command=39</Command>
+      <Command Name="Go 6">command=41</Command>
+      <Command Name="Go 7">command=43</Command>
+      <Command Name="Go 8">command=45</Command>
+      <Command Name="Go 9">command=47</Command>
+      <Command Name="Go 10">command=49</Command>
+      <Command Name="Set 1">command=30</Command>
+      <Command Name="Set 2">command=32</Command>
+      <Command Name="Set 3">command=34</Command>
+      <Command Name="Set 4">command=36</Command>
+      <Command Name="Set 5">command=38</Command>
+      <Command Name="Set 6">command=40</Command>
+      <Command Name="Set 7">command=42</Command>
+      <Command Name="Set 8">command=44</Command>
+      <Command Name="Set 9">command=46</Command>
+      <Command Name="Set 10">command=48</Command>
+    </ExtendedCommands>
+  </Camera>
+  <Camera id="225">
+    <Makes>
+      <Make Name="SWANN" Model="446" />
+    </Makes>
+    <CommandURL></CommandURL>
+    <port>85</port>
+    <Method>PUT</Method>
+    <Commands>
+      <Center>
+      </Center>
+      <Left><![CDATA[/PSIA/PTZ/channels/1/continuous/?<?xml version="1.0" encoding="UTF-8"?><PTZData><pan>60</pan><tilt>0</tilt></PTZData>]]></Left>
+      <Right><![CDATA[/PSIA/PTZ/channels/1/continuous/?<?xml version="1.0" encoding="UTF-8"?><PTZData><pan>-60</pan><tilt>0</tilt></PTZData>]]></Right>
+      <Up><![CDATA[/PSIA/PTZ/channels/1/continuous/?<?xml version="1.0" encoding="UTF-8"?><PTZData><pan>0</pan><tilt>-60</tilt></PTZData>]]></Up>
+      <Down><![CDATA[/PSIA/PTZ/channels/1/continuous/?<?xml version="1.0" encoding="UTF-8"?><PTZData><pan>0</pan><tilt>60</tilt></PTZData>]]></Down>
+      <Stop><![CDATA[/PSIA/PTZ/channels/1/continuous/?<?xml version="1.0" encoding="UTF-8"?><PTZData><pan>0</pan><tilt>0</tilt></PTZData>]]></Stop>
+      <ZoomIn>
+      </ZoomIn>
+      <ZoomOut>
+      </ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="IR DAY"><![CDATA[/PSIA/Custom/SelfExt/Image/channels/1/IrcutFilterExt/?<?xml version="1.0" encoding="UTF-8"?><IrcutFilterExt><IrcutFilterType>day</IrcutFilterType><nightToDayFilterLevel>normal</nightToDayFilterLevel><nightToDayFilterTime>5</nightToDayFilterTime></IrcutFilterExt>]]></Command>
+      <Command Name="IR NIGHT"><![CDATA[/PSIA/Custom/SelfExt/Image/channels/1/IrcutFilterExt/?<?xml version="1.0" encoding="UTF-8"?><IrcutFilterExt><IrcutFilterType>night</IrcutFilterType><nightToDayFilterTime>5</nightToDayFilterTime></IrcutFilterExt>]]></Command>
+      <Command Name="IR AUTO"><![CDATA[/PSIA/Custom/SelfExt/Image/channels/1/IrcutFilterExt/?<?xml version="1.0" encoding="UTF-8"?><IrcutFilterExt><IrcutFilterType>auto</IrcutFilterType><nightToDayFilterTime>5</nightToDayFilterTime></IrcutFilterExt>]]></Command>
+    </ExtendedCommands>
+  </Camera>
 </PTZSettings2>

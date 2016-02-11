@@ -43,35 +43,32 @@
             this.flpActions.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flpActions.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flpActions.Location = new System.Drawing.Point(0, 0);
-            this.flpActions.Margin = new System.Windows.Forms.Padding(4);
             this.flpActions.Name = "flpActions";
-            this.flpActions.Size = new System.Drawing.Size(647, 313);
+            this.flpActions.Size = new System.Drawing.Size(485, 254);
             this.flpActions.TabIndex = 0;
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.tableLayoutPanel1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 313);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4);
+            this.panel1.Location = new System.Drawing.Point(0, 254);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(647, 39);
+            this.panel1.Size = new System.Drawing.Size(485, 32);
             this.panel1.TabIndex = 1;
             // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 133F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel1.Controls.Add(this.ddlAction, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.button1, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(647, 39);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(485, 32);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // ddlAction
@@ -79,19 +76,17 @@
             this.ddlAction.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ddlAction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlAction.FormattingEnabled = true;
-            this.ddlAction.Location = new System.Drawing.Point(4, 4);
-            this.ddlAction.Margin = new System.Windows.Forms.Padding(4);
+            this.ddlAction.Location = new System.Drawing.Point(3, 3);
             this.ddlAction.Name = "ddlAction";
-            this.ddlAction.Size = new System.Drawing.Size(506, 24);
+            this.ddlAction.Size = new System.Drawing.Size(379, 21);
             this.ddlAction.TabIndex = 1;
             // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(543, 4);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.Location = new System.Drawing.Point(407, 3);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 28);
+            this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
             this.button1.Text = "Add";
             this.button1.UseVisualStyleBackColor = true;
@@ -99,13 +94,12 @@
             // 
             // ActionEditor
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.flpActions);
             this.Controls.Add(this.panel1);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ActionEditor";
-            this.Size = new System.Drawing.Size(647, 352);
+            this.Size = new System.Drawing.Size(485, 286);
             this.panel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);

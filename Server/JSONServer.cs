@@ -39,13 +39,13 @@ namespace iSpyApplication.Server
             var cmd = GetVar(sPhysicalFilePath, "cmd");
 
             var r = ServerRoot;
-#if DEBUG
-            r = @"D:\Projects\iSpy\iSpyPRO\iSpyPRO\WebServerRoot\";
-#endif
+
             int ot, oid;
 
             int.TryParse(GetVar(sPhysicalFilePath, "ot"), out ot);
             int.TryParse(GetVar(sPhysicalFilePath, "oid"), out oid);
+            //language code
+            string lc = GetVar(sPhysicalFilePath, "lc");
 
             ISpyControl io = null;
             CameraWindow cw;
@@ -57,8 +57,8 @@ namespace iSpyApplication.Server
             var resp = "";
             const string commandExecuted = "{\"status\":\"ok\"}";
             const string commandFailed = "{{\"status\":\"{0}\"}}";
-            var t = "";
-            string template = "{{\"text\":\"{0}\",\"value\":\"{1}\"}},";
+            string template = "{{\"text\":\"{0}\",\"value\":\"{1}\",\"noTranslate\":true}},";
+            string t = "";
             string sd, ed;
             long sdl = 0, edl = 0;
             int total = 0;
@@ -314,7 +314,7 @@ namespace iSpyApplication.Server
                         if (_scanResults != null)
                         {
                             template = "{{\"deviceName\":\"{0}\",\"IPAddress\":\"{1}\",\"MAC\":\"{2}\",\"port\":{3},\"webServer\":\"{4}\"}},";
-                            resp = _scanResults.Aggregate(resp, (current, dev) => current + String.Format(template, dev.DeviceName.JsonSafe(), dev.IPAddress, dev.MAC, dev.Port, dev.WebServer.JsonSafe()));
+                            resp = _scanResults.Aggregate(resp, (current, dev) => current + string.Format(template, dev.DeviceName.JsonSafe(), dev.IPAddress, dev.MAC, dev.Port, dev.WebServer.JsonSafe()));
                             resp = resp.Trim(',');
                         }
                         resp += "]}";
@@ -331,14 +331,14 @@ namespace iSpyApplication.Server
                         Uri uri;
                         if (!Uri.TryCreate(GetVar(sPhysicalFilePath, "url"), UriKind.Absolute, out uri))
                         {
-                            resp = "{\"error\":\"Invalid camera URL. Please check and try again.\"}";
+                            resp = "{\"error\":\""+LocRm.GetString("InvalidURL",lc)+"\"}";
                             break;
                         }
                         var make = GetVar(sPhysicalFilePath, "make");
                         var m = MainForm.Sources.FirstOrDefault(p => string.Equals(p.name, make, StringComparison.InvariantCultureIgnoreCase));
                         if (m == null)
                         {
-                            resp = "{\"error\":\"Select a valid manufacturer (make) in Step 1\"}";
+                            resp = "{\"error\":\""+LocRm.GetString("ChooseMake", lc) +"\"}";
                             break;
                         }
                         make = m.name;
@@ -365,7 +365,7 @@ namespace iSpyApplication.Server
                         if (_devicescanResults != null)
                         {
                             template = "{{\"type\":\"{0}\",\"URL\":\"{1}\",\"mmid\":{2}}},";
-                            resp = _devicescanResults.Aggregate(resp, (current, dev) => current + String.Format(template, dev.Source, dev.URL.JsonSafe(), dev.MmUrl.id));
+                            resp = _devicescanResults.Aggregate(resp, (current, dev) => current + string.Format(template, dev.Source, dev.URL.JsonSafe(), dev.MmUrl.id));
 
                             resp = resp.Trim(',');
                         }
@@ -422,7 +422,7 @@ namespace iSpyApplication.Server
                     break;
                 case "loadapi":
                 {
-                    resp = BuildApijson(r);
+                    resp = BuildApijson(r,lc);
                 }
                     break;
                 case "authorise":
@@ -432,7 +432,7 @@ namespace iSpyApplication.Server
                         string url = "", message = "", error = "";
                         if (!MainForm.Conf.Subscribed)
                         {
-                            error = LocRm.GetString("NotSubscribed");
+                            error = LocRm.GetString("NotSubscribed", lc);
                         }
                         else
                         { 
@@ -444,7 +444,7 @@ namespace iSpyApplication.Server
                                 case "drive":
                                     if (Drive.Authorise())
                                     {
-                                        message = "Authorised";
+                                        message = LocRm.GetString("Authorised", lc);
                                     }
                                     else
                                         error = "Failed";
@@ -452,10 +452,10 @@ namespace iSpyApplication.Server
                                 case "youtube":
                                     if (YouTubeUploader.Authorise())
                                     {
-                                        message = "Authorised";
+                                        message = LocRm.GetString("Authorised", lc);
                                     }
                                     else
-                                        error = "Failed";
+                                        error = LocRm.GetString("Failed", lc);
                                     break;
 
                             }
@@ -473,7 +473,7 @@ namespace iSpyApplication.Server
                         Uri u;
                         if (!Uri.TryCreate(url, UriKind.Absolute, out u))
                         {
-                            resp = "{\"error\":\"Service URL is invalid\"}";
+                            resp = "{\"error\":\""+LocRm.GetString("InvalidURL", lc) +"\"}";
                             break;
                         }
                         var devHolder = new DeviceDescriptionHolder
@@ -497,7 +497,6 @@ namespace iSpyApplication.Server
                             devHolder.Account = new NetworkCredential { UserName = un, Password = pwd };
                             var sessionFactory = new NvtSessionFactory(devHolder.Account);
 
-                            template = "{{\"text\":\"{0}\",\"value\":\"{1}\"}},";
                             foreach (var uri in devHolder.Uris)
                             {
                                 var f = sessionFactory.CreateSession(uri);
@@ -520,7 +519,7 @@ namespace iSpyApplication.Server
                                     {
                                         string streamSize = p.videoEncoderConfiguration.resolution.width + "x" +
                                                             p.videoEncoderConfiguration.resolution.height;
-                                        resp += String.Format(template, streamSize.JsonSafe(), p.token);
+                                        resp += string.Format(template, streamSize.JsonSafe(), p.token);
                                     }
                                     catch (Exception ex)
                                     {
@@ -560,13 +559,12 @@ namespace iSpyApplication.Server
                                         om.settings.sourcename = m;
                                         task = "rendersourceeditor";
                                     }
-                                    template = "{{\"text\":\"{0}\",\"value\":\"{1}\"}},";
                                     switch (st)
                                     {
                                         case "0":
                                             //localdevice
 
-                                            string sr = Conf.SampleRates.Aggregate("", (current, s) => current + String.Format(template, s, s));
+                                            string sr = Conf.SampleRates.Aggregate("", (current, s) => current + string.Format(template, s, s));
 
                                             if (!Conf.SampleRates.Contains(om.settings.samples))
                                                 om.settings.samples = 8000;
@@ -578,7 +576,7 @@ namespace iSpyApplication.Server
                                                 for (int n = 0; n < WaveIn.DeviceCount; n++)
                                                 {
                                                     string name = WaveIn.GetCapabilities(n).ProductName.JsonSafe();
-                                                    devs += String.Format(template, name, name);
+                                                    devs += string.Format(template, name, name);
 
                                                 }
                                                 se = se.Replace("DEVICELIST", devs.Trim(','));
@@ -589,13 +587,13 @@ namespace iSpyApplication.Server
                                             }
                                             break;
                                         case "5":
-                                            string miclist = MainForm.Microphones.Where(mic => mic.id != om.id && mic.settings.typeindex != 5).Aggregate("", (current, mic) => current + String.Format(template, mic.name.JsonSafe(), mic.id));
+                                            string miclist = MainForm.Microphones.Where(mic => mic.id != om.id && mic.settings.typeindex != 5).Aggregate("", (current, mic) => current + string.Format(template, mic.name.JsonSafe(), mic.id));
                                             se = se.Replace("MICROPHONES", miclist.Trim(','));
                                             break;
                                     }
                                     resp = resp.Replace("SOURCEEDITOR", se);
 
-                                    dynamic d = PopulateResponse(resp, om);
+                                    dynamic d = PopulateResponse(resp, om,lc);
                                     d.task = task;
                                     resp = JsonConvert.SerializeObject(d);
                                 }
@@ -619,7 +617,6 @@ namespace iSpyApplication.Server
                                         task = "rendersourceeditor";
                                     }
 
-                                    template = "{{\"text\":\"{0}\",\"value\":\"{1}\"}},";
 
                                     switch (st)
                                     {
@@ -636,8 +633,8 @@ namespace iSpyApplication.Server
                                             var ldev = disc.Devices;
                                             foreach (var dev in ldev)
                                             {
-                                                devicelist += String.Format(template, dev.Name.JsonSafe(), dev.Value.JsonSafe());
-                                                if (String.Equals(oc.settings.videosourcestring, dev.Value,
+                                                devicelist += string.Format(template, dev.Name.JsonSafe(), dev.Value.JsonSafe());
+                                                if (string.Equals(oc.settings.videosourcestring, dev.Value,
                                                     StringComparison.InvariantCultureIgnoreCase))
                                                 {
                                                     moniker = dev.Value;
@@ -653,17 +650,17 @@ namespace iSpyApplication.Server
                                             if (moniker != "")
                                             {
                                                 disc.Inspect(moniker);
-                                                inputlist = disc.Inputs.Aggregate(inputlist, (current, input) => current + String.Format(template, input.Name.JsonSafe(), input.Value.JsonSafe()));
-                                                videoresolutions = disc.VideoResolutions.Aggregate(videoresolutions, (current, vres) => current + String.Format(template, vres.Name.JsonSafe(), vres.Value.JsonSafe()));
-                                                snapshotresolutions = disc.SnapshotResolutions.Aggregate(snapshotresolutions, (current, sres) => current + String.Format(template, sres.Name.JsonSafe(), sres.Value.JsonSafe()));
+                                                inputlist = disc.Inputs.Aggregate(inputlist, (current, input) => current + string.Format(template, input.Name.JsonSafe(), input.Value.JsonSafe()));
+                                                videoresolutions = disc.VideoResolutions.Aggregate(videoresolutions, (current, vres) => current + string.Format(template, vres.Name.JsonSafe(), vres.Value.JsonSafe()));
+                                                snapshotresolutions = disc.SnapshotResolutions.Aggregate(snapshotresolutions, (current, sres) => current + string.Format(template, sres.Name.JsonSafe(), sres.Value.JsonSafe()));
 
                                                 if (disc.SupportsSnapshots)
                                                 {
-                                                    capturemodes += String.Format(template, "Snapshots", "snapshots");
+                                                    capturemodes += string.Format(template, LocRm.GetString("Snapshots", lc), "snapshots");
                                                 }
                                                 if (disc.SupportsVideo)
                                                 {
-                                                    capturemodes += String.Format(template, "Video", "video");
+                                                    capturemodes += string.Format(template, LocRm.GetString("Video", lc), "video");
                                                 }
                                             }
 
@@ -678,7 +675,7 @@ namespace iSpyApplication.Server
                                             int i = 0,j=0;
                                             foreach (Screen s in Screen.AllScreens)
                                             {
-                                                screens += String.Format(template, s.DeviceName.JsonSafe(),
+                                                screens += string.Format(template, s.DeviceName.JsonSafe(),
                                                     i.ToString(CultureInfo.InvariantCulture));
                                                 i++;
                                                 if (oc.settings.videosourcestring == i.ToString(CultureInfo.InvariantCulture))
@@ -707,17 +704,20 @@ namespace iSpyApplication.Server
                                             if (oc.settings.namevaluesettings.IndexOf("use=", StringComparison.Ordinal) == -1)
                                                 oc.settings.namevaluesettings = "use=ffmpeg,transport=RTSP";
 
-                                            string[] cfg = oc.settings.onvifident.Split('|');
-                                            if (cfg.Length == 2)
+                                            if (oc.settings.onvifident != null)
                                             {
-                                                oc.settings.namevaluesettings += ",profileid=" + cfg[1];
-                                                oc.settings.onvifident = cfg[0];
+                                                string[] cfg = oc.settings.onvifident.Split('|');
+                                                if (cfg.Length == 2)
+                                                {
+                                                    oc.settings.namevaluesettings += ",profileid=" + cfg[1];
+                                                    oc.settings.onvifident = cfg[0];
+                                                }
                                             }
 
                                             string svlc = "";
                                             if (VlcHelper.VlcInstalled)
                                             {
-                                                svlc = ",{\"text\": \"VLC\", \"value\": \"vlc\"}";
+                                                svlc = ",{\"text\": \"VLC\", \"value\": \"vlc\", \"noTranslate\":true}";
                                             }
                                             se = se.Replace("VLCOPT", svlc);
 
@@ -726,19 +726,19 @@ namespace iSpyApplication.Server
                                             var pn = NV(oc.settings.namevaluesettings, "profilename");
                                             if (ss != "" && pn != "")
                                             {
-                                                ourl = "{\"text\":\"" + ss + "\",\"value\":\"" + pn.JsonSafe() + "\"}";
+                                                ourl = "{\"text\":\"" + ss + "\",\"value\":\"" + pn.JsonSafe() + "\", \"noTranslate\":true}";
                                             }
                                             se = se.Replace("ONVIFURL", ourl);
                                             break;
                                         case "10":
-                                            string camlist = MainForm.Cameras.Where(cam => cam.id != oc.id && cam.settings.sourceindex != 10).Aggregate("", (current, cam) => current + String.Format(template, cam.name.JsonSafe(), cam.id));
+                                            string camlist = MainForm.Cameras.Where(cam => cam.id != oc.id && cam.settings.sourceindex != 10).Aggregate("", (current, cam) => current + string.Format(template, cam.name.JsonSafe(), cam.id));
                                             se = se.Replace("CAMERAS", camlist.Trim(','));
                                             break;
                                     }
 
                                     resp = resp.Replace("SOURCEEDITOR", se);
 
-                                    dynamic d = PopulateResponse(resp, oc);
+                                    dynamic d = PopulateResponse(resp, oc, lc);
                                     d.task = task;
                                     resp = JsonConvert.SerializeObject(d);
                                 }
@@ -760,10 +760,10 @@ namespace iSpyApplication.Server
 
 
                                 string[] ports = System.IO.Ports.SerialPort.GetPortNames();
-                                string comports = ports.Aggregate("", (current, p) => current + String.Format(template, p, p));
+                                string comports = ports.Aggregate("", (current, p) => current + string.Format(template, p, p));
 
                                 resp = resp.Replace("COMPORTS", comports.Trim(','));
-                                dynamic d = PopulateResponse(resp, oc);
+                                dynamic d = PopulateResponse(resp, oc, lc);
                                 resp = JsonConvert.SerializeObject(d);
                                 break;
                         }
@@ -777,14 +777,13 @@ namespace iSpyApplication.Server
                         if (ident != "new")
                         {
                             var ftp = MainForm.Conf.FTPServers.First(p => p.ident == ident);
-                            dynamic d = PopulateResponse(resp, ftp);
+                            dynamic d = PopulateResponse(resp, ftp, lc);
                             d.ident = ftp.ident;
                             resp = JsonConvert.SerializeObject(d);
                         }
                         else
                         {
-                            dynamic d = JsonConvert.DeserializeObject(resp);
-                            resp = JsonConvert.SerializeObject(d);
+                            resp = Translate(resp, lc);
                         }
 
                     }
@@ -796,14 +795,13 @@ namespace iSpyApplication.Server
                         if (ident != "new")
                         {
                             var dir = MainForm.Conf.MediaDirectories.First(p => p.ID == Convert.ToInt32(ident));
-                            dynamic d = PopulateResponse(resp, dir);
+                            dynamic d = PopulateResponse(resp, dir, lc);
                             d.ident = dir.ID;
                             resp = JsonConvert.SerializeObject(d);
                         }
                         else
                         {
-                            dynamic d = JsonConvert.DeserializeObject(resp);
-                            resp = JsonConvert.SerializeObject(d);
+                            resp = Translate(resp, lc);
                         }
 
                     }
@@ -831,7 +829,7 @@ namespace iSpyApplication.Server
                             t += string.Format(template, (aa.mode + ": " + ae.Summary).JsonSafe(), aa.ident);
                         }
                         resp = resp.Replace("ALERTLIST", t.Trim(','));
-                        resp = resp.Replace("TIME", DateTime.Now.ToString("HH:mm:ss"));
+                        
 
                         if (ident != "new")
                         {
@@ -839,17 +837,17 @@ namespace iSpyApplication.Server
                             var scheds = MainForm.Schedule.Where(p => p.objectid == oid && p.objecttypeid == ot).ToList();
                             if (scheds.Count > id)
                             {
-                                dynamic d = PopulateResponse(resp, scheds[id]);
+                                dynamic d = PopulateResponse(resp, scheds[id], lc);
                                 d.ident = id;
                                 resp = JsonConvert.SerializeObject(d);
                             }
                         }
                         else
                         {
-                            dynamic d = JsonConvert.DeserializeObject(resp);
-                            resp = JsonConvert.SerializeObject(d);
+                            resp = Translate(resp, lc);
                         }
 
+                        resp = resp.Replace("[TIME]", DateTime.Now.ToString("HH:mm:ss"));
                     }
                     break;
                 case "editptzschedule":
@@ -864,7 +862,7 @@ namespace iSpyApplication.Server
                             if (lcoms != null)
                             {
                                 var coms = lcoms.ExtendedCommands.Command.ToList();
-                                ptzcommands = coms.Aggregate(ptzcommands, (current, com) => current + String.Format(template, com.Name.JsonSafe(), com.Name.JsonSafe()));
+                                ptzcommands = coms.Aggregate(ptzcommands, (current, com) => current + string.Format(template, com.Name.JsonSafe(), com.Name.JsonSafe()));
                                 resp = resp.Replace("PTZCOMMANDS", ptzcommands.Trim(','));
                             }
                             else
@@ -878,7 +876,7 @@ namespace iSpyApplication.Server
                                 var ptzsched = oc.ptzschedule.entries.ToList();
                                 if (ptzsched.Count > id)
                                 {
-                                    dynamic d = PopulateResponse(resp, ptzsched[id]);
+                                    dynamic d = PopulateResponse(resp, ptzsched[id], lc);
                                     d.ident = id;
                                     resp = JsonConvert.SerializeObject(d);
                                 }
@@ -886,8 +884,7 @@ namespace iSpyApplication.Server
                             }
                             else
                             {
-                                dynamic d = JsonConvert.DeserializeObject(resp);
-                                resp = JsonConvert.SerializeObject(d);
+                                resp = Translate(resp, lc);
                             }
                         }
                     }
@@ -897,7 +894,7 @@ namespace iSpyApplication.Server
                         string ident = GetVar(sPhysicalFilePath, "ident");
                         resp = File.ReadAllText(r + @"api\editaction.json");
                         resp = resp.Replace("ACTIONS", Helper.AvailableActionsJson);
-                            template = "{{\"text\":\"{0}\",\"value\":{1},\"type\":\"{2}\",\"bindto\":\"{3}\"{4}}},";
+                        template = "{{\"text\":\"{0}\",\"value\":{1},\"type\":\"{2}\",\"bindto\":\"{3}\"{4},\"noTranslate\":true}},";
 
                         var par = "";
                         bool bGrab;
@@ -919,29 +916,29 @@ namespace iSpyApplication.Server
                         if (mode != "") action.mode = mode;
                         bool active;
 
-                        if (Boolean.TryParse(GetVar(sPhysicalFilePath, "active"), out active))
+                        if (bool.TryParse(GetVar(sPhysicalFilePath, "active"), out active))
                             action.active = active;
 
                         switch (action.type.ToUpper())
                         {
                             case "S":
                             case "ATC":
-                                par = String.Format(template, "File", "\"" + action.param1.JsonSafe() + "\"", "Select",
+                                par = string.Format(template, LocRm.GetString("File", lc), "\"" + action.param1.JsonSafe() + "\"", "Select",
                                     "param1",
                                     ",\"options\":[" + GetFileOptionsList("Sounds", "*.wav") +
-                                    "],\"help\":\"Add more sounds (.wav) into " + (Program.AppPath + "sounds").JsonSafe() + "\"");
+                                    "],\"help\":\""+LocRm.GetString("AddSounds", lc) +": " + (Program.AppPath + "sounds").JsonSafe() + "\"");
                                 break;
                             case "EXE":
-                                par = String.Format(template, "File", "\"" + action.param1.JsonSafe() + "\"", "Select",
+                                par = string.Format(template, LocRm.GetString("File", lc), "\"" + action.param1.JsonSafe() + "\"", "Select",
                                     "param1", ",\"options\":[" + GetFileOptionsList("Commands", "*.*") +
-                                    "],\"help\":\"Add batch files or executables into " + (Program.AppPath + "commands").JsonSafe() + "\"");
+                                    "],\"help\":\"" + LocRm.GetString("AddBatch", lc) + ": " + (Program.AppPath + "commands").JsonSafe() + "\"");
                                 break;
                             case "URL":
-                                par = String.Format(template, "URL", "\"" + action.param1.JsonSafe() + "\"", "String",
+                                par = string.Format(template, LocRm.GetString("URL", lc), "\"" + action.param1.JsonSafe() + "\"", "String",
                                     "param1", "");
 
-                                Boolean.TryParse(action.param2, out bGrab);
-                                par += String.Format(template, "POST Grab", bGrab.ToString().ToLower(), "Boolean", "param2",
+                                bool.TryParse(action.param2, out bGrab);
+                                par += string.Format(template, LocRm.GetString("UploadImage", lc), bGrab.ToString().ToLower(), "Boolean", "param2",
                                     "");
                                 break;
                             case "NM":
@@ -949,16 +946,16 @@ namespace iSpyApplication.Server
                                     action.param1 = "TCP";
                                 if (action.param3 == "")
                                     action.param3 = "1010";
-                                par += String.Format(template, "Type", "\"" + action.param1.JsonSafe() + "\"", "Select",
+                                par += string.Format(template, LocRm.GetString("Type", lc), "\"" + action.param1.JsonSafe() + "\"", "Select",
                                     "param1",
-                                    ", \"options\":[{\"text\":\"TCP\",\"value\":\"TCP\"},{\"text\":\"UDP\",\"value\":\"UDP\"}]");
-                                par += String.Format(template, "IP Address", "\"" + action.param2.JsonSafe() + "\"",
+                                    ", \"options\":[{\"text\":\"TCP\",\"value\":\"TCP\", \"noTranslate\":true},{\"text\":\"UDP\",\"value\":\"UDP\", \"noTranslate\":true}]");
+                                par += string.Format(template, LocRm.GetString("IPAddress", lc), "\"" + action.param2.JsonSafe() + "\"",
                                     "String", "param2", "");
 
-                                par += String.Format(template, "Port", "\"" + action.param3.JsonSafe() + "\"", "String", "param3",
+                                par += string.Format(template, LocRm.GetString("Port", lc), "\"" + action.param3.JsonSafe() + "\"", "String", "param3",
                                     ",\"min\":0,\"max\":65535");
 
-                                par += String.Format(template, "Message", "\"" + action.param4 + "\"", "String", "param4",
+                                par += string.Format(template, LocRm.GetString("Message", lc), "\"" + action.param4 + "\"", "String", "param4",
                                     "");
                                 break;
                             case "SW":
@@ -970,26 +967,26 @@ namespace iSpyApplication.Server
                             case "TA":
                             case "SOF":
                             case "SOO":
-                                var optlist = MainForm.Cameras.Aggregate("", (current, c) => current + ("{\"text\":\"" + c.name.JsonSafe() + "\",\"value\":\"2," + c.id + "\"},"));
-                                optlist = MainForm.Microphones.Aggregate(optlist, (current, c) => current + ("{\"text\":\"" + c.name.JsonSafe() + "\",\"value\":\"1," + c.id + "\"},"));
+                                var optlist = MainForm.Cameras.Aggregate("", (current, c) => current + ("{\"text\":\"" + c.name.JsonSafe() + "\",\"value\":\"2," + c.id + "\", \"noTranslate\":true},"));
+                                optlist = MainForm.Microphones.Aggregate(optlist, (current, c) => current + ("{\"text\":\"" + c.name.JsonSafe() + "\",\"value\":\"1," + c.id + "\", \"noTranslate\":true},"));
                                 par += string.Format(template, "Object", "\"" + action.param1.JsonSafe() + "\"",
                                     "Select", "param1", ", \"options\":[" + optlist.Trim(',') + "]");
                                 break;
                             case "E":
-                                par = string.Format(template, "Email Address", "\"" + action.param1.JsonSafe() + "\"",
+                                par = string.Format(template, LocRm.GetString("EmailAddress", lc), "\"" + action.param1.JsonSafe() + "\"",
                                     "String", "param1", "");
                                 bool.TryParse(action.param2, out bGrab);
-                                par += string.Format(template, "Include Grab", bGrab.ToString().ToLower(), "Boolean",
+                                par += string.Format(template, LocRm.GetString("IncludeImage", lc), bGrab.ToString().ToLower(), "Boolean",
                                     "param2", "");
                                 break;
                             case "SMS":
-                                par = string.Format(template, "SMS Number", "\"" + action.param1.JsonSafe() + "\"", "String",
+                                par = string.Format(template, LocRm.GetString("SMSNumber", lc), "\"" + action.param1.JsonSafe() + "\"", "String",
                                     "param1", "");
                                 break;
                         }
                         resp = par != "" ? resp.Replace("PARAMS", "," + par.Trim(',')) : resp.Replace("PARAMS", "");
 
-                        dynamic d = PopulateResponse(resp, action);
+                        dynamic d = PopulateResponse(resp, action, lc);
                         d.ident = ident;
                         if (id != "")
                             d.task = "bindActionView";
@@ -1031,12 +1028,14 @@ namespace iSpyApplication.Server
                         {
                             string text = FormatTime(se.time) + " " + FormatDays(se.daysofweek.Split(',')) + " " +
                                          Helper.ScheduleDescription(se.typeid);
-                            t += String.Format(template, text.JsonSafe(), i);
+                            t += string.Format(template, text.JsonSafe(), i);
                             i++;
 
                         }
                         resp = File.ReadAllText(r + @"api\showschedule.json");
                         resp = resp.Replace("SCHEDULE", t.Trim(','));
+
+                        resp = Translate(resp, lc);
 
                     }
                     break;
@@ -1049,12 +1048,14 @@ namespace iSpyApplication.Server
                             foreach (var pts in oc.ptzschedule.entries)
                             {
                                 string text = pts.time.ToString("HH:mm") + " " + pts.command;
-                                t += String.Format(template, text.JsonSafe(), i);
+                                t += string.Format(template, text.JsonSafe(), i);
                                 i++;
                             }
                         }
                         resp = File.ReadAllText(r + @"api\showptzschedule.json");
                         resp = resp.Replace("SCHEDULE", t.Trim(','));
+
+                        resp = Translate(resp, lc);
 
                     }
                     break;
@@ -1067,32 +1068,34 @@ namespace iSpyApplication.Server
                             switch (se.mode)
                             {
                                 case "alert":
-                                    m = "Alert";
+                                    m = LocRm.GetString("Alert", lc);
                                     break;
                                 case "reconnect":
-                                    m = "Source Reconnected";
+                                    m = LocRm.GetString("Reconnect", lc);
                                     break;
                                 case "reconnectfailed":
-                                    m = "Reconnect Failed";
+                                    m = LocRm.GetString("ReconnectFailed", lc);
                                     break;
                                 case "disconnect":
-                                    m = "Source Disconnected";
+                                    m = LocRm.GetString("Disconnect", lc);
                                     break;
                                 case "alertstopped":
-                                    m = "Alert Stopped";
+                                    m = LocRm.GetString("AlertStopped", lc);
                                     break;
                                 case "recordingstarted":
-                                    m = "Recording Started";
+                                    m = LocRm.GetString("RecordingStarted", lc);
                                     break;
                                 case "recordingstopped":
-                                    m = "Recording Stopped";
+                                    m = LocRm.GetString("RecordingStopped", lc);
                                     break;
                             }
-                            t += String.Format(template, (se.active ? "Active" : "Disabled") + ": " + m + " " + Helper.AlertSummary(se).JsonSafe(), se.ident);
+                            t += string.Format(template, (se.active ? LocRm.GetString("Active", lc) : LocRm.GetString("Inactive", lc)) + ": " + m + " " + Helper.AlertSummary(se).JsonSafe(), se.ident);
                         }
                         resp = File.ReadAllText(r + @"api\showactions.json");
                         resp = resp.Replace("ACTIONS", t.Trim(','));
 
+                        resp = Translate(resp, lc);
+                        
                     }
                     break;
                 case "deleteaction":
@@ -1121,7 +1124,7 @@ namespace iSpyApplication.Server
                         lname.AddRange(MainForm.Microphones.Where(p => p.settings.directoryIndex == id).Select(p => p.name));
                         if (lname.Count > 0)
                         {
-                            resp = "{\"error\":\"There are "+lname.Count+" control(s) using this storage location\"}";
+                            resp = "{\"error\":\""+LocRm.GetString("ReassignAllCamerasMedia", lc) +"\"}";
                             break;
                         }
                         var lTemp = MainForm.Conf.MediaDirectories.ToList();
@@ -1174,9 +1177,6 @@ namespace iSpyApplication.Server
                     break;
                 case "getlist":
                     {
-                        template =
-                            "{{\"text\":\"{0}\",\"value\":\"{1}\"}},";
-
                         string source = GetVar(sPhysicalFilePath, "source");
                         string[] id = GetVar(sPhysicalFilePath, "id").Split(',');
                         string special = "";
@@ -1237,18 +1237,15 @@ namespace iSpyApplication.Server
                     break;
                 case "getsettings":
                     {
-                        template = "{{\"text\":\"{0}\",\"value\":\"{1}\"}},";
 
                         resp = File.ReadAllText(r + @"api\settings.json");
-                        string ftp = MainForm.Conf.FTPServers.Aggregate("", (current, srv) => current + String.Format(template, srv.name, srv.ident));
+                        string ftp = MainForm.Conf.FTPServers.Aggregate("", (current, srv) => current + string.Format(template, srv.name, srv.ident));
                         resp = resp.Replace("FTPSERVERS", ftp.Trim(','));
 
-                        template = "{{\"text\":\"{0}\",\"value\":{1}}},";
-
-                        string ds = MainForm.Conf.MediaDirectories.Aggregate("", (current, cfg) => current + String.Format(template, cfg.Entry.JsonSafe(), cfg.ID));
+                        string ds = MainForm.Conf.MediaDirectories.Aggregate("", (current, cfg) => current + string.Format(template, cfg.Entry.JsonSafe(), cfg.ID));
                         resp = resp.Replace("DIRECTORIES", ds.Trim(','));
 
-                        dynamic d = PopulateResponse(resp, MainForm.Conf);
+                        dynamic d = PopulateResponse(resp, MainForm.Conf, lc);
                         resp = JsonConvert.SerializeObject(d);
                     }
                     break;
@@ -1264,12 +1261,11 @@ namespace iSpyApplication.Server
                                         throw new Exception("Microphone not found");
                                     resp = File.ReadAllText(r + @"api\editmicrophone.json");
 
-                                    t = "{{ \"text\": \"{0}\", \"value\": {1}}},";
                                     var ldev =
                                         Conf.DeviceList.Where(p => p.ObjectTypeID == 1 && !p.ExcludeFromOnline)
                                             .OrderBy(p => p.Name);
                                     string s = ldev.Aggregate("",
-                                        (current, source) => current + String.Format(t, source.Name.JsonSafe(), source.SourceTypeID));
+                                        (current, source) => current + string.Format(template, source.Name.JsonSafe(), source.SourceTypeID));
 
                                     resp = resp.Replace("SOURCETYPES", s.Trim(','));
 
@@ -1285,22 +1281,19 @@ namespace iSpyApplication.Server
                                     resp = File.ReadAllText(r + @"api\editcamera.json");
                                     var feats = Enum.GetNames(typeof(RotateFlipType));
 
-                                    t = "{{ \"text\": \"{0}\", \"value\": \"{1}\"}},";
                                     string rm = feats.Aggregate("",
                                         (current, f) =>
-                                            current + String.Format(t, Regex.Replace(f, "([a-z,0-9])([A-Z])", "$1 $2"), f));
+                                            current + string.Format(template, Regex.Replace(f, "([a-z,0-9])([A-Z])", "$1 $2"), f));
                                     resp = resp.Replace("ROTATEMODES", rm.Trim(','));
 
                                     string ftps = MainForm.Conf.FTPServers.Aggregate("",
-                                        (current, ftp) => current + String.Format(t, ftp.name.JsonSafe(), ftp.ident));
+                                        (current, ftp) => current + string.Format(template, ftp.name.JsonSafe(), ftp.ident));
                                     resp = resp.Replace("FTPSERVERS", ftps.Trim(','));
 
 
-                                    resp = resp.Replace("MASKFOLDER", Program.AppPath.JsonSafe() + "Masks");
+                                    
                                     resp = resp.Replace("MASKS", GetFileOptionsList("Masks", "*.png"));
 
-
-                                    t = "{{ \"text\": \"{0}\", \"value\": {1}}},";
 
                                     var audio = "";
                                     audio += string.Format(template, "None", -1);
@@ -1312,37 +1305,33 @@ namespace iSpyApplication.Server
                                         Conf.DeviceList.Where(p => p.ObjectTypeID == 2 && !p.ExcludeFromOnline)
                                             .OrderBy(p => p.Name);
                                     string s = ldev.Aggregate("",
-                                        (current, source) => current + String.Format(t, source.Name.JsonSafe(), source.SourceTypeID));
+                                        (current, source) => current + string.Format(template, source.Name.JsonSafe(), source.SourceTypeID));
 
                                     resp = resp.Replace("SOURCETYPES", s.Trim(','));
 
 
-
-
-
-                                    t = "{{ \"text\": \"{0}\", \"value\": \"{1}\"}},";
                                     var ptzEntry = MainForm.PTZs.SingleOrDefault(p => p.id == oc.ptz);
                                     var commands = "";
                                     if (ptzEntry?.ExtendedCommands?.Command != null)
                                     {
                                         commands = ptzEntry.ExtendedCommands.Command.Aggregate(commands,
-                                            (current, extcmd) => current + string.Format(t, extcmd.Name.JsonSafe(), extcmd.Value));
+                                            (current, extcmd) => current + string.Format(template, extcmd.Name.JsonSafe(), extcmd.Value));
                                     }
                                     if (commands == "")
                                     {
-                                        commands = string.Format(t, "None", "");
+                                        commands = string.Format(template, "None", "");
                                     }
                                     resp = resp.Replace("PTZCOMMANDS", commands.Trim(','));
 
                                     t = "{{ 'x': {0}, 'y': {1} , 'w': {2} , 'h': {3} }},";
-                                    string zl = oc.detector.motionzones.Aggregate("", (current, z) => current + String.Format(t, z.left, z.top, z.width, z.height));
+                                    string zl = oc.detector.motionzones.Aggregate("", (current, z) => current + string.Format(t, z.left, z.top, z.width, z.height));
 
                                     resp = resp.Replace("ZONES", zl.Trim(','));
 
                                     t = "{{ 'id': {0}, 'x': {1}, 'y': {2} , 'w': {3} , 'h': {4} }},";
 
                                     var l = oc.settings.pip.config.Split('|');
-                                    string pip = (from cfg in l where !string.IsNullOrEmpty(cfg) select cfg.Split(',') into p where p.Length == 5 select p).Aggregate("", (current, p) => current + String.Format(t, p[0], p[1], p[2], p[3], p[4]));
+                                    string pip = (from cfg in l where !string.IsNullOrEmpty(cfg) select cfg.Split(',') into p where p.Length == 5 select p).Aggregate("", (current, p) => current + string.Format(t, p[0], p[1], p[2], p[3], p[4]));
 
                                     resp = resp.Replace("PiPs", pip.Trim(','));
 
@@ -1353,13 +1342,13 @@ namespace iSpyApplication.Server
 
                         if (o != null)
                         {
-                            template = "{{\"text\":\"{0}\",\"value\":{1}}},";
                             var ds = MainForm.Conf.MediaDirectories.Aggregate("", (current, cfg) => current + string.Format(template, cfg.Entry.JsonSafe(), cfg.ID));
                             resp = resp.Replace("DIRECTORIES", ds.Trim(','));
 
                             resp = resp.Replace("OBJECTID", oid.ToString(CultureInfo.InvariantCulture));
-                            dynamic d = PopulateResponse(resp, o);
+                            dynamic d = PopulateResponse(resp, o, lc);
                             resp = JsonConvert.SerializeObject(d);
+                            resp = resp.Replace("MASKFOLDER", Program.AppPath.JsonSafe() + "Masks");
                         }
                     }
                     break;
@@ -1379,7 +1368,6 @@ namespace iSpyApplication.Server
                 case "getptzcommands":
                     ptzid = Convert.ToInt32(GetVar(sPhysicalFilePath, "ptzid"));
                     string cmdlist = "";
-                    t = "{{\"name\":\"{0}\",\"value\":\"{1}\"}},";
                     switch (ptzid)
                     {
                         default:
@@ -1389,7 +1377,7 @@ namespace iSpyApplication.Server
                                 cmdlist = ptz.ExtendedCommands.Command.Aggregate("",
                                     (current, extcmd) =>
                                         current +
-                                        (string.Format(t, extcmd.Name.JsonSafe(), extcmd.Value.JsonSafe())));
+                                        (string.Format(template, extcmd.Name.JsonSafe(), extcmd.Value.JsonSafe())));
                             }
                             break;
                         case -2:
@@ -1401,7 +1389,7 @@ namespace iSpyApplication.Server
                             cmdlist = PTZController.PelcoCommands.Aggregate(cmdlist,
                                                                             (current, c) =>
                                                                             current +
-                                                                            (string.Format(t, c.JsonSafe(), c.JsonSafe())));
+                                                                            (string.Format(template, c.JsonSafe(), c.JsonSafe())));
                             break;
                         case -5:
                             cw = io as CameraWindow;
@@ -1410,7 +1398,7 @@ namespace iSpyApplication.Server
                                 cmdlist = cw.PTZ.ONVIFPresets.Aggregate(cmdlist,
                                     (current, c) =>
                                         current +
-                                        (string.Format(t, c.JsonSafe(), c.JsonSafe())));
+                                        (string.Format(template, c.JsonSafe(), c.JsonSafe())));
                             }
                             break;
                     }
@@ -1434,7 +1422,7 @@ namespace iSpyApplication.Server
                         vl = io as VolumeLevel;
                         if (vl != null)
                         {
-                            resp = String.Format(t, vl.IsEnabled.ToString().ToLower(),
+                            resp = string.Format(t, vl.IsEnabled.ToString().ToLower(),
                                 vl.ForcedRecording.ToString().ToLower(), 320, 40, -1, "false");
                         }
                         cw = io as CameraWindow;
@@ -1446,7 +1434,7 @@ namespace iSpyApplication.Server
                             if (cw.VolumeControl != null)
                                 micpairid = cw.VolumeControl.Micobject.id.ToString(CultureInfo.InvariantCulture);
 
-                            resp = String.Format(t, cw.IsEnabled.ToString().ToLower(),
+                            resp = string.Format(t, cw.IsEnabled.ToString().ToLower(),
                                 cw.ForcedRecording.ToString().ToLower(), res[0], res[1], micpairid, (cw.Camobject.settings.audiomodel != "None").ToString().ToLower());
                         }
                     }
@@ -1530,10 +1518,10 @@ namespace iSpyApplication.Server
                         string n = ocmd.name;
                         if (n.StartsWith("cmd_"))
                         {
-                            n = LocRm.GetString(ocmd.name);
+                            n = LocRm.GetString(ocmd.name, lc);
                         }
 
-                        l += String.Format(t, ocmd.id, n.JsonSafe());
+                        l += string.Format(t, ocmd.id, n.JsonSafe());
                     }
                     resp = "{\"commands\":[" + l.Trim(',') + "]}";
                 }
@@ -1627,7 +1615,7 @@ namespace iSpyApplication.Server
                             }
                             catch (Exception ex)
                             {
-                                Logger.LogErrorToFile(LocRm.GetString("Validate_Camera_PTZIPOnly") + ": " +
+                                Logger.LogErrorToFile(LocRm.GetString("Validate_Camera_PTZIPOnly", lc) + ": " +
                                                       ex.Message, "Server");
                             }
                         }
@@ -1668,9 +1656,9 @@ namespace iSpyApplication.Server
                             sb.Append(",\"oid\":");
                             sb.Append(f.ObjectId);
                             sb.Append(",\"created\":");
-                            sb.Append(String.Format(CultureInfo.InvariantCulture, "{0:0.00}", f.CreatedDateTicksUTC));
+                            sb.Append(string.Format(CultureInfo.InvariantCulture, "{0:0.00}", f.CreatedDateTicksUTC));
                             sb.Append(",\"maxalarm\":");
-                            sb.Append(String.Format(CultureInfo.InvariantCulture, "{0:0.0}",f.MaxAlarm));
+                            sb.Append(string.Format(CultureInfo.InvariantCulture, "{0:0.0}",f.MaxAlarm));
                             sb.Append(",\"duration\": ");
                             sb.Append(f.Duration);
                             sb.Append(",\"filename\":\"");
@@ -1737,7 +1725,7 @@ namespace iSpyApplication.Server
                         success = false;
                         if (io == null)
                         {
-                            t = "Object not found";
+                            t = LocRm.GetString("ObjectNotFound", lc);
                         }
                         else
                         {
@@ -1757,11 +1745,10 @@ namespace iSpyApplication.Server
                                     success = Helper.ArchiveFile(folderpath + file.name.ToString());
                                     if (!success)
                                     {
-                                        t = "Archive Failed";
+                                        t = LocRm.GetString("ArchiveFailed", lc);
                                         break;
                                     }
-                                    else
-                                        files.Add(file.name.ToString());
+                                    files.Add(file.name.ToString());
                                 }
 
                                 if (files.Count>0)
@@ -1773,7 +1760,7 @@ namespace iSpyApplication.Server
                             else
                             {
                                 
-                                t = "Invalid archive directory in settings";
+                                t = LocRm.GetString("InvalidDirectory", lc);
                             }
                         }
                         resp = "{\"action\":\"" + cmd + "\",\"status\":\"" + (success ? "ok" : t) + "\"}";
@@ -1782,13 +1769,13 @@ namespace iSpyApplication.Server
                 default:
                     return;
             }
-
-            SendHeader(sHttpVersion, "application/json", resp.Length, " 200 OK", 0, ref req);
-
-            SendToBrowser(resp, req);
+            SendResponse(sHttpVersion, "application/json", resp, " 200 OK", 0, ref req);
+#if DEBUG
+            SaveTranslations();
+#endif
         }
 
-        void DeleteFiles(int oid, int ot, List<String> files)
+        void DeleteFiles(int oid, int ot, List<string> files)
         {
             string dir = "audio";
             if (ot == 2)
@@ -1862,7 +1849,7 @@ namespace iSpyApplication.Server
             _scanResults.Add(e.Device);
         }
 
-        public dynamic getJSONObject(string sBuffer)
+        dynamic getJSONObject(string sBuffer)
         {
             int i = sBuffer.IndexOf("\r\n\r\n", StringComparison.Ordinal);
 
@@ -1874,7 +1861,7 @@ namespace iSpyApplication.Server
             return null;
         }
 
-        private static string FormatTime(int t)
+        static string FormatTime(int t)
         {
             var ts = TimeSpan.FromMinutes(t);
             string h = ts.Hours.ToString(CultureInfo.InvariantCulture);
@@ -1886,7 +1873,7 @@ namespace iSpyApplication.Server
             return h + ":" + m;
         }
 
-        private static string FormatDays(IEnumerable<string> d)
+        static string FormatDays(IEnumerable<string> d)
         {
             string r = "";
             foreach (var day in d)
@@ -1919,13 +1906,15 @@ namespace iSpyApplication.Server
             return r.Trim(',');
         }
 
-        private void SaveJson(String sPhysicalFilePath, string sHttpVersion, string sBuffer, ref HttpRequest req)
+        void SaveJson(string sPhysicalFilePath, string sHttpVersion, string sBuffer, ref HttpRequest req)
         {
             string resp = "";
             int ot, oid;
 
             int.TryParse(GetVar(sPhysicalFilePath, "oid"), out oid);
             int.TryParse(GetVar(sPhysicalFilePath, "ot"), out ot);
+            string lc = GetVar(sPhysicalFilePath, "lc");
+
             bool saveObjects = true;
             try
             {
@@ -1933,7 +1922,7 @@ namespace iSpyApplication.Server
                 if (d == null)
                     return;
 
-                String n = d.name;
+                string n = d.name;
                 resp = "{\"actionResult\":\"ok\"}";
                 bool apply = false;
                 string nl = n.ToLowerInvariant();
@@ -2067,7 +2056,7 @@ namespace iSpyApplication.Server
                                 var t = new Thread(() => Helper.CopyFolder(exdir, md.Entry)) {IsBackground = true};
                                 t.Start();
                                 resp =
-                                    "{\"actionResult\":\"reloadStorage\",\"message\":\"Media is being copied to the new location.\"}";
+                                    "{\"actionResult\":\"reloadStorage\",\"message\":\""+LocRm.GetString("MediaBeingCopied", lc) +"\"}";
                             }
                         }
 
@@ -2089,7 +2078,7 @@ namespace iSpyApplication.Server
                                     if (!Helper.IsAlphaNumeric(newdir))
                                     {
                                         c.directory = olddir;
-                                        resp = "{\"error\":\"Directory invalid. Should be alphanumeric eg: ABCD.\"}";
+                                        resp = "{\"error\":\""+LocRm.GetString("DirectoryInvalid", lc) +"\"}";
                                     }
                                     else
                                     {
@@ -2212,7 +2201,7 @@ namespace iSpyApplication.Server
                                     if (!Helper.IsAlphaNumeric(newdir))
                                     {
                                         c.directory = olddir;
-                                        resp = "{\"error\":\"Directory invalid. Should be alphanumeric eg: ABCD.\"}";
+                                        resp = "{\"error\":\""+LocRm.GetString("DirectoryInvalid", lc) +"\"}";
                                     }
                                     else
                                     {
@@ -2328,7 +2317,7 @@ namespace iSpyApplication.Server
                                 a.param1 = a.param1.Replace("/", "\\");
                                 if (a.param1.IndexOf("\\", StringComparison.Ordinal)!=-1)
                                 {
-                                    resp = "{\"error\":\"Only filenames (not paths) are allowed in actions via the website\"}";
+                                    resp = "{\"error\":\""+LocRm.GetString("NoPathsAllowed", lc) +"\"}";
                                     a.param1 = p1;
                                 }
                             }
@@ -2368,7 +2357,7 @@ namespace iSpyApplication.Server
                                     Uri u;
                                     if (!Uri.TryCreate(url, UriKind.Absolute, out u))
                                     {
-                                        resp = "{\"error\":\"URI invalid\"}";
+                                        resp = "{\"error\":\""+LocRm.GetString("InvalidURI", lc) +"\"}";
                                         break;
                                     }
                                     string addr = u.DnsSafeHost;
@@ -2478,35 +2467,33 @@ namespace iSpyApplication.Server
                 }
             }
 
-            SendHeader(sHttpVersion, "application/json", resp.Length, " 200 OK", 0, ref req);
-            SendToBrowser(resp, req);
+            SendResponse(sHttpVersion, "application/json", resp, " 200 OK", 0, ref req);
         }
 
 
-        private string _apiJson;
-        private string BuildApijson(string r)
+        //private string _apiJson;
+        string BuildApijson(string r, string lc)
         {
-            if (_apiJson != null)
-                return _apiJson;
+            string _apiJson;
 
             string resp = File.ReadAllText(r + @"api\api.json");
             string template =
-                "{{\"text\":\"{0}\",\"typeID\":{1},\"sourceTypeID\":{2}}},";
+                "{{\"text\":\"{0}\",\"typeID\":{1},\"sourceTypeID\":{2}, \"noTranslate\":true}},";
 
             var ldev =
                 Conf.DeviceList.Where(p => p.ObjectTypeID == 2 && !p.ExcludeFromOnline).OrderBy(p => p.Name);
             string s = ldev.Aggregate("",
-                (current, source) => current + String.Format(template, source.Name, source.ObjectTypeID, source.SourceTypeID));
+                (current, source) => current + string.Format(template, LocRm.GetString(source.Name, lc), source.ObjectTypeID, source.SourceTypeID));
 
             resp = resp.Replace("SOURCETYPES", s.Trim(','));
 
             ldev = Conf.DeviceList.Where(p => p.ObjectTypeID == 1 && !p.ExcludeFromOnline).OrderBy(p => p.Name);
             s = ldev.Aggregate("",
-                (current, source) => current + String.Format(template, source.Name, source.ObjectTypeID, source.SourceTypeID));
+                (current, source) => current + string.Format(template, LocRm.GetString(source.Name, lc), source.ObjectTypeID, source.SourceTypeID));
 
             resp = resp.Replace("AUDIOTYPES", s.Trim(','));
 
-            template = "{{\"text\":\"{0}\",\"value\":\"{1},{2}\"}},";
+            template = "{{\"text\":\"{0}\",\"value\":\"{1},{2}\", \"noTranslate\":true}},";
 
             var ptzList = new List<Helper.ListItem>
                                   {
@@ -2536,10 +2523,12 @@ namespace iSpyApplication.Server
             string ptzm = ptzList.Aggregate("", (current, ptz) => current + string.Format(template, ptz.Name, ptz.Value, ptz.Index));
 
             _apiJson = resp.Replace("PTZMODELS", ptzm.Trim(','));
-            return _apiJson;
+
+            dynamic d = PopulateResponse(_apiJson, null,lc);
+            return JsonConvert.SerializeObject(d);
         }
 
-        private string NV(string source, string name)
+        string NV(string source, string name)
         {
             if (string.IsNullOrEmpty(source))
                 return "";
@@ -2552,7 +2541,7 @@ namespace iSpyApplication.Server
             return "";
         }
 
-        public string NVSet(string source, string name, string value)
+        string NVSet(string source, string name, string value)
         {
             if (source == null) source = "";
 
@@ -2575,94 +2564,211 @@ namespace iSpyApplication.Server
                 l.Add(name + "=" + value);
                 settings = l.ToArray();
             }
-            return String.Join(",", settings);
+            return string.Join(",", settings);
         }
 
+        void AddJSONTranslation(string tag, string v)
+        {
+            if (!jsonTranslations.ContainsKey(tag))
+            {
+                jsonTranslations.Add(tag, v);
+            }
+        }
 
-        public dynamic PopulateResponse(string resp, object o)
+        string Translate(string json, string lc)
+        {
+            dynamic d = PopulateResponse(json, null, lc);
+            return JsonConvert.SerializeObject(d);
+        }
+        void Translate(ref dynamic item, string lc)
+        {
+            if (item["noTranslate"] != null)
+            {
+                return;
+            }
+
+            var txt = item["text"];
+            if (txt != null)
+            {
+                string v = txt.Value.ToString();
+                string tag = TagUp(v);
+#if DEBUG
+
+                AddJSONTranslation(tag, v);
+#endif
+
+                txt.Value = LocRm.GetString(tag, lc);
+
+                var hlp = item["help"];
+                if (hlp != null)
+                {
+                    tag += ".help";
+#if DEBUG
+                    AddJSONTranslation(tag, hlp.Value.ToString());
+                    
+#endif
+                    hlp.Value = LocRm.GetString(tag, lc);
+                }
+            }
+            var typ = item["type"];
+            if (typ != null && (typ.Value == "Button" || typ.Value=="Link"))
+            {
+                var val = item["value"];
+                if (val != null)
+                {
+                    string v = val.Value.ToString();
+                    string tag = TagUp(v);
+#if DEBUG
+                    AddJSONTranslation(tag, v);
+#endif
+
+                    val.Value = LocRm.GetString(tag, lc);
+                }
+                
+            }
+        }
+
+        Dictionary<string,string> jsonTranslations = new Dictionary<string, string>();
+
+        void SaveTranslations()
+        {
+            var xml = "";
+            foreach (var k in jsonTranslations.Keys)
+            {
+                var v = jsonTranslations[k];
+                xml += "<Translation Token=\"" + k + "\">" + v + "</Translation>";
+            }
+            File.WriteAllText(@"D:\Projects\iSpy\iSpy\XML\jsontranslations.xml",xml);
+
+        }
+
+        private string TagUp(string v)
+        {
+            return "json."+v.ToLower().Replace(" ", "").Replace("(", "").Replace(")", "").Replace("/", "");
+        }
+
+        dynamic PopulateResponse(string resp, object o, string lc)
         {
             dynamic d = JsonConvert.DeserializeObject(resp);
+            if (d.header != null)
+            {
+                string v = d.header.Value.ToString();
+                string t = TagUp(v);
+#if DEBUG
+                AddJSONTranslation(t,v);
+#endif
+
+                d.header.Value = LocRm.GetString(t, lc);                
+            }
             foreach (var sec in d.sections)
             {
-
-                foreach (var item in sec.items)
+                if (sec.header != null)
                 {
-                    var bt = item["bindto"];
-                    if (bt != null)
-                    {
-                        String[] prop = bt.ToString().Split(',');
-                        if (prop.Length == 1)
-                        {
-                            try
-                            {
+                    string v = sec.header.Value.ToString();
+                    string t = TagUp(v);
+#if DEBUG
+                    AddJSONTranslation(t, v);
+#endif
 
-                                item["value"] = GetPropValue(o, bt.ToString());
-                                var nv = item["nvident"];
-                                if (nv != null)
+                    sec.header.Value = LocRm.GetString(t, lc);
+                }
+                if (sec.text != null)
+                {
+                    var sec2 = sec;
+                    Translate(ref sec2, lc);
+                }
+                if (sec.items != null)
+                {
+                    foreach (var item in sec.items)
+                    {
+                        var item2 = item;
+                        Translate(ref item2, lc);
+                        
+                        var bt = item["bindto"];
+                        if (bt != null && o!=null)
+                        {
+                            string[] prop = bt.ToString().Split(',');
+                            if (prop.Length == 1)
+                            {
+                                try
                                 {
-                                    item["value"] = NV(item["value"].ToString(), nv.ToString());
-                                    if (item["value"] != "")
+
+                                    item["value"] = GetPropValue(o, bt.ToString());
+                                    var nv = item["nvident"];
+                                    if (nv != null)
                                     {
-                                        if (item["type"] == "Boolean")
-                                            item["value"] = Convert.ToBoolean(item["value"]);
-                                        if (item["type"] == "Int32")
-                                            item["value"] = Convert.ToInt32(item["value"]);
-                                        if (item["type"] == "Decimal" || item["type"] == "Single")
-                                            item["value"] = Convert.ToDecimal(item["value"]);
-                                        if (item["type"] == "Select")
-                                            item["value"] = Convert.ToString(item["value"]);
+                                        item["value"] = NV(item["value"].ToString(), nv.ToString());
+                                        if (item["value"] != "")
+                                        {
+                                            if (item["type"] == "Boolean")
+                                                item["value"] = Convert.ToBoolean(item["value"]);
+                                            if (item["type"] == "Int32")
+                                                item["value"] = Convert.ToInt32(item["value"]);
+                                            if (item["type"] == "Decimal" || item["type"] == "Single")
+                                                item["value"] = Convert.ToDecimal(item["value"]);
+                                            if (item["type"] == "Select")
+                                                item["value"] = Convert.ToString(item["value"]);
+                                        }
+                                    }
+                                    var conv = item["converter"];
+                                    if (conv != null)
+                                    {
+                                        switch ((string) conv)
+                                        {
+                                            case "daysofweek":
+                                                string[] days = item["value"].ToString().Trim(',').Split(',');
+                                                int i = 0;
+                                                foreach (var opt in item.options)
+                                                {
+                                                    if (days.Contains(i.ToString(CultureInfo.InvariantCulture)))
+                                                    {
+                                                        opt["value"] = true;
+                                                    }
+                                                    i++;
+                                                }
+                                                break;
+                                            case "datetimetoint":
+                                                var dt = (DateTime) item["value"];
+                                                item["value"] = dt.TimeOfDay.TotalMinutes;
+                                                break;
+                                            case "fonttofontsize":
+                                                var f = FontXmlConverter.ConvertToFont((string) item["value"]);
+                                                item["value"] = f.Size;
+                                                break;
+                                            case "rgbtohex":
+                                                var rgb = (string) item["value"].ToString();
+                                                var rgbarr = rgb.Split(',');
+                                                if (rgbarr.Length == 3)
+                                                {
+                                                    item["value"] = "#" + (Convert.ToInt16(rgbarr[0])).ToString("X2") +
+                                                                    (Convert.ToInt16(rgbarr[1])).ToString("X2") +
+                                                                    (Convert.ToInt16(rgbarr[2])).ToString("X2");
+                                                }
+
+                                                break;
+                                        }
                                     }
                                 }
-                                var conv = item["converter"];
-                                if (conv != null)
+                                catch
                                 {
-                                    switch ((String)conv)
-                                    {
-                                        case "daysofweek":
-                                            string[] days = item["value"].ToString().Trim(',').Split(',');
-                                            int i = 0;
-                                            foreach (var opt in item.options)
-                                            {
-                                                if (days.Contains(i.ToString(CultureInfo.InvariantCulture)))
-                                                {
-                                                    opt["value"] = true;
-                                                }
-                                                i++;
-                                            }
-                                            break;
-                                        case "datetimetoint":
-                                            var dt = (DateTime)item["value"];
-                                            item["value"] = dt.TimeOfDay.TotalMinutes;
-                                            break;
-                                        case "fonttofontsize":
-                                            var f = FontXmlConverter.ConvertToFont((String)item["value"]);
-                                            item["value"] = f.Size;
-                                            break;
-                                        case "rgbtohex":
-                                            var rgb = (String)item["value"].ToString();
-                                            var rgbarr = rgb.Split(',');
-                                            if (rgbarr.Length == 3)
-                                            {
-                                                item["value"] = "#" + (Convert.ToInt16(rgbarr[0])).ToString("X2") +
-                                                                (Convert.ToInt16(rgbarr[1])).ToString("X2") +
-                                                                (Convert.ToInt16(rgbarr[2])).ToString("X2");
-                                            }
-
-                                            break;
-                                    }
+                                    item["value"] = "Error";
                                 }
                             }
-                            catch
+                            else
                             {
-                                item["value"] = "Error";
+                                string json = prop.Aggregate("[", (current, s) => current + (GetPropValue(o, s) + ","));
+                                json = json.Trim(',');
+                                json += "]";
+                                item["value"] = JToken.Parse(json);
                             }
                         }
-                        else
+                        if (item.options != null)
                         {
-                            string json = prop.Aggregate("[", (current, s) => current + (GetPropValue(o, s) + ","));
-                            json = json.Trim(',');
-                            json += "]";
-                            item["value"] = JToken.Parse(json);
+                            foreach (var opt in item.options)
+                            {
+                                var opt2 = opt;
+                                Translate(ref opt2, lc);
+                            }
                         }
                     }
                 }
@@ -2670,7 +2776,7 @@ namespace iSpyApplication.Server
             return d;
         }
 
-        public void PopulateObject(dynamic d, object o)
+        void PopulateObject(dynamic d, object o)
         {
             foreach (var sec in d.sections)
             {
@@ -2689,7 +2795,7 @@ namespace iSpyApplication.Server
             }
         }
 
-        public void Populate(dynamic item, object o)
+        void Populate(dynamic item, object o)
         {
             var bt = item["bindto"];
             var val = item["value"];
@@ -2698,7 +2804,7 @@ namespace iSpyApplication.Server
 
             if (conv != null)
             {
-                switch ((String) conv)
+                switch ((string) conv)
                 {
                     case "daysofweek":
                         string dow = "";
@@ -2777,7 +2883,7 @@ namespace iSpyApplication.Server
             }
         }
 
-        public static object GetPropValue(object src, string propName)
+        static object GetPropValue(object src, string propName)
         {
             object currentObject = src;
             string[] fieldNames = propName.Split('.');
@@ -2799,7 +2905,7 @@ namespace iSpyApplication.Server
             }
             return currentObject;
         }
-        public static void SetPropValue(object src, string propName, object propValue)
+        static void SetPropValue(object src, string propName, object propValue)
         {
             object currentObject = src;
             string[] fieldNames = propName.Split('.');
@@ -2840,12 +2946,12 @@ namespace iSpyApplication.Server
 
         }
 
-        private string GetFileOptionsList(string relPath, string filter)
+        string GetFileOptionsList(string relPath, string filter)
         {
             var di = new DirectoryInfo(Program.AppPath + relPath);
             string m = "";
             var fi = di.GetFiles(filter);
-            var t = "{{\"text\":\"{0}\",\"value\":\"{1}\"}},";
+            var t = "{{\"text\":\"{0}\",\"value\":\"{1}\", \"noTranslate\":true}},";
             m += string.Format(t, "None", "");
             m = fi.Aggregate(m, (current, f) => current + string.Format(t, f.Name, f.Name));
             return m.Trim(',');

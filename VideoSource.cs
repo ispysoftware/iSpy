@@ -808,7 +808,7 @@ namespace iSpyApplication
                     }
                     catch
                     {
-                        MessageBox.Show(LocRm.GetString("Invalid URL"), LocRm.GetString("Error"));
+                        MessageBox.Show(LocRm.GetString("InvalidURL"), LocRm.GetString("Error"));
                         return;
                     }
                     

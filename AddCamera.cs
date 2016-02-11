@@ -127,8 +127,7 @@ namespace iSpyApplication
             
             CameraControl.NewFrame -= NewCameraNewFrame;
 
-            string r = LocRm.CultureCode;
-            if (r != "en")
+            if (MainForm.Conf.Language != "en")
                 return;
 
             if (IsDisposed || !Visible)

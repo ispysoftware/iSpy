@@ -218,7 +218,10 @@ namespace iSpyApplication.Server
             int sizeOfReceivedData = 0;
             try
             {
-                sizeOfReceivedData = ConnectionSocket.EndReceive(ar);
+                var cs = ConnectionSocket;
+                if (cs == null)
+                    return;
+                sizeOfReceivedData = cs.EndReceive(ar);
             }
             catch (SocketException)
             {
@@ -226,7 +229,11 @@ namespace iSpyApplication.Server
             }
             catch (ObjectDisposedException)
             {
-                
+
+            }
+            catch (NullReferenceException)
+            {
+
             }
 
             if (sizeOfReceivedData > 0)

@@ -269,7 +269,7 @@ namespace iSpyApplication
                 chkReroute.Checked = chkReroute.Enabled = false;
 
             bool success;
-            lblIPAddresses.Text = LocRm.GetString("PublicIPAddress").Replace("[IP]", MainForm.IPAddressExternal(out success));
+            lblIPAddresses.Text = LocRm.GetString("PublicIPAddress").Replace("[IP]", MainForm.IPAddressExternal(false, out success));
             int i2 = 0;
             foreach (IPAddress ipadd in MainForm.AddressListIPv4)
             {

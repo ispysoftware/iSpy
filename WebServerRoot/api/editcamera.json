@@ -106,11 +106,11 @@
                     "options": [
                         { "text": "None", "value": "None" },
                         { "text": "Local Playback", "value": "Local Playback" },
-                        { "text": "Axis", "value": "Axis" },
-                        { "text": "Foscam", "value": "Foscam" },
-                        { "text": "iSpy Server", "value": "iSpy Server" },
-                        { "text": "Network Kinect", "value": "Network Kinect" },
-                        { "text": "IP Webcam (Android)", "value": "IP Webcam (Android)" }
+                        { "text": "Axis", "value": "Axis", "noTranslate": true  },
+                        { "text": "Foscam", "value": "Foscam", "noTranslate": true  },
+                        { "text": "iSpy Server", "value": "iSpy Server", "noTranslate": true  },
+                        { "text": "Network Kinect", "value": "Network Kinect", "noTranslate": true  },
+                        { "text": "IP Webcam (Android)", "value": "IP Webcam (Android)", "noTranslate": true  }
                     ],
                     "help": "Controls where audio is played back when talking"
                 }
@@ -337,8 +337,8 @@
                     "bindto": "settings.cloudprovider.provider",
                     "options": [
                         { "text": "None", "value": "None" },
-                        { "text": "Google Drive", "value": "Google Drive" },
-                        { "text": "Dropbox", "value": "Dropbox" }
+                        { "text": "Google Drive", "value": "Google Drive", "noTranslate": true  },
+                        { "text": "Dropbox", "value": "Dropbox", "noTranslate": true  }
                     ],
                     "help": "See Server Settings to enable cloud services"
                 },

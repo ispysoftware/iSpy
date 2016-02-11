@@ -160,20 +160,20 @@ namespace iSpyApplication.Controls
             switch (t)
             {
                 case "Exe":
-                    config = GetParamConfig(GetName(t), out cancel, "File|FBD:*.*", param1Val, LocRm.GetString("Arguments"), param2Val);
+                    config = GetParamConfig(GetName(t), out cancel, LocRm.GetString("File")+"|FBD:*.*", param1Val, LocRm.GetString("Arguments"), param2Val);
                     break;
                 case "URL":
                     if (param1Val == "")
                         param1Val = "http://";
                     if (param2Val == "")
                         param2Val = "True";
-                    config = GetParamConfig(GetName(t), out cancel, "URL", param1Val, "POST Grab|Checkbox:True", param2Val);
+                    config = GetParamConfig(GetName(t), out cancel, "URL", param1Val, LocRm.GetString("UploadImage")+"|Checkbox:True", param2Val);
                     break;
                 case "NM":
                     if (param3Val=="")
                        param3Val = "1010";
                     config = GetParamConfig(GetName(t), out cancel, LocRm.GetString("Type")+"|DDL:TCP,UDP", param1Val, "IP Address",
-                                            param2Val, "Port|Numeric:0,65535", param3Val, LocRm.GetString("Message"), param4Val);
+                                            param2Val, LocRm.GetString("Port")+"|Numeric:0,65535", param3Val, LocRm.GetString("Message"), param4Val);
                     break;
                 case "S":
                 case "ATC":
@@ -193,7 +193,7 @@ namespace iSpyApplication.Controls
                 case "E":
                     if (param2Val == "")
                         param2Val = "True";
-                    config = GetParamConfig(GetName(t), out cancel, LocRm.GetString("EmailAddress"), param1Val, "Include Grab|Checkbox:True", param2Val);
+                    config = GetParamConfig(GetName(t), out cancel, LocRm.GetString("EmailAddress"), param1Val, LocRm.GetString("IncludeImage") + "|Checkbox:True", param2Val);
                     break;
                 case "SMS":
                     config = GetParamConfig(GetName(t), out cancel, LocRm.GetString("SMSNumber")+"|SMS", param1Val);

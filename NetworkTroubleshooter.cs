@@ -129,7 +129,7 @@ namespace iSpyApplication
             else
             {
                 res = res.ToLower();
-                if (res.IndexOf("ispy", StringComparison.Ordinal)!=-1)
+                if (res.IndexOf("ok", StringComparison.Ordinal)!=-1)
                 {
                     UISync.Execute(() => rtbOutput.Text += "OK");
                 }

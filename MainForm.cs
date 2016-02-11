@@ -1000,8 +1000,12 @@ namespace iSpyApplication
             Identifier = Guid.NewGuid().ToString();
             MWS = new LocalServer
                   {
-                      ServerRoot = Program.AppDataPath + @"WebServerRoot\",
+                      ServerRoot = Program.AppDataPath + @"WebServerRoot\"
                   };
+
+#if DEBUG
+            MWS.ServerRoot = Program.AppPath + @"WebServerRoot\";
+#endif
 
             if (Conf.Monitor)
             {
@@ -4483,7 +4487,7 @@ namespace iSpyApplication
         {
         }
 
-        #region Windows Form Designer generated code
+#region Windows Form Designer generated code
 
         /// <summary>
         ///     Required method for Designer support - do not modify
@@ -6474,7 +6478,7 @@ namespace iSpyApplication
 
         }
 
-        #endregion
+#endregion
 
         
 

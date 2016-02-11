@@ -10,10 +10,10 @@
         "id": "txtOnvifTransport",
         "nvident": "transport",
         "options": [
-            { "text": "RTSP", "value": "RTSP" },
-            { "text": "HTTP", "value": "HTTP" },
-            { "text": "UDP", "value": "UDP" },
-            { "text": "TCP", "value": "TCP" }
+            { "text": "RTSP", "value": "RTSP", "noTranslate": true },
+            { "text": "HTTP", "value": "HTTP", "noTranslate": true },
+            { "text": "UDP", "value": "UDP", "noTranslate": true },
+            { "text": "TCP", "value": "TCP", "noTranslate": true }
         ]
     },
     {
