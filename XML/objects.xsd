@@ -168,6 +168,7 @@
                                                 <xs:attribute name="FishEyeLimit" type="xs:int" default="1500"/>
                                                 <xs:attribute name="FishEyeScale" type="xs:double" default="0.9"/>
                                                 <xs:attribute name="FishEyeFocalLengthPX" type="xs:int" default="700"/>
+                                                <xs:attribute name="uniqueID" type="xs:string" default=""/>
                                             </xs:complexType>
                                         </xs:element>
                                         <xs:element name="ftp">

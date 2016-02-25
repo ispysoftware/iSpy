@@ -17,15 +17,6 @@ namespace iSpyApplication
 {
     public static class Helper
     {
-        public static bool ThreadRunning(Thread thread, int timeout = 0)
-        {
-            var t = thread;
-            if (t?.ThreadState != ThreadState.WaitSleepJoin)
-            {
-                return t != null && !t.Join(timeout);
-            }
-            return false;
-        }
         public class ListItem
         {
             public string Name { get; set; }

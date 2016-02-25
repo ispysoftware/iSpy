@@ -110,7 +110,7 @@ namespace iSpyApplication
             UISync.Execute(() => rtbOutput.Text += "Checking local server... ");
             Application.DoEvents();
             string res = "";
-            if (!loadurl(localserver+"/ping", out res))
+            if (!loadurl(localserver, out res))
             {
                 string res1 = res;
                 UISync.Execute(() => rtbOutput.Text += $"Failed: {res1}{NL}");
@@ -129,7 +129,7 @@ namespace iSpyApplication
             else
             {
                 res = res.ToLower();
-                if (res.IndexOf("ok", StringComparison.Ordinal)!=-1)
+                if (res == "ok" || res.IndexOf("ispy", StringComparison.Ordinal) != -1)
                 {
                     UISync.Execute(() => rtbOutput.Text += "OK");
                 }

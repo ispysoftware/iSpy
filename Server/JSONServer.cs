@@ -868,8 +868,6 @@ namespace iSpyApplication.Server
                             else
                                 resp = resp.Replace("PTZCOMMANDS", "");
 
-                            resp = resp.Replace("TIME", DateTime.Now.ToString("HH:mm:ss"));
-
                             if (ident != "new")
                             {
                                 int id = Convert.ToInt32(ident);
@@ -880,12 +878,13 @@ namespace iSpyApplication.Server
                                     d.ident = id;
                                     resp = JsonConvert.SerializeObject(d);
                                 }
-
                             }
                             else
                             {
                                 resp = Translate(resp, lc);
                             }
+
+                            resp = resp.Replace("TIME", DateTime.Now.ToString("HH:mm:ss"));
                         }
                     }
                     break;
@@ -1615,7 +1614,7 @@ namespace iSpyApplication.Server
                             }
                             catch (Exception ex)
                             {
-                                Logger.LogErrorToFile(LocRm.GetString("Validate_Camera_PTZIPOnly", lc) + ": " +
+                                Logger.LogErrorToFile(LocRm.GetString("Validate_Camera_PTZIPOnly") + ": " +
                                                       ex.Message, "Server");
                             }
                         }
@@ -1770,9 +1769,6 @@ namespace iSpyApplication.Server
                     return;
             }
             SendResponse(sHttpVersion, "application/json", resp, " 200 OK", 0, ref req);
-#if DEBUG
-            SaveTranslations();
-#endif
         }
 
         void DeleteFiles(int oid, int ot, List<string> files)
@@ -2474,8 +2470,6 @@ namespace iSpyApplication.Server
         //private string _apiJson;
         string BuildApijson(string r, string lc)
         {
-            string _apiJson;
-
             string resp = File.ReadAllText(r + @"api\api.json");
             string template =
                 "{{\"text\":\"{0}\",\"typeID\":{1},\"sourceTypeID\":{2}, \"noTranslate\":true}},";
@@ -2522,10 +2516,18 @@ namespace iSpyApplication.Server
 
             string ptzm = ptzList.Aggregate("", (current, ptz) => current + string.Format(template, ptz.Name, ptz.Value, ptz.Index));
 
-            _apiJson = resp.Replace("PTZMODELS", ptzm.Trim(','));
+            var apiJson = resp.Replace("PTZMODELS", ptzm.Trim(','));
 
-            dynamic d = PopulateResponse(_apiJson, null,lc);
-            return JsonConvert.SerializeObject(d);
+            try
+            {
+                dynamic d = PopulateResponse(apiJson, null, lc);
+                return JsonConvert.SerializeObject(d);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogExceptionToFile(new Exception(apiJson),"BuildAPIPopulate");
+                throw;
+            }
         }
 
         string NV(string source, string name)
@@ -2567,14 +2569,6 @@ namespace iSpyApplication.Server
             return string.Join(",", settings);
         }
 
-        void AddJSONTranslation(string tag, string v)
-        {
-            if (!jsonTranslations.ContainsKey(tag))
-            {
-                jsonTranslations.Add(tag, v);
-            }
-        }
-
         string Translate(string json, string lc)
         {
             dynamic d = PopulateResponse(json, null, lc);
@@ -2592,10 +2586,6 @@ namespace iSpyApplication.Server
             {
                 string v = txt.Value.ToString();
                 string tag = TagUp(v);
-#if DEBUG
-
-                AddJSONTranslation(tag, v);
-#endif
 
                 txt.Value = LocRm.GetString(tag, lc);
 
@@ -2603,10 +2593,6 @@ namespace iSpyApplication.Server
                 if (hlp != null)
                 {
                     tag += ".help";
-#if DEBUG
-                    AddJSONTranslation(tag, hlp.Value.ToString());
-                    
-#endif
                     hlp.Value = LocRm.GetString(tag, lc);
                 }
             }
@@ -2618,28 +2604,11 @@ namespace iSpyApplication.Server
                 {
                     string v = val.Value.ToString();
                     string tag = TagUp(v);
-#if DEBUG
-                    AddJSONTranslation(tag, v);
-#endif
 
                     val.Value = LocRm.GetString(tag, lc);
                 }
                 
             }
-        }
-
-        Dictionary<string,string> jsonTranslations = new Dictionary<string, string>();
-
-        void SaveTranslations()
-        {
-            var xml = "";
-            foreach (var k in jsonTranslations.Keys)
-            {
-                var v = jsonTranslations[k];
-                xml += "<Translation Token=\"" + k + "\">" + v + "</Translation>";
-            }
-            File.WriteAllText(@"D:\Projects\iSpy\iSpy\XML\jsontranslations.xml",xml);
-
         }
 
         private string TagUp(string v)
@@ -2654,9 +2623,6 @@ namespace iSpyApplication.Server
             {
                 string v = d.header.Value.ToString();
                 string t = TagUp(v);
-#if DEBUG
-                AddJSONTranslation(t,v);
-#endif
 
                 d.header.Value = LocRm.GetString(t, lc);                
             }
@@ -2666,9 +2632,6 @@ namespace iSpyApplication.Server
                 {
                     string v = sec.header.Value.ToString();
                     string t = TagUp(v);
-#if DEBUG
-                    AddJSONTranslation(t, v);
-#endif
 
                     sec.header.Value = LocRm.GetString(t, lc);
                 }

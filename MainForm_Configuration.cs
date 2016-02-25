@@ -374,7 +374,11 @@ namespace iSpyApplication
             {
                 if (_ptzs == null)
                 {
-                    LoadPTZs(Program.AppDataPath + @"XML\PTZ2.xml");
+                    string p = Program.AppDataPath + @"\XML\PTZ2.xml";
+#if DEBUG
+                    p = Program.AppPath + @"\XML\PTZ2.xml";
+#endif
+                    LoadPTZs(p);
                 }
                 return _ptzs;
             }
@@ -387,7 +391,12 @@ namespace iSpyApplication
             {
                 if (_sources == null)
                 {
-                    LoadSources(Program.AppDataPath + @"XML\Sources.xml");
+                    string p = Program.AppDataPath + @"\XML\Sources.xml";
+#if DEBUG
+                    p = Program.AppPath + @"\XML\Sources.xml";
+#endif
+
+                    LoadSources(p);
                 }
                 return _sources;
             }
@@ -647,19 +656,6 @@ namespace iSpyApplication
                 return MakeIPv6Url(AddressIPv6);
             }
         }
-
-        public static string IPAddressExternal(bool refresh, out bool success)
-        {
-            if (Conf.IPMode == "IPv4")
-                    return WsWrapper.ExternalIPv4(refresh, out success);
-            success = true;
-            return MakeIPv6Url(AddressIPv6);
-        }
-
-        public static string ExternalURL(out bool success)
-        {
-            return (X509.SslEnabled ? "https" : "http") + "://" + IPAddressExternal(false, out success) + "/";
-        } 
 
         private static string MakeIPv6Url(string ip)
         {
@@ -1691,7 +1687,9 @@ namespace iSpyApplication
                 foreach (objectsCamera oc in Cameras)
                 {
                     var cw = GetCameraWindow(oc.id);
-                    if (Conf.AutoSchedule && oc.schedule.active && oc.schedule.entries.Any())
+                    
+
+                    if (Conf.AutoSchedule && oc.schedule.active && Schedule.Any(p => p.objectid == oc.id && p.objecttypeid == 2 && p.active))
                     {
                         oc.settings.active = false;
                         cw.ApplySchedule();
@@ -1713,7 +1711,7 @@ namespace iSpyApplication
                 foreach (objectsMicrophone om in Microphones)
                 {
                     var vl = GetVolumeLevel(om.id);
-                    if (Conf.AutoSchedule && om.schedule.active && om.schedule.entries.Any())
+                    if (Conf.AutoSchedule && om.schedule.active && Schedule.Any(p => p.objectid == om.id && p.objecttypeid == 1 && p.active))
                     {
                         om.settings.active = false;
                         vl.ApplySchedule();
@@ -2025,48 +2023,54 @@ namespace iSpyApplication
         {
             lock (ThreadLock)
             {
-                var vl = sender as VolumeLevel;
-                if (vl != null)
+                try { 
+                    var vl = sender as VolumeLevel;
+                    if (vl != null)
+                    {
+                        Masterfilelist.RemoveAll(p => p.ObjectId == vl.Micobject.id && p.ObjectTypeId == 1);
+                        var l = vl.FileList.ToList();
+                        foreach (var ff in l)
+                        {
+                            Masterfilelist.Add(new FilePreview(ff.Filename, ff.DurationSeconds, vl.Micobject.name,
+                                                               ff.CreatedDateTicks, 1, vl.Micobject.id, ff.MaxAlarm,ff.IsTimelapse,ff.IsMergeFile));
+                        }
+                        if (!vl.LoadedFiles)
+                        {
+                            vl.LoadedFiles = true;
+                            //last one?
+                            bool all = true;
+                            foreach (Control c in _pnlCameras.Controls)
+                            {
+                                var cameraWindow = c as CameraWindow;
+                                if (cameraWindow != null)
+                                {
+                                    if (!cameraWindow.LoadedFiles)
+                                    {
+                                        all = false;
+                                        break;
+                                    }
+                                }
+                                var volumeLevel = c as VolumeLevel;
+                                if (volumeLevel != null)
+                                {
+                                    if (!volumeLevel.LoadedFiles)
+                                    {
+                                        all = false;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (all)
+                            {
+                                flowPreview.Loading = false;
+                                LoadPreviews();
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
                 {
-                    Masterfilelist.RemoveAll(p => p.ObjectId == vl.Micobject.id && p.ObjectTypeId == 1);
-                    var l = vl.FileList.ToList();
-                    foreach (var ff in l)
-                    {
-                        Masterfilelist.Add(new FilePreview(ff.Filename, ff.DurationSeconds, vl.Micobject.name,
-                                                           ff.CreatedDateTicks, 1, vl.Micobject.id, ff.MaxAlarm,ff.IsTimelapse,ff.IsMergeFile));
-                    }
-                    if (!vl.LoadedFiles)
-                    {
-                        vl.LoadedFiles = true;
-                        //last one?
-                        bool all = true;
-                        foreach (Control c in _pnlCameras.Controls)
-                        {
-                            var cameraWindow = c as CameraWindow;
-                            if (cameraWindow != null)
-                            {
-                                if (!cameraWindow.LoadedFiles)
-                                {
-                                    all = false;
-                                    break;
-                                }
-                            }
-                            var volumeLevel = c as VolumeLevel;
-                            if (volumeLevel != null)
-                            {
-                                if (!volumeLevel.LoadedFiles)
-                                {
-                                    all = false;
-                                    break;
-                                }
-                            }
-                        }
-                        if (all)
-                        {
-                            flowPreview.Loading = false;
-                            LoadPreviews();
-                        }
-                    }
+                    Logger.LogExceptionToFile(ex, "FileListUpdated");
                 }
             }
 
@@ -2925,46 +2929,54 @@ namespace iSpyApplication
                 var cw = sender as CameraWindow;
                 if (cw != null)
                 {
-                    Masterfilelist.RemoveAll(p => p.ObjectId == cw.Camobject.id && p.ObjectTypeId == 2);
-                    var l = cw.FileList.ToList();
-                    foreach (var ff in l)
+                    try
                     {
-                        Masterfilelist.Add(new FilePreview(ff.Filename, ff.DurationSeconds, cw.Camobject.name,
-                                                           ff.CreatedDateTicks, 2, cw.Camobject.id, ff.MaxAlarm, ff.IsTimelapse, ff.IsMergeFile));
+                        Masterfilelist.RemoveAll(p => p.ObjectId == cw.ObjectID && p.ObjectTypeId == 2);
+                        var l = cw.FileList.ToList();
+                        foreach (var ff in l)
+                        {
+                            Masterfilelist.Add(new FilePreview(ff.Filename, ff.DurationSeconds, cw.ObjectName,
+                                ff.CreatedDateTicks, 2, cw.ObjectID, ff.MaxAlarm, ff.IsTimelapse, ff.IsMergeFile));
+                        }
+                        if (!cw.LoadedFiles)
+                        {
+                            cw.LoadedFiles = true;
+                            //last one?
+                            bool all = true;
+                            foreach (Control c in _pnlCameras.Controls)
+                            {
+                                var cameraWindow = c as CameraWindow;
+                                if (cameraWindow != null)
+                                {
+                                    if (!cameraWindow.LoadedFiles)
+                                    {
+                                        all = false;
+                                        break;
+                                    }
+                                }
+                                var volumeLevel = c as VolumeLevel;
+                                if (volumeLevel != null)
+                                {
+                                    if (!volumeLevel.LoadedFiles)
+                                    {
+                                        all = false;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (all)
+                            {
+                                flowPreview.Loading = false;
+                                LoadPreviews();
+                            }
+                        }
                     }
-                    if (!cw.LoadedFiles)
+                    catch (Exception ex)
                     {
-                        cw.LoadedFiles = true;
-                        //last one?
-                        bool all = true;
-                        foreach (Control c in _pnlCameras.Controls)
-                        {
-                            var cameraWindow = c as CameraWindow;
-                            if (cameraWindow != null)
-                            {
-                                if (!cameraWindow.LoadedFiles)
-                                {
-                                    all = false;
-                                    break;
-                                }
-                            }
-                            var volumeLevel = c as VolumeLevel;
-                            if (volumeLevel != null)
-                            {
-                                if (!volumeLevel.LoadedFiles)
-                                {
-                                    all = false;
-                                    break;
-                                }
-                            }
-                        }
-                        if (all)
-                        {
-                            flowPreview.Loading = false;
-                            LoadPreviews();
-                        }
+                        Logger.LogExceptionToFile(ex,"FileListUpdated - "+cw.ObjectName);
                     }
                 }
+                
             }
 
         }

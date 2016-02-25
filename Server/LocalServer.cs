@@ -114,7 +114,14 @@ namespace iSpyApplication.Server
                     if (_th == null)
                         return false;
 
-                    return !_th.Join(TimeSpan.Zero);
+                    try
+                    {
+                        return !_th.Join(TimeSpan.Zero);
+                    }
+                    catch
+                    {
+                        return true;
+                    }
                 }
             }
         }
@@ -628,12 +635,15 @@ namespace iSpyApplication.Server
                 {
                     var read = req.Stream.EndRead(result);
                     if (read > 0)
-                        req.ASCII += Encoding.UTF8.GetString(req.Buffer, 0, read);
+                    {
+                        req.UTF8 += Encoding.UTF8.GetString(req.Buffer, 0, read);
+                        req.BytesRead += read;
+                    }
 
-                    
+
 
                     //flash xml request
-                    if (req.ASCII.StartsWith("<policy-file-request/>"))
+                    if (req.UTF8.StartsWith("<policy-file-request/>"))
                     {
                         req.TcpClient.Client.SendFile(Program.AppPath + @"WebServerRoot\crossdomain.xml");
                         DisconnectRequest(req);
@@ -642,11 +652,11 @@ namespace iSpyApplication.Server
                     }
 
                     //talk in socket call
-                    if (req.ASCII.StartsWith("TALK,"))
+                    if (req.UTF8.StartsWith("TALK,"))
                     {
-                        if (req.ASCII.Length > 10)
+                        if (req.UTF8.Length > 10)
                         {
-                            string[] cfg = req.ASCII.Substring(0, 10).Split(',');
+                            string[] cfg = req.UTF8.Substring(0, 10).Split(',');
                             int cid = Convert.ToInt32(cfg[1]);
 
                             var feed = new Thread(p => AudioIn(req, cid)) {IsBackground = true};
@@ -655,16 +665,23 @@ namespace iSpyApplication.Server
                         }
                     }
 
-                    int iStartPos = req.ASCII.IndexOf("\r\n\r\n", StringComparison.Ordinal);
+                    int iStartPos = req.UTF8.IndexOf("\r\n\r\n", StringComparison.Ordinal);
                     if (iStartPos>-1)
                     {
-                        string[] headers = req.ASCII.Substring(0, iStartPos).Split('\n');
-                        if ((from h in headers where h.Trim().StartsWith("Content-Length",StringComparison.OrdinalIgnoreCase) select h.Split(':') into nv select Convert.ToInt32(nv[1].Trim())).Any(cl => req.ASCII.Length - iStartPos + 4 < cl))
+                        List<string> headers = req.UTF8.Substring(0, iStartPos).Split('\n').ToList();
+                        var cl = headers.FirstOrDefault(p => p.Trim().StartsWith("Content-Length", StringComparison.OrdinalIgnoreCase));
+
+                        var v = cl?.Split(':');
+                        if (v?.Length > 1)
                         {
-                            req.Stream.BeginRead(req.Buffer, 0, req.Buffer.Length, ReadCallback, req);
-                            return;
+                            int icl = Convert.ToInt32(v[1].Trim());
+                            if (icl > req.BytesRead - iStartPos - 4)
+                            {
+                                req.Stream.BeginRead(req.Buffer, 0, req.Buffer.Length, ReadCallback, req);
+                                return;
+                            }
                         }
-                        ProcessRequest(req.ASCII, req);
+                        ProcessRequest(req.UTF8, req);
                     }
                     else
                     {
@@ -672,7 +689,7 @@ namespace iSpyApplication.Server
                             DisconnectRequest(req);
                         else
                         {
-                            if (req.ASCII.Length>200000)
+                            if (req.UTF8.Length>200000)
                                 throw new Exception("Incoming request is too long");
                             
                             req.Stream.BeginRead(req.Buffer, 0, req.Buffer.Length, ReadCallback, req);
@@ -701,8 +718,8 @@ namespace iSpyApplication.Server
                 string sHttpVersion;
                 string resp;
                 String sMimeType;
-                bool bServe;               
-                
+                bool bServe;
+
                 var iMeth = sBuffer.IndexOf(" ", StringComparison.Ordinal);
                 if (iMeth == -1)
                     goto Finish;
@@ -718,39 +735,42 @@ namespace iSpyApplication.Server
                         sResponse += "Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept\r\n";
                         sResponse += "Connection: close\r\n";
                         sResponse += "\r\n";
-                        SendToBrowser(sResponse,ref req);
+                        SendToBrowser(sResponse, ref req);
                         goto Finish;
                     case "GET":
                     case "POST":
-                        break;                        
+                        break;
                     default:
                         goto Finish;
 
                 }
-                
+
                 string sRequest;
                 string sPhysicalFilePath;
                 string errMessage;
                 string sRequestedFile;
                 try
                 {
-                    
+
                     string sErrorMessage;
                     string sLocalDir;
                     string sDirName;
                     string sFileName;
                     ParseRequest(ServerRoot, sBuffer, out sRequest, out sRequestedFile,
-                                    out sErrorMessage,
-                                    out sLocalDir, out sDirName, out sPhysicalFilePath, out sHttpVersion,
-                                    out sFileName, out sMimeType, out bServe, out errMessage, ref req);
+                        out sErrorMessage,
+                        out sLocalDir, out sDirName, out sPhysicalFilePath, out sHttpVersion,
+                        out sFileName, out sMimeType, out bServe, out errMessage, ref req);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogExceptionToFile(ex,"Server (parse request)");
                     goto Finish;
                 }
                 if (!bServe && string.IsNullOrEmpty(sRequestedFile))
                 {
                     resp = "iSpy is running. Access this server via the website";
+                    if (errMessage != "")
+                        resp += " (" + errMessage + ")";
                     SendResponse(sHttpVersion, "text/text", resp, " 200 OK", 0, ref req);
                     goto Finish;
                 }
@@ -759,7 +779,8 @@ namespace iSpyApplication.Server
                 {
                     if (errMessage != "")
                         errMessage = " (" + errMessage + ")";
-                    resp = "{\"server\":\"iSpy\",\"error\":\"Authentication failed"+errMessage+"\",\"errorType\":\"authentication\"}";
+                    resp = "{\"server\":\"iSpy\",\"error\":\"Authentication failed" + errMessage +
+                           "\",\"errorType\":\"authentication\"}";
                     SendResponse(sHttpVersion, "text/javascript", resp, " 200 OK", 0, ref req);
                     goto Finish;
                 }
@@ -768,12 +789,13 @@ namespace iSpyApplication.Server
 
                 if (resp != "")
                 {
-                    bool gzip = resp.Length > 400 && MainForm.Conf.EnableGZip && HeaderEnabled(sBuffer, "Accept-Encoding", "gzip");
-                    
+                    bool gzip = resp.Length > 400 && MainForm.Conf.EnableGZip &&
+                                HeaderEnabled(sBuffer, "Accept-Encoding", "gzip");
+
                     if (gzip)
                     {
                         var arr = Gzip(Encoding.UTF8.GetBytes(resp));
-                        SendResponse(sHttpVersion, "text/javascript", resp, " 200 OK", 0, ref req, true);
+                        SendResponse(sHttpVersion, "text/javascript", arr, " 200 OK", 0, ref req, true);
                     }
                     else
                     {
@@ -869,7 +891,7 @@ namespace iSpyApplication.Server
                     }
                 }
 
-            Finish:
+                Finish:
                 DisconnectRequest(req);
                 NumErr = 0;
             }
@@ -883,6 +905,10 @@ namespace iSpyApplication.Server
 
                 }
                 DisconnectRequest(req);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogExceptionToFile(ex,"Server");
             }
         }
 
@@ -1148,7 +1174,7 @@ namespace iSpyApplication.Server
                 {
                     bHasReferer = AllowedReferrers.Any(r => Regex.IsMatch(referer, r));
                     if (!bHasReferer)
-                        errMessage = "Referer invalid";
+                        errMessage = "Referer check failed";
                 }
 
             }
@@ -1161,6 +1187,8 @@ namespace iSpyApplication.Server
                 sClientIP = sClientIP.Replace("[", "").Replace("]", "");
 
                 bServe = AllowedIPs.Any(ip => Regex.IsMatch(sClientIP, ip));
+                if (!bServe)
+                    errMessage = "IP blocked by allow list";
             }
 
             int iStartPos = sBuffer.IndexOf("HTTP", 1, StringComparison.Ordinal);

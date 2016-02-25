@@ -13,8 +13,7 @@ namespace iSpyApplication
     public static class LocRm
     {
         private static Translations _translationsList;
-        //private static readonly Dictionary<string, string> Res = new Dictionary<string, string>();
-        private static Hashtable Res = new Hashtable();
+        private static readonly Hashtable Res = new Hashtable();
         private static bool _inited;
 
         public static List<TranslationsTranslationSet> TranslationSets => TranslationsList.TranslationSet.ToList();
@@ -61,9 +60,10 @@ namespace iSpyApplication
             {
                 Init();
             }
+            identifier = identifier.ToLower();
             try
             {
-                return Res[languageCode+"."+identifier].ToString();
+                return Res[languageCode+"."+identifier.ToLower()].ToString();
             }
             catch (NullReferenceException)
             {
@@ -118,7 +118,7 @@ namespace iSpyApplication
             {
                 foreach (var t in ls.Translation)
                 {
-                    Res.Add((ls.CultureCode+"."+t.Token),t.Value);
+                    Res.Add((ls.CultureCode+"."+t.Token.ToLower()),t.Value);
                 }
             }
             _inited = true;

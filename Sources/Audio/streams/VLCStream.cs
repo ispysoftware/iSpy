@@ -142,8 +142,24 @@ namespace iSpyApplication.Sources.Audio.streams
         /// 
         /// <remarks>Current state of video source object - running or not.</remarks>
         /// 
-        public bool IsRunning => _thread != null && !_thread.Join(TimeSpan.Zero);
-        
+        public bool IsRunning
+        {
+            get
+            {
+                if (_thread == null)
+                    return false;
+
+                try
+                {
+                    return !_thread.Join(TimeSpan.Zero);
+                }
+                catch
+                {
+                    return true;
+                }
+            }
+        }
+
 
         public void Start()
         {

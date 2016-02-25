@@ -23,14 +23,20 @@ namespace iSpyApplication.Server
             Quiturlscanner = true;
             if (Urlscanner != null)
             {
-                var i = 0;
-                while (!Urlscanner.Join(TimeSpan.Zero) && i < 10)
+                try
                 {
-                    Thread.Sleep(200);
-                    i++;
+                    var i = 0;
+                    while (!Urlscanner.Join(TimeSpan.Zero) && i < 10)
+                    {
+                        Thread.Sleep(200);
+                        i++;
+                    }
+                    if (!Urlscanner.Join(TimeSpan.Zero))
+                        Urlscanner.Abort();
                 }
-                if (!Urlscanner.Join(TimeSpan.Zero))
-                    Urlscanner.Abort();
+                catch
+                {
+                }
                 Urlscanner = null;
             }
         }
@@ -47,11 +53,7 @@ namespace iSpyApplication.Server
 
         public void ScanCameras()
         {
-            Quiturlscanner = false;
-            if (Urlscanner != null && !Urlscanner.Join(TimeSpan.Zero))
-            {
-                QuitScanner();
-            }
+            QuitScanner();
             Urlscanner = new Thread(DoScanCamera);
             Urlscanner.Start();
         }
@@ -128,10 +130,11 @@ namespace iSpyApplication.Server
                             break;
                     }
                     if (Quiturlscanner)
-                        break;
+                    {
+                        ScanComplete?.Invoke(this, EventArgs.Empty);
+                        return;
+                    }
                 }
-                if (Quiturlscanner)
-                    break;
             }
             ScanComplete?.Invoke(this, EventArgs.Empty);
         }

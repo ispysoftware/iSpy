@@ -112,14 +112,30 @@ namespace iSpyApplication.Sources.Audio.streams
             set { _source = value; }
         }
 
-       
+
         /// <summary>
         /// State of the audio source.
         /// </summary>
         /// 
         /// <remarks>Current state of audio source object - running or not.</remarks>
         /// 
-        public bool IsRunning => _thread != null && !_thread.Join(TimeSpan.Zero);
+        public bool IsRunning
+        {
+            get
+            {
+                if (_thread == null)
+                    return false;
+
+                try
+                {
+                    return !_thread.Join(TimeSpan.Zero);
+                }
+                catch
+                {
+                    return true;
+                }
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalDeviceStream"/> class.

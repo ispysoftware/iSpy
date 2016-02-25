@@ -561,9 +561,15 @@ namespace iSpyApplication
 
         private void ScanCamera(string make)
         {
-            if (_urlscanner != null && !_urlscanner.Join(TimeSpan.Zero))
+            try
             {
-                QuitScanner();
+                if (_urlscanner != null && !_urlscanner.Join(TimeSpan.Zero))
+                {
+                    QuitScanner();
+                }
+            }
+            catch
+            {
             }
             _urlscanner = new Thread(() => ScanCameras(make));
             _urlscanner.Start();
@@ -1188,7 +1194,13 @@ namespace iSpyApplication
                 connectUrl += "@";
                      
             }
-            connectUrl += addr + ":" + nPort;
+
+            if (s.prefix.ToLower().StartsWith("http"))
+                connectUrl += addr + ":" + nPort;
+            else
+            {
+                connectUrl += addr;
+            }
 
             string url = !audio?s.url:s.AudioURL;
             if (!url.StartsWith("/"))

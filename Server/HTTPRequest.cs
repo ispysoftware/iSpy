@@ -11,7 +11,8 @@ namespace iSpyApplication.Server
         public Stream Stream; //SSLStream or NetworkStream depending on client
         public RestartableReadStream RestartableStream;
         public byte[] Buffer;
-        public string ASCII = "";
+        public string UTF8 = "";
+        public int BytesRead = 0;
 
         public void Destroy()
         {

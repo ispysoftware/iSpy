@@ -819,7 +819,7 @@ namespace iSpyApplication
         {
             var d = new downloader
             {
-                Url = MainForm.Website + "/getcontent.aspx?name=translations2&encoding=unicode",
+                Url = MainForm.Website + "/getcontent.aspx?name=translations3&encoding=utf-8",
                 SaveLocation = Program.AppDataPath + @"XML\Translations.xml"
             };
             d.ShowDialog(this);

@@ -209,7 +209,22 @@ namespace iSpyApplication.Controls
         //        return null;
         //    }
         //}
-        public bool Recording => Helper.ThreadRunning(_recordingThread);
+        public bool Recording
+        {
+            get
+            {
+                try
+                {
+                    return _recordingThread != null && !_recordingThread.Join(TimeSpan.Zero);
+                }
+                catch
+                {
+                    return true;
+                }
+
+            }
+            
+        } 
 
         public string ObjectName => Camobject.name;
 
@@ -481,10 +496,16 @@ namespace iSpyApplication.Controls
         private Thread _tScan;
         private void ScanForMissingFiles()
         {
-            if (!Helper.ThreadRunning(_tScan))
+            try
             {
-                _tScan = new Thread(ScanFiles);
-                _tScan.Start();
+                if (_tScan == null || _tScan.Join(TimeSpan.Zero))
+                {
+                    _tScan = new Thread(ScanFiles);
+                    _tScan.Start();
+                }
+            }
+            catch
+            {
             }
         }
 
@@ -608,10 +629,17 @@ namespace iSpyApplication.Controls
         private Thread _tFiles;
         public void GetFiles()
         {
-            if (!Helper.ThreadRunning(_tFiles))
+            try
             {
-                _tFiles = new Thread(GenerateFileList);
-                _tFiles.Start();
+                if (_tFiles == null || _tFiles.Join(TimeSpan.Zero))
+                {
+                    _tFiles = new Thread(GenerateFileList);
+                    _tFiles.Start();
+                }
+            }
+            catch
+            {
+
             }
         }
 
@@ -740,6 +768,7 @@ namespace iSpyApplication.Controls
                     disable = true;
                     break;
                 case 2:
+                    enable = true;
                     ForcedRecording = true;
                     break;
                 case 3:
@@ -3071,7 +3100,6 @@ namespace iSpyApplication.Controls
                 string previewImage = "";
                 try
                 {
-                    _stopWrite.Reset();
                     if (!string.IsNullOrEmpty(Camobject.recorder.trigger))
                     {
                         string[] tid = Camobject.recorder.trigger.Split(',');
@@ -3150,13 +3178,7 @@ namespace iSpyApplication.Controls
                                 {
                                     try
                                     {
-                                        bool success;
-                                        linktofile = HttpUtility.UrlEncode(MainForm.ExternalURL(out success) + "loadclip.mp4?oid=" + Camobject.id + "&ot=2&fn=" + VideoFileName + CodecExtension + "&auth=" + MainForm.Identifier);
-                                        if (!success)
-                                        {
-                                            linktofile = "";
-                                            throw new Exception("External IP unavailable");
-                                        }
+                                        linktofile = HttpUtility.UrlEncode(MainForm.IPAddress + "loadclip.mp4?oid=" + Camobject.id + "&ot=2&fn=" + VideoFileName + CodecExtension + "&auth=" + MainForm.Identifier);
                                     }
                                     catch (Exception ex)
                                     {
@@ -5439,9 +5461,12 @@ namespace iSpyApplication.Controls
                 }
                 try
                 {
-                    if (Helper.ThreadRunning(_recordingThread, 3000))
+                    if (_recordingThread != null && !_recordingThread.Join(TimeSpan.Zero))
                     {
-                        _stopWrite.Set();
+                        if (!_recordingThread.Join(3000))
+                        {
+                            _stopWrite.Set();
+                        }
                     }
                 }
                 catch

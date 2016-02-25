@@ -75,8 +75,24 @@ namespace iSpyApplication.Sources.Video
         }
 
 
-        public bool IsRunning => _thread != null && !_thread.Join(TimeSpan.Zero);
-       
+        public bool IsRunning
+        {
+            get
+            {
+                if (_thread == null)
+                    return false;
+
+                try
+                {
+                    return !_thread.Join(TimeSpan.Zero);
+                }
+                catch
+                {
+                    return true;
+                }
+            }
+        }
+
         public bool MousePointer;
 
         public void Start()
@@ -112,9 +128,15 @@ namespace iSpyApplication.Sources.Video
             {
                 // wait for thread stop
                 _stopEvent.Set();
-                _thread.Join(MainForm.ThreadKillDelay);
-                if (_thread != null && !_thread.Join(TimeSpan.Zero))
-                    _thread.Abort();
+                try
+                {
+                    _thread.Join(MainForm.ThreadKillDelay);
+                    if (_thread != null && !_thread.Join(TimeSpan.Zero))
+                        _thread.Abort();
+                }
+                catch
+                {
+                }
                 Free();
             }
         }

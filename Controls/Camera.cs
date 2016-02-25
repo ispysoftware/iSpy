@@ -303,7 +303,14 @@ namespace iSpyApplication.Controls
 
 
         // Running property
-        public bool IsRunning => (VideoSource != null) && VideoSource.IsRunning;
+        public bool IsRunning
+        {
+            get
+            {
+                var v = VideoSource;
+                return (v!= null) && v.IsRunning;
+            }
+        }
 
         public void WaitForStop()
         {

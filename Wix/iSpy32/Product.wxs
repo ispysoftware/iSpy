@@ -482,6 +482,9 @@
       <Component Id="Component175" Guid="{A7527C8C-3CD1-40EC-B188-1586948A5C79}">
         <File Id="a_5json" Source="$(var.OutputDir)\WebServerRoot\api\sources\audio\5.json" KeyPath="yes" Checksum="yes" />
       </Component>
+      <Component Id="aComponent175" Guid="{6a12cdfc-64b8-4081-b05c-26f8181e80a4}">
+        <File Id="a_6json" Source="$(var.OutputDir)\WebServerRoot\api\sources\audio\6.json" KeyPath="yes" Checksum="yes" />
+      </Component>
     </ComponentGroup>
     <ComponentGroup Id="video" Directory="video">
       <Component Id="Component176" Guid="{EBBA8600-F049-43FA-BDA6-3DC511BABB4E}">

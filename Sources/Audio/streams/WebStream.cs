@@ -125,7 +125,23 @@ namespace iSpyApplication.Sources.Audio.streams
         /// 
         /// <remarks>Current state of audio source object - running or not.</remarks>
         /// 
-        public bool IsRunning => _thread != null && !_thread.Join(TimeSpan.Zero);
+        public bool IsRunning
+        {
+            get
+            {
+                if (_thread == null)
+                    return false;
+
+                try
+                {
+                    return !_thread.Join(TimeSpan.Zero);
+                }
+                catch
+                {
+                    return true;
+                }
+            }
+        }
 
 
         /// <summary>
@@ -252,9 +268,15 @@ namespace iSpyApplication.Sources.Audio.streams
 
             if (!IsRunning) return;
             _stopEvent.Set();
-            _thread.Join(MainForm.ThreadKillDelay);
-            if (_thread != null && !_thread.Join(TimeSpan.Zero))
-                _thread.Abort();
+            try
+            {
+                _thread.Join(MainForm.ThreadKillDelay);
+                if (_thread != null && !_thread.Join(TimeSpan.Zero))
+                    _thread.Abort();
+            }
+            catch
+            {
+            }
             Free();
 
 

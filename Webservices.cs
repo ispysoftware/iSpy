@@ -268,8 +268,6 @@ namespace iSpyApplication
             if (!chkuPNP.Checked)
                 chkReroute.Checked = chkReroute.Enabled = false;
 
-            bool success;
-            lblIPAddresses.Text = LocRm.GetString("PublicIPAddress").Replace("[IP]", MainForm.IPAddressExternal(false, out success));
             int i2 = 0;
             foreach (IPAddress ipadd in MainForm.AddressListIPv4)
             {
@@ -331,7 +329,6 @@ namespace iSpyApplication
             label6.Text = LocRm.GetString("toAccessYourCamerasMicrop");
             label7.Text = LocRm.GetString("usingIpv6IspymightBeAbleT");
             label8.Text = LocRm.GetString("Port");
-            lblIPAddresses.Text = LocRm.GetString("PublicIp");
             linkLabel1.Text = LocRm.GetString("CreateANewAccount");
             linkLabel2.Text = LocRm.GetString("OrManuallyConfigureYourRo");
             Next.Text = LocRm.GetString("Finish");

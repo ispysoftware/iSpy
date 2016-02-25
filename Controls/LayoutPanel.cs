@@ -80,64 +80,67 @@ namespace iSpyApplication.Controls
             {
                 HorizontalScroll.Value = 0;
                 VerticalScroll.Value = 0;
+
                 if (_maximised != null)
                 {
                     Maximise(_maximised, false);
                 }
                 else
+                    LayoutControlsInGrid();
+            }
+        }
+
+        public void LayoutControlsInGrid()
+        {
+            var lc = new List<ISpyControl>();
+            foreach (var c in Controls)
+            {
+                if (c is CameraWindow || c is FloorPlanControl)
                 {
-
-                    var lc = new List<ISpyControl>();
-                    foreach (var c in Controls)
-                    {
-                        if (c is CameraWindow || c is FloorPlanControl)
-                        {
-                            lc.Add((ISpyControl) c);
-                            continue;
-                        }
-                        var vl = c as VolumeLevel;
-                        if (vl?.Paired == false)
-                            lc.Add(vl);
-                    }
-
-                    int aw = DisplayRectangle.Width - Padding.Horizontal;
-                    int ah = DisplayRectangle.Height - Padding.Vertical;
-
-                    int rows;
-                    int cols;
-                    GetRowsCols(lc.Count, aw, ah, out rows, out cols);
-                    double w = Convert.ToDouble(aw)/cols;
-                    double h = Convert.ToDouble(ah)/rows;
-
-                    int row = 0;
-                    int col = 0;
-                    var l = lc.OrderBy(p => p.Order).ToList();
-                    int ind = 0;
-                    foreach (var io in l)
-                    {
-                        io.Order = ind;
-                        ind++;
-                        var c = (PictureBox) io;
-                        c.Location = new Point(Convert.ToInt32(col*w), Convert.ToInt32(row*h));
-                        c.Width = Convert.ToInt32(Math.Max(2, w - GridPadding));
-                        var hc = Convert.ToInt32(Math.Max(2, h - GridPadding));
-                        var cw = c as CameraWindow;
-                        var vc = cw?.VolumeControl;
-                        if (vc?.IsDisposed == false)
-                        {
-                            hc = Math.Max(40, hc - 40);
-                            vc.Location = new Point(Convert.ToInt32(col*w), Convert.ToInt32(row*h) + hc);
-                            vc.Width = c.Width;
-                            vc.Height = 40;
-                        }
-                        c.Height = hc;
-
-                        col++;
-                        if (col < cols) continue;
-                        row++;
-                        col = 0;
-                    }
+                    lc.Add((ISpyControl) c);
+                    continue;
                 }
+                var vl = c as VolumeLevel;
+                if (vl?.Paired == false)
+                    lc.Add(vl);
+            }
+
+            int aw = DisplayRectangle.Width - Padding.Horizontal;
+            int ah = DisplayRectangle.Height - Padding.Vertical;
+
+            int rows;
+            int cols;
+            GetRowsCols(lc.Count, aw, ah, out rows, out cols);
+            double w = Convert.ToDouble(aw)/cols;
+            double h = Convert.ToDouble(ah)/rows;
+
+            int row = 0;
+            int col = 0;
+            var l = lc.OrderBy(p => p.Order).ToList();
+            int ind = 0;
+            foreach (var io in l)
+            {
+                io.Order = ind;
+                ind++;
+                var c = (PictureBox) io;
+                c.Location = new Point(Convert.ToInt32(col*w), Convert.ToInt32(row*h));
+                c.Width = Convert.ToInt32(Math.Max(2, w - GridPadding));
+                var hc = Convert.ToInt32(Math.Max(2, h - GridPadding));
+                var cw = c as CameraWindow;
+                var vc = cw?.VolumeControl;
+                if (vc?.IsDisposed == false)
+                {
+                    hc = Math.Max(40, hc - 40);
+                    vc.Location = new Point(Convert.ToInt32(col*w), Convert.ToInt32(row*h) + hc);
+                    vc.Width = c.Width;
+                    vc.Height = 40;
+                }
+                c.Height = hc;
+
+                col++;
+                if (col < cols) continue;
+                row++;
+                col = 0;
             }
         }
 
@@ -407,6 +410,7 @@ namespace iSpyApplication.Controls
                 {
                     Logger.LogExceptionToFile(ex);
                 }
+                return;
             }
 
             var level = obj as VolumeLevel;
@@ -447,6 +451,7 @@ namespace iSpyApplication.Controls
                         vf.RestoreRect = Rectangle.Empty;
                     }
                 }
+                return;
             }
 
             var control = obj as FloorPlanControl;
@@ -481,6 +486,7 @@ namespace iSpyApplication.Controls
                         Minimize(control, false);
                     fp.RestoreRect = Rectangle.Empty;
                 }
+                return;
             }
         }
 
@@ -567,8 +573,6 @@ namespace iSpyApplication.Controls
                 }
             }
         }
-
-        
 
         public void LayoutOptimised()
         {

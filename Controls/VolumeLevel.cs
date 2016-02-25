@@ -168,10 +168,17 @@ namespace iSpyApplication.Controls
         private Thread _tFiles;
         public void GetFiles()
         {
-            if (!Helper.ThreadRunning(_tFiles))
+            try
             {
-                _tFiles = new Thread(GenerateFileList);
-                _tFiles.Start();
+                if (_tFiles == null || _tFiles.Join(TimeSpan.Zero))
+                {
+                    _tFiles = new Thread(GenerateFileList);
+                    _tFiles.Start();
+                }
+            }
+            catch
+            {
+
             }
         }
 
@@ -342,10 +349,16 @@ namespace iSpyApplication.Controls
         private Thread _tScan;
         private void ScanForMissingFiles()
         {
-            if (!Helper.ThreadRunning(_tScan))
+            try
             {
-                _tScan = new Thread(ScanFiles);
-                _tScan.Start();
+                if (_tScan == null || _tScan.Join(TimeSpan.Zero))
+                {
+                    _tScan = new Thread(ScanFiles);
+                    _tScan.Start();
+                }
+            }
+            catch
+            {
             }
         }
 
@@ -404,8 +417,23 @@ namespace iSpyApplication.Controls
             FileListUpdated?.Invoke(this);
         }
 
-        public bool Recording => Helper.ThreadRunning(_recordingThread);
-        
+        public bool Recording
+        {
+            get
+            {
+                try
+                {
+                    return _recordingThread != null && !_recordingThread.Join(TimeSpan.Zero);
+                }
+                catch
+                {
+                    return true;
+                }
+
+            }
+
+        }
+
 
         public string ObjectName => Micobject.name;
 
@@ -581,6 +609,7 @@ namespace iSpyApplication.Controls
                     disable = true;
                     break;
                 case 2:
+                    enable = true;
                     ForcedRecording = true;
                     break;
                 case 3:
@@ -1506,9 +1535,12 @@ namespace iSpyApplication.Controls
                 }
                 try
                 {
-                    if (Helper.ThreadRunning(_recordingThread,3000))
+                    if (_recordingThread != null && !_recordingThread.Join(TimeSpan.Zero))
                     {
-                        _stopWrite.Set();                        
+                        if (!_recordingThread.Join(3000))
+                        {
+                            _stopWrite.Set();
+                        }
                     }
                 }
                 catch
@@ -1629,13 +1661,8 @@ namespace iSpyApplication.Controls
 
                             try
                             {
-                                bool success;
-                                linktofile = HttpUtility.UrlEncode(MainForm.ExternalURL(out success) + "loadclip.mp3?oid=" + Micobject.id + "&ot=1&fn=" + AudioFileName + ".mp3&auth=" + MainForm.Identifier);
-                                if (!success)
-                                {
-                                    linktofile = "";
-                                    throw new Exception("External IP unavailable");
-                                }
+                                string url = (X509.SslEnabled ? "https" : "http") + "://" + MainForm.IPAddress + "/";
+                                linktofile = HttpUtility.UrlEncode(url + "loadclip.mp3?oid=" + Micobject.id + "&ot=1&fn=" + AudioFileName + ".mp3&auth=" + MainForm.Identifier);
                             }
                             catch (Exception ex)
                             {
