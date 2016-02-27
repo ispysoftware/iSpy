@@ -47,7 +47,6 @@
     <url version="PRESTİGE DVR" prefix="http://" Source="JPEG" url="current[CHANNEL].jpg" />
   </Manufacturer>
   <Manufacturer name="3SVISION">
-    <url version="foscam" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="N3011" prefix="rtsp://" Source="FFMPEG" url="/cam1/onvif-h264" />
     <url version="N6079" prefix="rtsp://" Source="FFMPEG" url="/cam1/onvif-h264" />
     <url version="N9071" prefix="rtsp://" Source="FFMPEG" url="/cam1/onvif-h264-1" />
@@ -511,12 +510,6 @@
   </Manufacturer>
   <Manufacturer name="AccsXperts">
     <url version="5deMayo" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]*[HEIGHT]" />
-  </Manufacturer>
-  <Manufacturer name="ACCUEIL">
-    <url version="DCS5020L" prefix="http://" Source="MJPEG" url="video.cgi?resolution=[WIDTH]x[HEIGHT]" />
-    <url version="DCS5020L" prefix="http://" Source="MJPEG" url="video.cgi?resolution=VGA" />
-    <url version="DCS5020L" prefix="http://" Source="MJPEG" url="mjpeg.cgi?user=[USERNAME]&amp;password=[PASSWORD]&amp;channel=[CHANNEL]" />
-    <url version="DCS5020L" prefix="http://" Source="MJPEG" url="mjpeg.cgi" />
   </Manufacturer>
   <Manufacturer name="Ace">
     <url version="Esperanza" prefix="http://" Source="MJPEG" url="videofeed" />
@@ -3219,9 +3212,6 @@
   <Manufacturer name="ARP">
     <url version="Other" prefix="http://" Source="MJPEG" url="cgi/mjpg/mjpeg.cgi" />
   </Manufacturer>
-  <Manufacturer name="Arriere">
-    <url version="DCS-7513" prefix="rtsp://" Source="VLC" url="live1.sdp" />
-  </Manufacturer>
   <Manufacturer name="Arrow Security System">
     <url version="AR7916" prefix="http://" Source="JPEG" url="cgi-bin/wappaint?camera_no=[CHANNEL]&amp;animation=0&amp;name=[USERNAME]&amp;password=[PASSWORD]&amp;pic_size=2" />
   </Manufacturer>
@@ -3529,16 +3519,9 @@
     <url version="Other" prefix="http://" Source="JPEG" url="cgi-bin/guest/Video.cgi?media=JPEG&amp;channel=[CHANNEL]" />
     <url version="Other" prefix="rtsp://" Source="VLC" url="/live/h264" />
     <url version="Resturant" prefix="rtsp://" Source="VLC" url="/live/h264" />
-  </Manufacturer>
-  <Manufacturer name="AV5115-8B">
-    <url version="Other" prefix="rtsp://" Source="FFMPEG" url="/h264.sdp" />
-    <url version="outside left" prefix="rtsp://" Source="FFMPEG" url="/h264.sdp" />
-  </Manufacturer>
-  <Manufacturer name="AV5115-9A">
-    <url version="Other" prefix="rtsp://" Source="FFMPEG" url="/h264.sdp" />
-  </Manufacturer>
-  <Manufacturer name="AV5455DN-50">
-    <url version="Other" prefix="rtsp://" Source="FFMPEG" url="/h264.sdp" />
+    <url version="AV5115-8B" prefix="rtsp://" Source="FFMPEG" url="/h264.sdp" />
+    <url version="AV5115-9A" prefix="rtsp://" Source="FFMPEG" url="/h264.sdp" />
+    <url version="AV5455DN-50" prefix="rtsp://" Source="FFMPEG" url="/h264.sdp" />
   </Manufacturer>
   <Manufacturer name="AVACOM">
     <url version="1080w" prefix="http://" Source="FFMPEG" url="videostream.asf" />
@@ -3567,14 +3550,6 @@
   </Manufacturer>
   <Manufacturer name="Avaja">
     <url version="Other" prefix="http://" Source="MJPEG" url="GetData.cgi" />
-  </Manufacturer>
-  <Manufacturer name="Avantgarde-Test">
-    <url version="7 Link IPC 770HD" prefix="rtsp://" Source="FFMPEG" url="/live/av0" />
-    <url version="7Links 3720-675" prefix="rtsp://" Source="FFMPEG" url="/live/av0" />
-    <url version="ALL2213" prefix="rtsp://" Source="FFMPEG" url="/live/av0" />
-    <url version="Apexis H804" prefix="rtsp://" Source="FFMPEG" url="/live/av0" />
-    <url version="Tommasi" prefix="rtsp://" Source="FFMPEG" url="/live/av0" />
-    <url version="V-104" prefix="rtsp://" Source="FFMPEG" url="/live/av0" />
   </Manufacturer>
   <Manufacturer name="Avaya Generic">
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -5161,9 +5136,6 @@
   <Manufacturer name="Babicka">
     <url version="Other" prefix="rtsp://" Source="VLC" url="live/ch00_0" />
   </Manufacturer>
-  <Manufacturer name="Baghaven">
-    <url version="D-Link" prefix="http://" Source="MJPEG" url="video.cgi?resolution=VGA" />
-  </Manufacturer>
   <Manufacturer name="Baksa">
     <url version="Dani" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]" />
   </Manufacturer>
@@ -5187,15 +5159,9 @@
     <url version="8021" prefix="rtsp://" Source="VLC" url="img/video.sav" />
     <url version="8021" prefix="http://" Source="VLC" url="img/video.asf" />
   </Manufacturer>
-  <Manufacturer name="barcIPCam">
-    <url version="barc1" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]*[HEIGHT]" />
-  </Manufacturer>
   <Manufacturer name="BASCOM">
     <url version="HD-19" prefix="rtsp://" Source="FFMPEG" url="/live/video_audio/profile1" />
     <url version="HD-19" prefix="rtsp://" Source="FFMPEG" url="/live/video_audio/profile2" />
-  </Manufacturer>
-  <Manufacturer name="Basement">
-    <url version="ebay Chinese" prefix="rtsp://" Source="FFMPEG" url="/live0.264" />
   </Manufacturer>
   <Manufacturer name="Basler">
     <url version="bip-2" prefix="http://" Source="MJPEG" url="cgi-bin/mjpeg?session_id=[CHANNEL]&amp;buffer=0&amp;prio=high&amp;frame=4" />
@@ -5242,11 +5208,6 @@
     <url version="Other" prefix="rtsp://" Source="FFMPEG" url="/cam/realmonitor" />
   </Manufacturer>
   <Manufacturer name="Belkin">
-    <url version="DCS-5222L" prefix="http://" Source="JPEG" url="image/jpeg.cgi" />
-    <url version="DCS-932L" prefix="http://" Source="JPEG" url="image.jpg" />
-    <url version="DCS-932L" prefix="http://" Source="MJPEG" url="mjpeg.cgi?user=[USERNAME]&amp;password=[PASSWORD]&amp;channel=[CHANNEL]" />
-    <url version="DCS-932LB1" prefix="http://" Source="JPEG" url="image.jpg" />
-    <url version="DCS-933L" prefix="http://" Source="JPEG" url="image.jpg" />
     <url version="F7D7601v1" prefix="http://" Source="FFMPEG" url="/goform/video" />
     <url version="F7D7602v1" prefix="http://" Source="FFMPEG" url="/goform/video" />
     <url version="HD NetCam" prefix="http://" Source="FFMPEG" url="/goform/video" />
@@ -7960,11 +7921,6 @@
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
   </Manufacturer>
   <Manufacturer name="DELL">
-    <url version="930L" prefix="http://" Source="MJPEG" url="video.cgi?resolution=VGA" />
-    <url version="dcs 930L" prefix="http://" Source="MJPEG" url="video.cgi?resolution=[WIDTH]x[HEIGHT]" />
-    <url version="dcs3220" prefix="http://" Source="JPEG" url="cgi-bin/video.jpg" />
-    <url version="dcs930l" prefix="http://" Source="MJPEG" url="video.cgi?resolution=VGA" />
-    <url version="dcs-930l" prefix="http://" Source="MJPEG" url="mjpeg.cgi?user=[USERNAME]&amp;password=[PASSWORD]&amp;channel=[CHANNEL]" />
     <url version="ip webcam" prefix="http://" Source="MJPEG" url="videofeed" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videofeed" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -8069,8 +8025,6 @@
     <url version="Other" prefix="http://" Source="JPEG" url="snap.jpg" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-  </Manufacturer>
-  <Manufacturer name="DericamRvD">
     <url version="H206C-P" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/1" />
     <url version="M801W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]*[HEIGHT]" />
     <url version="M801W" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
@@ -8312,9 +8266,6 @@
   <Manufacturer name="Discover">
     <url version="DIS-9502IR-SE" prefix="rtsp://" Source="FFMPEG" url="/media.amp" />
     <url version="Other" prefix="http://" Source="JPEG" url="cgi-bin/snapshot.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]" />
-  </Manufacturer>
-  <Manufacturer name="Distributore">
-    <url version="Dlink" prefix="rtsp://" Source="FFMPEG" url="/live1.sdp" />
   </Manufacturer>
   <Manufacturer name="Diviotec">
     <url version="NBR325P" prefix="rtsp://" Source="FFMPEG" url="live.sdp" />
@@ -10581,10 +10532,6 @@
     <url version="Other2" prefix="http://" Source="JPEG" url="cgi-bin/snapshot.cgi?chn=[CHANNEL]&amp;u=[USERNAME]&amp;p=[PASSWORD]" />
     <url version="tv7204" prefix="http://" Source="JPEG" url="cgi-bin/video.jpg" />
   </Manufacturer>
-  <Manufacturer name="ED DLINK">
-    <url version="DCS-2210" prefix="rtsp://" Source="FFMPEG" url="/live1.sdp" />
-    <url version="Other" prefix="http://" Source="JPEG" url="image.jpg" />
-  </Manufacturer>
   <Manufacturer name="Edge">
     <url version="DVR" prefix="http://" Source="JPEG" url="cgi-bin/snapshot.cgi?chn=[CHANNEL]&amp;u=[USERNAME]&amp;p=[PASSWORD]" />
     <url version="DVR" prefix="http://" Source="VLC" url="cgi-bin/view.cgi?chn=[CHANNEL]&amp;u=[USERNAME]&amp;p=[PASSWORD]" port="554" />
@@ -11953,10 +11900,6 @@
   </Manufacturer>
   <Manufacturer name="FHD-2MP">
     <url version="Senecta" prefix="rtsp://" Source="FFMPEG" url="/av0_0" />
-  </Manufacturer>
-  <Manufacturer name="FI9816P">
-    <url version="Foscam KS" prefix="rtsp://" Source="FFMPEG" url="/videoMain" />
-    <url version="Other" prefix="rtsp://" Source="FFMPEG" url="/videoMain" />
   </Manufacturer>
   <Manufacturer name="Fine">
     <url version="3 mega" prefix="http://" Source="MJPEG" url="GetData.cgi" port="554" />
@@ -15660,11 +15603,8 @@
     <url version="8153" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/1" />
     <url version="820CAM" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/1" />
     <url version="8CHDVR" prefix="rtsp://" Source="VLC" url="PSIA/Streaming/channels/1?videoCodecType=MPEG4" />
-    <url version="a" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/1" />
     <url version="als camera" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/1" />
     <url version="ART 221" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/1" />
-    <url version="Barn" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/1" />
-    <url version="Bikes" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/1" />
     <url version="BL-3200" prefix="rtsp://" Source="VLC" url="live.sdp" />
     <url version="Box" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/1" />
     <url version="Bullet" prefix="rtsp://" Source="VLC" url="cam/realmonitor?channel=[CHANNEL]&amp;subtype=00" />
@@ -15678,17 +15618,12 @@
     <url version="cM1" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/1" />
     <url version="cmip3122" prefix="rtsp://" Source="FFMPEG" url="video.h264" />
     <url version="CNC4210" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/1" />
-    <url version="cozza" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/1" />
     <url version="D1HK" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/2" />
     <url version="dc 2332" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/1" />
     <url version="DC-2CD2010-I" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/2" />
     <url version="DC-2CD2412F-IW" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/2" />
     <url version="DC-2CD2412F-IW" prefix="rtsp://" Source="FFMPEG" url="h264" />
-    <url version="DCS" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/1" />
-    <url version="DCS-2102" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/2" />
-    <url version="DCS-2102" prefix="rtsp://" Source="VLC" url="" />
     <url version="DF1080P" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/1" port="555" />
-    <url version="dog box" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/1" />
     <url version="dome" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/2" />
     <url version="Dome" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/1" />
     <url version="Dome" prefix="rtsp://" Source="FFMPEG" url="video.h264" />
@@ -17002,8 +16937,6 @@
     <url version="INCMD" prefix="rtsp://" Source="FFMPEG" url="/cam/realmonitor" />
   </Manufacturer>
   <Manufacturer name="iLink">
-    <url version="DCS 930" prefix="http://" Source="MJPEG" url="VIDEO.CGI" />
-    <url version="DSC 900" prefix="http://" Source="MJPEG" url="mjpeg.cgi?user=[USERNAME]&amp;password=[PASSWORD]&amp;channel=[CHANNEL]" />
     <url version="Other" prefix="http://" Source="VLC" url="img/video.asf" />
     <url version="Other" prefix="rtsp://" Source="VLC" url="" />
   </Manufacturer>
@@ -17086,8 +17019,6 @@
     <url version="IPG40A" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" />
   </Manufacturer>
   <Manufacturer name="Infinova">
-    <url version="DCS-5220" prefix="rtsp://" Source="VLC" url="PSIA/Streaming/channels/2?videoCodecType=H.264" />
-    <url version="DCS-5220" prefix="rtsp://" Source="VLC" url="1.AMP" />
     <url version="Other" prefix="rtsp://" Source="FFMPEG" url="/1/h264major" />
     <url version="Other" prefix="http://" Source="JPEG" url="snap.jpg?JpegCam=[CHANNEL]" />
     <url version="Other" prefix="rtsp://" Source="VLC" url="1.AMP" />
@@ -19864,9 +19795,6 @@
     <url version="932L" prefix="http://" Source="MJPEG" url="MJPEG.CGI" />
     <url version="anc 808v" prefix="http://" Source="JPEG" url="cgi-bin/video.jpg?size=2" />
     <url version="anc 80v" prefix="http://" Source="JPEG" url="cgi-bin/video.jpg?size=2" />
-    <url version="DCS-5300" prefix="http://" Source="JPEG" url="cgi-bin/video.jpg?size=2" />
-    <url version="DCS-932LLB1" prefix="http://" Source="MJPEG" url="mjpeg.cgi?user=[USERNAME]&amp;password=[PASSWORD]&amp;channel=[CHANNEL]" />
-    <url version="dcs934l" prefix="http://" Source="MJPEG" url="MJPEG.CGI" />
     <url version="EVC54GCA" prefix="http://" Source="FFMPEG" url="img/video.asf" />
     <url version="lca" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" />
     <url version="LCAB03VLNNOD" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -20169,9 +20097,6 @@
     <url version="C920" prefix="http://" Source="JPEG" url="image/[CHANNEL].jpg" />
     <url version="C920" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="C933-L" prefix="http://" Source="MJPEG" url="mjpeg.cgi?user=[USERNAME]&amp;password=[PASSWORD]&amp;channel=[CHANNEL]" />
-    <url version="DAMNYOU" prefix="http://" Source="MJPEG" url="videofeed" />
-    <url version="DCS-2332L" prefix="rtsp://" Source="VLC" url="live3.sdp" />
-    <url version="DCS-932L" prefix="http://" Source="MJPEG" url="mjpeg.cgi?user=[USERNAME]&amp;password=[PASSWORD]&amp;channel=[CHANNEL]" />
     <url version="e750" prefix="rtsp://" Source="VLC" url="HighResolutionVideo" port="554" />
     <url version="LAN-NCW150/S" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="NCW150/S" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" />
@@ -21426,18 +21351,6 @@
     <url version="NS370W" prefix="http://" Source="MJPEG" url="video.cgi?resolution=VGA" />
     <url version="Other" prefix="http://" Source="JPEG" url="cgi-bin/video.jpg" />
     <url version="W70" prefix="http://" Source="MJPEG" url="video.cgi?resolution=VGA" />
-  </Manufacturer>
-  <Manufacturer name="Netgear">
-    <url version="Arlo" prefix="http://" Source="MJPEG" url="video.cgi?resolution=VGA" />
-    <url version="Arlo" prefix="http://" Source="VLC" url="/axis-cgi/mjpg/video.cgi" />
-    <url version="DCS - 2330L" prefix="rtsp://" Source="FFMPEG" url="/live1.sdp" port="554" />
-    <url version="DCS-132l" prefix="http://" Source="JPEG" url="image.jpg" />
-    <url version="NVR v3.0" prefix="http://" Source="JPEG" url="capture[CHANNEL].jpg" />
-    <url version="NVR v3.0" prefix="http://" Source="MJPEG" url="mchannel/[CHANNEL]" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]*[HEIGHT]" />
-    <url version="Other" prefix="http://" Source="JPEG" url="cgi-bin/snapshot.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]" />
-    <url version="Other" prefix="http://" Source="JPEG" url="now.jpg" />
   </Manufacturer>
   <Manufacturer name="NetMedia">
     <url version="iViewHD" prefix="http://" Source="JPEG" url="Image.jpg" />
@@ -26582,15 +26495,6 @@
     <url version="3741" prefix="http://" Source="JPEG" url="jpg/image.jpg" />
     <url version="3741" prefix="http://" Source="MJPEG" url="video.mjpg" />
     <url version="3741" prefix="rtsp://" Source="VLC" url="video.mp4" />
-    <url version="DCS-2130" prefix="http://" Source="MJPEG" url="ipcam/stream.cgi?nowprofileid=2" />
-    <url version="DCS-2130" prefix="http://" Source="VLC" url="cgi-bin/net_video.cgi?channel=[CHANNEL]" />
-    <url version="DCS-2130" prefix="rtsp://" Source="VLC" url="play2.sdp" />
-    <url version="DCS-2210" prefix="rtsp://" Source="VLC" url="live1.sdp" />
-    <url version="DCS-7410" prefix="rtsp://" Source="VLC" url="play1.sdp" />
-    <url version="DCS-920" prefix="http://" Source="MJPEG" url="video.cgi?resolution=VGA" />
-    <url version="DCS-930" prefix="http://" Source="MJPEG" url="video.cgi?resolution=VGA" />
-    <url version="DCS-932" prefix="http://" Source="JPEG" url="image/jpeg.cgi" />
-    <url version="DCS-932" prefix="http://" Source="MJPEG" url="video.cgi?resolution=VGA" />
     <url version="NC-200" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="NC-200" prefix="http://" Source="JPEG" url="snapshot.jpg" />
     <url version="Other" prefix="http://" Source="JPEG" url="cgi-bin/jpg/image" />
@@ -26807,7 +26711,6 @@
     <url version="3130" prefix="rtsp://" Source="FFMPEG" url="/video.pro2" />
     <url version="3130" prefix="rtsp://" Source="FFMPEG" url="/video.pro3" />
     <url version="3160" prefix="rtsp://" Source="FFMPEG" url="/video.pro1" />
-    <url version="DCS-2132L" prefix="rtsp://" Source="FFMPEG" url="/live2.sdp" />
     <url version="Other" prefix="http://" Source="JPEG" url="jpg/image.jpg?size=3" />
     <url version="Other" prefix="rtsp://" Source="FFMPEG" url="/video.mp4" />
     <url version="Other" prefix="rtsp://" Source="FFMPEG" url="/video.pro1" />
@@ -27950,7 +27853,6 @@
     <url version="NWK-M9852W" prefix="rtsp://" Source="VLC" url="cam1/mpeg4?user=[USERNAME]&amp;pwd=[PASSWORD]" />
   </Manufacturer>
   <Manufacturer name="Vision Digi">
-    <url version="DCS-2103" prefix="rtsp://" Source="VLC" url="" />
     <url version="Other" prefix="rtsp://" Source="VLC" url="" />
     <url version="Other" prefix="http://" Source="JPEG" url="shot.jpg" />
     <url version="Other" prefix="http://" Source="JPEG" url="special/Cam[CHANNEL].jpg" />
@@ -29191,222 +29093,6 @@
     <url version="JWEV" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
     <url version="JWEV" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="JWEV" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
-    <url version="JWEV-001125-ZFDFW" prefix="http://" Source="JPEG" url="snapshot.cgi" />
-    <url version="JWEV-001125-ZFDFW" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-001125-ZFDFW" prefix="http://" Source="MJPEG" url="videostream.cgi" />
-    <url version="JWEV-001125-ZFDFW" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-001163-TRHZD" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-001493-TRWSP" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-001493-TRWSP" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-002344" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
-    <url version="JWEV-002410-XWBFL" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
-    <url version="JWEV-002410-XWBFL" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="JWEV-002410-XWBFL" prefix="http://" Source="JPEG" url="img/snapshot.cgi?img=vga" />
-    <url version="JWEV-002410-XWBFL" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;count=0" />
-    <url version="JWEV-002410-XWBFL" prefix="http://" Source="MJPEG" url="videostream.cgi" />
-    <url version="JWEV-002410-XWBFL" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-002410-XWBFL" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
-    <url version="JWEV-002410-XWBFL" prefix="http://" Source="MJPEG" url="videostream.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-002410-XWBFL" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-003155-UKVNZ" prefix="http://" Source="JPEG" url="snapshot.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-0044" prefix="http://" Source="JPEG" url="img/snapshot.cgi?img=vga" />
-    <url version="JWEV-0044" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-005094-NUPXC" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="JWEV-005094-NUPXC" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;count=0" />
-    <url version="JWEV-005094-NUPXC" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-005094-NUPXC" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-008442-CUHWC" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-0088545-GZ UPC" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-0089" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;count=0" />
-    <url version="JWEV-0089" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-0089" prefix="http://" Source="MJPEG" url="user/videostream.cgi" />
-    <url version="JWEV-008930-EELNV" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;count=0" />
-    <url version="JWEV-008930-EELNV" prefix="http://" Source="JPEG" url="snapshot.cgi" />
-    <url version="JWEV-008930-EELNV" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
-    <url version="JWEV-009310-KDPJV" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-009394-DPEDR" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
-    <url version="JWEV-015551-LPFKE" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-023083-KKESV" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-023310-TMGTY" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-028130-THZNX" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;count=0" />
-    <url version="JWEV-028130-THZNX" prefix="http://" Source="JPEG" url="img/snapshot.cgi?size=2" />
-    <url version="JWEV-028130-THZNX" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-030862" prefix="http://" Source="FFMPEG" url="videostream.asf" />
-    <url version="JWEV-030862" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;count=0" />
-    <url version="JWEV-030862" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-030862" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-033299-ZPKUH" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-035112-WJW" prefix="http://" Source="JPEG" url="snapshot.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-036609-PDPNY" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-052225-PRXUJ" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;count=0" />
-    <url version="JWEV-052225-PRXUJ" prefix="http://" Source="MJPEG" url="videostream.cgi" />
-    <url version="JWEV-052225-PRXUJ" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-052225-PRXUJ" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-055163-CDKSG" prefix="http://" Source="MJPEG" url="videostream.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-055260-UFPST" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="JWEV-056431-XULUE" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="JWEV-056441-PHJEH" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="JWEV-056653-PEELN" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-057416-FFVHW" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-057416-FFVHW" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-058655-SRZKX" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-058660" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0" />
-    <url version="JWEV-059830-PPXTS" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="JWEV-064075-BBEGF" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-064291-FMLDP" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-065038-EDVKG" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
-    <url version="JWEV-067893_JZLEF" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-071853" prefix="http://" Source="MJPEG" url="videostream.cgi" />
-    <url version="JWEV-074236-YXENG" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-074236-YXENG" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-077509-XHFYT" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-086193" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-086193" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="JWEV-086193" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-086193-PNMNE" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-088413-HTUWK" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-088413-HTUWK" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;count=0" />
-    <url version="JWEV-088413-HTUWK" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-090762-ENFDB" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-090850-ZYCSW" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-090855-XZKTM" prefix="http://" Source="JPEG" url="snapshot.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-090855-XZKTM" prefix="http://" Source="JPEG" url="img/snapshot.cgi?size=2" />
-    <url version="JWEV-090855-XZKTM" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-090855-XZKTM" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-090855-XZKTM" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0" />
-    <url version="JWEV-090855-XZKTM" prefix="http://" Source="MJPEG" url="videostream.cgi" />
-    <url version="JWEV-091054-ETMSW" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-092550-UWJZT" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-096417-GCZBG" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-098442-UJCGM" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-098442-UJCGM" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="JWEV-101942-NRXKV" prefix="http://" Source="JPEG" url="snapshot.cgi?" />
-    <url version="JWEV-102058-HEEJY" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-102058-HEEJY" prefix="http://" Source="JPEG" url="snapshot.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-102058-HEEJY" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-106496-VPGED" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-107408-HNBNN" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-108025-YEBHJ" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-111631-XBXLS" prefix="http://" Source="MJPEG" url="videostream.cgi?" />
-    <url version="JWEV-112306-KBUWY" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0" />
-    <url version="JWEV-112306-KBUWY" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-115788-HEXRV" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;count=0" />
-    <url version="JWEV-115788-HEXRV" prefix="http://" Source="MJPEG" url="videostream.cgi" />
-    <url version="JWEV-116800-BPRFD" prefix="http://" Source="MJPEG" url="videostream.cgi" />
-    <url version="JWEV-118867-VLSZM" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]*[HEIGHT]" />
-    <url version="JWEV-118867-VLSZM" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-119976-DRRDM" prefix="http://" Source="JPEG" url="snapshot.cgi?camera=[CHANNEL]" />
-    <url version="JWEV-126296-DLVBJ" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-126512-LGLDG" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-128599-BLHYV" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-128599-BLHYV" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-128599-BLHYV" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-135711-UPYZL" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-142278-DBFCA" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-143488-DEECF" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
-    <url version="JWEV-143488-DEECF" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
-    <url version="JWEV-143488-DEECF" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-143488-DEECF" prefix="http://" Source="MJPEG" url="videostream.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-143488-DEECF" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-147123-CCFEB" prefix="http://" Source="JPEG" url="snapshot.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-149283-BCCED" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-149283-BCCED" prefix="http://" Source="MJPEG" url="videofeed" />
-    <url version="JWEV-150120-EEFFB" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-150120-EEFFB" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-155030-AECBD" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-161488-DFDDD" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="JWEV-162438-FABEA" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-162702" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-169494-DABDC" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-170208-CAFBD" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
-    <url version="JWEV-172042-ECDBF" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-177233-FCEDD" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-177874-AAEBB" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-183315-FAEEE" prefix="http://" Source="JPEG" url="img/snapshot.cgi?size=3" />
-    <url version="JWEV-183921-BCCAB" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-183921-BCCCAB" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-186862-CDBFB" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="JWEV-187144-BCDCE" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-187694-DFADA" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-189170-EACCB" prefix="http://" Source="MJPEG" url="videostream.cgi" />
-    <url version="JWEV-191156-DBECB" prefix="http://" Source="MJPEG" url="videostream.cgi?" />
-    <url version="JWEV-191156-DBECB" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-191156-DBECB" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-1Mp" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-201453-EACFE" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-201453-EACFE" prefix="http://" Source="MJPEG" url="video.cgi?resolution=VGA" />
-    <url version="JWEV-201453-EACFE" prefix="http://" Source="MJPEG" url="mjpeg.cgi?user=[USERNAME]&amp;password=[PASSWORD]&amp;channel=[CHANNEL]" />
-    <url version="JWEV-216791-ACBAC" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0" />
-    <url version="JWEV-216814-DCFFD" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="JWEV-218158-EDCCC" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-220491-DDAED" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-226267-ECCAD" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-228688-EECBA" prefix="http://" Source="MJPEG" url="videostream.cgi" />
-    <url version="JWEV-230770-CFFCA" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-230770-CFFCA" prefix="http://" Source="MJPEG" url="videostream.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-239518-EBBFD" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-240660-AFFBB" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-240660-AFFBB" prefix="http://" Source="JPEG" url="cgi/snapshot.cgi?action=getdata&amp;channel.[CHANNEL].capture=true&amp;channel.[CHANNEL].resolution=1" />
-    <url version="JWEV-241601-EDECB" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="JWEV-242985-CFDCD" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-261518-EFFBD" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-261518-EFFBD" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-261518-EFFBD" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
-    <url version="JWEV-265733-EBEFB" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="JWEV-271443-BEECC" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-273117-EDAFC" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-278238-FADAF" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-280685-DFBBF" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-286088" prefix="http://" Source="JPEG" url="img/snapshot.cgi?size=2" />
-    <url version="JWEV-296192-DBBDB" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-301369-FEDED" prefix="http://" Source="JPEG" url="img/snapshot.cgi?size=3" />
-    <url version="JWEV-301369-FEDED" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-3016195-DFEDD" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-302041-EAEBD" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-302760-ADBB" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
-    <url version="JWEV-304425-EFFAC" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-306055-ECFDF" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
-    <url version="JWEV-308302-EFFCC" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-309162-FBBFF" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-309162-FBBFF" prefix="http://" Source="JPEG" url="cgi/snapshot.cgi?action=getdata&amp;channel.[CHANNEL].capture=true&amp;channel.[CHANNEL].resolution=1" />
-    <url version="JWEV-311141-BABFE" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-311349" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-314463-CEAFE" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-314958-FFECC" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-315053-FFABF" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-315339-EBDFA" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-318664-DEEAF" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-321581-BDFBC" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-322552-EAFFE" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-324173-DCDBC" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-325136-EBFDE" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-325136-EBFDE" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-331748-CDADE" prefix="http://" Source="MJPEG" url="videostream.cgi" />
-    <url version="JWEV-331929-BFEEC" prefix="http://" Source="MJPEG" url="videostream.cgi" />
-    <url version="JWEV-331951-ECCBD" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-339656-A" prefix="http://" Source="MJPEG" url="img/video.mjpeg" />
-    <url version="JWEV-339892-CEDED" prefix="http://" Source="MJPEG" url="videostream.cgi" />
-    <url version="JWEV-341386-BCCBB" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-341387-BDAFD" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-342142-ADFAF" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;count=0" />
-    <url version="JWEV-349936-BFBBF" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-352715" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;count=0" />
-    <url version="JWEV-354356-EECED" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-360160-FEDCF" prefix="http://" Source="JPEG" url="snapshot.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-360160-FEDCF" prefix="http://" Source="JPEG" url="cgi/snapshot.cgi?action=getdata&amp;channel.[CHANNEL].capture=true&amp;channel.[CHANNEL].resolution=1" />
-    <url version="JWEV-360160-FEDCF" prefix="http://" Source="JPEG" url="img/snapshot.cgi?size=3" />
-    <url version="JWEV-360160-FEDCF" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-360160-FEDCF" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEV-360160-FEDCF" prefix="http://" Source="MJPEG" url="user/videostream.cgi" />
-    <url version="JWEV-360160-FEDCF" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
-    <url version="JWEV-360171-BBEAC" prefix="http://" Source="JPEG" url="img/snapshot.cgi?size=3" />
-    <url version="JWEV-360171-BBEAC" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-368581-AADCC" prefix="http://" Source="JPEG" url="img/snapshot.cgi?size=3" />
-    <url version="JWEV-370107-DEBDF" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEV-OK" prefix="http://" Source="MJPEG" url="videostream.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JWEW-124650-SVCV" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="JWEW-131863-LLZPU" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="JWQEV-064291-FMLDP" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="M3065" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="M-623W" prefix="rtsp://" Source="VLC" url="11" />
     <url version="M-Series" prefix="rtsp://" Source="FFMPEG" url="/11" />

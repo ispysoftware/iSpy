@@ -278,7 +278,7 @@
             this.label5.AutoSize = true;
             this.tableLayoutPanel1.SetColumnSpan(this.label5, 2);
             this.label5.Location = new System.Drawing.Point(10, 131);
-            this.label5.Margin = new System.Windows.Forms.Padding(10, 10, 10, 10);
+            this.label5.Margin = new System.Windows.Forms.Padding(10);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(213, 26);
             this.label5.TabIndex = 63;
@@ -465,7 +465,7 @@
             // 
             this.llblScan.AutoSize = true;
             this.llblScan.Location = new System.Drawing.Point(127, 6);
-            this.llblScan.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.llblScan.Margin = new System.Windows.Forms.Padding(6);
             this.llblScan.Name = "llblScan";
             this.llblScan.Size = new System.Drawing.Size(141, 13);
             this.llblScan.TabIndex = 3;
@@ -477,7 +477,7 @@
             // 
             this.llblFilter.AutoSize = true;
             this.llblFilter.Location = new System.Drawing.Point(512, 35);
-            this.llblFilter.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.llblFilter.Margin = new System.Windows.Forms.Padding(6);
             this.llblFilter.Name = "llblFilter";
             this.llblFilter.Size = new System.Drawing.Size(114, 13);
             this.llblFilter.TabIndex = 4;
@@ -563,7 +563,7 @@
             // txtFindModel
             // 
             this.txtFindModel.Location = new System.Drawing.Point(102, 2);
-            this.txtFindModel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtFindModel.Margin = new System.Windows.Forms.Padding(2);
             this.txtFindModel.MaxDropDownItems = 16;
             this.txtFindModel.MinTypedCharacters = 2;
             this.txtFindModel.Name = "txtFindModel";
@@ -668,7 +668,7 @@
             this.label9.Location = new System.Drawing.Point(0, 0);
             this.label9.Margin = new System.Windows.Forms.Padding(0);
             this.label9.Name = "label9";
-            this.label9.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.label9.Padding = new System.Windows.Forms.Padding(6);
             this.label9.Size = new System.Drawing.Size(335, 37);
             this.label9.TabIndex = 0;
             this.label9.Text = "Try these URLs to connect to your camera. FFMPEG and VLC options frequently suppo" +
@@ -712,7 +712,7 @@
             this.label15.Location = new System.Drawing.Point(0, 0);
             this.label15.Margin = new System.Windows.Forms.Padding(0);
             this.label15.Name = "label15";
-            this.label15.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.label15.Padding = new System.Windows.Forms.Padding(6);
             this.label15.Size = new System.Drawing.Size(223, 31);
             this.label15.TabIndex = 10;
             this.label15.Text = "Enter the username and password you use to login to your IP camera";
@@ -775,7 +775,7 @@
             this.Controls.Add(this.statusStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FindCameras";
-            this.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.Padding = new System.Windows.Forms.Padding(3);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Connect to IP Web Cameras";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FindCameras_FormClosing);

@@ -34,7 +34,7 @@ namespace iSpyApplication.Server
         private List<NetworkDevice> _scanResults = new List<NetworkDevice>();
         private List<ConnectionOption> _devicescanResults = new List<ConnectionOption>();
 
-        private void LoadJson(string sPhysicalFilePath, string sBuffer, string sHttpVersion, ref HttpRequest req)
+        private void LoadJson(string sPhysicalFilePath, string sBuffer, string sHttpVersion, HttpRequest req)
         {
             var cmd = GetVar(sPhysicalFilePath, "cmd");
 
@@ -1768,7 +1768,7 @@ namespace iSpyApplication.Server
                 default:
                     return;
             }
-            SendResponse(sHttpVersion, "application/json", resp, " 200 OK", 0, ref req);
+            SendResponse(sHttpVersion, "application/json", resp, " 200 OK", 0, req);
         }
 
         void DeleteFiles(int oid, int ot, List<string> files)
@@ -1902,7 +1902,7 @@ namespace iSpyApplication.Server
             return r.Trim(',');
         }
 
-        void SaveJson(string sPhysicalFilePath, string sHttpVersion, string sBuffer, ref HttpRequest req)
+        void SaveJson(string sPhysicalFilePath, string sHttpVersion, string sBuffer, HttpRequest req)
         {
             string resp = "";
             int ot, oid;
@@ -2463,7 +2463,7 @@ namespace iSpyApplication.Server
                 }
             }
 
-            SendResponse(sHttpVersion, "application/json", resp, " 200 OK", 0, ref req);
+            SendResponse(sHttpVersion, "application/json", resp, " 200 OK", 0, req);
         }
 
 

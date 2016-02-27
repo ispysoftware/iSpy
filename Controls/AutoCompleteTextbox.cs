@@ -23,7 +23,7 @@ namespace iSpyApplication.Controls
                           Font = Font,
                           Visible = true
                       };
-            MaxDropDownItems = 16;
+            MaxDropDownItems = 20;
             RowHeight = GetStringHeight("H");
             _panel = new Panel
                     {
@@ -95,7 +95,7 @@ namespace iSpyApplication.Controls
             public TextEntry(string text)
             {
                 Text = text;
-                TextUc = text.ToUpper();
+                TextUc = text.ToUpper().Replace("-","");
             }
 
             public override string ToString()
@@ -319,7 +319,7 @@ namespace iSpyApplication.Controls
         private void UpdateCurrentAutoCompleteList()
         {
             CurrentAutoCompleteList.Clear();
-            var words = Text.ToUpper().Trim().Split(' ');
+            var words = Text.Replace("-","").ToUpper().Trim().Split(' ');
             foreach (var te in AutoCompleteList)
             {
                 if (te.Contains(words))
@@ -405,14 +405,8 @@ namespace iSpyApplication.Controls
                         currentList += CurrentAutoCompleteList[counter] + "\n";
                     }
                     var listHeight = GetStringHeight(currentList);
-                    if (listHeight < _maxHeight && listHeight > 0)
-                    {
-                        pnl.Height = listHeight;
-                    }
-                    else
-                    {
-                        pnl.Height = 0;
-                    }
+
+                    pnl.Height = listHeight == 0 ? 0 : Math.Min(_maxHeight,listHeight);
                 }
             }
             else

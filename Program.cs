@@ -192,6 +192,8 @@ internal static class Program
             
             AppIdle = new WinFormsAppIdleHandler {Enabled = false};
             var mf = new MainForm(silentstartup, command);
+
+            
             Application.Run(mf);
             FfmpegMutex.Close();
 
