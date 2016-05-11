@@ -460,7 +460,7 @@ namespace iSpyApplication.Controls
             base.OnGotFocus(e);
         }
 
-        public bool Highlighted;
+        public bool Highlighted { get; set; }
 
         public Color BorderColor
         {

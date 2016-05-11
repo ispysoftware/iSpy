@@ -85,11 +85,10 @@ namespace iSpyApplication
                             }
                             catch (Exception ex)
                             {
+                                success = false;
                                 Logger.LogExceptionToFile(ex);
                                 DialogResult = DialogResult.Cancel;
                                 aborting = true;
-                                Close();
-                                return;
                             }
                             ms.Dispose();
                         }
@@ -134,10 +133,6 @@ namespace iSpyApplication
             if (success)
             {
                 DialogResult = DialogResult.OK;
-            }
-            else
-            {
-                MessageBox.Show(this, LocRm.GetString("UpdateFailed"), LocRm.GetString("SeeLogFile"));
             }
             Close();
         }

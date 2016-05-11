@@ -95,7 +95,7 @@ namespace iSpyApplication.Controls
             public TextEntry(string text)
             {
                 Text = text;
-                TextUc = text.ToUpper().Replace("-","");
+                TextUc = text.ToUpper().Replace("-", "").Replace(" ", "");
             }
 
             public override string ToString()

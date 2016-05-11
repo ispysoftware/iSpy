@@ -688,6 +688,12 @@
     <Compile Include="DirectShow\VideoInput.cs" />
     <Compile Include="EncDec.cs" />
     <Compile Include="Events.cs" />
+    <Compile Include="FindObject.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FindObject.Designer.cs">
+      <DependentUpon>FindObject.cs</DependentUpon>
+    </Compile>
     <Compile Include="GridView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1551,6 +1557,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\GridViewCustom.resx">
       <DependentUpon>GridViewCustom.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FindObject.resx">
+      <DependentUpon>FindObject.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GridView.resx">
       <DependentUpon>GridView.cs</DependentUpon>

@@ -1003,6 +1003,7 @@ namespace iSpyApplication.Server
                             MainForm.Schedule.RemoveAll(p => p.objectid == oid && p.objecttypeid == ot);
                             MainForm.Schedule.AddRange(scheds);
                         }
+                        io.ReloadSchedule();
                         resp = "{\"actionResult\":\"reloadSchedule\"}";
                     }
                     break;
@@ -1909,6 +1910,8 @@ namespace iSpyApplication.Server
 
             int.TryParse(GetVar(sPhysicalFilePath, "oid"), out oid);
             int.TryParse(GetVar(sPhysicalFilePath, "ot"), out ot);
+            var io = MainForm.InstanceReference.GetISpyControl(ot, oid);
+
             string lc = GetVar(sPhysicalFilePath, "lc");
 
             bool saveObjects = true;
@@ -2249,6 +2252,7 @@ namespace iSpyApplication.Server
                             if (s != null)
                             {
                                 PopulateObject(d, s);
+                                io?.ReloadSchedule();
                             }
                         }
                         break;
@@ -2443,7 +2447,6 @@ namespace iSpyApplication.Server
                 }
                 if (apply)
                 {
-                    var io = MainForm.InstanceReference.GetISpyControl(ot, oid);
                     io?.Apply();
                 }
             }

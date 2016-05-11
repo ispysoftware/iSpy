@@ -3133,6 +3133,20 @@ namespace iSpyApplication
             }
             return null;
         }
+        public List<ISpyControl> ControlList
+        {
+            get
+            {
+                var l = new List<ISpyControl>();
+                for (int index = 0; index < _pnlCameras.Controls.Count; index++)
+                {
+                    var io = _pnlCameras.Controls[index] as ISpyControl;
+                    if (io != null)
+                        l.Add(io);
+                }
+                return l;
+            }
+        }
 
         public VolumeLevel GetVolumeLevel(int microphoneId)
         {

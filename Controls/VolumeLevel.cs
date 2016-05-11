@@ -1369,7 +1369,7 @@ namespace iSpyApplication.Controls
             base.OnGotFocus(e);
         }
 
-        public bool Highlighted;
+        public bool Highlighted { get; set; }
 
         public Color BorderColor
         {
@@ -2810,7 +2810,7 @@ namespace iSpyApplication.Controls
                 {
                     StartSaving();
                 }
-                
+                MainForm.MWS.WebSocketServer.SendToAll("alert|" + ObjectName);
             }
             var t = new Thread(() => AlertThread(type, msg, Micobject.id)) { Name = type + " (" + Micobject.id + ")", IsBackground = true };
             t.Start();           

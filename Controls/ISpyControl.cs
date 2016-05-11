@@ -34,5 +34,9 @@ namespace iSpyApplication.Controls
 
         int Order { get; set; }
 
+        bool Highlighted { get; set; }
+
+        Color BorderColor { get; }
+
     }
 }

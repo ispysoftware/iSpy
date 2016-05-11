@@ -396,7 +396,7 @@ namespace iSpyApplication.Controls
                     var gvc = _controls[ind];
                     if (_maximised!=null)
                         gvc = _maximised;
-                    bool alerted = false;
+                    ISpyControl alerted = null;
 
                     var rect = new Rectangle(r.X, r.Y + r.Height - 20, r.Width, 20);
                     if (gvc == null || gvc.ObjectIDs.Count == 0)
@@ -500,7 +500,7 @@ namespace iSpyApplication.Controls
                                             gGrid.DrawString(txt, Drawfont, OverlayBrush,
                                                 new PointF(rect.X + 5, rect.Y + 2));
                                         }
-                                        alerted = vl.Alerted;
+                                        alerted = vl;
                                     }
                                     else
                                     {
@@ -546,7 +546,7 @@ namespace iSpyApplication.Controls
                                             }
 
 
-                                            alerted = cw.Alerted;
+                                            alerted = cw;
                                             if (cw.Recording)
                                                 gGrid.FillEllipse(RecordBrush,
                                                     new Rectangle(rFeed.X + rFeed.Width - 12, rFeed.Y + 4, 8, 8));
@@ -648,12 +648,15 @@ namespace iSpyApplication.Controls
                         k++;
                     }
 
-                    if (alerted)
+                    if (alerted!=null)
                     {
                         var ra = new Rectangle(r.X,r.Y,r.Width,r.Height);
                         ra.X += 1;
                         ra.Y += 1;
-                        gGrid.DrawRectangle(_pAlert, ra);
+                        using (var p = new Pen(alerted.BorderColor))
+                        {
+                            gGrid.DrawRectangle(p, ra);
+                        }
                     }
                 }
             }

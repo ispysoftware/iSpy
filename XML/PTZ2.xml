@@ -4085,6 +4085,7 @@
   <Camera id="167">
     <Makes>
       <Make Name="Lonestar" Model="J011-WS" />
+      <Make Name="EasyCam" Model="EC-101SD" />
     </Makes>
     <CommandURL>/decoder_control.cgi</CommandURL>
     <Commands>
@@ -6338,6 +6339,78 @@ copy or delete as many lines as you need.-->
       <Command Name="IR DAY"><![CDATA[/PSIA/Custom/SelfExt/Image/channels/1/IrcutFilterExt/?<?xml version="1.0" encoding="UTF-8"?><IrcutFilterExt><IrcutFilterType>day</IrcutFilterType><nightToDayFilterLevel>normal</nightToDayFilterLevel><nightToDayFilterTime>5</nightToDayFilterTime></IrcutFilterExt>]]></Command>
       <Command Name="IR NIGHT"><![CDATA[/PSIA/Custom/SelfExt/Image/channels/1/IrcutFilterExt/?<?xml version="1.0" encoding="UTF-8"?><IrcutFilterExt><IrcutFilterType>night</IrcutFilterType><nightToDayFilterTime>5</nightToDayFilterTime></IrcutFilterExt>]]></Command>
       <Command Name="IR AUTO"><![CDATA[/PSIA/Custom/SelfExt/Image/channels/1/IrcutFilterExt/?<?xml version="1.0" encoding="UTF-8"?><IrcutFilterExt><IrcutFilterType>auto</IrcutFilterType><nightToDayFilterTime>5</nightToDayFilterTime></IrcutFilterExt>]]></Command>
+    </ExtendedCommands>
+  </Camera>
+  <Camera id="226">
+    <Makes>
+      <Make Name="Ebode" Model="IPv38" />
+    </Makes>
+    <CommandURL>/cgi-bin/CGIProxy.fcgi?usr=[USERNAME]&amp;pwd=[PASSWORD]</CommandURL>
+    <Commands>
+      <Center>cmd=ptzReset</Center>
+      <Left>cmd=ptzMoveLeft</Left>
+      <LeftUp>cmd=ptzMoveTopLeft</LeftUp>
+      <Right>cmd=ptzMoveRight</Right>
+      <RightUp>cmd=ptzMoveTopRight</RightUp>
+      <Up>cmd=ptzMoveUp</Up>
+      <Down>cmd=ptzMoveDown</Down>
+      <LeftDown>cmd=ptzMoveBottomLeft</LeftDown>
+      <RightDown>cmd=ptzMoveBottomRight</RightDown>
+      <Stop>cmd=ptzStopRun</Stop>
+      <ZoomIn>
+      </ZoomIn>
+      <ZoomOut>
+      </ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Stop">cmd=ptzStopRun</Command>
+      <!--   the next 5 positions are fixed in the camera software -->
+      <Command Name="Go Center">cmd=ptzReset</Command>
+      <Command Name="Go TopMost">cmd=ptzGotoPresetPoint&amp;name=TopMost</Command>
+      <Command Name="Go BottomMost">cmd=ptzGotoPresetPoint&amp;name=BottomMost</Command>
+      <Command Name="Go LeftMost">cmd=ptzGotoPresetPoint&amp;name=LeftMost</Command>
+      <Command Name="Go RightMost">cmd=ptzGotoPresetPoint&amp;name=RightMost</Command>
+      <!--   cruise paths must be entered (and named) in the camera's web interface
+change names in the following lines accordingly
+copy or delete as many lines as you need.-->
+      <Command Name="Cruise Vertical">cmd=ptzStartCruise&amp;mapName=Vertical</Command>
+      <Command Name="Cruise Horizontal">cmd=ptzStartCruise&amp;mapName=Horizontal</Command>
+      <Command Name="Stop Cruise">cmd=ptzStopCruise</Command>
+      <Command Name="Set IR Auto">cmd=setInfraLEDConfig&amp;mode=0</Command>
+      <Command Name="Set IR Manual">cmd=setInfraLEDConfig&amp;mode=1</Command>
+      <Command Name="IR on">cmd=openInfraLed</Command>
+      <Command Name="IR off">cmd=closeInfraLed</Command>
+      <!--   a preset, once added cannot be changed but must be deleted and added again
+copy or delete as much lines as you need.
+the names (preset 1 etc.) can be changed e.g. in accordance with names already entered 
+in the camera's web interface-->
+      <Command Name="Go Preset 1">cmd=ptzGotoPresetPoint&amp;name=Preset 1</Command>
+      <Command Name="Go Preset 2">cmd=ptzGotoPresetPoint&amp;name=Preset 2</Command>
+      <Command Name="Go Preset 3">cmd=ptzGotoPresetPoint&amp;name=Preset 3</Command>
+      <Command Name="Add Preset 1">cmd=ptzAddPresetPoint&amp;name=Preset 1</Command>
+      <Command Name="Add Preset 2">cmd=ptzAddPresetPoint&amp;name=Preset 2</Command>
+      <Command Name="Add Preset 3">cmd=ptzAddPresetPoint&amp;name=Preset 3</Command>
+      <Command Name="Del Preset 1">cmd=ptzDeletePresetPoint&amp;name=Preset 1</Command>
+      <Command Name="Del Preset 2">cmd=ptzDeletePresetPoint&amp;name=Preset 2</Command>
+      <Command Name="Del Preset 3">cmd=ptzDeletePresetPoint&amp;name=Preset 3</Command>
+    </ExtendedCommands>
+  </Camera>
+  <Camera id="227">
+    <Makes>
+      <Make Name="Motorola" Model="Focus 73" />
+    </Makes>
+    <CommandURL></CommandURL>
+    <Commands>
+      <Left>/?action=command&amp;command=move_left</Left>
+      <Right>/?action=command&amp;command=move_right</Right>
+      <Up>/?action=command&amp;command=move_backward</Up>
+      <Down>/?action=command&amp;command=move_forward</Down>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Left">/?action=command&amp;command=move_left</Command>
+      <Command Name="Right">/?action=command&amp;command=move_right</Command>
+      <Command Name="FarLeft">/?action=command&amp;command=move_left9.9</Command>
+      <Command Name="FarRight">/?action=command&amp;command=move_right9.9</Command>
     </ExtendedCommands>
   </Camera>
 </PTZSettings2>

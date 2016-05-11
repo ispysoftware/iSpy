@@ -2410,7 +2410,7 @@ namespace iSpyApplication.Controls
 
                 MainForm.MasterFileAdd(new FilePreview(TimeLapseVideoFileName + CodecExtension, dSeconds,
                                                             Camobject.name, DateTime.Now.Ticks, 2, Camobject.id,
-                                                            ff.MaxAlarm,false,false));
+                                                            ff.MaxAlarm, true,false));
                 
                 MainForm.NeedsMediaRefresh = Helper.Now;
             }
@@ -2421,7 +2421,7 @@ namespace iSpyApplication.Controls
             return false;
         }
 
-        public bool Highlighted;
+        public bool Highlighted { get; set; }
 
 
         private bool _custom;
@@ -2437,6 +2437,7 @@ namespace iSpyApplication.Controls
                     _customSet = Helper.Now;
             }
         }
+
 
         public Color BorderColor
         {
@@ -3592,6 +3593,7 @@ namespace iSpyApplication.Controls
                 {
                     StartSaving();
                 }
+                MainForm.MWS.WebSocketServer.SendToAll("alert|" + ObjectName);
             }
 
             var t = new Thread(() => AlertThread(type, msg, Camobject.id)) { Name = type + " (" + Camobject.id + ")", IsBackground = true };

@@ -478,11 +478,13 @@ namespace iSpyApplication
         }
 
 
-        private HashSet<string> hashdata = new HashSet<string>();
+        private HashSet<string> _hashdata;
         private void LoadSources()
         {
             var camDb = new List<AutoCompleteTextbox.TextEntry>();
-            
+
+            _hashdata = new HashSet<string>();
+
             foreach (var source in MainForm.Sources)
             {
                 foreach (var u in source.url)
@@ -490,10 +492,10 @@ namespace iSpyApplication
                     string name = source.name.Trim();
                     if (!string.IsNullOrEmpty(u.version))
                         name += ": " + u.version.Trim();
-                    if (!hashdata.Contains(name.ToUpper()))
+                    if (!_hashdata.Contains(name.ToUpper()))
                     {
                         camDb.Add(new AutoCompleteTextbox.TextEntry(name));
-                        hashdata.Add(name.ToUpper());
+                        _hashdata.Add(name.ToUpper());
                     }
                 }
             }
@@ -931,7 +933,7 @@ namespace iSpyApplication
         {
             var d = new downloader
                         {
-                            Url = MainForm.Website + "/getcontent.aspx?name=sources2",
+                            Url = MainForm.ContentSource + "/getcontent.aspx?name=sources2",
                             SaveLocation = Program.AppDataPath + @"XML\Sources.xml"
                         };
             d.ShowDialog(this);
@@ -969,7 +971,7 @@ namespace iSpyApplication
                 MainForm.IPHTTP = chkHTTP.Checked;
                 if (MainForm.IPLISTED)
                 {
-                    if (!hashdata.Contains(txtFindModel.Text.ToUpper()))
+                    if (!_hashdata.Contains(txtFindModel.Text.ToUpper()))
                     {
                         MessageBox.Show(this, LocRm.GetString("ChooseMake"));
                         return;

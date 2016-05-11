@@ -20,7 +20,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-using Google.Apis.Drive.v2.Data;
 using iSpyApplication.Cloud;
 using iSpyApplication.Controls;
 using iSpyApplication.Properties;
@@ -1427,6 +1426,7 @@ namespace iSpyApplication.Server
                     {
                         MainForm.InstanceReference.SnapshotAll();
                     }
+                    resp = "OK";
                     break;
                 case "ping":
                     resp = "OK";
