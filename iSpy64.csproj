@@ -468,6 +468,12 @@
     <Compile Include="Controls\TagEntry.Designer.cs">
       <DependentUpon>TagEntry.cs</DependentUpon>
     </Compile>
+    <Compile Include="FindObject.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FindObject.Designer.cs">
+      <DependentUpon>FindObject.cs</DependentUpon>
+    </Compile>
     <Compile Include="Importer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1545,6 +1551,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Features.resx">
       <DependentUpon>Features.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FindObject.resx">
+      <DependentUpon>FindObject.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GridViewManager.resx">
       <DependentUpon>GridViewManager.cs</DependentUpon>
