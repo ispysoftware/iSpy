@@ -1370,13 +1370,23 @@ namespace iSpyApplication.Controls
         }
 
         public bool Highlighted { get; set; }
+        private int _lastSecond;
 
         public Color BorderColor
         {
             get
             {
                 if (FlashCounter > Helper.Now)
-                    return MainForm.ActivityColor;
+                {
+                    Color c = MainForm.ActivityColor;
+                    if (_lastSecond%2 != 0)
+                    {
+                        c = MainForm.BorderDefaultColor;
+                    }
+
+                    _lastSecond = DateTime.Now.Second;
+                    return c;
+                }
 
                 if (Highlighted)
                     return MainForm.FloorPlanHighlightColor;

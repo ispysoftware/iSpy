@@ -2438,13 +2438,27 @@ namespace iSpyApplication.Controls
             }
         }
 
+        private int _lastSecond;
 
         public Color BorderColor
         {
             get
             {
+
                 if (FlashCounter > Helper.Now)
-                    return MainForm.ActivityColor;
+                {
+                    Color c = MainForm.ActivityColor;
+                    if (_lastSecond % 2 == 0)
+                    {
+                        if (Custom)
+                            c = _customColor;
+                    }
+                    else
+                        c = MainForm.BorderDefaultColor;
+
+                    _lastSecond = DateTime.Now.Second;
+                    return c;
+                }
 
                 if (Custom)
                     return _customColor;
