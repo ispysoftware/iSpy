@@ -1307,5 +1307,10 @@ namespace iSpyApplication
         {
 
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            MainForm.InstanceReference.RunStorageManagement(true);
+        }
     }
 }

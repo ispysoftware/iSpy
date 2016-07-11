@@ -1948,7 +1948,7 @@ namespace iSpyApplication
             {
                 lock (ThreadLock)
                 {
-                    bool r = Conf.Enable_Storage_Management;
+                    bool r = Conf.MediaDirectories.Any(p => p.Enable_Storage_Management);
                     r = r || Cameras.Any(p => p.settings.storagemanagement.enabled);
                     r = r || Microphones.Any(p => p.settings.storagemanagement.enabled);
                     if (r)

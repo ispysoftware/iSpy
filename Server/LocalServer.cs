@@ -377,7 +377,7 @@ namespace iSpyApplication.Server
 
         public bool SendResponse(string sHttpVersion, string sMimeType, byte[] bData, string statusCode, int cacheDays, HttpRequest req, bool gZip = false)
         {
-            if (SendHeader(sHttpVersion, sMimeType, bData.Length, statusCode, cacheDays, req))
+            if (SendHeader(sHttpVersion, sMimeType, bData.Length, statusCode, cacheDays, req, "", gZip))
                 return SendToBrowser(bData, req);
             return false;
 
@@ -1178,7 +1178,7 @@ namespace iSpyApplication.Server
 
             }
 
-            if (AllowedIPs.Count > 0)
+            if (AllowedIPs.Count > 1) //always has one entry (localhost)
             {
                 string sClientIP = req.EndPoint.ToString();
 

@@ -46,6 +46,8 @@ namespace iSpyApplication.Server
             int.TryParse(GetVar(sPhysicalFilePath, "oid"), out oid);
             //language code
             string lc = GetVar(sPhysicalFilePath, "lc");
+            if (LocRm.TranslationSets.All(p => p.CultureCode != lc))
+                lc = "en";
 
             ISpyControl io = null;
             CameraWindow cw;
@@ -1913,6 +1915,8 @@ namespace iSpyApplication.Server
             var io = MainForm.InstanceReference.GetISpyControl(ot, oid);
 
             string lc = GetVar(sPhysicalFilePath, "lc");
+            if (LocRm.TranslationSets.All(p => p.CultureCode != lc))
+                lc = "en";
 
             bool saveObjects = true;
             try

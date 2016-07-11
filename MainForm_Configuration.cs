@@ -1767,7 +1767,13 @@ namespace iSpyApplication
                         if (cw != null)
                         {
                             bool archive = camobj.settings.storagemanagement.archive;
-                            var dirinfo = new DirectoryInfo(Helper.GetMediaDirectory(2, camobj.id) + "video\\" + camobj.directory);
+                            var d = Helper.GetMediaDirectory(2, camobj.id) + "video\\" + camobj.directory;
+                            if (!Directory.Exists(d))
+                            {
+                                Logger.LogErrorToFile("Directory not found: "+d);
+                                continue;
+                            }
+                            var dirinfo = new DirectoryInfo(d);
 
                             var lFi = new List<FileInfo>();
                             lFi.AddRange(dirinfo.GetFiles("*.*", SearchOption.AllDirectories));
@@ -1827,7 +1833,7 @@ namespace iSpyApplication
                     }
                     catch (Exception ex)
                     {
-                        Logger.LogExceptionToFile(ex);
+                        Logger.LogExceptionToFile(ex, "DeleteOldFiles: "+ camobj.name);
                     }
                 }
             }
@@ -1842,7 +1848,14 @@ namespace iSpyApplication
                         if (vl != null)
                         {
                             bool archive = micobj.settings.storagemanagement.archive;
-                            var dirinfo = new DirectoryInfo(Helper.GetMediaDirectory(1, micobj.id) + "audio\\" + micobj.directory);
+
+                            var d = Helper.GetMediaDirectory(1, micobj.id) + "audio\\" + micobj.directory;
+                            if (!Directory.Exists(d))
+                            {
+                                Logger.LogErrorToFile("Directory not found: " + d);
+                                continue;
+                            }
+                            var dirinfo = new DirectoryInfo(d);
 
                             var lFi = new List<FileInfo>();
                             lFi.AddRange(dirinfo.GetFiles("*.*", SearchOption.AllDirectories));
@@ -1899,7 +1912,7 @@ namespace iSpyApplication
                     }
                     catch (Exception ex)
                     {
-                        Logger.LogExceptionToFile(ex);
+                        Logger.LogExceptionToFile(ex, "DeleteOldFiles: " + micobj.name);
                     }
                 }
             }
@@ -1915,13 +1928,13 @@ namespace iSpyApplication
                 if (d.Enable_Storage_Management)
                 {
                     if (d.DeleteFilesOlderThanDays <= 0)
-                        return;
+                        continue;
 
                     DateTime dtref = DateTime.Now.AddDays(0 - d.DeleteFilesOlderThanDays);
 
                     //don't bother if oldest file isn't past cut-off
                     if (_oldestFile > dtref)
-                        return;
+                        continue;
 
                     var lFi = new List<FileInfo>();
                     try
@@ -1935,8 +1948,8 @@ namespace iSpyApplication
                     }
                     catch (Exception ex)
                     {
-                        Logger.LogExceptionToFile(ex);
-                        return;
+                        Logger.LogExceptionToFile(ex, "DeleteOldFiles: "+d.Entry);
+                        continue;
                     }
 
                     lFi = lFi.FindAll(f => f.Extension != ".xml");
@@ -1947,10 +1960,8 @@ namespace iSpyApplication
 
                     if (size < targetSize)
                     {
-                        return;
+                        continue;
                     }
-
-
 
                     var lCan = lFi.Where(p => p.CreationTime < dtref).OrderBy(p => p.CreationTime).ToList();
                     bool archive = d.archive;
