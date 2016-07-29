@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Bundle Name="iSpy package installer (64 bit)" Version="!(bind.packageVersion.iSpy)" Manufacturer="DeveloperInABox" UpgradeCode="646aac21-26ad-49c0-a3d7-84d5d6b90a8c"
     HelpUrl="http://www.ispyconnect.com/userguide.aspx"
-    Copyright="Copyright© 2015, DeveloperInABox" IconSourceFile="ispy.ico"
+    Copyright="Copyright© 2016, DeveloperInABox" IconSourceFile="ispy.ico"
     AboutUrl="http://www.ispyconnect.com/about.aspx" >
     <Variable Name="InstallFolder" Type="string" Value="[ProgramFiles64Folder]iSpy"/>
     <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense">
