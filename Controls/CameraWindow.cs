@@ -29,7 +29,7 @@ using iSpyApplication.Utilities;
 using iSpyApplication.Vision;
 using iSpyPRO.DirectShow;
 using iSpyPRO.DirectShow.Internals;
-using RestSharp.Extensions.MonoHttp;
+using RestSharp.Contrib;
 using xiApi.NET;
 using Encoder = System.Drawing.Imaging.Encoder;
 using Image = System.Drawing.Image;

@@ -180,8 +180,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>DLLS\AForge.Math.dll</HintPath>
     </Reference>
-    <Reference Include="DropNet">
-      <HintPath>$(SolutionDir)packages\DropNet.1.10.23.0\lib\net40\DropNet.dll</HintPath>
+    <Reference Include="DropNet, Version=1.10.23.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\DropNet.1.10.23.0\lib\net40\DropNet.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="FSharp.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\FSharp.Core.4.0.0.1\lib\net40\FSharp.Core.dll</HintPath>
@@ -298,8 +299,8 @@
     <Reference Include="Renderers">
       <HintPath>DLLS\Renderers.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\RestSharp.105.2.3\lib\net4\RestSharp.dll</HintPath>
+    <Reference Include="RestSharp, Version=105.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\RestSharp.105.0.1\lib\net4\RestSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SharpDX, Version=2.6.3.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">

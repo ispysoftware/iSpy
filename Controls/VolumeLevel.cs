@@ -25,7 +25,7 @@ using iSpyApplication.Sources.Audio.streams;
 using iSpyApplication.Sources.Audio.talk;
 using iSpyApplication.Sources.Video;
 using iSpyApplication.Utilities;
-using RestSharp.Extensions.MonoHttp;
+using RestSharp.Contrib;
 using WaveFormat = NAudio.Wave.WaveFormat;
 
 namespace iSpyApplication.Controls
