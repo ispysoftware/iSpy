@@ -1513,9 +1513,22 @@ namespace iSpyApplication
                 CameraControl.PTZ.PTZSettings = ptz;
                 if (ptz.ExtendedCommands?.Command != null)
                 {
+                    string subMenu = "";
                     foreach (var extcmd in ptz.ExtendedCommands.Command)
                     {
-                        lbExtended.Items.Add(new ListItem(extcmd.Name, extcmd.Value));
+                        if ((extcmd.Value ?? "") != "")
+                        {
+                            lbExtended.Items.Add(new ListItem(subMenu + extcmd.Name, extcmd.Value));
+                        }
+                        else if ((extcmd.Name ?? MainForm.PTZ_SUBMENU_END) != MainForm.PTZ_SUBMENU_END)
+                        {
+                            lbExtended.Items.Add(new ListItem(subMenu + extcmd.Name, extcmd.Value));
+                            subMenu = subMenu + "\t";   // PTZ_SUBMENU_START;
+                        }
+                        else
+                        {
+                            subMenu = subMenu.Substring(1);
+                        }
                     }
                 }
                 if (_loaded)
