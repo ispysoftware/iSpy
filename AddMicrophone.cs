@@ -249,6 +249,7 @@ namespace iSpyApplication
             rdoNoRecord.Text = LocRm.GetString("NoRecord");
             chkSchedule.Text = LocRm.GetString("ScheduleMicrophone");
             chkSound.Text = LocRm.GetString("AlertsEnabled");
+            chkMessaging.Text = LocRm.GetString("Messaging");
             label1.Text = LocRm.GetString("Name");
             label12.Text = LocRm.GetString("MaxRecordTime");
             label6.Text = LocRm.GetString("MinRecordTime");
@@ -266,7 +267,8 @@ namespace iSpyApplication
             label48.Text = LocRm.GetString("Seconds");
             label5.Text = LocRm.GetString("Seconds");
             label15.Text = LocRm.GetString("Intervals");
-            
+            tabPage5.Text = LocRm.GetString("Storage");
+
             lblAudioSource.Text = LocRm.GetString("Audiosource");
             rdoMovement.Text = LocRm.GetString("IsDetectedFor");
             rdoNoMovement.Text = LocRm.GetString("IsNotDetectedFor");

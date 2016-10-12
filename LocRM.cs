@@ -63,7 +63,7 @@ namespace iSpyApplication
             identifier = identifier.ToLower();
             try
             {
-                return Res[languageCode+"."+identifier.ToLower()].ToString();
+                return Res[languageCode+"."+identifier].ToString();
             }
             catch (NullReferenceException)
             {
