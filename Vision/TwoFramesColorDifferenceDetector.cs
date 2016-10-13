@@ -66,12 +66,15 @@ namespace iSpyApplication.Vision
 
         // suppress noise
         private bool _suppressNoise = true;
+        private bool _keepObjectEdges = false;
 
         // threshold values
         private int _differenceThreshold    =  15;
 
         // binary erosion filter
         private readonly BinaryErosion3x3 _erosionFilter = new BinaryErosion3x3( );
+        // binary dilatation filter
+        private readonly BinaryDilatation3x3 _dilatationFilter = new BinaryDilatation3x3();
 
         // dummy object to lock for synchronization
         private readonly object _sync = new object( );
@@ -180,6 +183,31 @@ namespace iSpyApplication.Vision
         }
 
         /// <summary>
+        /// Restore objects edges after noise suppression or not.
+        /// </summary>
+        /// 
+        /// <remarks><para>The value specifies if additional filtering should be done
+        /// to restore objects' edges after noise suppression by applying 3x3 dilatation
+        /// image processing filter.</para>
+        /// 
+        /// <para>Default value is set to <see langword="false"/>.</para>
+        /// 
+        /// <para><note>Turning the value on leads to more processing time of video frame.</note></para>
+        /// </remarks>
+        /// 
+        public bool KeepObjectsEdges
+        {
+            get { return _keepObjectEdges; }
+            set
+            {
+                lock (_sync)
+                {
+                    _keepObjectEdges = value;
+                }
+            }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TwoFramesColorDifferenceDetector"/> class.
         /// </summary>
         /// 
@@ -194,6 +222,21 @@ namespace iSpyApplication.Vision
         public TwoFramesColorDifferenceDetector( bool suppressNoise )
         {
             _suppressNoise = suppressNoise;
+            _keepObjectEdges = false;
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TwoFramesColorDifferenceDetector"/> class.
+        /// </summary>
+        /// 
+        /// <param name="suppressNoise">Suppress noise in video frames or not (see <see cref="SuppressNoise"/> property).</param>
+        /// <param name="keepObjectEdges">Restore objects edges after noise suppression or not (see <see cref="KeepObjectsEdges"/> property).</param>
+        /// 
+        public TwoFramesColorDifferenceDetector( bool suppressNoise, bool keepObjectEdges )
+        {
+            _suppressNoise = suppressNoise;
+            _keepObjectEdges = keepObjectEdges;
         }
 
         /// <summary>
@@ -279,8 +322,16 @@ namespace iSpyApplication.Vision
                 if ( _suppressNoise )
                 {
                     // suppress noise and calculate motion amount
-                    AForge.SystemTools.CopyUnmanagedMemory( _tempFrame.ImageData, _motionFrame.ImageData, _motionSize );
-                    _erosionFilter.Apply( _tempFrame, _motionFrame );
+                    _erosionFilter.Apply( _motionFrame, _tempFrame );    // src -> dst
+
+                    if ( _keepObjectEdges )
+                    {
+                        _dilatationFilter.Apply( _tempFrame, _motionFrame );  // src -> dst
+                    }
+                    else
+                    {
+                        AForge.SystemTools.CopyUnmanagedMemory( _motionFrame.ImageData, _tempFrame.ImageData, _motionSize );  // dst <- src
+                    }
                 }
 
                 // calculate amount of motion pixels

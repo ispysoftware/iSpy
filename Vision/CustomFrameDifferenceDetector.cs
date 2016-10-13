@@ -77,7 +77,7 @@ namespace iSpyApplication.Vision
 
         // suppress noise
         private bool _suppressNoise   = true;
-        private bool _keepObjectEdges;
+        private bool _keepObjectEdges = false;
 
         // threshold values
         private int _differenceThreshold    =  15;
@@ -324,13 +324,15 @@ namespace iSpyApplication.Vision
                 if ( _suppressNoise )
                 {
                     // suppress noise and calculate motion amount
-                    AForge.SystemTools.CopyUnmanagedMemory( _tempFrame.ImageData, _motionFrame.ImageData, _frameSize );
-                    _erosionFilter.Apply( _tempFrame, _motionFrame );
+                    _erosionFilter.Apply( _motionFrame, _tempFrame );    // src -> dst
 
                     if ( _keepObjectEdges )
                     {
-                        AForge.SystemTools.CopyUnmanagedMemory( _tempFrame.ImageData, _motionFrame.ImageData, _frameSize );
-                        _dilatationFilter.Apply( _tempFrame, _motionFrame );
+                        _dilatationFilter.Apply( _tempFrame, _motionFrame );  // src -> dst
+                    }
+                    else
+                    {
+                        AForge.SystemTools.CopyUnmanagedMemory( _motionFrame.ImageData, _tempFrame.ImageData, _frameSize );  // dst <- src
                     }
                 }
 
