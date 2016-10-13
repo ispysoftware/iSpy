@@ -43,6 +43,7 @@ namespace iSpyApplication
         private static List<objectsCamera> _cameras;
 
         public static string PTZ_SUBMENU_END = "..";
+        public static string PTZ_SUBMENU_NAME_SUFFIX = " >>";
 
         public static void ReloadColors()
         {

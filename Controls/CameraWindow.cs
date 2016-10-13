@@ -1798,8 +1798,11 @@ namespace iSpyApplication.Controls
                                 ptz.ExtendedCommands?.Command?.FirstOrDefault(p => p.Name == entry1.command);
                             if (extcmd != null)
                             {
-                                Calibrating = true;
-                                PTZ.SendPTZCommand(extcmd.Value);
+                                if ((extcmd.Value ?? "") != "")
+                                {
+                                    Calibrating = true;
+                                    PTZ.SendPTZCommand(extcmd.Value);
+                                }
                             }
                         }
                     }
