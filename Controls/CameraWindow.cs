@@ -1242,27 +1242,28 @@ namespace iSpyApplication.Controls
                     }
                     if (e.Location.X < 30 && e.Location.Y > Height - 24)
                     {
-                        string m = "";
+                        string m = "", delim = ", ";
                         if (Camobject.alerts.active)
                             m = LocRm.GetString("AlertsActive");
 
                         if (ForcedRecording)
-                            m = LocRm.GetString("ForcedRecording")+", " + m;
+                            m = LocRm.GetString("ForcedRecording")+ delim + m;
 
                         if (Camobject.detector.recordondetect)
-                            m = LocRm.GetString("RecordOnDetect")+", " + m;
+                            m = LocRm.GetString("RecordOnDetect")+ delim + m;
                         else
                         {
                             if (Camobject.detector.recordonalert)
-                                m = LocRm.GetString("RecordOnAlert")+", " + m;
+                                m = LocRm.GetString("RecordOnAlert")+ delim + m;
                             else
                             {
-                                m = LocRm.GetString("NoRecording") + ", " + m;
+                                m = LocRm.GetString("NoRecording") + delim + m;
                             }
                         }
                         if (Camobject.schedule.active)
                             m = LocRm.GetString("Scheduled") + ", " + m;
-
+                        if (m.EndsWith(delim))
+                            m = m.Substring(0, m.Length - delim.Length);
                         var toolTipLocation = new Point(5, Height - 24);
                         _toolTipCam.Show(m, this, toolTipLocation, 1000);
                     }
