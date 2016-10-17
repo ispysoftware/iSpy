@@ -280,9 +280,7 @@ namespace iSpyApplication.Vision
             if ( _highlightMotionRegions )
             {
                 // highlight each moving object
-                Rectangle[] rects = _blobCounter.GetObjectsRectangles( );
-
-                foreach ( Rectangle rect in rects )
+                foreach ( Rectangle rect in ObjectRectangles )
                 {
                     Drawing.Rectangle( videoFrame, rect, _highlightColor );
                 }
