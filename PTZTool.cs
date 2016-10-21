@@ -31,9 +31,22 @@ namespace iSpyApplication
                         PTZSettings2Camera ptz = MainForm.PTZs.Single(p => p.id == CameraControl.Camobject.ptz);
                         if (ptz.ExtendedCommands != null && ptz.ExtendedCommands.Command!=null)
                         {
+                            string subMenu = "", PTZ_SUBMENU_START = "  ";
                             foreach (var extcmd in ptz.ExtendedCommands.Command)
                             {
-                                ddlExtended.Items.Add(new ListItem(extcmd.Name, extcmd.Value));
+                                if ((extcmd.Value ?? "") != "")
+                                {
+                                    ddlExtended.Items.Add(new ListItem(subMenu + extcmd.Name, extcmd.Value));
+                                }
+                                else if ((extcmd.Name ?? MainForm.PTZ_SUBMENU_END) != MainForm.PTZ_SUBMENU_END)
+                                {
+                                    ddlExtended.Items.Add(new ListItem(subMenu + extcmd.Name + MainForm.PTZ_SUBMENU_NAME_SUFFIX, extcmd.Value));
+                                    subMenu = subMenu + PTZ_SUBMENU_START;
+                                }
+                                else
+                                {
+                                    subMenu = subMenu.Substring(Math.Min(PTZ_SUBMENU_START.Length, subMenu.Length));
+                                }
                             }
                         }
                         pnlController.Enabled = true;

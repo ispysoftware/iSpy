@@ -767,6 +767,7 @@
       <ZoomOut>command=16</ZoomOut>
     </Commands>
     <ExtendedCommands>
+      <Command Name="Call" />
       <Command Name="GO Preset 1">command=31</Command>
       <Command Name="GO Preset 2">command=33</Command>
       <Command Name="GO Preset 3">command=35</Command>
@@ -775,6 +776,8 @@
       <Command Name="GO Preset 6">command=41</Command>
       <Command Name="GO Preset 7">command=43</Command>
       <Command Name="GO Preset 8">command=45</Command>
+      <Command Name=".." />
+      <Command Name="Save" />
       <Command Name="Set Preset 1">command=30</Command>
       <Command Name="Set Preset 2">command=32</Command>
       <Command Name="Set Preset 3">command=34</Command>
@@ -783,9 +786,12 @@
       <Command Name="Set Preset 6">command=40</Command>
       <Command Name="Set Preset 7">command=42</Command>
       <Command Name="Set Preset 8">command=44</Command>
+      <Command Name=".." />
+      <Command Name="Patrol" />
       <Command Name="Stop">command=1</Command>
       <Command Name="Start H Patrol">command=20</Command>
       <Command Name="Stop H Patrol">command=21</Command>
+      <Command Name=".." />
       <Command Name="Switch ON">command=94</Command>
       <Command Name="Switch OFF">command=95</Command>
     </ExtendedCommands>

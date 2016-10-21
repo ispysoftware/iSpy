@@ -42,6 +42,9 @@ namespace iSpyApplication
         private static List<objectsCommand> _remotecommands;
         private static List<objectsCamera> _cameras;
 
+        public static string PTZ_SUBMENU_END = "..";
+        public static string PTZ_SUBMENU_NAME_SUFFIX = " >>";
+
         public static void ReloadColors()
         {
             _backColor =
@@ -3515,16 +3518,30 @@ namespace iSpyApplication
                             PTZSettings2Camera ptz = PTZs.SingleOrDefault(p => p.id == cameraControl.Camobject.ptz);
                             if (ptz?.ExtendedCommands?.Command != null)
                             {
+                                var subMenus = new List<ToolStripItemCollection>() {
+                                    pTZToolStripMenuItem.DropDownItems
+                                };
+
                                 foreach (var extcmd in ptz.ExtendedCommands.Command)
                                 {
-                                    ToolStripItem tsi = new ToolStripMenuItem
+                                    ToolStripMenuItem tsi = new ToolStripMenuItem
                                                         {
                                                             Text = extcmd.Name,
                                                             Tag =
                                                                 cameraControl.Camobject.id + "|" + extcmd.Value
                                                         };
-                                    tsi.Click += TsiClick;
-                                    pTZToolStripMenuItem.DropDownItems.Add(tsi);
+                                    if ((extcmd.Value ?? "") != "")
+                                    {
+                                        tsi.Click += TsiClick;
+                                        subMenus[0].Add(tsi);
+                                    }
+                                    else if ((extcmd.Name ?? PTZ_SUBMENU_END) != PTZ_SUBMENU_END)
+                                    {
+                                        subMenus[0].Add(tsi);
+                                        subMenus.Insert(0, tsi.DropDownItems);  // PTZ_SUBMENU_START
+                                    }
+                                    else if (subMenus.Count > 1)
+                                        subMenus.RemoveAt(0);
                                 }
                             }
                         }
