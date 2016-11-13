@@ -1622,6 +1622,8 @@ namespace iSpyApplication
             _switchAllOffToolStripMenuItem.Text = LocRm.GetString("SwitchAllOff");
             _switchAllOnToolStripMenuItem.Text = LocRm.GetString("SwitchAllOn");
             _takePhotoToolStripMenuItem.Text = LocRm.GetString("TakePhoto");
+            pTZToolStripMenuItem.Text = LocRm.GetString("PTZ");
+            pTZControllerToolStripMenuItem1.Text = LocRm.GetString("PTZController");
             _thruWebsiteToolStripMenuItem.Text = LocRm.GetString("Online");
             _toolStripButton1.Text = LocRm.GetString("WebSettings");
             _toolStripButton4.Text = LocRm.GetString("settings");
