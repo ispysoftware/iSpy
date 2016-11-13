@@ -589,11 +589,13 @@ namespace iSpyApplication
             rdoMotion.Text = LocRm.GetString("WhenMotionDetected");
             rdoContinuous.Text = LocRm.GetString("Continuous");
             chkMovement.Text = LocRm.GetString("AlertsEnabled");
+            chkMessaging.Text = LocRm.GetString("Messaging");
             chkPublic.Text = LocRm.GetString("PubliccheckThisToMakeYour");
             rdoRecordDetect.Text = LocRm.GetString("RecordOnMovementDetection");
             rdoRecordAlert.Text = LocRm.GetString("RecordOnAlert");
             rdoNoRecord.Text = LocRm.GetString("NoRecord");
             chkSchedule.Text = LocRm.GetString("ScheduleCamera");
+            tabPage6.Text = LocRm.GetString("Storage");
             chkSuppressNoise.Text = LocRm.GetString("SupressNoise");
             chkTimelapse.Text = LocRm.GetString("TimelapseEnabled");
             gbZones.Text = LocRm.GetString("DetectionZones");

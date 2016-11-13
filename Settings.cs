@@ -672,8 +672,8 @@ namespace iSpyApplication
             label63.Text = LocRm.GetString("Servers");
             chkOpenGrabs.Text = LocRm.GetString("OpenImagesAfterSaving");
             chkEnableLogging.Text = LocRm.GetString("Enable");
-            numKeepLogs.Text = LocRm.GetString("KeepLogsForDays");
-            numMaxLogSize.Text = LocRm.GetString("MaxFileSizeKB");
+            label65.Text = LocRm.GetString("KeepLogsForDays");
+            label66.Text = LocRm.GetString("MaxFileSizeKB");
             llblHelp.Visible = linkLabel1.Visible = linkLabel2.Visible = Helper.HasFeature(Enums.Features.View_Ispy_Links);
         }
 
