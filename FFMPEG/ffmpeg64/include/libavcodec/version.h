@@ -29,7 +29,7 @@
 #include "libavutil/version.h"
 
 #define LIBAVCODEC_VERSION_MAJOR 56
-#define LIBAVCODEC_VERSION_MINOR  28
+#define LIBAVCODEC_VERSION_MINOR 60
 #define LIBAVCODEC_VERSION_MICRO 100
 
 #define LIBAVCODEC_VERSION_INT  AV_VERSION_INT(LIBAVCODEC_VERSION_MAJOR, \
@@ -46,6 +46,10 @@
  * FF_API_* defines may be placed below to indicate public API that will be
  * dropped at a future version bump. The defines themselves are not part of
  * the public API and may change, break or disappear at any time.
+ *
+ * @note, when bumping the major version it is recommended to manually
+ * disable each FF_API_* in its own commit instead of disabling them all
+ * at once through the bump. This improves the git bisect-ability of the change.
  */
 
 #ifndef FF_API_VIMA_DECODER
@@ -181,6 +185,9 @@
 #ifndef FF_API_AUDIOENC_DELAY
 #define FF_API_AUDIOENC_DELAY    (LIBAVCODEC_VERSION_MAJOR < 58)
 #endif
+#ifndef FF_API_VAAPI_CONTEXT
+#define FF_API_VAAPI_CONTEXT     (LIBAVCODEC_VERSION_MAJOR < 58)
+#endif
 #ifndef FF_API_AVCTX_TIMEBASE
 #define FF_API_AVCTX_TIMEBASE    (LIBAVCODEC_VERSION_MAJOR < 59)
 #endif
@@ -189,6 +196,21 @@
 #endif
 #ifndef FF_API_STREAM_CODEC_TAG
 #define FF_API_STREAM_CODEC_TAG  (LIBAVCODEC_VERSION_MAJOR < 59)
+#endif
+#ifndef FF_API_QUANT_BIAS
+#define FF_API_QUANT_BIAS        (LIBAVCODEC_VERSION_MAJOR < 59)
+#endif
+#ifndef FF_API_RC_STRATEGY
+#define FF_API_RC_STRATEGY       (LIBAVCODEC_VERSION_MAJOR < 59)
+#endif
+#ifndef FF_API_CODED_FRAME
+#define FF_API_CODED_FRAME       (LIBAVCODEC_VERSION_MAJOR < 59)
+#endif
+#ifndef FF_API_MOTION_EST
+#define FF_API_MOTION_EST        (LIBAVCODEC_VERSION_MAJOR < 59)
+#endif
+#ifndef FF_API_WITHOUT_PREFIX
+#define FF_API_WITHOUT_PREFIX    (LIBAVCODEC_VERSION_MAJOR < 59)
 #endif
 
 #endif /* AVCODEC_VERSION_H */

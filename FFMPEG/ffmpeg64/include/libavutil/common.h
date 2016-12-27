@@ -58,8 +58,34 @@
                                                        : ((a) + (1<<(b)) - 1) >> (b))
 #define FFUDIV(a,b) (((a)>0 ?(a):(a)-(b)+1) / (b))
 #define FFUMOD(a,b) ((a)-(b)*FFUDIV(a,b))
+
+/**
+ * Absolute value, Note, INT_MIN / INT64_MIN result in undefined behavior as they
+ * are not representable as absolute values of their type. This is the same
+ * as with *abs()
+ * @see FFNABS()
+ */
 #define FFABS(a) ((a) >= 0 ? (a) : (-(a)))
 #define FFSIGN(a) ((a) > 0 ? 1 : -1)
+
+/**
+ * Negative Absolute value.
+ * this works for all integers of all types.
+ * As with many macros, this evaluates its argument twice, it thus must not have
+ * a sideeffect, that is FFNABS(x++) has undefined behavior.
+ */
+#define FFNABS(a) ((a) <= 0 ? (a) : (-(a)))
+
+/**
+ * Comparator.
+ * For two numerical expressions x and y, gives 1 if x > y, -1 if x < y, and 0
+ * if x == y. This is useful for instance in a qsort comparator callback.
+ * Furthermore, compilers are able to optimize this to branchless code, and
+ * there is no risk of overflow with signed types.
+ * As with many macros, this evaluates its argument multiple times, it thus
+ * must not have a side-effect.
+ */
+#define FFDIFFSIGN(x,y) (((x)>(y)) - ((x)<(y)))
 
 #define FFMAX(a,b) ((a) > (b) ? (a) : (b))
 #define FFMAX3(a,b,c) FFMAX(FFMAX(a,b),c)
@@ -208,6 +234,17 @@ static av_always_inline av_const unsigned av_clip_uintp2_c(int a, int p)
 {
     if (a & ~((1<<p) - 1)) return -a >> 31 & ((1<<p) - 1);
     else                   return  a;
+}
+
+/**
+ * Clear high bits from an unsigned integer starting with specific bit position
+ * @param  a value to clip
+ * @param  p bit position to clip at
+ * @return clipped value
+ */
+static av_always_inline av_const unsigned av_mod_uintp2_c(unsigned a, unsigned p)
+{
+    return a & ((1 << p) - 1);
 }
 
 /**
@@ -465,6 +502,9 @@ static av_always_inline av_const int av_popcount64_c(uint64_t x)
 #endif
 #ifndef av_clip_uintp2
 #   define av_clip_uintp2   av_clip_uintp2_c
+#endif
+#ifndef av_mod_uintp2
+#   define av_mod_uintp2    av_mod_uintp2_c
 #endif
 #ifndef av_sat_add32
 #   define av_sat_add32     av_sat_add32_c
