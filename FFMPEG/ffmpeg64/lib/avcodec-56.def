@@ -12,6 +12,7 @@ EXPORTS
     av_codec_ffversion DATA
     av_codec_get_chroma_intra_matrix
     av_codec_get_codec_descriptor
+    av_codec_get_codec_properties
     av_codec_get_lowres
     av_codec_get_max_lowres
     av_codec_get_pkt_timebase
@@ -70,6 +71,7 @@ EXPORTS
     av_packet_ref
     av_packet_rescale_ts
     av_packet_shrink_side_data
+    av_packet_side_data_name
     av_packet_split_side_data
     av_packet_unpack_dictionary
     av_packet_unref
@@ -162,6 +164,7 @@ EXPORTS
     avcodec_string
     avcodec_version
     aver_isf_history
+    average_split_mvs
     avpicture_alloc
     avpicture_deinterlace
     avpicture_fill
@@ -181,6 +184,7 @@ EXPORTS
     avpriv_dca_sample_rates DATA
     avpriv_dirac_parse_sequence_header
     avpriv_dnxhd_get_frame_size
+    avpriv_dnxhd_get_interlaced
     avpriv_do_elbg
     avpriv_dv_frame_profile2
     avpriv_exif_decode_ifd
