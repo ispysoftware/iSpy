@@ -614,29 +614,29 @@ namespace iSpy { namespace Video { namespace FFMPEG
 
 							switch (data->CodecContext->pix_fmt)	{
 							case libffmpeg::AV_PIX_FMT_YUVJ420P:
-								data->CodecContext->pix_fmt = libffmpeg::PIX_FMT_YUV420P;
+								data->CodecContext->pix_fmt = libffmpeg::AV_PIX_FMT_YUV420P;
 								data->CodecContext->color_range = libffmpeg::AVCOL_RANGE_JPEG;
 								break;
 							case libffmpeg::AV_PIX_FMT_YUVJ422P:
-								data->CodecContext->pix_fmt = libffmpeg::PIX_FMT_YUV422P;
+								data->CodecContext->pix_fmt = libffmpeg::AV_PIX_FMT_YUV422P;
 								data->CodecContext->color_range = libffmpeg::AVCOL_RANGE_JPEG;
 								break;
 							case libffmpeg::AV_PIX_FMT_YUVJ444P:
-								data->CodecContext->pix_fmt = libffmpeg::PIX_FMT_YUV444P;
+								data->CodecContext->pix_fmt = libffmpeg::AV_PIX_FMT_YUV444P;
 								data->CodecContext->color_range = libffmpeg::AVCOL_RANGE_JPEG;
 								break;
 							case libffmpeg::AV_PIX_FMT_YUVJ440P:
-								data->CodecContext->pix_fmt = libffmpeg::PIX_FMT_YUV440P;
+								data->CodecContext->pix_fmt = libffmpeg::AV_PIX_FMT_YUV440P;
 								data->CodecContext->color_range = libffmpeg::AVCOL_RANGE_JPEG;
 								break;
 							case libffmpeg::AV_PIX_FMT_YUVJ411P:
-								data->CodecContext->pix_fmt = libffmpeg::PIX_FMT_YUV411P;
+								data->CodecContext->pix_fmt = libffmpeg::AV_PIX_FMT_YUV411P;
 								data->CodecContext->color_range = libffmpeg::AVCOL_RANGE_JPEG;
 								break;
 
 							}
 							data->swsContext = libffmpeg::sws_getCachedContext(data->swsContext, data->CodecContext->width, data->CodecContext->height, data->CodecContext->pix_fmt,
-								data->CodecContext->width, data->CodecContext->height, libffmpeg::PIX_FMT_BGR24, SWS_FAST_BILINEAR, NULL, NULL, NULL);
+								data->CodecContext->width, data->CodecContext->height, libffmpeg::AV_PIX_FMT_BGR24, SWS_FAST_BILINEAR, NULL, NULL, NULL);
  							
 							libffmpeg::sws_scale( data->swsContext, frame->data, frame->linesize, 0, data->CodecContext->height, srcData, srcLinesize );
  

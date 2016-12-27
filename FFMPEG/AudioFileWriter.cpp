@@ -177,10 +177,10 @@ void AudioFileWriter::Open( String^ fileName, AudioCodec audioCodec, int BitRate
 			data->AudioInputSampleSize = data->AudioBufferSize / c->channels;
 			switch (c->codec_id) 
 			{
-			  case libffmpeg::CODEC_ID_PCM_S16LE:
-			  case libffmpeg::CODEC_ID_PCM_S16BE:
-			  case libffmpeg::CODEC_ID_PCM_U16LE:
-			  case libffmpeg::CODEC_ID_PCM_U16BE:
+			  case libffmpeg::AV_CODEC_ID_PCM_S16LE:
+			  case libffmpeg::AV_CODEC_ID_PCM_S16BE:
+			  case libffmpeg::AV_CODEC_ID_PCM_U16LE:
+			  case libffmpeg::AV_CODEC_ID_PCM_U16BE:
 				data->AudioInputSampleSize >>= 1;
 				break;
 			  default:

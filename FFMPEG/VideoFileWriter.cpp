@@ -215,7 +215,7 @@ bool VideoFileWriter::Open( String^ fileName, int width, int height, VideoCodec 
 
 		add_video_stream( data, width, height, m_bitRate,
 			( codec == VideoCodec::Default ) ? outputFormat->video_codec : (libffmpeg::AVCodecID) video_codecs[(int) codec],
-			( codec == VideoCodec::Default ) ? libffmpeg::PIX_FMT_YUV420P : (libffmpeg::AVPixelFormat) pixel_formats[(int) codec], framerate );
+			( codec == VideoCodec::Default ) ? libffmpeg::AV_PIX_FMT_YUV420P : (libffmpeg::AVPixelFormat) pixel_formats[(int) codec], framerate );
 
 		if (m_audiocodec!=AudioCodec::None)	{
 			data->SampleRate=SampleRate;
@@ -407,7 +407,7 @@ void VideoFileWriter::WriteVideoFrame( Bitmap^ frame, int64_t pts)
 	int h = 0;
 	
 	if (!data->ConvertContext)	{
-		libffmpeg::AVPixelFormat pfmt = libffmpeg::PIX_FMT_BGR24;
+		libffmpeg::AVPixelFormat pfmt = libffmpeg::AV_PIX_FMT_BGR24;
 
 		if (frame->PixelFormat == PixelFormat::Format8bppIndexed)
 		{
@@ -895,10 +895,10 @@ void open_audio( WriterPrivateData^ data )
 		data->AudioInputSampleSize = data->AudioBufferSize / codecContext->channels;
 		switch (codecContext->codec_id) 
 		{
-			case libffmpeg::CODEC_ID_PCM_S16LE:
-			case libffmpeg::CODEC_ID_PCM_S16BE:
-			case libffmpeg::CODEC_ID_PCM_U16LE:
-			case libffmpeg::CODEC_ID_PCM_U16BE:
+			case libffmpeg::AV_CODEC_ID_PCM_S16LE:
+			case libffmpeg::AV_CODEC_ID_PCM_S16BE:
+			case libffmpeg::AV_CODEC_ID_PCM_U16LE:
+			case libffmpeg::AV_CODEC_ID_PCM_U16BE:
 			data->AudioInputSampleSize >>= 1;
 			break;
 			default:

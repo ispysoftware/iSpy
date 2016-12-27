@@ -33,18 +33,18 @@ int video_codecs[] =
 
 int pixel_formats[] =
 {
-	libffmpeg::PIX_FMT_YUV420P,
-	libffmpeg::PIX_FMT_YUV420P,
-	libffmpeg::PIX_FMT_YUV420P,
-	libffmpeg::PIX_FMT_YUV420P,
-	libffmpeg::PIX_FMT_YUV420P,
-	libffmpeg::PIX_FMT_YUV420P,
-	libffmpeg::PIX_FMT_YUV420P,
-	libffmpeg::PIX_FMT_YUV420P,
-	libffmpeg::PIX_FMT_BGR24,
-	libffmpeg::PIX_FMT_YUV420P,
-	libffmpeg::PIX_FMT_YUV420P,
-	libffmpeg::PIX_FMT_YUV420P,
+	libffmpeg::AV_PIX_FMT_YUV420P,
+	libffmpeg::AV_PIX_FMT_YUV420P,
+	libffmpeg::AV_PIX_FMT_YUV420P,
+	libffmpeg::AV_PIX_FMT_YUV420P,
+	libffmpeg::AV_PIX_FMT_YUV420P,
+	libffmpeg::AV_PIX_FMT_YUV420P,
+	libffmpeg::AV_PIX_FMT_YUV420P,
+	libffmpeg::AV_PIX_FMT_YUV420P,
+	libffmpeg::AV_PIX_FMT_BGR24,
+	libffmpeg::AV_PIX_FMT_YUV420P,
+	libffmpeg::AV_PIX_FMT_YUV420P,
+	libffmpeg::AV_PIX_FMT_YUV420P,
 };
 
 int CODECS_COUNT ( sizeof( video_codecs ) / sizeof( libffmpeg::AVCodecID ) );
