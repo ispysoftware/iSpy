@@ -1461,6 +1461,7 @@
     <Content Include="DLLS\x86\swresample-2.dll" />
     <Content Include="DLLS\x86\swscale-4.dll" />
     <Content Include="DLLS\xiApi.NET.dll" />
+    <Content Include="FFMPEG\readme.txt" />
     <Content Include="XML\Translations.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -2316,6 +2317,7 @@
     <Folder Include="bin\x86\" />
     <Folder Include="obj\" />
     <Folder Include="packages\RestSharp.105.0.1\lib\net4\" />
+    <Folder Include="redist\" />
     <Folder Include="WebServerRoot\Media\Audio\" />
     <Folder Include="WebServerRoot\Media\Video\" />
   </ItemGroup>
