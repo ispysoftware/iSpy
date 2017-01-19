@@ -1,0 +1,37 @@
+﻿  Stdafx.cpp
+  AssemblyInfo.cpp
+  AudioCodec.cpp
+  AudioFileReader.cpp
+  AudioFileWriter.cpp
+  IMA_ADPCM.cpp
+  Init.cpp
+  VideoCodec.cpp
+  VideoFileReader.cpp
+  VideoFileWriter.cpp
+  Generating Code...
+  .NETFramework,Version=v4.0.AssemblyAttributes.cpp
+  LINK : /LTCG specified but no code generation required; remove /LTCG from the link command line to improve linker performance
+VideoFileReader.obj : warning LNK4248: unresolved typeref token (01000019) for 'libffmpeg.SwrContext'; image may not run
+AudioFileReader.obj : warning LNK4248: unresolved typeref token (01000019) for 'libffmpeg.SwrContext'; image may not run
+VideoFileWriter.obj : warning LNK4248: unresolved typeref token (0100002A) for 'libffmpeg.AVDictionary'; image may not run
+VideoFileReader.obj : warning LNK4248: unresolved typeref token (01000033) for 'libffmpeg.AVDictionary'; image may not run
+AudioFileWriter.obj : warning LNK4248: unresolved typeref token (01000022) for 'libffmpeg.AVDictionary'; image may not run
+AudioFileReader.obj : warning LNK4248: unresolved typeref token (0100002C) for 'libffmpeg.AVDictionary'; image may not run
+VideoFileWriter.obj : warning LNK4248: unresolved typeref token (01000015) for 'libffmpeg.SwsContext'; image may not run
+VideoFileReader.obj : warning LNK4248: unresolved typeref token (01000018) for 'libffmpeg.SwsContext'; image may not run
+  Video.FFMPEG.vcxproj -> D:\Projects\iSpy\iSpy\FFMPEG\.\bin\iSpy.Video.FFMPEG.dll
+  
+  Microsoft (R) .NET Framework Strong Name Utility  Version 4.0.30319.1
+  Copyright (c) Microsoft Corporation.  All rights reserved.
+  
+  Assembly '.\bin\iSpy.Video.FFMPEG.dll' successfully re-signed
+  .\ffmpeg\bin\avcodec-56.dll
+  .\ffmpeg\bin\avdevice-56.dll
+  .\ffmpeg\bin\avfilter-5.dll
+  .\ffmpeg\bin\avformat-56.dll
+  .\ffmpeg\bin\avutil-54.dll
+  .\ffmpeg\bin\ffmpeg.exe
+  .\ffmpeg\bin\postproc-53.dll
+  .\ffmpeg\bin\swresample-1.dll
+  .\ffmpeg\bin\swscale-3.dll
+  9 File(s) copied

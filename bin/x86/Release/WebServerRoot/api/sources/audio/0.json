@@ -1,0 +1,22 @@
+﻿[
+    { "text": "USB/ Local Source", "value": "", "type": "Header" },
+    {
+        "text": "Device",
+        "value": "",
+        "type": "Select",
+        "bindto": "settings.sourcename",
+        "options": [
+            DEVICELIST
+        ]
+    },
+    {
+        "text": "Sample Rate",
+        "value": "",
+        "type": "Select",
+        "bindto": "settings.samples",
+        "options": [
+            SAMPLERATES
+        ]
+    }
+    
+]

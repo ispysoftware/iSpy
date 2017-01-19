@@ -1,0 +1,27 @@
+﻿[
+    { "text": "Desktop Source", "value": "", "type": "Header" },
+    {
+        "text": "Screen",
+        "value": "",
+        "type": "Select",
+        "bindto": "settings.videosourcestring",
+        "options": [
+            SCREENS
+        ],
+        "live": true
+    },
+    { "text": "Frame Interval", "value": 0, "type": "Int32", "min": 0, "max": 6000000, "bindto": "settings.frameinterval" },
+    {
+        "text": "Capture Mouse",
+        "value": "",
+        "type": "Boolean",
+        "bindto": "settings.desktopmouse"
+    },
+    {
+        
+        "text": "Area",
+        "value": SCREENAREA,
+        "type": "ScreenAreaManager",
+        "help": "Define an area to monitor."
+    }
+]

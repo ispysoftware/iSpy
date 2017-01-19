@@ -1,0 +1,5 @@
+﻿[
+    { "text": "iSpyServer", "value": "", "type": "Header" },
+    { "text": "URL", "value": "", "type": "String", "bindto": "settings.videosourcestring" },
+    { "text": "Decode Key", "value": "", "type": "Password", "bindto": "decodekey" }
+]

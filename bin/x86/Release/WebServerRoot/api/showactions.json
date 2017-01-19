@@ -1,0 +1,18 @@
+﻿{
+    "header": "Actions",
+    "okResult": "",
+    "name": "Actions",
+    "sections": [
+        {
+            "header": "Actions",
+            "tabActive": true,
+            "displayType": "TableEdit",
+            "ident": "Schedule",
+            "editJSON": "editaction",
+            "deleteJSON": "deleteaction",
+            "items": [
+                ACTIONS
+            ]
+        }
+    ]
+}

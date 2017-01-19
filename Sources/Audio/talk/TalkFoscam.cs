@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using iSpy.Video.FFMPEG;
 using iSpyApplication.Utilities;
 using NAudio.Wave;
 
@@ -21,7 +20,6 @@ namespace iSpyApplication.Sources.Audio.talk
         private const int TalkData = 0x3;
         private const int TalkBufferSize = 25000;
         private readonly DateTime _dt = DateTime.UtcNow.AddHours(0 - DateTime.UtcNow.Hour);
-        private readonly IMA_ADPCM _enc = new IMA_ADPCM();
         private readonly object _obj = new object();
         private readonly int _port;
         private readonly string _server;
@@ -48,6 +46,91 @@ namespace iSpyApplication.Sources.Audio.talk
         private int _mILength;
         private int _mPPos;
 
+        private static readonly int[] ImaAdpcmStepTable =
+            {
+                    7,    8,    9,   10,   11,   12,   13,   14,
+                   16,   17,   19,   21,   23,   25,   28,   31,
+                   34,   37,   41,   45,   50,   55,   60,   66,
+                   73,   80,   88,   97,  107,  118,  130,  143,
+                  157,  173,  190,  209,  230,  253,  279,  307,
+                  337,  371,  408,  449,  494,  544,  598,  658,
+                  724,  796,  876,  963, 1060, 1166, 1282, 1411,
+                 1552, 1707, 1878, 2066, 2272, 2499, 2749, 3024,
+                 3327, 3660, 4026, 4428, 4871, 5358, 5894, 6484,
+                 7132, 7845, 8630, 9493,10442,11487,12635,13899,
+                15289,16818,18500,20350,22385,24623,27086,29794,
+                32767
+            };
+        private static readonly int[] ImaAdpcmIndexTable=
+            {
+                -1, -1, -1, -1, 2, 4, 6, 8,
+            };
+
+        private int _predictedValue;
+        private int _stepIndex;
+
+        void EncodeInit(int sample1, int sample2)
+        {
+            _predictedValue = sample1;
+            int delta = sample2 - sample1;
+            if (delta < 0)
+                delta = -delta;
+            if (delta > 32767)
+                delta = 32767;
+            int stepIndex = 0;
+            while (ImaAdpcmStepTable[stepIndex] < (uint)delta)
+                stepIndex++;
+            _stepIndex = stepIndex;
+        }
+
+        unsafe int EncodeFoscam(byte* raw, int len, byte* encoded)
+        {
+            short* pcm = (short*)raw;
+            int i;
+            len >>= 1;
+
+            for (i = 0; i < len; i++)
+            {
+                int curSample = pcm[i];
+                int delta = curSample - _predictedValue;
+                int sb = 0;
+                if (delta < 0)
+                {
+                    delta = -delta;
+                    sb = 8;
+                }
+                
+                var code = 4 * delta / ImaAdpcmStepTable[_stepIndex];
+                if (code > 7)
+                    code = 7;
+
+                delta = (ImaAdpcmStepTable[_stepIndex] * code) / 4 + ImaAdpcmStepTable[_stepIndex] / 8;
+                if (sb>0)
+                    delta = -delta;
+                _predictedValue += delta;
+                if (_predictedValue > 32767)
+                    _predictedValue = 32767;
+                else if (_predictedValue < -32768)
+                    _predictedValue = -32768;
+
+                _stepIndex += ImaAdpcmIndexTable[code];
+                if (_stepIndex < 0)
+                    _stepIndex = 0;
+                else if (_stepIndex > 88)
+                    _stepIndex = 88;
+
+                int j = i >> 1;
+                var t = code | sb;
+                if ((i & 0x01) > 0)
+                    encoded[j] |= (byte) t;
+                else
+                {
+                    t = t << 4;
+                    encoded[j] = (byte) t;
+                }
+            }
+            return len / 2;
+        }
 
         private static void Encode(ref byte[] cmd)
         {
@@ -271,7 +354,7 @@ namespace iSpyApplication.Sources.Audio.talk
 
                         if (_needsencodeinit)
                         {
-                            _enc.EncodeInit(BitConverter.ToInt16(e.RawData, 0), BitConverter.ToInt16(e.RawData, 2));
+                            EncodeInit(BitConverter.ToInt16(e.RawData, 0), BitConverter.ToInt16(e.RawData, 2));
                             _needsencodeinit = false;
                         }
 
@@ -283,7 +366,7 @@ namespace iSpyApplication.Sources.Audio.talk
                             {
                                 fixed (byte* dst = buff)
                                 {
-                                    c = (int)_enc.EncodeFoscam(src, totBytes, dst);
+                                    c = EncodeFoscam(src, totBytes, dst);
                                 }
                             }
                         }

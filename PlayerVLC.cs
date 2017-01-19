@@ -12,7 +12,6 @@ using Declarations.Players;
 using Implementation;
 using iSpyApplication.Controls;
 using iSpyApplication.Utilities;
-using onvif.services;
 
 namespace iSpyApplication
 {

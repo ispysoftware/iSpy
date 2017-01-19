@@ -1,0 +1,5 @@
+﻿[
+    { "text": "FFMPEG Source", "value": "", "type": "Header" },
+    { "text": "URL", "value": "", "type": "String", "bindto": "settings.sourcename" },
+    { "text": "Analyse Duration", "value": "", "type": "Int32", "min": 0, "max": 20000, "bindto": "settings.analyzeduration" }
+]

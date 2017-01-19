@@ -191,11 +191,6 @@
       <HintPath>$(SolutionDir)packages\DropNet.1.10.23.0\lib\net40\DropNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FSharp.Core, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\FSharp.Core.4.0.0.1\lib\net40\FSharp.Core.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Google.Apis, Version=1.9.0.26011, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\Google.Apis.1.9.0\lib\net40\Google.Apis.dll</HintPath>
       <Private>True</Private>
@@ -236,9 +231,10 @@
       <HintPath>DLLS\Interop.NetFwTypeLib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Interop.NETWORKLIST">
-      <HintPath>DLLS\x64\Interop.NETWORKLIST.dll</HintPath>
+    <Reference Include="Interop.NETWORKLIST, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>DLLS\x64\Interop.NETWORKLIST.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
@@ -284,18 +280,6 @@
     </Reference>
     <Reference Include="nVLC.LibVlcWrapper">
       <HintPath>DLLS\nVLC.LibVlcWrapper.dll</HintPath>
-    </Reference>
-    <Reference Include="onvif.discovery">
-      <HintPath>Onvif\onvif.discovery.dll</HintPath>
-    </Reference>
-    <Reference Include="onvif.services">
-      <HintPath>Onvif\onvif.services.dll</HintPath>
-    </Reference>
-    <Reference Include="onvif.session">
-      <HintPath>Onvif\onvif.session.dll</HintPath>
-    </Reference>
-    <Reference Include="onvif.utils">
-      <HintPath>Onvif\onvif.utils.dll</HintPath>
     </Reference>
     <Reference Include="Renci.SshNet">
       <HintPath>DLLS\Renci.SshNet.dll</HintPath>
@@ -359,7 +343,9 @@
       <HintPath>$(SolutionDir)packages\Microsoft.Bcl.1.1.10\lib\net40\System.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Discovery" />
     <Reference Include="System.Speech" />
     <Reference Include="System.Threading.Tasks">
       <HintPath>$(SolutionDir)packages\Microsoft.Bcl.1.1.10\lib\net40\System.Threading.Tasks.dll</HintPath>
@@ -372,15 +358,6 @@
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
-    </Reference>
-    <Reference Include="utils.common">
-      <HintPath>Onvif\utils.common.dll</HintPath>
-    </Reference>
-    <Reference Include="utils.diagnostics">
-      <HintPath>Onvif\utils.diagnostics.dll</HintPath>
-    </Reference>
-    <Reference Include="utils.fsharp">
-      <HintPath>Onvif\utils.fsharp.dll</HintPath>
     </Reference>
     <Reference Include="Windows7ToolStripRenderer">
       <HintPath>DLLS\Windows7ToolStripRenderer.dll</HintPath>
@@ -427,6 +404,12 @@
     </Compile>
     <Compile Include="Controls\HuePicker.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ONVIFWizard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ONVIFWizard.Designer.cs">
+      <DependentUpon>ONVIFWizard.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\PictureBox.cs">
       <SubType>Component</SubType>
@@ -479,12 +462,20 @@
     <Compile Include="Importer.Designer.cs">
       <DependentUpon>Importer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Onvif\BasicAuthBehaviour.cs" />
+    <Compile Include="Onvif\BasicAuthMessageInspector.cs" />
+    <Compile Include="Onvif\Discovery.cs" />
+    <Compile Include="Onvif\MulticastCapabilitiesBindingElement.cs" />
+    <Compile Include="Onvif\ONVIFDevice.cs" />
+    <Compile Include="Onvif\PasswordDigestBehaviour.cs" />
+    <Compile Include="Onvif\PasswordDigestMessageInspector.cs" />
     <Compile Include="PTZConfig.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PTZConfig.Designer.cs">
       <DependentUpon>PTZConfig.cs</DependentUpon>
     </Compile>
+    <Compile Include="Realtime\MediaWriter.cs" />
     <Compile Include="Server\CameraScanner.cs" />
     <Compile Include="Server\Conf.cs" />
     <Compile Include="Server\ConnectionOption.cs" />
@@ -497,6 +488,37 @@
     <Compile Include="Server\WebSocketConnection.cs" />
     <Compile Include="Server\WebSocketServer.cs" />
     <Compile Include="Server\X509.cs" />
+    <Compile Include="Service References\DeviceClient\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\DeviceClient\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\DeviceMedia\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\DeviceMedia\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\DevicePTZ\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\DevicePTZ\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Sources\Video\MediaStream.cs" />
     <Compile Include="TagConfigure.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -705,7 +727,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Delegates.cs" />
-    <Compile Include="DeviceDescriptionHolder.cs" />
     <Compile Include="DirectShow\CameraControlProperty.cs" />
     <Compile Include="DirectShow\FilterInfo.cs" />
     <Compile Include="DirectShow\FilterInfoCollection.cs" />
@@ -943,7 +964,6 @@
     <Compile Include="Sources\Audio\SpeechSynth.cs" />
     <Compile Include="Sources\Audio\streams\AudioInStream.cs" />
     <Compile Include="Sources\Audio\streams\DirectStream.cs" />
-    <Compile Include="Sources\Audio\streams\FFMPEGStream.cs" />
     <Compile Include="Sources\Audio\streams\iSpyServerStream.cs" />
     <Compile Include="Sources\Audio\streams\LocalDeviceStream.cs" />
     <Compile Include="Sources\Audio\streams\MP3Stream.cs" />
@@ -953,7 +973,6 @@
     <Compile Include="Sources\Audio\talk\ITalkTarget.cs" />
     <Compile Include="Sources\Audio\talk\TalkAxis.cs" />
     <Compile Include="Sources\Audio\talk\TalkDeviceStream.cs" />
-    <Compile Include="Sources\Audio\talk\TalkFoscam.cs" />
     <Compile Include="Sources\Audio\talk\TalkHelper.cs" />
     <Compile Include="Sources\Audio\talk\TalkHelperStream.cs" />
     <Compile Include="Sources\Audio\talk\TalkIPWebcamAndroid.cs" />
@@ -965,7 +984,6 @@
     <Compile Include="Sources\Video\CloneStream.cs" />
     <Compile Include="Sources\Video\DesktopStream.cs" />
     <Compile Include="Sources\Video\discovery\localdevice.cs" />
-    <Compile Include="Sources\Video\FFMPEGStream.cs" />
     <Compile Include="Sources\Video\IVideoSource.cs" />
     <Compile Include="Sources\Video\JPEGStream.cs" />
     <Compile Include="Sources\Video\KinectNetworkStream.cs" />
@@ -1255,6 +1273,25 @@
     <Content Include="redist\WindowsServer2003-KB942288-v4-x64.exe" />
     <Content Include="redist\WindowsServer2003-KB942288-v4-x86.exe" />
     <Content Include="redist\WindowsXP-KB942288-v3-x86.exe" />
+    <Content Include="Service References\DeviceClient\configuration.svcinfo" />
+    <Content Include="Service References\DeviceClient\configuration91.svcinfo" />
+    <Content Include="Service References\DeviceClient\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Service References\DeviceMedia\configuration.svcinfo" />
+    <Content Include="Service References\DeviceMedia\configuration91.svcinfo" />
+    <Content Include="Service References\DeviceMedia\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </Content>
+    <Content Include="Service References\DevicePTZ\configuration.svcinfo" />
+    <Content Include="Service References\DevicePTZ\configuration91.svcinfo" />
+    <Content Include="Service References\DevicePTZ\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </Content>
     <Content Include="sounds\alsationxsiberian_bark.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1367,6 +1404,155 @@
     <Content Include="sounds\wiggle.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Service References\DeviceClient\b-2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceClient\bf-2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceClient\devicemgmt.wsdl" />
+    <None Include="Service References\DeviceClient\include.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.BackupFile.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.BinaryData.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.Capabilities.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.Certificate.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.CertificateInformation.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.CertificateStatus.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.DeviceServiceCapabilities.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.DiscoveryMode.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.DNSInformation.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.Dot11AvailableNetworks.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.Dot11Capabilities.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.Dot11Status.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.Dot1XConfiguration.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.DynamicDNSInformation.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.GetSystemUrisResponseExtension.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.HostnameInformation.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.IPAddressFilter.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.NetworkGateway.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.NetworkHost.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.NetworkInterface.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.NetworkProtocol.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.NetworkZeroConfiguration.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.NTPInformation.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.RelayOutput.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.RemoteUser.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.Scope.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.Service.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.StorageConfiguration.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.SupportInformation.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.SystemDateTime.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.SystemLog.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.SystemLogUri.datasource" />
+    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.User.datasource" />
+    <None Include="Service References\DeviceClient\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceClient\onvif.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceClient\t-1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceClient\ws-addr.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceClient\xml.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceClient\xmlmime.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceMedia\b-2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceMedia\bf-2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceMedia\include.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.AudioDecoderConfiguration.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.AudioDecoderConfigurationOptions.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.AudioEncoderConfiguration.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.AudioEncoderConfigurationOptions.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.AudioOutput.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.AudioOutputConfiguration.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.AudioOutputConfigurationOptions.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.AudioSource.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.AudioSourceConfiguration.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.AudioSourceConfigurationOptions.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.Capabilities.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.MediaUri.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.MetadataConfiguration.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.MetadataConfigurationOptions.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.OSDConfiguration.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.OSDConfigurationOptions.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.Profile.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.VideoAnalyticsConfiguration.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.VideoEncoderConfiguration.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.VideoEncoderConfigurationOptions.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.VideoSource.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.VideoSourceConfiguration.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.VideoSourceConfigurationOptions.datasource" />
+    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.VideoSourceMode.datasource" />
+    <None Include="Service References\DeviceMedia\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceMedia\media.wsdl" />
+    <None Include="Service References\DeviceMedia\onvif.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceMedia\t-1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceMedia\ws-addr.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceMedia\xml.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceMedia\xmlmime.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DevicePTZ\b-2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DevicePTZ\bf-2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DevicePTZ\include.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DevicePTZ\iSpyApplication.DevicePTZ.Capabilities.datasource" />
+    <None Include="Service References\DevicePTZ\iSpyApplication.DevicePTZ.PresetTour.datasource" />
+    <None Include="Service References\DevicePTZ\iSpyApplication.DevicePTZ.PTZConfiguration.datasource" />
+    <None Include="Service References\DevicePTZ\iSpyApplication.DevicePTZ.PTZConfigurationOptions.datasource" />
+    <None Include="Service References\DevicePTZ\iSpyApplication.DevicePTZ.PTZNode.datasource" />
+    <None Include="Service References\DevicePTZ\iSpyApplication.DevicePTZ.PTZPreset.datasource" />
+    <None Include="Service References\DevicePTZ\iSpyApplication.DevicePTZ.PTZPresetTourOptions.datasource" />
+    <None Include="Service References\DevicePTZ\iSpyApplication.DevicePTZ.PTZStatus.datasource" />
+    <None Include="Service References\DevicePTZ\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DevicePTZ\onvif.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DevicePTZ\PTZService.wsdl" />
+    <None Include="Service References\DevicePTZ\t-1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DevicePTZ\ws-addr.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DevicePTZ\xml.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DevicePTZ\xmlmime.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Supporting\iSpyServerSetup.msi" />
     <None Include="Web References\iSpyWS\ispysecure.disco" />
     <Content Include="Supporting\iSpyMonitor.exe" />
@@ -1499,6 +1685,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\MediaPanelControl.resx">
       <DependentUpon>MediaPanelControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ONVIFWizard.resx">
+      <DependentUpon>ONVIFWizard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ParamConfig.resx">
       <DependentUpon>ParamConfig.cs</DependentUpon>
@@ -1974,7 +2163,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\x86\" />
-    <Folder Include="Onvif\" />
     <Folder Include="WebServerRoot\Media\Audio\" />
     <Folder Include="WebServerRoot\Media\Video\" />
   </ItemGroup>
@@ -1982,16 +2170,16 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="FFMPEG\Video.FFMPEG.64.vcxproj">
-      <Project>{ff31dd24-127d-4eb1-929c-f5738147e886}</Project>
-      <Name>iSpy.Video.FFMPEG</Name>
+    <ProjectReference Include="..\..\FFmpeg.AutoGen-master\FFmpeg.AutoGen\FFmpeg.AutoGen.csproj">
+      <Project>{a536b02a-b0b1-4753-8328-17369ef09976}</Project>
+      <Name>FFmpeg.AutoGen</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>xcopy "$(ProjectDir)FFMPEG\ffmpeg64\bin\*.*" "$(ProjectDir)$(OutDir)" /Y
+    <PostBuildEvent>xcopy "$(ProjectDir)dlls\$(PlatformName)\*.*" "$(ProjectDir)$(OutDir)" /Y
 if NOT %25ComputerName%25 == DEVPC GOTO end
 call "D:\projects\ispy\signing\iSpy64.bat"
 :end

@@ -15,17 +15,17 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using FFmpeg.AutoGen;
 using iSpyApplication.Server;
 using NAudio.Lame;
 using NAudio.Wave;
-using iSpy.Video.FFMPEG;
+using iSpyApplication.Realtime;
 using iSpyApplication.Sources;
 using iSpyApplication.Sources.Audio;
 using iSpyApplication.Sources.Audio.streams;
 using iSpyApplication.Sources.Audio.talk;
 using iSpyApplication.Sources.Video;
 using iSpyApplication.Utilities;
-using RestSharp.Contrib;
 using WaveFormat = NAudio.Wave.WaveFormat;
 
 namespace iSpyApplication.Controls
@@ -35,7 +35,7 @@ namespace iSpyApplication.Controls
         #region Private
 
         public MainForm MainClass;
-        private AudioFileWriter _writer;
+        private MediaWriter _writer;
         private DateTime _mouseMove = DateTime.MinValue;
         public event EventHandler AudioDeviceEnabled, AudioDeviceDisabled, AudioDeviceReConnected;
         private long _lastRun = Helper.Now.Ticks;
@@ -609,7 +609,6 @@ namespace iSpyApplication.Controls
                     disable = true;
                     break;
                 case 2:
-                    enable = true;
                     ForcedRecording = true;
                     break;
                 case 3:
@@ -1370,23 +1369,13 @@ namespace iSpyApplication.Controls
         }
 
         public bool Highlighted { get; set; }
-        private int _lastSecond;
 
         public Color BorderColor
         {
             get
             {
                 if (FlashCounter > Helper.Now)
-                {
-                    Color c = MainForm.ActivityColor;
-                    if (_lastSecond%2 != 0)
-                    {
-                        c = MainForm.BorderDefaultColor;
-                    }
-
-                    _lastSecond = DateTime.Now.Second;
-                    return c;
-                }
+                    return MainForm.ActivityColor;
 
                 if (Highlighted)
                     return MainForm.FloorPlanHighlightColor;
@@ -1660,19 +1649,15 @@ namespace iSpyApplication.Controls
 
 
 
-                        _writer = new AudioFileWriter();
+                        _writer = new MediaWriter(filename + ".mp3", AVCodecID.AV_CODEC_ID_MP3);
                         try
                         {
                             Program.FfmpegMutex.WaitOne();
-                            _writer.Open(filename + ".mp3", AudioCodec.MP3,
-                                AudioSource.RecordingFormat.BitsPerSample*AudioSource.RecordingFormat.SampleRate*
-                                AudioSource.RecordingFormat.Channels, AudioSource.RecordingFormat.SampleRate,
-                                AudioSource.RecordingFormat.Channels);
 
                             try
                             {
                                 string url = (X509.SslEnabled ? "https" : "http") + "://" + MainForm.IPAddress + "/";
-                                linktofile = HttpUtility.UrlEncode(url + "loadclip.mp3?oid=" + Micobject.id + "&ot=1&fn=" + AudioFileName + ".mp3&auth=" + MainForm.Identifier);
+                                linktofile = Uri.EscapeDataString(url + "loadclip.mp3?oid=" + Micobject.id + "&ot=1&fn=" + AudioFileName + ".mp3&auth=" + MainForm.Identifier);
                             }
                             catch (Exception ex)
                             {
@@ -1714,13 +1699,9 @@ namespace iSpyApplication.Controls
 
                                     if (fa.FrameType == Enums.FrameType.Audio)
                                     {
-                                        unsafe
-                                        {
-                                            fixed (byte* p = fa.Content)
-                                            {
-                                                _writer.WriteAudio(p, fa.DataLength);
-                                            }
-                                        }
+                                        var pts = (long)(fa.TimeStamp - recordingStart).TotalMilliseconds;
+
+                                        _writer.WriteAudio(fa.Content, fa.DataLength,0,pts);
                                         float d = Levels.Max();
                                         _soundData.Append(string.Format(CultureInfo.InvariantCulture,
                                             "{0:0.000}", d));
@@ -1781,12 +1762,12 @@ namespace iSpyApplication.Controls
                         }
 
 
-                        if (_writer != null && _writer.IsOpen)
+                        if (_writer != null && !_writer.Closed)
                         {
                             try
                             {
                                 Program.FfmpegMutex.WaitOne();
-                                _writer.Dispose();
+                                _writer.Close();
                             }
                             catch (Exception ex)
                             {
@@ -2057,11 +2038,10 @@ namespace iSpyApplication.Controls
                                       };
                         break;
                     case 3: //FFMPEG listener
-                        AudioSource = new FfmpegAudioStream(Micobject.settings.sourcename)
+                        AudioSource = new MediaStream(Micobject.settings.sourcename)
                                       {
-                                          RecordingFormat = new WaveFormat(sampleRate, bitsPerSample, channels),
-                                          AnalyseDuration = Micobject.settings.analyzeduration,
-                                          Timeout = Micobject.settings.timeout
+                                        NoBuffer = true,
+                                        Options = Micobject.settings.ffmpeg
                                       };
                         break;
                     case 4: //From Camera Feed
@@ -2274,10 +2254,22 @@ namespace iSpyApplication.Controls
             Alarm(sender, EventArgs.Empty);
         }
 
+        public static WaveFormat AudioStreamFormat = new WaveFormat(22050, 16, 1);
+
         public void AudioDeviceDataAvailable(object sender, DataAvailableEventArgs e)
         {
             if (Levels == null || IsReconnect)
                 return;
+
+            int totBytes;
+            using (var ws = new TalkHelperStream(e.RawData, e.BytesRecorded, AudioSource.RecordingFormat))
+            {
+                using (var helpStm = new WaveFormatConversionStream(AudioStreamFormat, ws))
+                {
+                    totBytes = helpStm.Read(_bResampled, 0, 22050);
+                }
+            }
+
             try
             {
                 lock (_lockobject)
@@ -2302,7 +2294,7 @@ namespace iSpyApplication.Controls
                             }
                         }
                     }
-                    fa = new Helper.FrameAction(e.RawData, e.BytesRecorded, Levels.Max(), Helper.Now);
+                    fa = new Helper.FrameAction(_bResampled, totBytes, Levels.Max(), Helper.Now);
                     Buffer.Enqueue(fa);
                     
                 }
@@ -2323,18 +2315,6 @@ namespace iSpyApplication.Controls
                         var wf = new WaveFormat(_audioStreamFormat.SampleRate, _audioStreamFormat.BitsPerSample, _audioStreamFormat.Channels);
                         _mp3Writer = new LameMP3FileWriter(_outStream, wf, LAMEPreset.STANDARD);
                     }
-
-                    byte[] bSrc = e.RawData;
-                    int totBytes = bSrc.Length;
-
-                    var ws = new TalkHelperStream(bSrc, totBytes, AudioSource.RecordingFormat);
-                    var helpStm = new WaveFormatConversionStream(_audioStreamFormat, ws);
-                    totBytes = helpStm.Read(_bResampled, 0, 22050);
-
-                    ws.Close();
-                    ws.Dispose();
-                    helpStm.Close();
-                    helpStm.Dispose();
 
                     _mp3Writer.Write(_bResampled, 0, totBytes);
 
@@ -2820,7 +2800,7 @@ namespace iSpyApplication.Controls
                 {
                     StartSaving();
                 }
-                MainForm.MWS.WebSocketServer.SendToAll("alert|" + ObjectName);
+                
             }
             var t = new Thread(() => AlertThread(type, msg, Micobject.id)) { Name = type + " (" + Micobject.id + ")", IsBackground = true };
             t.Start();           

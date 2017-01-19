@@ -1,0 +1,12 @@
+﻿[
+    { "text": "Clone", "value": "", "type": "Header" },
+    {
+        "text": "Camera",
+        "value": "",
+        "type": "Select",
+        "bindto": "settings.videosourcestring",
+        "options": [ 
+            CAMERAS
+        ]
+    }
+]

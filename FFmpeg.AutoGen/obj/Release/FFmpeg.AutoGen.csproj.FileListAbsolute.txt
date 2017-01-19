@@ -1,0 +1,5 @@
+D:\Projects\FFmpeg.AutoGen-master\FFmpeg.AutoGen\bin\Release\FFmpeg.AutoGen.dll.config
+D:\Projects\FFmpeg.AutoGen-master\FFmpeg.AutoGen\bin\Release\FFmpeg.AutoGen.dll
+D:\Projects\FFmpeg.AutoGen-master\FFmpeg.AutoGen\bin\Release\FFmpeg.AutoGen.pdb
+D:\Projects\FFmpeg.AutoGen-master\FFmpeg.AutoGen\obj\Release\FFmpeg.AutoGen.dll
+D:\Projects\FFmpeg.AutoGen-master\FFmpeg.AutoGen\obj\Release\FFmpeg.AutoGen.pdb

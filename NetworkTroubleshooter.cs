@@ -5,7 +5,6 @@ using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using iSpyApplication.Utilities;
-using onvif.services;
 
 namespace iSpyApplication
 {

@@ -1,0 +1,21 @@
+﻿{
+    "header": "Audio Source",
+    "okResult": "UploadJSON",
+    "name": "EditAudioSource",
+    "sections": [
+        {
+            "header": "Audio Source",
+            "displayType": "Form",
+            "items": SOURCEEDITOR
+        },
+        {
+            "header": "Advanced",
+            "displayType": "Form",
+            "items": [
+                { "text": "Connection Timeout", "value": "", "type": "Int32", "min": 100, "max": 60000, "bindto": "settings.timeout", "help": "Time in milliseconds to timeout network connections" },
+                { "text": "Reconnect Interval", "value": "", "type": "Int32", "min": 0, "max": 60000, "bindto": "settings.reconnectinterval", "help": "Time in seconds between automated reconnects (0=never)" }
+
+            ]
+        }
+    ]
+}

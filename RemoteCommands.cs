@@ -43,7 +43,7 @@ namespace iSpyApplication
                 {
                     n = LocRm.GetString(oc.name);
                 }
-                lbManualAlerts.Items.Add(new MainForm.ListItem2(n,oc.id));
+                lbManualAlerts.Items.Add(new MainForm.ListItem(n,oc.id));
             }
         }
 
@@ -63,8 +63,8 @@ namespace iSpyApplication
         {
             if (lbManualAlerts.SelectedIndex > -1)
             {
-                var c = (MainForm.ListItem2) lbManualAlerts.SelectedItem;
-                objectsCommand oc = MainForm.RemoteCommands.FirstOrDefault(p => p.id == c.Value);
+                var c = (MainForm.ListItem) lbManualAlerts.SelectedItem;
+                objectsCommand oc = MainForm.RemoteCommands.FirstOrDefault(p => p.id == (int)c.Value);
                 if (oc != null)
                 {
                     MainForm.RemoteCommands.Remove(oc);
@@ -77,8 +77,8 @@ namespace iSpyApplication
         {
             if (lbManualAlerts.SelectedIndex>-1)
             {
-                var c = (MainForm.ListItem2)lbManualAlerts.SelectedItem;
-                objectsCommand oc = MainForm.RemoteCommands.FirstOrDefault(p => p.id == c.Value);
+                var c = (MainForm.ListItem)lbManualAlerts.SelectedItem;
+                objectsCommand oc = MainForm.RemoteCommands.FirstOrDefault(p => p.id == (int)c.Value);
                 if (oc != null)
                 {
                     string s = oc.command;
@@ -106,8 +106,8 @@ namespace iSpyApplication
         {
             if (lbManualAlerts.SelectedIndex > -1)
             {
-                var c = (MainForm.ListItem2)lbManualAlerts.SelectedItem;
-                objectsCommand oc = MainForm.RemoteCommands.FirstOrDefault(p => p.id == c.Value);
+                var c = (MainForm.ListItem)lbManualAlerts.SelectedItem;
+                objectsCommand oc = MainForm.RemoteCommands.FirstOrDefault(p => p.id == (int)c.Value);
                 if (oc != null)
                 {
                     using (var arc = new AddRemoteCommand {OC = oc})

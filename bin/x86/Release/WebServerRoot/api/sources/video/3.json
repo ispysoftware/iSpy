@@ -1,0 +1,59 @@
+﻿[
+    { "text": "USB/ Local Source", "value": "", "type": "Header" },
+    {
+        "text": "Device",
+        "value": "",
+        "type": "Select",
+        "bindto": "settings.videosourcestring",
+        "command": "editsource&sourcetypeid=3",
+        "options": [
+            DEVICELIST
+        ]
+    },
+    {
+        "text": "Video Input",
+        "value": "",
+        "type": "Select",
+        "bindto": "settings.crossbarindex",
+        "options": [
+            INPUTLIST
+        ]
+    },
+    {
+        "text": "Capture Mode",
+        "value": "",
+        "type": "Select",
+        "bindto": "settings.namevaluesettings",
+        "nvident": "capturemode",
+        "options": [
+            CAPTUREMODES
+        ]
+    },
+    {
+        "text": "Video Resolution",
+        "value": "",
+        "type": "Select",
+        "bindto": "settings.namevaluesettings",
+        "nvident": "video",
+        "options": [
+            VIDEORESOLUTIONS
+        ]
+    },
+    {
+        "text": "Snapshot Resolution",
+        "value": "",
+        "type": "Select",
+        "bindto": "settings.namevaluesettings",
+        "nvident": "snapshots",
+        "options": [
+            SNAPSHOTRESOLUTIONS
+        ]
+    },
+    {
+        "text": "Manual Settings",
+        "value": "",
+        "type": "Boolean",
+        "bindto": "settings.namevaluesettings",
+        "nvident": "manual"
+    }
+]

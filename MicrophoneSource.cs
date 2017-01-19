@@ -1,10 +1,12 @@
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
+using iSpyApplication.Realtime;
+using iSpyApplication.Sources.Video;
 using iSpyApplication.Utilities;
 using NAudio.Wave;
-using AudioFileReader = iSpy.Video.FFMPEG.AudioFileReader;
 
 namespace iSpyApplication
 {
@@ -116,7 +118,7 @@ namespace iSpyApplication
                 case 5:
                     if (ddlCloneMicrophone.SelectedIndex > -1)
                     {
-                        int micid = ((MainForm.ListItem2) ddlCloneMicrophone.SelectedItem).Value;
+                        int micid = (int)((MainForm.ListItem) ddlCloneMicrophone.SelectedItem).Value;
                         Mic.settings.sourcename = micid.ToString(CultureInfo.InvariantCulture);
                         var mic = MainForm.Microphones.First(p => p.id == micid);
                         Mic.name = "Clone: " + mic.name;
@@ -226,6 +228,7 @@ namespace iSpyApplication
 
         private void MicrophoneSourceLoad(object sender, EventArgs e)
         {
+            UISync.Init(this);
             tableLayoutPanel2.Enabled = VlcHelper.VlcInstalled;
             linkLabel3.Visible = lblInstallVLC.Visible = !tableLayoutPanel2.Enabled;
             cmbVLCURL.Text = MainForm.Conf.VLCURL;
@@ -269,7 +272,7 @@ namespace iSpyApplication
             foreach (var mic in MainForm.Microphones)
             {
                 if (mic.id != Mic.id && mic.settings.typeindex != 5) //dont allow a clone of a clone as the events get too complicated (and also it's pointless)
-                    ddlCloneMicrophone.Items.Add(new MainForm.ListItem2(mic.name, mic.id));
+                    ddlCloneMicrophone.Items.Add(new MainForm.ListItem(mic.name, mic.id));
             }
 
             SetSourceIndex(Mic.settings.typeindex);
@@ -308,9 +311,9 @@ namespace iSpyApplication
                     int id;
                     if (Int32.TryParse(Mic.settings.sourcename, out id))
                     {
-                        foreach (MainForm.ListItem2 li in ddlCloneMicrophone.Items)
+                        foreach (MainForm.ListItem li in ddlCloneMicrophone.Items)
                         {
-                            if (li.Value == id)
+                            if ((int)li.Value == id)
                             {
                                 ddlCloneMicrophone.SelectedItem = li;
                                 break;
@@ -405,15 +408,15 @@ namespace iSpyApplication
         }
 
         public bool NoBuffer;
+        private MediaStream afr;
         private void Test_Click(object sender, EventArgs e)
         {
             btnTest.Enabled = false;
 
-            string res = "OK";
             try
             {
                 Program.FfmpegMutex.WaitOne();
-                var afr = new AudioFileReader();
+                
                 string source = cmbFFMPEGURL.Text;
                 int i = source.IndexOf("://", StringComparison.Ordinal);
                 if (i > -1)
@@ -421,20 +424,22 @@ namespace iSpyApplication
                     source = source.Substring(0, i).ToLower() + source.Substring(i);
                 }
 
-                afr.Timeout = Mic.settings.timeout;
-                afr.AnalyzeDuration = (int)numAnalyseDuration.Value;
-                afr.Open(source);
-                afr.ReadAudioFrame();
-                Mic.settings.channels = afr.Channels;
-                Mic.settings.samples = afr.SampleRate;
-                Mic.settings.bits = 16;
+                afr = new MediaStream(source)
+                          {
+                              Timeout = Mic.settings.timeout,
+                              AnalyzeDuration = (int) numAnalyseDuration.Value
+                          };
 
-                afr.Dispose();
+                afr.DataAvailable += Afr_AudioAvailable;
+                afr.ErrorHandler += Afr_ErrorHandler;
+                afr.PlayingFinished += Afr_PlayingFinished;
+                afr.Start();
+                
                 afr = null;              
             }
             catch (Exception ex)
             {
-                res = ex.Message;
+                MessageBox.Show(ex.Message);
             }
             finally
             {
@@ -447,9 +452,55 @@ namespace iSpyApplication
                     //can happen on shutdown
                 }                
             }
-            MessageBox.Show(res);
-            
-            btnTest.Enabled = true;
+           
+        }
+
+        #region Nested type: UISync
+
+        private class UISync
+        {
+            private static ISynchronizeInvoke _sync;
+
+            public static void Init(ISynchronizeInvoke sync)
+            {
+                _sync = sync;
+            }
+
+            public static void Execute(Action action)
+            {
+                try
+                {
+                    _sync.BeginInvoke(action, null);
+                }
+                catch
+                {
+                }
+            }
+        }
+
+        #endregion
+
+        private void Afr_PlayingFinished(object sender, Sources.PlayingFinishedEventArgs e)
+        {
+            UISync.Execute(() =>
+                           {
+                               btnTest.Enabled = true;
+                           });
+        }
+
+        private void Afr_ErrorHandler(string message)
+        {
+            UISync.Execute(() => {
+                                     MessageBox.Show(this, "Connection Failed");
+            });
+            afr.Close();
+        }
+
+        private void Afr_AudioAvailable(object sender, Sources.Audio.DataAvailableEventArgs e)
+        {
+            UISync.Execute(() => {
+                                     MessageBox.Show(this, "Connected!"); });
+            afr.Close();
         }
 
         private void button3_Click(object sender, EventArgs e)

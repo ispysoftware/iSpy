@@ -46,7 +46,7 @@ namespace iSpyApplication
 
         private void _ddlLanguage_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string lang = ((MainForm.ListItem)_ddlLanguage.SelectedItem).Value[0];
+            string lang = ((string[])((MainForm.ListItem)_ddlLanguage.SelectedItem).Value)[0];
             if (lang != MainForm.Conf.Language)
             {
                 MainForm.Conf.Language = lang;

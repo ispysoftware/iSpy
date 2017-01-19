@@ -26,9 +26,9 @@ namespace iSpyApplication
                     return _translationsList;
                 var s = new XmlSerializer(typeof (Translations));
                 string p = Program.AppDataPath + @"\XML\Translations.xml";
-#if DEBUG
-                p = Program.AppPath+ @"\XML\Translations.xml";
-#endif
+//#if DEBUG
+//                p = Program.AppPath+ @"\XML\Translations.xml";
+//#endif
                 using (var fs = new FileStream(p, FileMode.Open))
                 {
                     fs.Position = 0;

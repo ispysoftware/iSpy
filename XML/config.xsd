@@ -146,6 +146,12 @@
         <xs:element name="Tags" type="xs:string" default=""/>
         <xs:element name="PortMapperMode" type="xs:int" default="2"/>
         <xs:element name="ArrangeMode" type="xs:int" default="0"/>
+        <xsd:element name="GPU">
+          <xsd:complexType>
+            <xsd:attribute name="nVidia" type="xsd:boolean" default="false" />
+            <xsd:attribute name="QuickSync" type="xsd:boolean" default="false" />
+          </xsd:complexType>
+        </xsd:element>
         <xsd:element name="Logging">
           <xsd:complexType>
             <xsd:attribute name="FileSize" type="xsd:int" default="100" />

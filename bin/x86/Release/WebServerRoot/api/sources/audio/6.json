@@ -1,0 +1,4 @@
+﻿[
+    { "text": "Source", "value": "", "type": "Header" },
+    { "text": "URL", "value": "", "type": "String", "bindto": "settings.sourcename" }
+]

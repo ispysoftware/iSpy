@@ -1881,6 +1881,36 @@ namespace iSpyApplication.Server
                     resp = "OK";
                 }
                     break;
+                case "removeobject":
+                    if (otid == 1)
+                    {
+                        VolumeLevel vw = MainForm.InstanceReference.GetVolumeLevel(oid);
+                        if (vw != null)
+                        {
+                            MainForm.InstanceReference.RemoveMicrophone(vw, false);
+                        }
+                    }
+                    else
+                    {
+                        CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(oid);
+                        if (cw != null)
+                        {
+                            MainForm.InstanceReference.RemoveCamera(cw, false);
+                        }
+                    }
+                    MainForm.NeedsSync = true;
+                    resp = "OK";
+                    break;
+                case "addobject":
+                    int sourceIndex = Convert.ToInt32(GetVar(sRequest, "stid"));
+                    int width = Convert.ToInt32(GetVar(sRequest, "w"));
+                    int height = Convert.ToInt32(GetVar(sRequest, "h"));
+                    string name = GetVar(sRequest, "name");
+                    string url = GetVar(sRequest, "url").Replace("\\", "/");
+                    MainForm.InstanceReference.AddObjectExternal(otid, sourceIndex, width, height, name, url);
+                    MainForm.NeedsSync = true;
+                    resp = "OK";
+                    break;
                 case "synthtocam":
                 {
                     var txt = GetVar(sRequest, "text");                
@@ -2131,7 +2161,7 @@ namespace iSpyApplication.Server
                                                            (current, fi) =>
                                                            current +
                                                            (fi.Filename + "|" + FormatBytes(fi.SizeBytes) + "|" +
-                                                            String.Format(
+                                                            string.Format(
                                                                 CultureInfo.InvariantCulture,
                                                                 "{0:0.000}", fi.MaxAlarm) + ","));
                                 resp = temp.Trim(',');
@@ -2500,7 +2530,7 @@ namespace iSpyApplication.Server
                                 cmdlist = cw.PTZ.ONVIFPresets.Aggregate(cmdlist,
                                     (current, c) =>
                                         current +
-                                        ("<option value=\\\"" + Uri.EscapeDataString(c) + "\\\">" + c +
+                                        ("<option value=\\\"" + Uri.EscapeDataString(c.Name) + "\\\">" + c +
                                          "</option>"));
                             }
                             break;

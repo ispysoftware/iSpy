@@ -65,7 +65,7 @@ namespace iSpyApplication.Controls
                 {
                     if (c.id != OC.id)
                     {
-                        clbObjects.Items.Add(new MainForm.ListItem2(c.name, c.id));
+                        clbObjects.Items.Add(new MainForm.ListItem(c.name, c.id));
                     }
                 }
             
@@ -77,7 +77,7 @@ namespace iSpyApplication.Controls
                 {
                     if (c.id != OM.id)
                     {
-                        clbObjects.Items.Add(new MainForm.ListItem2(c.name, c.id));
+                        clbObjects.Items.Add(new MainForm.ListItem(c.name, c.id));
                     }
                 }
             }
@@ -93,11 +93,11 @@ namespace iSpyApplication.Controls
                 return;
             }
 
-            foreach (MainForm.ListItem2 li in clbObjects.CheckedItems)
+            foreach (MainForm.ListItem li in clbObjects.CheckedItems)
             {
                 if (OC != null)
                 {
-                    var oc = MainForm.Cameras.FirstOrDefault(p => p.id == li.Value);
+                    var oc = MainForm.Cameras.FirstOrDefault(p => p.id == (int)li.Value);
                     if (oc != null)
                     {
                         foreach (string s in clbSettings.CheckedItems)
@@ -108,7 +108,7 @@ namespace iSpyApplication.Controls
                 }
                 if (OM != null)
                 {
-                    var om = MainForm.Microphones.FirstOrDefault(p => p.id == li.Value);
+                    var om = MainForm.Microphones.FirstOrDefault(p => p.id == (int)li.Value);
                     if (om != null)
                     {
                         foreach (string s in clbSettings.CheckedItems)

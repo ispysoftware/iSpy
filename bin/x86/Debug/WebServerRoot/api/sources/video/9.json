@@ -1,0 +1,49 @@
+﻿[
+    { "text": "ONVIF", "value": "", "type": "Header" },
+    { "text": "Username", "value": "", "type": "String", "bindto": "settings.login", "id": "txtOnvifUsername" },
+    { "text": "Password", "value": "", "type": "Password", "bindto": "settings.password", "id": "txtOnvifPassword" },
+    {
+        "text": "Transport",
+        "value": "",
+        "type": "Select",
+        "bindto": "settings.namevaluesettings",
+        "id": "txtOnvifTransport",
+        "nvident": "transport",
+        "options": [
+            { "text": "RTSP", "value": "RTSP", "noTranslate": true },
+            { "text": "HTTP", "value": "HTTP", "noTranslate": true },
+            { "text": "UDP", "value": "UDP", "noTranslate": true },
+            { "text": "TCP", "value": "TCP", "noTranslate": true }
+        ]
+    },
+    {
+        "text": "Service URL",
+        "value": "",
+        "type": "String",
+        "bindto": "settings.onvifident",
+        "help": "eg: http://192.168.1.222:8001/onvif/device_service",
+        "id": "txtOnvifURL"
+    },
+    { "text": "Discover", "value": "Get Video URLs", "type": "Button", "action": "onvifdiscover", "id": "btnOnvifDiscover" },
+    {
+        "text": "Video URL",
+        "value": "",
+        "type": "Select",
+        "bindto": "settings.namevaluesettings",
+        "nvident": "profilename",
+        "id": "ddlOnvifURLs",
+        "options": [
+            ONVIFURL
+        ]
+    },
+    {
+        "text": "Connect with",
+        "value": "",
+        "type": "Select",
+        "options": [
+            { "text": "FFMPEG", "value": "ffmpeg" }VLCOPT           
+        ],
+        "bindto": "settings.namevaluesettings",
+        "nvident": "use"
+    }
+]

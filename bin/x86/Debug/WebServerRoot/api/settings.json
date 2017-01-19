@@ -1,0 +1,90 @@
+﻿{
+    "header": "Settings",
+    "okResult": "UploadJSON",
+    "name": "Settings",
+    "sections": [
+        {
+            "header": "General",
+            "tabActive": true,
+            "displayType": "Form",
+            "items": [
+                { "text": "JPEG Quality", "value": 80, "type": "Int32", "min": 10, "max": 100, "bindto": "JPEGQuality" },
+                { "text": "Max CPU Target", "value": 100, "type": "Int32", "min": 10, "max": 100, "bindto": "CPUMax" },
+                { "text": "Delete to Recycle Bin", "value": false, "type": "Boolean", "bindto": "DeleteToRecycleBin" },
+                { "text": "Archive Location", "value": "", "type": "String", "bindto": "Archive", "help": "Directory to archive files to" },
+                { "text": "Desktop Lock Actions", "value": "", "type": "String", "bindto": "SessionLockAction", "help": "iSpy command to execute when the computer is locked eg ALLON" },
+                { "text": "Desktop Lock Action Delay", "value": 0, "type": "Int32", "min": 0, "max": 9999, "bindto": "SessionLockActionDelay", "help": "Delay before executing actions on lock (s)" },
+                { "text": "Desktop Unlock Actions", "value": "", "type": "String", "bindto": "SessionUnlockAction", "help": "iSpy command to execute when the computer is unlocked eg ALLOFF" }
+            ]
+        },
+        {
+            "header": "Timeouts",
+            "tabActive": false,
+            "displayType": "Form",
+            "items": [
+                { "text": "Disconnect Notification Delay", "value": 60, "min": 30, "max": 99999999, "type": "Int32", "bindto": "DisconnectNotificationDelay","help": "Time to wait before notifying that a camera or mic has disconnected (s)" },
+                { "text": "MJPEG Frame Interval", "value": 100, "type": "Int32", "min": 1, "max": 99999, "bindto": "MJPEGStreamInterval", "help": "Time between frames when generating MJPEG streams (ms)" },
+                { "text": "Camera Receive Timeout", "value": 20000, "type": "Int32", "min": 1000,"max": 99999, "bindto": "IPCameraTimeout", "help": "Time to wait before disconnecting unresponsive streams (ms)" },
+                { "text": "Server Timeout", "value": 1500, "type": "Int32", "min": 1000, "max": 99999,"bindto": "ServerReceiveTimeout", "help": "Time to wait before disconnecting unresponsive clients (ms)" },
+                { "text": "VLC File Cache", "value": 3000, "type": "Int32", "min": 0, "max": 10000, "bindto": "VLCFileCache", "help": "Time to buffer in VLC. Reduce this to get a more realtime feed. (ms)" }
+            ]
+        },
+        {
+            "header": "FTP Servers",
+            "tabActive": false,
+            "displayType": "TableEdit",
+            "ident": "FTPServers",
+            "editJSON": "editftp",
+            "deleteJSON": "deleteftp",
+            "items": [
+                FTPSERVERS
+            ]
+        },
+        {
+            "header": "SMTP",
+            "tabActive": false,
+            "displayType": "Form",
+            "ident": "SMTPServer",
+            "items": [
+                { "text": "Use SMTP", "value": false, "type": "Boolean", "bindto": "UseSMTP" },
+                { "text": "Username", "value": "", "type": "String", "bindto": "SMTPUsername" },
+                { "text": "Password", "value": "", "type": "Password", "bindto": "SMTPPassword" },
+                { "text": "From Address", "value": "", "type": "String", "bindto": "SMTPFromAddress" },
+                { "text": "Server", "value": "", "type": "String", "bindto": "SMTPServer", "help": "example: mail.yourserver.com" },
+                { "text": "Port", "value": 25, "type": "Int32", "min": 0, "max": 65536, "bindto": "SMTPPort" },
+                { "text": "Use SSL", "value": false, "type": "Boolean", "bindto": "SMTPSSL" }
+            ]
+        },
+        {
+            "header": "Cloud Providers",
+            "tabActive": false,
+            "displayType": "Form",
+            "items": [
+                { "text": "DropBox", "type": "Button", "value": "Authorise", "action": "authorise", "parameter": "dropbox" },
+                { "text": "YouTube", "type": "Button", "value": "Authorise", "action": "authorise", "parameter": "youtube", "help": "Authorisation will only work from the same PC that iSpy is running on" },
+                { "text": "Google Drive", "type": "Button", "value": "Authorise", "action": "authorise", "parameter": "drive", "help": "Authorisation Will only work from the same PC that iSpy is running on" },
+                { "text": "Twitter", "type": "Link", "value": "Authorise", "url": "/monitor/twitter_auth.aspx", "help": "Global for this account" }
+            ]
+        },
+        {
+            "header": "Storage",
+            "tabActive": false,
+            "displayType": "TableEdit",
+            "ident": "Storage",
+            "deleteJSON": "deletestorage",
+            "editJSON": "editstorage",
+            "items": [
+                DIRECTORIES
+            ]
+        },
+        {
+            "header": "Web Server",
+            "tabActive": false,
+            "displayType": "Form",
+            "items": [
+                { "text": "Allowed IP List", "value": "", "type": "TextArea", "bindto": "AllowedIPList", "help": "CSV list of IP Addresses allowed to access this server without an authentication token (blank = none)" },
+                { "text": "Allowed HTTP Referrer List", "value": "", "type": "TextArea", "bindto": "Referers", "help": "CSV list of HTTP Referrers allowed to access this server with an authentication token (blank = all)" }
+            ]
+        }
+    ]
+}

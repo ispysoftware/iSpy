@@ -1,0 +1,18 @@
+﻿{
+    "header": "PTZ Schedule",
+    "okResult": "",
+    "name": "PTZSchedule",
+    "sections": [
+        {
+            "header": "Schedule Entries",
+            "tabActive": true,
+            "displayType": "TableEdit",
+            "ident": "PTZSchedule",
+            "editJSON": "editptzschedule",
+            "deleteJSON": "deleteptzschedule",
+            "items": [
+                SCHEDULE
+            ]
+        }
+    ]
+}

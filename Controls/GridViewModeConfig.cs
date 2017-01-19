@@ -51,7 +51,7 @@ namespace iSpyApplication.Controls
             int i = 1, j = 0;
             foreach (var c in MainForm.Cameras)
             {
-                ddlDefault.Items.Add(new MainForm.ListItem2(c.name, c.id));
+                ddlDefault.Items.Add(new MainForm.ListItem(c.name, c.id));
                 if (c.id == id)
                     j = i;
                 i++;
@@ -74,7 +74,7 @@ namespace iSpyApplication.Controls
             string cfg = numRemoveDelay.Value.ToString(CultureInfo.InvariantCulture) + ",";
             if (ddlDefault.SelectedIndex > 0)
             {
-                var o = (MainForm.ListItem2)ddlDefault.SelectedItem;
+                var o = (MainForm.ListItem)ddlDefault.SelectedItem;
                 cfg += o.Value;
             }
             else

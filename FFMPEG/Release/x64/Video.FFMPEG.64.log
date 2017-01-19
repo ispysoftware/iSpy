@@ -1,0 +1,29 @@
+﻿  Stdafx.cpp
+  AssemblyInfo.cpp
+  AudioCodec.cpp
+  AudioFileReader.cpp
+  AudioFileWriter.cpp
+  IMA_ADPCM.cpp
+  Init.cpp
+  VideoCodec.cpp
+  VideoFileReader.cpp
+  VideoFileWriter.cpp
+  Generating Code...
+  .NETFramework,Version=v4.0.AssemblyAttributes.cpp
+  LINK : /LTCG specified but no code generation required; remove /LTCG from the link command line to improve linker performance
+  Video.FFMPEG.64.vcxproj -> D:\Projects\iSpy\iSpy\FFMPEG\.\bin64\iSpy.Video.FFMPEG.dll
+  
+  Microsoft (R) .NET Framework Strong Name Utility  Version 4.0.30319.1
+  Copyright (c) Microsoft Corporation.  All rights reserved.
+  
+  Assembly '.\bin64\iSpy.Video.FFMPEG.dll' successfully re-signed
+  .\ffmpeg64\bin\avcodec-56.dll
+  .\ffmpeg64\bin\avdevice-56.dll
+  .\ffmpeg64\bin\avfilter-5.dll
+  .\ffmpeg64\bin\avformat-56.dll
+  .\ffmpeg64\bin\avutil-54.dll
+  .\ffmpeg64\bin\ffmpeg.exe
+  .\ffmpeg64\bin\postproc-53.dll
+  .\ffmpeg64\bin\swresample-1.dll
+  .\ffmpeg64\bin\swscale-3.dll
+  9 File(s) copied

@@ -1,0 +1,61 @@
+﻿{
+    "header": "Pelco",
+    "okResult": "UploadJSON",
+    "name": "EditPelco",
+    "sections": [
+        {
+            "header": "Settings",
+            "displayType": "Form",
+            "items": [
+                {
+                    "text": "COM Port",
+                    "value": "",
+                    "type": "Select",
+                    "bindto": "settings.pelco.comPort",
+                    "options": [
+                        COMPORTS
+                    ]
+                },
+                {
+                    "text": "BAUD Rate",
+                    "value": 0,
+                    "type": "Select",
+                    "bindto": "settings.pelco.baudRate",
+                    "options": [
+                        { "text": 75, "value": 75, "noTranslate": true  },
+                        { "text": 110, "value": 110, "noTranslate": true  },
+                        { "text": 300, "value": 300, "noTranslate": true  },
+                        { "text": 1200, "value": 1200, "noTranslate": true  },
+                        { "text": 2400, "value": 2400, "noTranslate": true  },
+                        { "text": 4800, "value": 4800, "noTranslate": true  },
+                        { "text": 9600, "value": 9600, "noTranslate": true },
+                        { "text": 19200, "value": 19200, "noTranslate": true  },
+                        { "text": 38400, "value": 38400, "noTranslate": true  },
+                        { "text": 54700, "value": 54700, "noTranslate": true  },
+                        {"text": 115200, "value": 115200, "noTranslate": true }
+                    ]
+                },
+                { "text": "Data Bit", "value": "", "type": "Select", "bindto": "settings.pelco.dataBit", "options": [
+                        { "text": 5, "value": 5, "noTranslate": true  },
+                        { "text": 6, "value": 6, "noTranslate": true  },
+                        { "text": 7, "value": 7, "noTranslate": true  },
+                        { "text": 8, "value": 8, "noTranslate": true  }
+                    ]},
+                { "text": "Stop Bit", "value": "", "type": "Select", "bindto": "settings.pelco.stopBit", "options": [
+                        { "text": "None", "value": "None", "noTranslate": true  },
+                        { "text": "One", "value": "One", "noTranslate": true  },
+                        { "text": "OnePointFive", "value": "OnePointFive", "noTranslate": true  },
+                        { "text": "Two", "value": "Two", "noTranslate": true  }
+                    ]},
+                { "text": "Parity", "value": "", "type": "Select", "bindto": "settings.pelco.parity" , "options": [
+                        { "text": "None", "value": "None", "noTranslate": true  },
+                        { "text": "Odd", "value": "Odd", "noTranslate": true  },
+                        { "text": "Even", "value": "Even", "noTranslate": true  },
+                        { "text": "Mark", "value": "Mark", "noTranslate": true  },
+                        { "text": "Space", "value": "Space", "noTranslate": true  }
+                    ]},
+                { "text": "Address", "value": "", "type": "Int32", "min": 0, "max": 999, "bindto": "settings.pelco.address" }
+            ]
+        }
+    ]
+}

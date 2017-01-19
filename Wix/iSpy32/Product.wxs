@@ -25,6 +25,7 @@
 
     <Feature Id="ProductFeature" Title="iSpy" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="FFMPEG" />
       <ComponentGroupRef Id="XML" />
       <ComponentGroupRef Id="ispyserver" />
       <ComponentGroupRef Id="backgrounds" />
@@ -131,29 +132,8 @@
       <Component Id="Component4" Guid="{067D3A42-18C9-45BE-B211-ADD4A4D3B753}">
         <File Id="AForge.Math.dll" Source="$(var.OutputDir)\AForge.Math.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Id="Component9" Guid="{18D43303-F6F9-4226-A84E-D9BCB6DB5030}">
-        <File Id="avcodec56.dll" Source="$(var.OutputDir)\avcodec-56.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component10" Guid="{920D9C2C-4F53-40C4-89F1-5CF2DBE5A5B8}">
-        <File Id="avdevice56.dll" Source="$(var.OutputDir)\avdevice-56.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component11" Guid="{6B16AD6E-12DE-475C-9736-9A0BA39073D6}">
-        <File Id="avfilter5.dll" Source="$(var.OutputDir)\avfilter-5.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component12" Guid="{19AD3C2B-5303-42CC-A657-EE843A85A472}">
-        <File Id="avformat56.dll" Source="$(var.OutputDir)\avformat-56.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component13" Guid="{DCA89F21-D790-428C-832D-C3D4914739A8}">
-        <File Id="avutil54.dll" Source="$(var.OutputDir)\avutil-54.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
       <Component Id="Component14" Guid="{F9E67635-6FC1-47F5-BE05-E31E0D625D75}">
         <File Id="DropNet.dll" Source="$(var.OutputDir)\DropNet.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component15" Guid="{30C799E8-EB65-4F9A-9333-554745F39F56}">
-        <File Id="ffmpeg.exe" Source="$(var.OutputDir)\ffmpeg.exe" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component18" Guid="{F4EAFFF8-965C-4C7E-AF53-F4C54B64DE1B}">
-        <File Id="FSharp.Core.dll" Source="$(var.OutputDir)\FSharp.Core.dll" KeyPath="yes" Checksum="yes" />
       </Component>
       <Component Id="Component20" Guid="{4DAFEDE5-43EB-4B6C-8BDA-2BF292436EF3}">
         <File Id="Google.Apis.Auth.dll" Source="$(var.OutputDir)\Google.Apis.Auth.dll" KeyPath="yes" Checksum="yes" />
@@ -189,7 +169,7 @@
         <File Id="iSpy.exe.config" Source="$(var.OutputDir)\iSpy.exe.config" KeyPath="yes" Checksum="yes" />
       </Component>
       <Component Id="Component44" Guid="{78F424B0-62FB-4550-B9E5-6AC67541A046}">
-        <File Id="iSpy.Video.FFMPEG.dll" Source="$(var.OutputDir)\iSpy.Video.FFMPEG.dll" KeyPath="yes" Checksum="yes" />
+        <File Id="FFmpeg.AutoGen.dll" Source="$(var.OutputDir)\FFmpeg.AutoGen.dll" KeyPath="yes" Checksum="yes" />
       </Component>
       <Component Id="Component47" Guid="{96BC8461-FAF2-4F5A-9E72-204F34E0AB4E}">
         <File Id="iSpy.XmlSerializers.dll" Source="$(var.OutputDir)\iSpy.XmlSerializers.dll" KeyPath="yes" Checksum="yes" />
@@ -233,21 +213,6 @@
       <Component Id="Component67" Guid="{2CE70BBE-48E5-499F-9109-F9BAB35C16F1}">
         <File Id="nVLC.LibVlcWrapper.dll" Source="$(var.OutputDir)\nVLC.LibVlcWrapper.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Id="Component68" Guid="{81DCF55D-0D8C-4449-A2AE-E76671CE8B1C}">
-        <File Id="onvif.discovery.dll" Source="$(var.OutputDir)\onvif.discovery.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component69" Guid="{08B82D92-52CE-41D8-994D-B181DFF8B103}">
-        <File Id="onvif.services.dll" Source="$(var.OutputDir)\onvif.services.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component70" Guid="{D90C4986-AE57-4DE6-91E6-001BBF1B2135}">
-        <File Id="onvif.session.dll" Source="$(var.OutputDir)\onvif.session.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component71" Guid="{5A04EC38-AE4C-4E01-98AF-37B577083110}">
-        <File Id="onvif.utils.dll" Source="$(var.OutputDir)\onvif.utils.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component72" Guid="{1DDD9335-862A-4395-AE01-4E10288B9AC9}">
-        <File Id="postproc53.dll" Source="$(var.OutputDir)\postproc-53.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
       <Component Id="Component73" Guid="{6B1C9858-607F-4F1C-B61D-A220D2A7581A}">
         <File Id="Renci.SshNet.dll" Source="$(var.OutputDir)\Renci.SshNet.dll" KeyPath="yes" Checksum="yes" />
       </Component>
@@ -262,12 +227,6 @@
       </Component>
       <Component Id="Component79" Guid="{18AA1BCB-2EEB-4234-A5F5-A9C5E7A543B8}">
         <File Id="SharpDX.dll" Source="$(var.OutputDir)\SharpDX.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component81" Guid="{44B7CDF3-8D34-40FE-9A59-C7A268CA6B08}">
-        <File Id="swresample1.dll" Source="$(var.OutputDir)\swresample-1.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component82" Guid="{C23B1DE6-7CF6-4EC8-B4B2-9C64D1F33E7C}">
-        <File Id="swscale3.dll" Source="$(var.OutputDir)\swscale-3.dll" KeyPath="yes" Checksum="yes" />
       </Component>
       <Component Id="Component83" Guid="{3D9C2168-BF25-4EE9-B813-9C27061DC74E}">
         <File Id="System.IO.dll" Source="$(var.OutputDir)\System.IO.dll" KeyPath="yes" Checksum="yes" />
@@ -284,29 +243,11 @@
       <Component Id="Component90" Guid="{365BF5AD-262A-4277-A82A-EA8BC633CAE7}">
         <File Id="System.Net.Http.WebRequest.dll" Source="$(var.OutputDir)\System.Net.Http.WebRequest.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Id="Component93" Guid="{8E2653CA-BDA7-45F8-8112-2BDB9894A6B9}">
-        <File Id="System.Reactive.Core.dll" Source="$(var.OutputDir)\System.Reactive.Core.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component94" Guid="{068CC207-7CBB-4B28-8075-EEBF12AC464D}">
-        <File Id="System.Reactive.Interfaces.dll" Source="$(var.OutputDir)\System.Reactive.Interfaces.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component95" Guid="{CE688B84-6A9E-42F1-83FD-36DB556519B3}">
-        <File Id="System.Reactive.Linq.dll" Source="$(var.OutputDir)\System.Reactive.Linq.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
       <Component Id="Component96" Guid="{800514B1-3A27-43A1-97FC-A7E57BB04D59}">
         <File Id="System.Runtime.dll" Source="$(var.OutputDir)\System.Runtime.dll" KeyPath="yes" Checksum="yes" />
       </Component>
       <Component Id="Component98" Guid="{7C7C8477-4B99-4CAB-9218-5A6C1E909F60}">
         <File Id="System.Threading.Tasks.dll" Source="$(var.OutputDir)\System.Threading.Tasks.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component100" Guid="{0CA5C6CA-EC27-4D75-B7FF-71D67C4A026C}">
-        <File Id="utils.common.dll" Source="$(var.OutputDir)\utils.common.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component101" Guid="{F6557BFC-A1F1-4480-A420-12AEA23EB843}">
-        <File Id="utils.diagnostics.dll" Source="$(var.OutputDir)\utils.diagnostics.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component102" Guid="{79C4F929-2C71-4450-A10C-56F2B0DC8F6F}">
-        <File Id="utils.fsharp.dll" Source="$(var.OutputDir)\utils.fsharp.dll" KeyPath="yes" Checksum="yes" />
       </Component>
       <Component Id="Component103" Guid="{E525BAE8-D11A-424D-AA13-438EF420EC4A}">
         <File Id="Windows7ToolStripRenderer.dll" Source="$(var.OutputDir)\Windows7ToolStripRenderer.dll" KeyPath="yes" Checksum="yes" />
@@ -322,6 +263,35 @@
       </Component>
       <Component Id="Monitor" Guid="{C7362D48-A9F1-45FE-8997-19A5D1A0A0EE}">
         <File Id="ispymonitor" Source="$(var.SourceCodeDir)\Supporting\iSpyMonitor.exe" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </ComponentGroup>
+    <ComponentGroup Id="FFMPEG" Directory="INSTALLFOLDER">
+      <Component Id="Component9" Guid="{18D43303-F6F9-4226-A84E-D9BCB6DB5030}">
+        <File Id="avcodec57.dll" Source="$(var.OutputDir)\avcodec-57.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component10" Guid="{920D9C2C-4F53-40C4-89F1-5CF2DBE5A5B8}">
+        <File Id="avdevice57.dll" Source="$(var.OutputDir)\avdevice-57.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component11" Guid="{6B16AD6E-12DE-475C-9736-9A0BA39073D6}">
+        <File Id="avfilter6.dll" Source="$(var.OutputDir)\avfilter-6.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component12" Guid="{19AD3C2B-5303-42CC-A657-EE843A85A472}">
+        <File Id="avformat57.dll" Source="$(var.OutputDir)\avformat-57.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component13" Guid="{DCA89F21-D790-428C-832D-C3D4914739A8}">
+        <File Id="avutil55.dll" Source="$(var.OutputDir)\avutil-55.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component15" Guid="{30C799E8-EB65-4F9A-9333-554745F39F56}">
+        <File Id="ffmpeg.exe" Source="$(var.OutputDir)\ffmpeg.exe" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component72" Guid="{1DDD9335-862A-4395-AE01-4E10288B9AC9}">
+        <File Id="postproc54.dll" Source="$(var.OutputDir)\postproc-54.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component81" Guid="{44B7CDF3-8D34-40FE-9A59-C7A268CA6B08}">
+        <File Id="swresample2.dll" Source="$(var.OutputDir)\swresample-2.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Component82" Guid="{C23B1DE6-7CF6-4EC8-B4B2-9C64D1F33E7C}">
+        <File Id="swscale4.dll" Source="$(var.OutputDir)\swscale-4.dll" KeyPath="yes" Checksum="yes" />
       </Component>
     </ComponentGroup>
     <ComponentGroup Id="XML" Directory="XML">

@@ -41,7 +41,7 @@ namespace iSpyApplication.Controls
             rdoHor.Checked = CameraControl.Camobject.settings.ptzautotrackmode == 2;
             numAutoHomeDelay.Value = CameraControl.Camobject.settings.ptzautohomedelay;
 
-            ddlHomeCommand.Items.Add(new MainForm.ListItem3("Center", "Center"));
+            ddlHomeCommand.Items.Add(new MainForm.ListItem("Center", "Center"));
 
             if (CameraControl.Camobject.ptz > -1)
             {
@@ -51,7 +51,7 @@ namespace iSpyApplication.Controls
                 {
                     foreach (var extcmd in ptz.ExtendedCommands.Command)
                     {
-                        ddlHomeCommand.Items.Add(new MainForm.ListItem3(extcmd.Name, extcmd.Value));
+                        ddlHomeCommand.Items.Add(new MainForm.ListItem(extcmd.Name, extcmd.Value));
                         if (CameraControl.Camobject.settings.ptzautohomecommand == extcmd.Value)
                         {
                             ddlHomeCommand.SelectedIndex = ddlHomeCommand.Items.Count - 1;
@@ -63,7 +63,7 @@ namespace iSpyApplication.Controls
             {
                 foreach (string cmd in PTZController.PelcoCommands)
                 {
-                    ddlHomeCommand.Items.Add(new MainForm.ListItem3(cmd, cmd));
+                    ddlHomeCommand.Items.Add(new MainForm.ListItem(cmd, cmd));
                     if (CameraControl.Camobject.settings.ptzautohomecommand == cmd)
                     {
                         ddlHomeCommand.SelectedIndex = ddlHomeCommand.Items.Count - 1;
@@ -75,10 +75,10 @@ namespace iSpyApplication.Controls
             if (CameraControl.Camobject.ptz == -5)
             {
                 ddlHomeCommand.Items.Clear();
-                foreach (string cmd in CameraControl.PTZ.ONVIFPresets)
+                foreach (var cmd in CameraControl.PTZ.ONVIFPresets)
                 {
-                    ddlHomeCommand.Items.Add(new MainForm.ListItem3(cmd, cmd));
-                    if (CameraControl.Camobject.settings.ptzautohomecommand == cmd)
+                    ddlHomeCommand.Items.Add(new MainForm.ListItem(cmd.Name, cmd.token));
+                    if (CameraControl.Camobject.settings.ptzautohomecommand == cmd.token)
                     {
                         ddlHomeCommand.SelectedIndex = ddlHomeCommand.Items.Count - 1;
                     }
@@ -114,8 +114,8 @@ namespace iSpyApplication.Controls
 
             if (ddlHomeCommand.SelectedIndex > -1)
             {
-                var li = ((MainForm.ListItem3)ddlHomeCommand.SelectedItem);
-                CameraControl.Camobject.settings.ptzautohomecommand = li.Value;
+                var li = ((MainForm.ListItem)ddlHomeCommand.SelectedItem);
+                CameraControl.Camobject.settings.ptzautohomecommand = li.Value.ToString();
             }
 
             if (chkTrack.Checked)

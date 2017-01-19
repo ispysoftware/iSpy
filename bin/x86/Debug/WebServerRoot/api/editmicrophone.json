@@ -1,0 +1,98 @@
+﻿{
+    "header": "Edit Microphone",
+    "okResult": "UploadJSON",
+    "name": "EditMicrophone",
+    "sections": [
+        {
+            "header": "General",
+            "displayType": "Form",
+            "items": [
+                { "text": "Name", "value": "", "type": "String", "bindto": "name" },
+                { "text": "Enabled", "value": "", "type": "Boolean", "bindto": "settings.active", "live": true },
+                {
+                    "text": "Source Type",
+                    "value": 0,
+                    "type": "Select",
+                    "bindto": "settings.typeindex",
+                    "id": "ddlSourceType",
+                    "options": [
+                        SOURCETYPES
+                    ],
+                    "live": true
+                },
+                { "text": "Configure", "value": "...", "type": "Button", "action": "editsource" },
+                { "text": "Sample Rate", "value": 16000, "type": "Int32", "min":0, "max":999999, bindto: "settings.samples" },
+                { "text": "Channels", "value": 1, "type": "Int32", "min":1, "max":2, bindto: "settings.channels" },
+                { "text": "Scheduling", "value": "", "type": "Boolean", bindto: "schedule.active" },
+                { "text": "Schedule", "value": "...", "type": "Button", "action": "showschedule" },
+                { "text": "Groups", "value": "", "type": "String", "bindto": "settings.accessgroups", "help": "Example: home,office  - see permissions" },
+            ]
+        },
+        {
+            "header": "Recording",
+            "displayType": "Form",
+            "items": [
+                { "text": "Record on Detect", "value": "", "type": "Boolean", "bindto": "detector.recordondetect" },
+                { "text": "Record on Alert", "value": "", "type": "Boolean", "bindto": "detector.recordonalert" },
+                { "text": "Max Record Time", "value": 0, "type": "Int32", "min": 1, "max": 999999999999, "bindto": "recorder.maxrecordtime", "help": "Maximum time to record before starting a new file (s)" },
+                { "text": "Min Record Time", "value": 0, "type": "Int32", "min": 1, "max": 999999999999, "bindto": "recorder.minrecordtime", "help": "Minimum time to record (s)" },
+                { "text": "Buffer", "value": 0, "type": "Int32", "min": 0, "max": 200, "bindto": "settings.buffer","help": "How much audio to buffer in memory (s)" }
+            ]
+        },
+        {
+            "header": "Detector",
+            "displayType": "Form",
+            "items": [
+                { "text": "Sensitivity", "value": [ ], "type": "Slider", "min": 1, "max": 100, "range": true, "bindto": "detector.minsensitivity,detector.maxsensitivity", "id": "arrSensitivity" },
+                { "text": "Gain", "value": 0, "type": "Decimal", "min": 1, "max": 100, "bindto": "detector.gain", "id": "numGain" },
+                { "text": "Level", "value": "", "type": "VolumeLevel", "help": "Adjust the sensitivity and gain to control sound detection." }
+            ]
+        },
+        {
+            "header": "Alerts",
+            "displayType": "Form",
+            "items": [
+                { "text": "Enabled", "value": "", "type": "Boolean", "bindto": "alerts.active" },
+                 {
+                    "text": "Mode",
+                    "value": "",
+                    "type": "Select",
+                    "bindto": "alerts.mode",
+                    "options": [
+                        { "text": "Sound", "value": "sound" },
+                        { "text": "No Sound", "value": "nosound" }
+                    ]
+                },
+                { "text": "Sound delay", "value": 0, "type": "Int32", "min": 0, "max": 9999, "bindto": "detector.soundinterval", "help": "Trigger an alert after sound detected (s)" },
+                { "text": "No sound delay", "value": 0, "type": "Int32", "min": 1, "max": 9999, "bindto": "detector.nosoundinterval", "help": "Trigger an alert after silence (s)"  },
+                { "text": "Messaging", "value": "", "type": "Boolean", "bindto": "settings.messaging" },
+                { "text": "Actions", "value": "...", "type": "Button", "action": "showactions", "help": "Specify actions to take on alert" },
+                { "text": "Intervals", "value": "", "type": "Header", "bindto": "" },
+                { "text": " Minimum Interval", "value": 0, "type": "Int32", "min": 1, "max": 99999999, "bindto": "alerts.minimuminterval", "help": "Minimum time between alerts (s)" },
+                { "text": " Group", "value": "", "type": "String", "bindto": "alerts.groupname", "help": "Specify a group name to combine intervals with other cameras" },
+                { "text": " Reset Interval", "value": 0, "type": "Int32", "min": 1, "max": 99999999, "bindto": "alerts.resetinterval", "help": "Time to reset after an alert is raised in the group" }
+            ]
+        },
+        {
+            "header": "Storage",
+            "displayType": "Form",
+            "items": [
+                {
+                    "text": "Drive",
+                    "value": "",
+                    "type": "Select",
+                    "bindto": "settings.directoryIndex",
+                    "options": [
+                        DIRECTORIES
+                    ],
+                    "help": "Add or edit locations in settings"
+                },
+                { "text": "Folder", "value": "", "type": "String", "bindto": "directory", "help": "Relative folder path from storage location" },
+                { "text": "Management", "value": "", "type": "Boolean", "bindto": "settings.storagemanagement.enabled" },
+                { "text": "Archive", "value": "", "type": "Boolean", "bindto": "settings.storagemanagement.archive", "help": "Move to the archive directory (see server settings) instead of deleting" },
+                { "text": "Max Size (Mb)", "value": "", "type": "Int32", "bindto": "settings.storagemanagement.maxsize", "help": "Maximum size of folder (MB)" },
+                { "text": "Max Age (Hours)", "value": "", "type": "Int32", "bindto": "settings.storagemanagement.maxage", "help":  "Maximum age of content (hours)" }
+            ]
+        }
+    ]
+}

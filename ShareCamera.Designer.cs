@@ -29,16 +29,16 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblType = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.txtModel = new System.Windows.Forms.TextBox();
-            this.txtMake = new System.Windows.Forms.TextBox();
-            this.btnAdd = new System.Windows.Forms.Button();
-            this.lblType = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnAdd = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.txtMake = new iSpyApplication.Controls.AutoCompleteTextbox();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -49,13 +49,13 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.50336F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 74.49664F));
             this.tableLayoutPanel1.Controls.Add(this.lblType, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.txtMake, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.label4, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.txtModel, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.txtMake, 1, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -68,6 +68,16 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(310, 214);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // lblType
+            // 
+            this.lblType.AutoSize = true;
+            this.lblType.Location = new System.Drawing.Point(88, 148);
+            this.lblType.Margin = new System.Windows.Forms.Padding(6);
+            this.lblType.Name = "lblType";
+            this.lblType.Size = new System.Drawing.Size(31, 13);
+            this.lblType.TabIndex = 7;
+            this.lblType.Text = "Type";
             // 
             // label1
             // 
@@ -112,17 +122,20 @@
             // 
             // txtModel
             // 
-            this.txtModel.Location = new System.Drawing.Point(84, 114);
+            this.txtModel.Location = new System.Drawing.Point(85, 114);
             this.txtModel.Name = "txtModel";
             this.txtModel.Size = new System.Drawing.Size(100, 20);
             this.txtModel.TabIndex = 4;
             // 
-            // txtMake
+            // flowLayoutPanel1
             // 
-            this.txtMake.Location = new System.Drawing.Point(84, 83);
-            this.txtMake.Name = "txtMake";
-            this.txtMake.Size = new System.Drawing.Size(100, 20);
-            this.txtMake.TabIndex = 5;
+            this.flowLayoutPanel1.Controls.Add(this.btnAdd);
+            this.flowLayoutPanel1.Controls.Add(this.button1);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(85, 176);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(216, 29);
+            this.flowLayoutPanel1.TabIndex = 8;
             // 
             // btnAdd
             // 
@@ -134,26 +147,6 @@
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
-            // lblType
-            // 
-            this.lblType.AutoSize = true;
-            this.lblType.Location = new System.Drawing.Point(87, 148);
-            this.lblType.Margin = new System.Windows.Forms.Padding(6);
-            this.lblType.Name = "lblType";
-            this.lblType.Size = new System.Drawing.Size(31, 13);
-            this.lblType.TabIndex = 7;
-            this.lblType.Text = "Type";
-            // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.Controls.Add(this.btnAdd);
-            this.flowLayoutPanel1.Controls.Add(this.button1);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(84, 176);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(217, 29);
-            this.flowLayoutPanel1.TabIndex = 8;
-            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(84, 3);
@@ -163,6 +156,16 @@
             this.button1.Text = "Skip";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // txtMake
+            // 
+            this.txtMake.Location = new System.Drawing.Point(85, 83);
+            this.txtMake.MaxDropDownItems = 20;
+            this.txtMake.MinTypedCharacters = 2;
+            this.txtMake.Name = "txtMake";
+            this.txtMake.SelectedIndex = -1;
+            this.txtMake.Size = new System.Drawing.Size(216, 20);
+            this.txtMake.TabIndex = 9;
             // 
             // ShareCamera
             // 
@@ -187,7 +190,6 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TextBox txtMake;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
@@ -197,5 +199,6 @@
         private System.Windows.Forms.Label lblType;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button button1;
+        private Controls.AutoCompleteTextbox txtMake;
     }
 }

@@ -6,11 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows.Forms;
+using iSpyApplication.Controls;
 using iSpyApplication.Utilities;
 
 namespace iSpyApplication
@@ -40,6 +39,74 @@ namespace iSpyApplication
             }
         }
 
+        public static string RTSPMode(int mode)
+        {
+            switch (mode)
+            {
+                case 2:
+                    return "udp";
+                case 3:
+                    return "udp_multicast";
+                case 4:
+                    return "http";
+                default:
+                    return "tcp";
+            }
+        }
+
+        public static string NVLookup(CameraWindow c, string name)
+        {
+            var t = c.Camobject.settings.namevaluesettings.Split(',').ToList();
+            var nv = t.FirstOrDefault(p => p.ToLowerInvariant().StartsWith(name.ToLowerInvariant() + "="));
+            if (nv == null)
+                return "";
+            return nv.Split('=')[1].Trim();
+
+        }
+
+        public static string GetLevelDataPoints(StringBuilder motionData)
+        {
+            var elements = motionData.ToString().Trim(',').Split(',');
+            if (elements.Length <= 1200)
+                return String.Join(",", elements);
+
+            var interval = (elements.Length / 1200d);
+            var newdata = new StringBuilder(motionData.Length);
+            var iIndex = 0;
+            double dMax = 0;
+            var tMult = 1;
+            double target = 0;
+
+            for (var i = 0; i < elements.Length; i++)
+            {
+                try
+                {
+                    var dTemp = Convert.ToDouble(elements[i]);
+                    if (dTemp > dMax)
+                    {
+                        dMax = dTemp;
+                        iIndex = i;
+                    }
+                    if (i > target)
+                    {
+                        newdata.Append(elements[iIndex] + ",");
+                        tMult++;
+                        target = tMult * interval;
+                        dMax = 0;
+
+                    }
+                }
+                catch (Exception)
+                {
+                    //extremely long recordings can break
+                    break;
+                }
+            }
+            string r = newdata.ToString().Trim(',');
+            newdata.Clear();
+            return r;
+
+        }
         public static Rectangle GetArea(Rectangle container, int imageW, int imageH)
         {
             int contH = container.Height;

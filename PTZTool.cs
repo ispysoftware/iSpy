@@ -63,9 +63,9 @@ namespace iSpyApplication
                             case -5:
                                 //ONVIF
                                 ddlExtended.Items.Add(new ListItem(LocRm.GetString("SelectCommand"), ""));
-                                foreach(string cmd in CameraControl.PTZ.ONVIFPresets)
+                                foreach(var cmd in CameraControl.PTZ.ONVIFPresets)
                                 {
-                                    ddlExtended.Items.Add(new ListItem(cmd, cmd));
+                                    ddlExtended.Items.Add(new ListItem(cmd.Name, cmd.token));
                                 }
                                 pnlController.Enabled = true;
                                 break;

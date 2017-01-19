@@ -1,0 +1,48 @@
+﻿{
+    "header": "Action Configuration",
+    "okResult": "UploadJSON",
+    "name": "EditAction",
+    "ident": "new",
+    "sections": [
+        {
+            "header": "Action",
+            "displayType": "Form",
+            "items": [
+                {
+                    "text": "Active",
+                    "value": "",
+                    "type": "Boolean",
+                    "bindto": "active",
+                    "id": "chkActive"
+                },
+                {
+                    "text": "When",
+                    "value": "",
+                    "type": "Select",
+                    "bindto": "mode",
+                    "id": "ddlMode",
+                    "options": [
+                        { "text": "Alert", "value": "alert" },
+                        { "text": "Source Reconnected", "value": "reconnect" },
+                        { "text": "Reconnect Failed", "value": "reconnectfailed" },
+                        { "text": "Source Disconnected", "value": "disconnect" },
+                        { "text": "Alert Finished", "value": "alertstopped" },
+                        { "text": "Recording Started", "value": "recordingstarted" },
+                        { "text": "Recording Finished", "value": "recordingstopped" }
+                    ]
+                },
+                {
+                    "text": "Do",
+                    "value": "",
+                    "type": "Select",
+                    "bindto": "type",
+                    "options": [
+                        ACTIONS
+                    ],
+                    "command": "editaction"
+                }PARAMS
+
+            ]
+        }
+    ]
+}

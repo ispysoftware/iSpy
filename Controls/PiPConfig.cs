@@ -32,7 +32,7 @@ namespace iSpyApplication.Controls
 
             foreach (var cam in MainForm.Cameras)
             {
-                ddlCamera.Items.Add(new MainForm.ListItem2(cam.name, cam.id));
+                ddlCamera.Items.Add(new MainForm.ListItem(cam.name, cam.id));
             }
             if (ddlCamera.Items.Count > 0)
                 ddlCamera.SelectedIndex = 0;
@@ -57,8 +57,8 @@ namespace iSpyApplication.Controls
 
         private void ddlCamera_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var li = (MainForm.ListItem2) ddlCamera.SelectedItem;
-            areaSelector1.CurrentCameraID = li.Value;
+            var li = (MainForm.ListItem) ddlCamera.SelectedItem;
+            areaSelector1.CurrentCameraID = (int)li.Value;
         }
 
         private void chkEnable_CheckedChanged(object sender, EventArgs e)

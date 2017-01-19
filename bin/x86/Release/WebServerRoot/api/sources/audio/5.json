@@ -1,0 +1,12 @@
+﻿[
+    { "text": "Clone", "value": "", "type": "Header" },
+    {
+        "text": "Microphone",
+        "value": "",
+        "type": "Select",
+        "bindto": "settings.sourcename",
+        "options": [ 
+            MICROPHONES
+        ]
+    }
+]

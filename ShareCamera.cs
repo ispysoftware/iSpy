@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
+using iSpyApplication.Controls;
 using iSpyApplication.Utilities;
 
 namespace iSpyApplication
@@ -9,6 +11,7 @@ namespace iSpyApplication
         public ShareCamera()
         {
             InitializeComponent();
+            LoadSources();
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -41,7 +44,28 @@ namespace iSpyApplication
 
             }
         }
+        private HashSet<string> _hashdata;
+        private void LoadSources()
+        {
+            var camDb = new List<AutoCompleteTextbox.TextEntry>();
 
+            _hashdata = new HashSet<string>();
+
+            foreach (var source in MainForm.Sources)
+            {
+                string name = source.name.Trim();
+                if (!_hashdata.Contains(name.ToUpper()))
+                {
+                    camDb.Add(new AutoCompleteTextbox.TextEntry(name));
+                    _hashdata.Add(name.ToUpper());
+                }
+                
+            }
+
+
+            txtMake.AutoCompleteList = camDb;
+            txtMake.MinTypedCharacters = 1;
+        }
         private void ShareCamera_Load(object sender, EventArgs e)
         {
             txtMake.Text = FindCameras.LastConfig.Iptype;

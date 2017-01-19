@@ -270,6 +270,8 @@ namespace iSpyApplication
 
                 if (_conf.Joystick == null)
                     _conf.Joystick = new configurationJoystick();
+                if (_conf.GPU == null)
+                    _conf.GPU = new configurationGPU {nVidia = false, QuickSync = false};
 
                 if (string.IsNullOrEmpty(_conf.AppendLinkText))
                     _conf.AppendLinkText = "<br/>ispyconnect.com";
@@ -3935,10 +3937,10 @@ namespace iSpyApplication
 
         #region Nested type: ListItem
 
-        public struct ListItem
+        public class ListItem
         {
             private readonly string _name;
-            internal readonly string[] Value;
+            internal readonly object Value;
 
             public ListItem(string name, string[] value)
             {
@@ -3946,18 +3948,13 @@ namespace iSpyApplication
                 Value = value;
             }
 
-            public override string ToString()
+            public ListItem(string name, int value)
             {
-                return _name;
+                _name = name;
+                Value = value;
             }
-        }
 
-        public struct ListItem2
-        {
-            private readonly string _name;
-            internal readonly int Value;
-
-            public ListItem2(string name, int value)
+            public ListItem(string name, string value)
             {
                 _name = name;
                 Value = value;
@@ -3966,23 +3963,6 @@ namespace iSpyApplication
             public override string ToString()
             {
                 return _name;
-            }
-        }
-
-        public class ListItem3
-        {
-            internal readonly string Value;
-            internal readonly string Name;
-
-            public ListItem3(string name, string value)
-            {
-                Name = name;
-                Value = value;
-            }
-
-            public override string ToString()
-            {
-                return Name;
             }
         }
 

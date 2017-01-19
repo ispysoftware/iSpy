@@ -120,7 +120,7 @@ namespace iSpyApplication.Controls
                 {
                     foreach (var extcmd in ptz.ExtendedCommands.Command)
                     {
-                        ddlScheduleCommand.Items.Add(new MainForm.ListItem3(extcmd.Name, extcmd.Value));
+                        ddlScheduleCommand.Items.Add(new MainForm.ListItem(extcmd.Name, extcmd.Value));
                     }
                 }
             }
@@ -128,15 +128,15 @@ namespace iSpyApplication.Controls
             {
                 foreach (string cmd in PTZController.PelcoCommands)
                 {
-                    ddlScheduleCommand.Items.Add(new MainForm.ListItem3(cmd, cmd));
+                    ddlScheduleCommand.Items.Add(new MainForm.ListItem(cmd, cmd));
                 }
 
             }
 
             if (CameraControl.Camobject.ptz == -5)
             {
-                foreach (string cmd in CameraControl.PTZ.ONVIFPresets)
-                    ddlScheduleCommand.Items.Add(new MainForm.ListItem3(cmd, cmd));
+                foreach (var preset in CameraControl.PTZ.ONVIFPresets)
+                    ddlScheduleCommand.Items.Add(new MainForm.ListItem(preset.Name, preset.Name));
             }
             if (ddlScheduleCommand.Items.Count > 0)
                 ddlScheduleCommand.SelectedIndex = 0;

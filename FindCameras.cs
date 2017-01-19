@@ -697,7 +697,7 @@ namespace iSpyApplication
                 {
                     try
                     {
-                        ((RadioButton)pnlOptions.Controls[i]).Checked = true;
+                        UISync.Execute(() => ((RadioButton) pnlOptions.Controls[i]).Checked = true);
                     }
                     catch
                     {
@@ -833,7 +833,8 @@ namespace iSpyApplication
                 request += "\r\n";
 
                 IPAddress host = IPAddress.Parse(uri.DnsSafeHost);
-                var hostep = new IPEndPoint(host, uri.Port);
+                
+                var hostep = new IPEndPoint(host, !uri.IsDefaultPort?uri.Port:554);
 
                 var sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
                                {ReceiveTimeout = 2000};

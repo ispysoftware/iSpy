@@ -71,7 +71,7 @@ namespace iSpyApplication.Controls
                 var n = c.name;
                 if (n.StartsWith("cmd_"))
                     n = LocRm.GetString(n);
-                ddlCommand.Items.Add(new MainForm.ListItem2(n, c.id));
+                ddlCommand.Items.Add(new MainForm.ListItem(n, c.id));
             }
             if (ddlCommand.Items.Count == 0)
             {
@@ -99,7 +99,7 @@ namespace iSpyApplication.Controls
 
         private void button1_Click(object sender, EventArgs e)
         {
-            CMD = MainForm.RemoteCommands.FirstOrDefault(p => p.id == ((MainForm.ListItem2)ddlCommand.SelectedItem).Value);
+            CMD = MainForm.RemoteCommands.FirstOrDefault(p => p.id == (int)((MainForm.ListItem)ddlCommand.SelectedItem).Value);
             if (CMD != null)
             {
                 CMD.font = CustomFont.SerializeFontAttribute;
@@ -122,7 +122,7 @@ namespace iSpyApplication.Controls
         private void ValidateSize()
         {
             var cmd =
-               MainForm.RemoteCommands.FirstOrDefault(p => p.id == ((MainForm.ListItem2)ddlCommand.SelectedItem).Value);
+               MainForm.RemoteCommands.FirstOrDefault(p => p.id == (int)((MainForm.ListItem)ddlCommand.SelectedItem).Value);
 
             if (cmd != null)
             {

@@ -31,7 +31,7 @@ namespace iSpyApplication
         {
             foreach (var cam in MainForm.Cameras)
             {
-                lbCameras.Items.Add(new MainForm.ListItem2(cam.name,cam.id));
+                lbCameras.Items.Add(new MainForm.ListItem(cam.name,cam.id));
             }
 
             var s = MainForm.Conf.DeviceDriverDefault.Split(',');
@@ -39,8 +39,8 @@ namespace iSpyApplication
             {
                 for(int i=0;i<lbCameras.Items.Count;i++)
                 {
-                    var s3 = (MainForm.ListItem2) lbCameras.Items[i];
-                    if (s3.Value.ToString(CultureInfo.InvariantCulture) == s2)
+                    var s3 = (MainForm.ListItem) lbCameras.Items[i];
+                    if (((int)s3.Value).ToString(CultureInfo.InvariantCulture) == s2)
                     {
                         lbCameras.SetSelected(i,true);
                     }
@@ -54,7 +54,7 @@ namespace iSpyApplication
             if (!_loaded)
                 return;
             var s = "";
-            foreach (MainForm.ListItem2 s2 in lbCameras.SelectedItems)
+            foreach (MainForm.ListItem s2 in lbCameras.SelectedItems)
             {
                 s += s2.Value + ",";
             }

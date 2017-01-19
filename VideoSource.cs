@@ -1,27 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Windows.Forms;
 using Declarations;
 using Declarations.Events;
 using Declarations.Media;
 using Declarations.Players;
 using Implementation;
-using iSpy.Video.FFMPEG;
 using iSpyApplication.Controls;
+using iSpyApplication.Onvif;
 using iSpyApplication.Sources.Video;
 using iSpyApplication.Sources.Video.Ximea;
 using iSpyApplication.Utilities;
 using iSpyPRO.DirectShow;
 using Microsoft.Kinect;
-using odm.core;
-using onvif.services;
-using onvif.utils;
-using utils;
 using Rectangle = System.Drawing.Rectangle;
 
 namespace iSpyApplication
@@ -41,7 +37,6 @@ namespace iSpyApplication
         public bool StartWizard = false;
         private bool _loaded;
 
-        private readonly object[] _transports = {"RTSP", "HTTP", "UDP", "TCP"};
         //do not put a comma in this description!
         public static string VideoFormatString = "{0} x {1} ({3} bit up to {2} fps)";
         public static string SnapshotFormatString = "{0} x {1} ({3} bit)";
@@ -159,6 +154,7 @@ namespace iSpyApplication
             {
                 ListEmptyCaptureDevices();
             }
+
         }
 
         private void ListEmptyCaptureDevices()
@@ -193,8 +189,8 @@ namespace iSpyApplication
             cmbFile.Text = MainForm.Conf.AVIFileName;
             ConfigureSnapshots = true;
 
-            txtOnvifUsername.Text = txtLogin.Text = txtLogin2.Text = CameraControl.Camobject.settings.login;
-            txtOnvifPassword.Text = txtPassword.Text = txtPassword2.Text = CameraControl.Camobject.settings.password;
+            txtLogin.Text = txtLogin2.Text = CameraControl.Camobject.settings.login;
+            txtPassword.Text = txtPassword2.Text = CameraControl.Camobject.settings.password;
             
 
             VideoSourceString = CameraControl.Camobject.settings.videosourcestring;
@@ -213,7 +209,7 @@ namespace iSpyApplication
             foreach (var cam in MainForm.Cameras)
             {
                 if (cam.id != CameraControl.Camobject.id && cam.settings.sourceindex!=10) //dont allow a clone of a clone as the events get too complicated (and also it's pointless)
-                    ddlCloneCamera.Items.Add(new MainForm.ListItem2(cam.name, cam.id));
+                    ddlCloneCamera.Items.Add(new MainForm.ListItem(cam.name, cam.id));
             }
 
             ddlCustomProvider.SelectedIndex = 0;
@@ -248,9 +244,9 @@ namespace iSpyApplication
                     int id;
                     if (Int32.TryParse(VideoSourceString, out id))
                     {
-                        foreach (MainForm.ListItem2 li in ddlCloneCamera.Items)
+                        foreach (MainForm.ListItem li in ddlCloneCamera.Items)
                         {
-                            if (li.Value == id)
+                            if ((int)li.Value == id)
                             {
                                 ddlCloneCamera.SelectedItem = li;
                                 break;
@@ -413,26 +409,14 @@ namespace iSpyApplication
                 }
             }
 
-            ddlTransport.Items.AddRange(_transports);
-            ddlTransport.SelectedIndex = 0;
             ddlRTSP.SelectedIndex = CameraControl.Camobject.settings.rtspmode;
 
-            chkConnectVLC.Enabled = chkConnectVLC.Checked = VlcHelper.VlcInstalled;
-
-            int j = 0;
-            foreach(var dev in MainForm.ONVIFDevices)
-            {
-                string n = dev.Name;
-                if (!string.IsNullOrEmpty(dev.Location))
-                    n += " (" + dev.Location + ")";
-                lbONVIFDevices.Items.Add(new MainForm.ListItem2(n,j));
-                j++;
-            }
-           
+            onvifWizard1.CameraControl = CameraControl;
             _loaded = true;
             if (StartWizard) Wizard();
 
         }
+
 
         private void SetSourceIndex(int sourceIndex)
         {
@@ -488,15 +472,7 @@ namespace iSpyApplication
         
         private string NV(string name)
         {
-            if (string.IsNullOrEmpty(CameraControl.Camobject.settings.namevaluesettings))
-                return "";
-            name = name.ToLower().Trim();
-            string[] settings = CameraControl.Camobject.settings.namevaluesettings.Split(',');
-            foreach (string[] nv in settings.Select(s => s.Split('=')).Where(nv => nv[0].ToLower().Trim() == name))
-            {
-                return nv[1];
-            }
-            return "";
+            return Helper.NVLookup(CameraControl, name);
         }
 
         private void RenderResources()
@@ -509,8 +485,8 @@ namespace iSpyApplication
             label11.Text = LocRm.GetString("Screen");
             label12.Text = LocRm.GetString("milliseconds");
             label13.Text = LocRm.GetString("FrameInterval");
-            lblUsername.Text = label15.Text = LocRm.GetString("Username");
-            lblPassword.Text = label17.Text = LocRm.GetString("Password");
+            label15.Text = LocRm.GetString("Username");
+            label17.Text = LocRm.GetString("Password");
             label2.Text = LocRm.GetString("MjpegUrl");
             label5.Text = label15.Text = LocRm.GetString("Username");
             label6.Text = label17.Text = LocRm.GetString("Password");
@@ -557,8 +533,6 @@ namespace iSpyApplication
             LocRm.SetString(label34, "Provider");
             LocRm.SetString(label45, "BorderTimeout");
             LocRm.SetString(label14, "Camera");
-            button8.Text = LocRm.GetString("ScanNetwork");
-            chkConnectVLC.Text = LocRm.GetString("UseVLCToConnect");
             chkAutoImageSettings.Text = LocRm.GetString("AutomaticImageSettings");
             rdoCaptureSnapshots.Text = LocRm.GetString("Snapshots");
             rdoCaptureVideo.Text = LocRm.GetString("Video");
@@ -817,28 +791,27 @@ namespace iSpyApplication
                     CameraControl.Camobject.settings.bordertimeout = Convert.ToInt32(numBorderTimeout.Value);
                     break;
                 case 9:
-                    if (!(lbONVIFURLs.SelectedItem is MainForm.ListItem))
+
+                    var cfg = onvifWizard1.lbOnvifURLs.SelectedItem as ONVIFDevice.MediaEndpoint;
+                    if (cfg == null)
                     {
                         MessageBox.Show(LocRm.GetString("Validate_SelectCamera"), LocRm.GetString("Note"));
                         return;
                     }
-                    var li = (MainForm.ListItem) lbONVIFURLs.SelectedItem;
-                    url = li.Value[0];
-                    url = url.Replace("[USERNAME]", li.Value[2]);
-                    url = url.Replace("[PASSWORD]", li.Value[3]);
+
+                    url = cfg.URI.Uri;
+                    CameraLogin = onvifWizard1.txtOnvifUsername.Text;
+                    CameraPassword = onvifWizard1.txtOnvifPassword.Text;
+
                     VideoSourceString = url;
                     CameraControl.Camobject.settings.analyseduration = (int)numAnalyseDuration.Value;
-                    CameraControl.Camobject.settings.onvifident = _onvifurl + "|" + lbONVIFURLs.SelectedIndex;
+                    CameraControl.Camobject.settings.onvifident = onvifWizard1.ddlDeviceURL.Text + "|" + onvifWizard1.lbOnvifURLs.SelectedIndex;
                     CameraControl.Camobject.ptz = -5;//onvif
-                    CameraControl.PTZ.ResetONVIF();
+                    CameraControl.Camobject.settings.rtspmode = onvifWizard1.ddlTransport.SelectedIndex;
+                    
+                    SetVideoSize(new Size(cfg.Config.Bounds.width, cfg.Config.Bounds.height));
 
-                    CameraLogin = txtOnvifUsername.Text;
-                    CameraPassword = txtOnvifPassword.Text;
-
-                    string[] sz = li.Value[1].Split('x');
-                    SetVideoSize(new Size(Convert.ToInt32(sz[0]), Convert.ToInt32(sz[1])));
-
-                    if (chkConnectVLC.Checked)
+                    if (onvifWizard1.ddlConnectWith.SelectedIndex==1)
                     {
                         SourceIndex = 5;
                         CameraControl.Camobject.settings.vlcargs = txtVLCArgs.Text.Trim();
@@ -847,21 +820,20 @@ namespace iSpyApplication
                         SourceIndex = 2;
 
                     //add to find camera so can prompt to save it
-                    var u = new Uri(url);
-                    FindCameras.LastConfig.Prefix = u.Scheme + "://";
-                    FindCameras.LastConfig.Source = "FFMPEG";
-                    FindCameras.LastConfig.URL = u.AbsolutePath;
-                    FindCameras.LastConfig.Cookies = "";
-                    FindCameras.LastConfig.Flags = "";
-                    FindCameras.LastConfig.Port = u.Port;
-                    FindCameras.LastConfig.Iptype = li.Value[4];
-                    FindCameras.LastConfig.Ipmodel = "";
-                    FindCameras.LastConfig.PromptSave = true;
+                    //var u = new Uri(url);
+                    //FindCameras.LastConfig.Prefix = u.Scheme + "://";
+                    //FindCameras.LastConfig.Source = "FFMPEG";
+                    //FindCameras.LastConfig.URL = u.AbsolutePath;
+                    //FindCameras.LastConfig.Cookies = "";
+                    //FindCameras.LastConfig.Flags = "";
+                    //FindCameras.LastConfig.Port = u.Port;
+                    //FindCameras.LastConfig.Ipmodel = "";
+                    //FindCameras.LastConfig.PromptSave = true;
                     break;
                 case 10:
                     if (ddlCloneCamera.SelectedIndex>-1)
                     {
-                        int camid = ((MainForm.ListItem2) ddlCloneCamera.SelectedItem).Value;
+                        int camid = (int)((MainForm.ListItem) ddlCloneCamera.SelectedItem).Value;
                         VideoSourceString = camid.ToString(CultureInfo.InvariantCulture);
                         var cam = MainForm.Cameras.First(p => p.id == camid);
                         FriendlyName = "Clone: " + cam.name;
@@ -959,6 +931,7 @@ namespace iSpyApplication
 
         private void VideoSource_FormClosing(object sender, FormClosingEventArgs e)
         {
+            onvifWizard1.Deinit();
         }
 
 
@@ -1667,259 +1640,44 @@ namespace iSpyApplication
         {
         }
 
-        #region ONVIF       
-
-        void OnNodeLoaded(INvtNode node)
-        {
-            if (IsDisposed || Disposing)
-                return;
-            if (node.identity.uris.Length != 0)
-            {
-                try
-                {
-                    var devHolder = new DeviceDescriptionHolder();
-                    var scopes = node.identity.scopes.Select(x => x.OriginalString).ToList();
-                    devHolder.Uris = node.identity.uris;
-
-                    devHolder.Address = "";
-                    foreach (var uri in devHolder.Uris)
-                    {
-                        if (uri.IsAbsoluteUri)
-                            devHolder.Address += uri.DnsSafeHost + "; ";
-                    }
-
-                    devHolder.Address = devHolder.Address.TrimEnd(';', ' ');
-                    if (devHolder.Address == "")
-                    {
-                        devHolder.IsInvalidUris = true;
-                        devHolder.Address = "Invalid Uri";
-                    }
-                    devHolder.Name = ScopeHelper.GetName(scopes);
-                    devHolder.Location = ScopeHelper.GetLocation(scopes);
-                    devHolder.DeviceIconUri = ScopeHelper.GetDeviceIconUri(scopes);
-
-                    MainForm.ONVIFDevices.Add(devHolder);
-
-                    string n = devHolder.Name;
-                    if (!string.IsNullOrEmpty(devHolder.Location))
-                        n += " (" + devHolder.Location + ")";
-
-                    lbONVIFDevices.Items.Add(new MainForm.ListItem2(n, MainForm.ONVIFDevices.Count - 1));
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogExceptionToFile(ex);
-                }
-            }
-        }
-
-
-        private void lbONVIFDevices_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            
-        }
-
-        private Timer _onvifTimer;
-        private const int OnvifTimeout = 20;
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            MainForm.ONVIFDevices.Clear();
-            lbONVIFDevices.Items.Clear();
-            button8.Enabled = false;
-            INvtManager deviceManager = new NvtManager();
-            deviceManager.Observe().Subscribe(OnNodeLoaded);
-            deviceManager.Discover(TimeSpan.FromSeconds(OnvifTimeout));
-            _onvifTimer = new Timer { Interval = OnvifTimeout * 1000 };
-            _onvifTimer.Tick += Tick;
-            _onvifTimer.Start();
-        }
-
-        void Tick(object sender, EventArgs e)
-        {
-            if (!IsDisposed && !Disposing)
-            {
-                button8.Enabled = true;
-                _onvifTimer.Dispose();
-            }
-        }
-
-        #endregion
-
-        private string _onvifurl;
-
-        private void lbONVIFDevices_Click(object sender, EventArgs e)
-        {
-            lbONVIFURLs.Items.Clear();
-            _onvifurl = "";
-
-            if (lbONVIFDevices.SelectedIndex > -1)
-            {
-                lbONVIFDevices.Enabled = false;
-                lbONVIFURLs.Items.Add("loading...");
-
-                DeviceDescriptionHolder ddh = MainForm.ONVIFDevices[lbONVIFDevices.SelectedIndex];
-                ddh.Account = new NetworkCredential { UserName = txtOnvifUsername.Text, Password = txtOnvifPassword.Text };
-                var sessionFactory = new NvtSessionFactory(ddh.Account);
-                
-                var urls = new List<object>();
-
-                foreach (var uri in ddh.Uris)
-                {
-                    var f = sessionFactory.CreateSession(uri);
-                    ddh.URL = uri.ToString();
-                    Profile[] profiles;
-                    try
-                    {
-                        profiles = f.GetProfiles().RunSynchronously();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.LogExceptionToFile(ex);
-                        urls.Add("Ensure your login information is correct.");
-                        continue;
-                    }
-
-                    ddh.Profiles = profiles;
-                    var strSetup = new StreamSetup { transport = new Transport() };
-                    TransportProtocol tp;
-                    strSetup.transport.protocol = Enum.TryParse(_transports[ddlTransport.SelectedIndex].ToString(), true, out tp) ? tp : TransportProtocol.rtsp;
-                    int i = 0;
-                    foreach (var p in profiles)
-                    {
-                        var strUri = f.GetStreamUri(strSetup, p.token).RunSynchronously();
-                        string urlAuth = strUri.uri.Replace("://",
-                                                        "://[USERNAME]:[PASSWORD]@");
-                        string uriDisp = strUri.uri;
-                        string streamSize = p.videoEncoderConfiguration.resolution.width + "x" + p.videoEncoderConfiguration.resolution.height;
-                        uriDisp += " (" + streamSize + ")";
-
-                        urls.Add(new MainForm.ListItem(uriDisp, new[] { urlAuth, streamSize, ddh.Account.UserName, ddh.Account.Password, ddh.Name,i.ToString(CultureInfo.InvariantCulture)}));
-                        i++;
-
-                    }
-
-                }
-                lbONVIFURLs.Items.Clear();
-                lbONVIFURLs.Items.AddRange(urls.ToArray());
-                lbONVIFDevices.Enabled = true;
-                _onvifurl = ddh.URL;
-
-            }
-        }
-
-        private void lbONVIFURLs_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void linkLabel6_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            if (lbONVIFDevices.SelectedIndex > -1)
-            {
-                var dev = MainForm.ONVIFDevices[lbONVIFDevices.SelectedIndex];
-                var p = new Prompt(LocRm.GetString("NetworkAddress"), dev.Uris[0].AbsoluteUri);
-                if (p.ShowDialog(this) == DialogResult.OK)
-                {
-                    Uri u;
-                    if (!Uri.TryCreate(p.Val, UriKind.Absolute, out u))
-                    {
-                        MessageBox.Show(this, LocRm.GetString("InvalidURI"));
-                        return;
-                    }
-                    dev.Uris = new[] {u};
-                    dev.Address = "";
-                    dev.Address += u.DnsSafeHost + "; ";
-                    dev.Address = dev.Address.TrimEnd(';', ' ');
-                    if (dev.Address == "")
-                    {
-                        dev.IsInvalidUris = true;
-                        dev.Address = LocRm.GetString("InvalidURI");
-                    }
-                    dev.Name = u.AbsoluteUri;
-                    dev.Location = LocRm.GetString("Unknown");
-                    dev.DeviceIconUri = null;
-
-                    lbONVIFDevices.Refresh();
-                }
-                p.Dispose();
-            }
-        }
-
-        private void linkLabel8_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            var p = new Prompt(LocRm.GetString("NetworkAddress"), "http://192.168.0.1/onvif/device_service");
-            if (p.ShowDialog(this) == DialogResult.OK)
-            {
-                Uri u;
-                if (!Uri.TryCreate(p.Val, UriKind.Absolute, out u))
-                {
-                    MessageBox.Show(this, LocRm.GetString("InvalidURI"));
-                    return;
-                }
-                var devHolder = new DeviceDescriptionHolder { Uris = new[] { u }, Address = "" };
-                devHolder.Address += u.DnsSafeHost + "; ";
-                devHolder.Address = devHolder.Address.TrimEnd(';', ' ');
-                if (devHolder.Address == "")
-                {
-                    devHolder.IsInvalidUris = true;
-                    devHolder.Address = LocRm.GetString("InvalidURI");
-                }
-                devHolder.Name = u.AbsoluteUri;
-                devHolder.Location = LocRm.GetString("Unknown");
-                devHolder.DeviceIconUri = null;
-
-                MainForm.ONVIFDevices.Add(devHolder);
-                lbONVIFDevices.Items.Add(new MainForm.ListItem2(devHolder.Name,
-                                                                MainForm.ONVIFDevices.Count - 1));
-            }
-            p.Dispose();
-        }
-
-        private void linkLabel7_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            if (lbONVIFDevices.SelectedIndex > -1)
-            {
-                MainForm.ONVIFDevices.RemoveAt(lbONVIFDevices.SelectedIndex);
-                lbONVIFDevices.Items.RemoveAt(lbONVIFDevices.SelectedIndex);
-            }
-        }
+        private MediaStream vfr;
 
         private void btnTest_Click(object sender, EventArgs e)
         {
-            btnTest.Enabled = false;
+           
             string res = "OK";
             try
             {
                 Program.FfmpegMutex.WaitOne();
                 string source = cmbFile.Text;
-                using (var vfr = new VideoFileReader())
-                {
+                
 
                     int i = source.IndexOf("://", StringComparison.Ordinal);
                     if (i > -1)
                     {
                         source = source.Substring(0, i).ToLower() + source.Substring(i);
                     }
-
-                    vfr.Timeout = CameraControl.Camobject.settings.timeout;
-                    vfr.AnalyzeDuration = (int) numAnalyseDuration.Value;
-                    vfr.Cookies = CameraControl.Camobject.settings.cookies;
-                    vfr.UserAgent = CameraControl.Camobject.settings.useragent;
-                    vfr.Headers = CameraControl.Camobject.settings.headers;
-                    vfr.RTSPMode = ddlRTSP.SelectedIndex;
-                    vfr.Flags = -1;
-                    vfr.NoBuffer = true;
-                    vfr.Open(source);
-                    var f = vfr.ReadFrame();
-                    if (f == null)
-                        throw new Exception("Could not read from url");
-                }
+                vfr = new MediaStream(source)
+                      {
+                          Timeout = CameraControl.Camobject.settings.timeout,
+                          AnalyzeDuration = (int) numAnalyseDuration.Value,
+                          Cookies = CameraControl.Camobject.settings.cookies,
+                          UserAgent = CameraControl.Camobject.settings.useragent,
+                          Headers = CameraControl.Camobject.settings.headers,
+                          RTSPmode = Helper.RTSPMode(ddlRTSP.SelectedIndex),
+                          Flags = -1,
+                          NoBuffer = true
+                      };
+                vfr.NewFrame += Vfr_NewFrame;
+                vfr.ErrorHandler += Vfr_ErrorHandler;
+                vfr.PlayingFinished += Vfr_PlayingFinished;
+                btnTest.Enabled = false;
+                vfr.Start();
 
             }
             catch (Exception ex)
             {
-                res = ex.Message;
+                MessageBox.Show(ex.Message);
             }
             finally
             {
@@ -1932,11 +1690,29 @@ namespace iSpyApplication
                     //can happen on shutdown
                 }
             }
-
-            MessageBox.Show(res);
-            btnTest.Enabled = true;
+            
         }
 
+        private void Vfr_PlayingFinished(object sender, Sources.PlayingFinishedEventArgs e)
+        {
+            UISync.Execute(() => {
+                                     btnTest.Enabled = true; });
+        }
+
+        private void Vfr_ErrorHandler(string message)
+        {
+            UISync.Execute(() => {
+                                     MessageBox.Show(this, "Connection Failed");
+            });
+            vfr.Close();
+        }
+
+        private void Vfr_NewFrame(object sender, Sources.NewFrameEventArgs e)
+        {
+            UISync.Execute(() => {
+                                     MessageBox.Show(this, "Connected!"); });
+            vfr.Close();
+        }
     }
     
     

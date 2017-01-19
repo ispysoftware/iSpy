@@ -1,0 +1,18 @@
+﻿[
+    { "text": "FFMPEG Source", "value": "", "type": "Header" },
+    { "text": "URL", "value": "", "type": "String", "bindto": "settings.videosourcestring" },
+    { "text": "Analyse Duration", "value": "", "type": "Int32", "bindto": "settings.analyseduration" },
+    {
+        "text": "RTSP Mode",
+        "value": "",
+        "type": "Select",
+        "bindto": "settings.rtspmode",
+        "options": [
+            { "text": "Auto", "value": 0, "noTranslate": true  },
+            { "text": "TCP", "value": 1, "noTranslate": true  },
+            { "text": "UDP", "value": 2, "noTranslate": true  },
+            { "text": "UDP Multicast", "value": 3, "noTranslate": true },
+            { "text": "HTTP Tunneling", "value": 4, "noTranslate": true  }
+        ]
+    }
+]

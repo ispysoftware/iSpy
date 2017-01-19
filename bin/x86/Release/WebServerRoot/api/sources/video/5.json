@@ -1,0 +1,5 @@
+﻿[
+    { "text": "VLC Source", "value": "", "type": "Header" },
+    { "text": "File/URL", "value": "", "type": "String", "bindto": "settings.videosourcestring" },
+    { "text": "Arguments", "value": "", "type": "TextArea", "bindto": "settings.vlcargs" }
+]

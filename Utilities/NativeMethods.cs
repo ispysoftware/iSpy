@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 
@@ -17,6 +18,50 @@ namespace iSpyApplication.Utilities
             SEM_NOOPENFILEERRORBOX = 0x8000
         }
 
+        [DllImport("user32.dll")]
+        public static extern bool PrintWindow(IntPtr hWnd, IntPtr hdcBlt, int nFlags);
+
+        [DllImport("user32.dll")]
+        internal static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+        /// &lt;summary&gt;
+        /// Get a windows client rectangle in a .NET structure
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;hwnd&quot;&gt;The window handle to look up&lt;/param&gt;
+        /// &lt;returns&gt;The rectangle&lt;/returns&gt;
+        internal static Rectangle GetClientRect(IntPtr hwnd)
+        {
+            RECT rect = new RECT();
+            GetClientRect(hwnd, out rect);
+            return rect.AsRectangle;
+        }
+
+        /// &lt;summary&gt;
+        /// Get a windows rectangle in a .NET structure
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;hwnd&quot;&gt;The window handle to look up&lt;/param&gt;
+        /// &lt;returns&gt;The rectangle&lt;/returns&gt;
+        internal static Rectangle GetWindowRect(IntPtr hwnd)
+        {
+            RECT rect = new RECT();
+            GetWindowRect(hwnd, out rect);
+            return rect.AsRectangle;
+        }
+
+        internal static Rectangle GetAbsoluteClientRect(IntPtr hWnd)
+        {
+            Rectangle windowRect = GetWindowRect(hWnd);
+            Rectangle clientRect = GetClientRect(hWnd);
+
+            // This gives us the width of the left, right and bottom chrome - we can then determine the top height
+            int chromeWidth = (int)((windowRect.Width - clientRect.Width) / 2);
+
+            return new Rectangle(new Point(windowRect.X + chromeWidth, windowRect.Y + (windowRect.Height - clientRect.Height - chromeWidth)), clientRect.Size);
+        }
         /// <summary>
         /// Possible flags for the SHFileOperation method.
         /// </summary>
@@ -250,5 +295,139 @@ namespace iSpyApplication.Utilities
         internal static extern void
             SetWindowPos(IntPtr hwnd, IntPtr hwndInsertAfter,
                          int X, int Y, int width, int height, uint flags);
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct RECT
+    {
+        private int _Left;
+        private int _Top;
+        private int _Right;
+        private int _Bottom;
+
+        public RECT(RECT Rectangle) : this(Rectangle.Left, Rectangle.Top, Rectangle.Right, Rectangle.Bottom)
+        {
+        }
+        public RECT(int Left, int Top, int Right, int Bottom)
+        {
+            _Left = Left;
+            _Top = Top;
+            _Right = Right;
+            _Bottom = Bottom;
+        }
+
+        public int X
+        {
+            get { return _Left; }
+            set { _Left = value; }
+        }
+        public int Y
+        {
+            get { return _Top; }
+            set { _Top = value; }
+        }
+        public int Left
+        {
+            get { return _Left; }
+            set { _Left = value; }
+        }
+        public int Top
+        {
+            get { return _Top; }
+            set { _Top = value; }
+        }
+        public int Right
+        {
+            get { return _Right; }
+            set { _Right = value; }
+        }
+        public int Bottom
+        {
+            get { return _Bottom; }
+            set { _Bottom = value; }
+        }
+        public int Height
+        {
+            get { return _Bottom - _Top; }
+            set { _Bottom = value + _Top; }
+        }
+        public int Width
+        {
+            get { return _Right - _Left; }
+            set { _Right = value + _Left; }
+        }
+        public System.Drawing.Point Location
+        {
+            get { return new System.Drawing.Point(Left, Top); }
+            set
+            {
+                _Left = value.X;
+                _Top = value.Y;
+            }
+        }
+        public Size Size
+        {
+            get { return new Size(Width, Height); }
+            set
+            {
+                _Right = value.Width + _Left;
+                _Bottom = value.Height + _Top;
+            }
+        }
+
+        public static implicit operator System.Drawing.Rectangle(RECT Rectangle)
+        {
+            return new System.Drawing.Rectangle(Rectangle.Left, Rectangle.Top, Rectangle.Width, Rectangle.Height);
+        }
+        public static implicit operator RECT(System.Drawing.Rectangle Rectangle)
+        {
+            return new RECT(Rectangle.Left, Rectangle.Top, Rectangle.Right, Rectangle.Bottom);
+        }
+        public static bool operator ==(RECT Rectangle1, RECT Rectangle2)
+        {
+            return Rectangle1.Equals(Rectangle2);
+        }
+
+        public static bool operator !=(RECT Rectangle1, RECT Rectangle2)
+        {
+            return !Rectangle1.Equals(Rectangle2);
+        }
+
+        public Rectangle AsRectangle
+        {
+            get
+            {
+                return new Rectangle(this.Left, this.Top, this.Right - this.Left, this.Bottom - this.Top);
+            }
+        }
+
+        public override string ToString()
+        {
+            return "{Left: " + _Left + "; " + "Top: " + _Top + "; Right: " + _Right + "; Bottom: " + _Bottom + "}";
+        }
+
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
+        }
+
+        public bool Equals(RECT Rectangle)
+        {
+            return Rectangle.Left == _Left && Rectangle.Top == _Top && Rectangle.Right == _Right && Rectangle.Bottom == _Bottom;
+        }
+
+        public override bool Equals(object Object)
+        {
+            if (Object is RECT)
+            {
+                return Equals((RECT)Object);
+            }
+            else if (Object is System.Drawing.Rectangle)
+            {
+                return Equals(new RECT((System.Drawing.Rectangle)Object));
+            }
+
+            return false;
+        }
     }
 }

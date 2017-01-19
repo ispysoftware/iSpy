@@ -32,14 +32,14 @@ namespace iSpyApplication.Sources.Video.discovery
         }
 
         
-        public List<MainForm.ListItem3> Devices
+        public List<MainForm.ListItem> Devices
         {
             get
             {
-                var l = new List<MainForm.ListItem3>();
+                var l = new List<MainForm.ListItem>();
                 if (_videoDevices!=null)
                 {
-                    l.AddRange(from FilterInfo dev in _videoDevices select new MainForm.ListItem3(dev.Name, dev.MonikerString));
+                    l.AddRange(from FilterInfo dev in _videoDevices select new MainForm.ListItem(dev.Name, dev.MonikerString));
                 }
                 return l;
             }
@@ -50,15 +50,15 @@ namespace iSpyApplication.Sources.Video.discovery
             _videoCaptureDevice = new VideoCaptureDevice(moniker);
         }
 
-        public List<MainForm.ListItem3> Inputs
+        public List<MainForm.ListItem> Inputs
         {
             get
             {
-                var ret = new List<MainForm.ListItem3>();
+                var ret = new List<MainForm.ListItem>();
                 if (_videoCaptureDevice!=null)
                 {
                     _availableVideoInputs = _videoCaptureDevice.AvailableCrossbarVideoInputs;
-                    ret.AddRange(_availableVideoInputs.Select(input => new MainForm.ListItem3($"{input.Index}: {input.Type}", input.Index.ToString(CultureInfo.InvariantCulture))));
+                    ret.AddRange(_availableVideoInputs.Select(input => new MainForm.ListItem($"{input.Index}: {input.Type}", input.Index.ToString(CultureInfo.InvariantCulture))));
                 }
                 return ret;
             }
@@ -68,20 +68,20 @@ namespace iSpyApplication.Sources.Video.discovery
 
         public bool SupportsVideo => _videoCaptureDevice.VideoCapabilities.Any();
 
-        public List<MainForm.ListItem3> VideoResolutions
+        public List<MainForm.ListItem> VideoResolutions
         {
             get
             {
-                var ret = new List<MainForm.ListItem3>();
+                var ret = new List<MainForm.ListItem>();
                 if (_videoCaptureDevice != null)
                 {
                     VideoCapabilities[] videoCapabilities = _videoCaptureDevice.VideoCapabilities;
                     foreach (VideoCapabilities capabilty in videoCapabilities)
                     {
                         string item = string.Format(VideoFormatString, capabilty.FrameSize.Width, Math.Abs(capabilty.FrameSize.Height), capabilty.AverageFrameRate, capabilty.BitCount);
-                        if (ret.FirstOrDefault(p => p.Name == item) == null)
+                        if (ret.FirstOrDefault(p => p.ToString() == item) == null)
                         {
-                            ret.Add(new MainForm.ListItem3(item,item));
+                            ret.Add(new MainForm.ListItem(item,item));
                         }
                     }
                 }
@@ -89,20 +89,20 @@ namespace iSpyApplication.Sources.Video.discovery
             }
         }
 
-        public List<MainForm.ListItem3> SnapshotResolutions
+        public List<MainForm.ListItem> SnapshotResolutions
         {
             get
             {
-                var ret = new List<MainForm.ListItem3>();
+                var ret = new List<MainForm.ListItem>();
                 if (_videoCaptureDevice != null)
                 {
                     VideoCapabilities[] snapshotCapabilities = _videoCaptureDevice.SnapshotCapabilities;
                     foreach (VideoCapabilities capabilty in snapshotCapabilities)
                     {
                         string item = string.Format(SnapshotFormatString, capabilty.FrameSize.Width, Math.Abs(capabilty.FrameSize.Height), capabilty.BitCount);
-                        if (ret.FirstOrDefault(p => p.Name == item) == null)
+                        if (ret.FirstOrDefault(p => p.ToString() == item) == null)
                         {
-                            ret.Add(new MainForm.ListItem3(item, item));
+                            ret.Add(new MainForm.ListItem(item, item));
                         }
                     }
                 }

@@ -24,19 +24,19 @@ namespace iSpyApplication.Controls
             var lc = MainForm.Cameras.OrderBy(p => p.name).ToList();
             foreach (var c in lc)
             {
-                clbObjects.Items.Add(new MainForm.ListItem3(c.name, "2|"+c.id));                    
+                clbObjects.Items.Add(new MainForm.ListItem(c.name, "2|"+c.id));                    
             }
             
             var lc3 = MainForm.FloorPlans.OrderBy(p => p.name).ToList();
             foreach (var c in lc3)
             {
-                clbObjects.Items.Add(new MainForm.ListItem3(c.name, "3|" + c.id));
+                clbObjects.Items.Add(new MainForm.ListItem(c.name, "3|" + c.id));
             }
           
             var lc2 = MainForm.Microphones.OrderBy(p => p.name).ToList();
             foreach (var c in lc2)
             {
-                clbObjects.Items.Add(new MainForm.ListItem3(c.name, "1|"+c.id));
+                clbObjects.Items.Add(new MainForm.ListItem(c.name, "1|"+c.id));
             }
 
            
@@ -45,9 +45,9 @@ namespace iSpyApplication.Controls
 
         private void button1_Click(object sender, EventArgs e)
         {
-            foreach (MainForm.ListItem3 i in clbObjects.CheckedItems)
+            foreach (MainForm.ListItem i in clbObjects.CheckedItems)
             {
-                var c = i.Value.Split('|');
+                var c = i.Value.ToString().Split('|');
                 switch (c[0])
                 {
                     case "1":

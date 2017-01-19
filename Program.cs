@@ -7,7 +7,7 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Windows.Forms;
-using iSpy.Video.FFMPEG;
+using FFmpeg.AutoGen;
 using iSpyApplication;
 using iSpyApplication.Controls;
 using iSpyApplication.Utilities;
@@ -176,7 +176,7 @@ internal static class Program
             File.WriteAllText(AppDataPath + "external_command.txt", "");
 
             // in case our https certificate ever expires or there is some other issue
-            ServicePointManager.ServerCertificateValidationCallback += ValidateRemoteCertificate;
+            //ServicePointManager.ServerCertificateValidationCallback += ValidateRemoteCertificate;
             ServicePointManager.Expect100Continue = false;
             ServicePointManager.DefaultConnectionLimit = 1000;
 
@@ -184,9 +184,13 @@ internal static class Program
             
             Application.ThreadException += ApplicationThreadException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainUnhandledException;
+
+            ffmpeg.avdevice_register_all();
+            ffmpeg.avcodec_register_all();
+            ffmpeg.avfilter_register_all();
+            ffmpeg.avformat_network_init();
+            ffmpeg.av_register_all();
             
-            var ffmpegSetup = new Init();
-            ffmpegSetup.Initialise();
 
             _previousExecutionState = NativeCalls.SetThreadExecutionState(NativeCalls.EsContinuous | NativeCalls.EsSystemRequired);
             
@@ -199,8 +203,8 @@ internal static class Program
 
             GC.KeepAlive(FfmpegMutex);
             AppIdle.Enabled = false;
-            ffmpegSetup.DeInitialise();
-            
+            ffmpeg.avformat_network_deinit();
+
 
             if (_previousExecutionState != 0)
             {

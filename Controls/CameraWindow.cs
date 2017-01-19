@@ -18,8 +18,10 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using iSpy.Video.FFMPEG;
+using FFmpeg.AutoGen;
 using iSpyApplication.Cloud;
+using iSpyApplication.Onvif;
+using iSpyApplication.Realtime;
 using iSpyApplication.Server;
 using iSpyApplication.Sources;
 using iSpyApplication.Sources.Audio;
@@ -29,7 +31,6 @@ using iSpyApplication.Utilities;
 using iSpyApplication.Vision;
 using iSpyPRO.DirectShow;
 using iSpyPRO.DirectShow.Internals;
-using RestSharp.Contrib;
 using xiApi.NET;
 using Encoder = System.Drawing.Imaging.Encoder;
 using Image = System.Drawing.Image;
@@ -80,6 +81,18 @@ namespace iSpyApplication.Controls
 
         public int ObjectTypeID => 2;
 
+        private ONVIFDevice _onvifDevice = null;
+        public ONVIFDevice ONVIFDevice
+        {
+            get
+            {
+                if (_onvifDevice != null)
+                    return _onvifDevice;
+                initONVIF();
+                return _onvifDevice;
+            }
+        }
+
         public int ObjectID => Camobject.id;
         
 
@@ -91,7 +104,7 @@ namespace iSpyApplication.Controls
 
         private DateTime _mouseMove = DateTime.MinValue;
         private List<FilesFile> _filelist = new List<FilesFile>();
-        private VideoFileWriter _timeLapseWriter;
+        private MediaWriter _timeLapseWriter;
         private readonly ToolTip _toolTipCam;
         private int _ttind = -1;
         private int _reconnectFailCount;
@@ -126,7 +139,7 @@ namespace iSpyApplication.Controls
         internal bool IsClone;
         internal bool HasClones;
 
-        private VideoFileWriter _writer;
+        private MediaWriter _writer;
         private bool _minimised;
         internal bool LoadedFiles;
         #region Public
@@ -282,45 +295,45 @@ namespace iSpyApplication.Controls
             }
         }
 
-        private VideoCodec Codec
+        private AVCodecID Codec
         {
             get
             {
                 switch (Camobject.recorder.profile)
                 {
                     default:
-                        return VideoCodec.H264;
+                        return AVCodecID.AV_CODEC_ID_H264;
                     case 3:
-                        return VideoCodec.WMV1;
+                        return AVCodecID.AV_CODEC_ID_WMV1;
                     case 4:
-                        return VideoCodec.WMV2;
+                        return AVCodecID.AV_CODEC_ID_WMV2;
                     case 5:
-                        return VideoCodec.MPEG4;
+                        return AVCodecID.AV_CODEC_ID_MPEG4;
                     case 6:
-                        return VideoCodec.MSMPEG4v3;
+                        return AVCodecID.AV_CODEC_ID_MSMPEG4V3;
                     case 7:
-                        return VideoCodec.Raw;
+                        return AVCodecID.AV_CODEC_ID_RAWVIDEO;
                     case 8:
-                        return VideoCodec.MJPEG;
+                        return AVCodecID.AV_CODEC_ID_MJPEG;
                 }
             }
         }
 
-        private AudioCodec CodecAudio
+        private AVCodecID CodecAudio
         {
             get
             {
                 switch (Camobject.recorder.profile)
                 {
                     default:
-                        return AudioCodec.AAC;
+                        return AVCodecID.AV_CODEC_ID_AAC;
                     case 3:
                     case 4:
                     case 5:
                     case 6:
                     case 7:
                     case 8:
-                        return AudioCodec.MP3;
+                        return AVCodecID.AV_CODEC_ID_MP3;
                 }
             }
         }
@@ -1610,7 +1623,7 @@ namespace iSpyApplication.Controls
                                 var pts = (long) TimeSpan.FromSeconds(_timeLapseFrameCount*
                                                                       (1d/Camobject.recorder.timelapseframerate)).
                                     TotalMilliseconds;
-                                _timeLapseWriter.WriteVideoFrame(ResizeBitmap(bm), pts);
+                                _timeLapseWriter.WriteFrame(ResizeBitmap(bm) ,pts);
                                 _timeLapseFrameCount++;
                             }
                             catch (Exception ex)
@@ -2315,9 +2328,7 @@ namespace iSpyApplication.Controls
                 try
                 {
                     Program.FfmpegMutex.WaitOne();
-                    _timeLapseWriter = new VideoFileWriter();
-                    _timeLapseWriter.Open(filename + CodecExtension, _videoWidth, _videoHeight, Codec,
-                                          CalcBitRate(Camobject.recorder.quality), Camobject.recorder.timelapseframerate);
+                    _timeLapseWriter = new MediaWriter(filename+CodecExtension,_videoWidth, _videoHeight, Codec, Camobject.recorder.timelapseframerate, AVCodecID.AV_CODEC_ID_NONE);
 
                     success = true;
                     TimelapseStart = Helper.Now;
@@ -2358,7 +2369,7 @@ namespace iSpyApplication.Controls
             try
             {
                 Program.FfmpegMutex.WaitOne();
-                _timeLapseWriter.Dispose();
+                _timeLapseWriter.Close();
             }
             catch (Exception ex)
             {
@@ -3167,40 +3178,31 @@ namespace iSpyApplication.Controls
                             {
 
                                 Program.FfmpegMutex.WaitOne();
-                                _writer = new VideoFileWriter();
 
-                                bool bSuccess;
+
                                 if (bAudio)
                                 {
-                                    bSuccess = _writer.Open(videopath, _videoWidth, _videoHeight, Codec,
-                                        CalcBitRate(Camobject.recorder.quality), CodecAudio, CodecFramerate,
-                                        vc.Micobject.settings.bits*
-                                        vc.Micobject.settings.samples*
-                                        vc.Micobject.settings.channels,
-                                        vc.Micobject.settings.samples, vc.Micobject.settings.channels);
+                                    _writer = new MediaWriter(videopath, _videoWidth, _videoHeight, Codec,
+                                        CodecFramerate,
+                                        CodecAudio);
                                 }
                                 else
                                 {
-                                    bSuccess = _writer.Open(videopath, _videoWidth, _videoHeight, Codec,
-                                        CalcBitRate(Camobject.recorder.quality), CodecFramerate);
+                                    _writer = new MediaWriter(videopath, _videoWidth, _videoHeight, Codec,
+                                        CodecFramerate,
+                                        AVCodecID.AV_CODEC_ID_NONE);
                                 }
-
-                                if (!bSuccess)
+                                
+                                
+                                try
                                 {
-                                    throw new Exception("Failed to open up a video writer");
+                                    linktofile = Uri.EscapeDataString(MainForm.IPAddress + "loadclip.mp4?oid=" + Camobject.id + "&ot=2&fn=" + VideoFileName + CodecExtension + "&auth=" + MainForm.Identifier);
                                 }
-                                else
+                                catch (Exception ex)
                                 {
-                                    try
-                                    {
-                                        linktofile = HttpUtility.UrlEncode(MainForm.IPAddress + "loadclip.mp4?oid=" + Camobject.id + "&ot=2&fn=" + VideoFileName + CodecExtension + "&auth=" + MainForm.Identifier);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Logger.LogExceptionToFile(ex, "Generating external link to file");
-                                    }
-                                    DoAlert("recordingstarted", linktofile);
+                                    Logger.LogExceptionToFile(ex, "Generating external link to file");
                                 }
+                                DoAlert("recordingstarted", linktofile);
 
                             }
                             finally
@@ -3290,12 +3292,12 @@ namespace iSpyApplication.Controls
                         }
                         finally
                         {
-                            if (_writer != null && _writer.IsOpen)
+                            if (_writer != null && !_writer.Closed)
                             {
                                 try
                                 {
                                     Program.FfmpegMutex.WaitOne();
-                                    _writer.Dispose();
+                                    _writer.Close();
                                 }
                                 catch (Exception ex)
                                 {
@@ -3452,7 +3454,7 @@ namespace iSpyApplication.Controls
                             var pts = (long) (fa.TimeStamp - recordingStart).TotalMilliseconds;
                             if (pts >= lastvideopts)
                             {
-                                _writer.WriteVideoFrame(ResizeBitmap(bmp), pts);
+                                _writer.WriteFrame(ResizeBitmap(bmp), pts);
                                 lastvideopts = pts;
                             }
                         }
@@ -3472,14 +3474,13 @@ namespace iSpyApplication.Controls
                     }
                     break;
                 case Enums.FrameType.Audio:
-                    fixed (byte* p = fa.Content)
-                    {
-                        var pts = (long) (fa.TimeStamp - recordingStart).TotalMilliseconds;
-                        
-                        _writer.WriteAudio(p, fa.DataLength, pts);
-                        lastaudiopts = pts;
-                        
-                    }
+                {
+                    var pts = (long) (fa.TimeStamp - recordingStart).TotalMilliseconds;
+
+                    _writer.WriteAudio(fa.Content, fa.DataLength, 0, pts);
+                    lastaudiopts = pts;
+                }
+
                     break;
             }
             fa.Nullify();
@@ -4319,6 +4320,8 @@ namespace iSpyApplication.Controls
                         return "Kinect Device";
                     case 8:
                         return "Custom Provider";
+                    case 9:
+                        return "ONVIF";
                     case 10:
                         return "Cloned";
                 }
@@ -4369,6 +4372,43 @@ namespace iSpyApplication.Controls
             }
         }
 
+        private void initONVIF()
+        {
+            ONVIFDevice oDev = null;
+            var cfg = Camobject.settings.onvifident.Split('|');
+            try
+            {               
+                oDev = new ONVIFDevice(cfg[0], Camobject.settings.login, Camobject.settings.password);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogExceptionToFile(ex);
+            }
+            if (oDev != null)
+            {
+                var urls = oDev.MediaEndpoints;
+                if (urls != null)
+                {
+                    int di;
+                    if (int.TryParse(cfg[1], out di))
+                    {
+                        if (di > urls.Length)
+                        {
+                            di = 0;
+                        }
+                    }
+                    else
+                    {
+                        di = 0;
+                    }
+                    Camobject.settings.videosourcestring = urls[di].URI.Uri;
+                    oDev.SelectProfile(di);
+                    _onvifDevice = oDev;
+                }
+
+            }
+        }
+
         public void Enable()
         {
             if (_enabling)
@@ -4398,6 +4438,7 @@ namespace iSpyApplication.Controls
             _rc = Rectangle.Empty;
 
             string ckies, hdrs;
+
             switch (Camobject.settings.sourceindex)
             {
                 case 0:
@@ -4455,14 +4496,14 @@ namespace iSpyApplication.Controls
                     break;
                 case 2:
                     string url = Camobject.settings.videosourcestring;
-                    var ffmpegSource = new FfmpegStream(url)
+                    var ffmpegSource = new MediaStream(url)
                                         {
                                             Cookies = Camobject.settings.cookies,
                                             AnalyzeDuration = Camobject.settings.analyseduration,
                                             Timeout = Camobject.settings.timeout,
                                             UserAgent = Camobject.settings.useragent,
                                             Headers = Camobject.settings.headers,
-                                            RTSPMode = Camobject.settings.rtspmode
+                                            RTSPmode = Helper.RTSPMode(Camobject.settings.rtspmode)
                                         };
                     OpenVideoSource(ffmpegSource, true);
                     break;
@@ -4556,7 +4597,7 @@ namespace iSpyApplication.Controls
                     Rectangle area = Rectangle.Empty;
                     if (!string.IsNullOrEmpty(Camobject.settings.desktoparea))
                     {
-                        var i = System.Array.ConvertAll(Camobject.settings.desktoparea.Split(','), int.Parse);
+                        var i = Array.ConvertAll(Camobject.settings.desktoparea.Split(','), int.Parse);
                         area = new Rectangle(i[0], i[1], i[2], i[3]);
                     }
                     var desktopSource = new DesktopStream(Convert.ToInt32(Camobject.settings.videosourcestring),
@@ -4567,7 +4608,7 @@ namespace iSpyApplication.Controls
 
                     break;
                 case 5:
-                    List<String> inargs = Camobject.settings.vlcargs.Split(Environment.NewLine.ToCharArray(),
+                    List<string> inargs = Camobject.settings.vlcargs.Split(Environment.NewLine.ToCharArray(),
                         StringSplitOptions.RemoveEmptyEntries).ToList();
                     var vlcSource = new VlcStream(Camobject.settings.videosourcestring, inargs.ToArray())
                                     {
@@ -4616,7 +4657,7 @@ namespace iSpyApplication.Controls
                     }
                     break;
                 case 9:
-                    //there is no 9, spooky hey?
+                        
                     break;
                 case 10:
                     int icam;
@@ -4630,7 +4671,7 @@ namespace iSpyApplication.Controls
 
                     }
                     break;
-            }
+                }
 
             if (Camera != null)
             {
@@ -4803,6 +4844,8 @@ namespace iSpyApplication.Controls
                 VolumeControl.Enable();
             }
 
+            if (Camobject.ptz == -5)
+                    initONVIF();
 
             SetVideoSize();
 

@@ -1,0 +1,7 @@
+
+D:\Projects\iSpy\iSpy\Wix\iSpy64\bin\Release\iSpy64.msi
+D:\Projects\iSpy\iSpy\redist\WindowsXP-KB942288-v3-x86.exe
+D:\Projects\iSpy\iSpy\redist\WindowsServer2003-KB942288-v4-x86.exe
+D:\Projects\iSpy\iSpy\redist\WindowsServer2003-KB942288-v4-x64.exe
+D:\Projects\iSpy\iSpy\redist\Windows6.0-KB942288-v2-x86.msu
+D:\Projects\iSpy\iSpy\redist\Windows6.0-KB942288-v2-x64.msu

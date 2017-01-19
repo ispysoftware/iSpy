@@ -20,6 +20,7 @@ using Antiufo.Controls;
 using iSpyApplication.Cloud;
 using iSpyApplication.Controls;
 using iSpyApplication.Joystick;
+using iSpyApplication.Onvif;
 using iSpyApplication.Properties;
 using iSpyApplication.Server;
 using iSpyApplication.Sources;
@@ -72,7 +73,6 @@ namespace iSpyApplication
         public static Pen CameraNav = new Pen(Color.White, 1);
         public static Brush RecordBrush = new SolidBrush(Color.Red);
         public static Brush OverlayBackgroundBrush = new SolidBrush(Color.FromArgb(128, 0, 0, 0));
-        public static List<DeviceDescriptionHolder> ONVIFDevices = new List<DeviceDescriptionHolder>();
         
         public static string Identifier;
         public static DataTable IPTABLE;
@@ -571,6 +571,15 @@ namespace iSpyApplication
                 _mIcp = null;
             }
             InstanceReference = this;
+
+            try
+            {
+                Discovery.FindDevices();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogExceptionToFile(ex);
+            }
         }
 
         public static DateTime NeedsMediaRefresh

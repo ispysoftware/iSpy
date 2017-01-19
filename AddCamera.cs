@@ -1555,9 +1555,9 @@ namespace iSpyApplication
         {
             lbExtended.Items.Clear();
             btnAddPreset.Visible = btnDeletePreset.Visible = true;
-            foreach (string cmd in CameraControl.PTZ.ONVIFPresets)
+            foreach (var preset in CameraControl.PTZ.ONVIFPresets)
             {
-                lbExtended.Items.Add(new ListItem(cmd, cmd));
+                lbExtended.Items.Add(new ListItem(preset.Name, preset.token));
             }
         }
 
@@ -1570,7 +1570,7 @@ namespace iSpyApplication
             if (lbExtended.SelectedIndex > -1)
             {
                 var li = ((ListItem) lbExtended.SelectedItem);
-                SendPtzCommand(li.Value);
+                SendPtzCommand(li.Name);
             }
         }
 
@@ -1847,6 +1847,11 @@ namespace iSpyApplication
             public override string ToString()
             {
                 return _name;
+            }
+
+            public string Name
+            {
+                get { return _name; }
             }
         }
 
@@ -2222,7 +2227,15 @@ namespace iSpyApplication
                 {
                     if (CameraControl.PTZ != null)
                     {
-                        CameraControl.PTZ.AddPreset(s);
+                        try
+                        {
+                            CameraControl.PTZ.AddPreset(s);
+                        }
+                        catch (Exception ex)
+                        {
+                            //sometimes seems to return an invalid result (camera bug?)
+                        }
+                        Thread.Sleep(1000); //allows time to complete
                         PopOnvifPresets();
                     }
                 }
@@ -2238,7 +2251,15 @@ namespace iSpyApplication
                 if (CameraControl.PTZ != null)
                 {
                     var li = (ListItem) p;
-                    CameraControl.PTZ.DeletePreset(li.Value);
+                    try
+                    {
+                        CameraControl.PTZ.DeletePreset(li.Value);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    Thread.Sleep(1000);
                     PopOnvifPresets();
                 }
             }

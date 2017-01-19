@@ -9,13 +9,11 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using iSpyApplication.Controls;
+using iSpyApplication.DevicePTZ;
 using iSpyApplication.Pelco;
 using iSpyApplication.Sources.Video;
 using iSpyApplication.Utilities;
 using iSpyPRO.DirectShow;
-using odm.core;
-using onvif.services;
-using utils;
 using Rectangle = System.Drawing.Rectangle;
 
 namespace iSpyApplication
@@ -53,11 +51,6 @@ namespace iSpyApplication
                 return false;
             }
         }
-
-        #region ONVIF
-        private Profile _ptzProfile;
-        private INvtSession _nvtSession;
-        #endregion
 
         private uint _addr;
 
@@ -129,44 +122,32 @@ namespace iSpyApplication
 
         public void AddPreset(string name)
         {
-            if (PTZProfile != null)
+            try
             {
-                try
-                {
-                    PTZSession.SetPreset(PTZProfile.token, name, null).RunSynchronously();
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogExceptionToFile(ex);
-                }
+                string pt="";
+                _cameraControl?.ONVIFDevice?.PTZClient?.SetPreset(PTZToken, name, ref pt);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogExceptionToFile(ex);
             }
         }
 
         public void DeletePreset(string name)
         {
-            if (PTZProfile != null)
+            try
             {
-                try
-                {
-                    var l = PTZSession.GetPresets(PTZProfile.token).RunSynchronously();
-                    string t = "";
-                    foreach (var p in l)
-                    {
-                        if (p.name == name)
-                        {
-                            t = p.token;
-                            break;
-                        }
-                    }
-
-                    if (t != "")
-                        PTZSession.RemovePreset(PTZProfile.token, t).RunSynchronously();
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogExceptionToFile(ex);
-                }
+                _cameraControl?.ONVIFDevice?.PTZClient?.RemovePreset(PTZToken, name);
             }
+            catch (Exception ex)
+            {
+                Logger.LogExceptionToFile(ex);
+            }
+        }
+
+        public void ResetONVIF()
+        {
+            _ptzSettings = null;
         }
 
         public void SendPTZDirection(double angle)
@@ -746,146 +727,60 @@ namespace iSpyApplication
 
         }
 
-        private Profile PTZProfile
-        {
-            get
-            {
-                if (PTZSession == null)
-                    return null;
-
-                if (_ptzProfile != null)
-                    return _ptzProfile;
-
-                string[] cfg = _cameraControl.Camobject.settings.onvifident.Split('|');
-                if (cfg.Length != 2)
-                    return null;
-
-                int profileid = Convert.ToInt32(cfg[1]);
-
-                Profile[] profiles;
-                try
-                {
-                    profiles = PTZSession.GetProfiles().RunSynchronously();
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogExceptionToFile(ex);
-                    return null;
-                }
-                if (profiles.Length > profileid)
-                    _ptzProfile = profiles[profileid];
-                return _ptzProfile;
-            }
-        }
-        private INvtSession PTZSession
-        {
-            get
-            {
-                if (_nvtSession != null)
-                    return _nvtSession;
-
-                string[] cfg = _cameraControl.Camobject.settings.onvifident.Split('|');
-                if (cfg.Length != 2)
-                    return null;
-
-                string addr = cfg[0];
-                DeviceDescriptionHolder ddh = MainForm.ONVIFDevices.FirstOrDefault(p => p.URL == addr);
-                if (ddh == null)
-                {
-                    Uri u;
-                    if (!Uri.TryCreate(addr, UriKind.Absolute, out u))
-                    {
-                        return null;
-                    }
-                    ddh = new DeviceDescriptionHolder { Uris = new[] { u }, Address = "" };
-                    ddh.Address += u.DnsSafeHost + "; ";
-                    ddh.Address = ddh.Address.TrimEnd(';', ' ');
-                    if (ddh.Address == "")
-                    {
-                        ddh.IsInvalidUris = true;
-                        ddh.Address = "Invalid Uri";
-                    }
-                    ddh.Name = u.AbsoluteUri;
-                    ddh.Location = "Unknown";
-                    ddh.DeviceIconUri = null;
-                    MainForm.ONVIFDevices.Add(ddh);
-                }
-
-
-                ddh.Account = new NetworkCredential { UserName = _cameraControl.Camobject.settings.login, Password = _cameraControl.Camobject.settings.password };
-                var sessionFactory = new NvtSessionFactory(ddh.Account);
-
-
-                try { _nvtSession = sessionFactory.CreateSession(ddh.Uris[0]); }
-                catch (Exception ex)
-                {
-                    Logger.LogExceptionToFile(ex);
-                    return null;
-                }
-                //ddh.Name = _nvtSession
-                return _nvtSession;
-            }
-        }
-
-        public void ResetONVIF()
-        {
-            _ptzProfile = null;
-            _ptzSettings = null;
-        }
-
         void ProcessOnvif(Enums.PtzCommand command)
         {
-            if (PTZProfile != null)
+            var ptz = _cameraControl?.ONVIFDevice?.PTZClient;
+            if (ptz != null)
             {
                 //var speed = PTZProfile.ptzConfiguration.defaultPTZSpeed;
                 //string spacePT = PTZProfile.ptzConfiguration.defaultContinuousPanTiltVelocitySpace;
                 //string spaceZ = PTZProfile.ptzConfiguration.defaultContinuousZoomVelocitySpace;
 
-                Vector2D panTilt = null;
-                Vector1D zoom = null;
+                DevicePTZ.Vector2D panTilt = null;
+                DevicePTZ.Vector1D zoom = null;
                 try
                 {
                     switch (command)
                     {
                         case Enums.PtzCommand.Left:
-                            panTilt = new Vector2D { space = null, x = -0.5f, y = 0 };
+                            panTilt = new DevicePTZ.Vector2D { space = null, x = -0.5f, y = 0 };
                             break;
                         case Enums.PtzCommand.Upleft:
-                            panTilt = new Vector2D { space = null, x = -0.5f, y = 0.5f };
+                            panTilt = new DevicePTZ.Vector2D { space = null, x = -0.5f, y = 0.5f };
                             break;
                         case Enums.PtzCommand.Up:
-                            panTilt = new Vector2D { space = null, x = 0, y = 0.5f };
+                            panTilt = new DevicePTZ.Vector2D { space = null, x = 0, y = 0.5f };
                             break;
                         case Enums.PtzCommand.UpRight:
-                            panTilt = new Vector2D { space = null, x = 0.5f, y = 0.5f };
+                            panTilt = new DevicePTZ.Vector2D { space = null, x = 0.5f, y = 0.5f };
                             break;
                         case Enums.PtzCommand.Right:
-                            panTilt = new Vector2D { space = null, x = 0.5f, y = 0 };
+                            panTilt = new DevicePTZ.Vector2D { space = null, x = 0.5f, y = 0 };
                             break;
                         case Enums.PtzCommand.DownRight:
-                            panTilt = new Vector2D { space = null, x = 0.5f, y = -0.5f };
+                            panTilt = new DevicePTZ.Vector2D { space = null, x = 0.5f, y = -0.5f };
                             break;
                         case Enums.PtzCommand.Down:
-                            panTilt = new Vector2D { space = null, x = 0, y = -0.5f };
+                            panTilt = new DevicePTZ.Vector2D { space = null, x = 0, y = -0.5f };
                             break;
                         case Enums.PtzCommand.DownLeft:
-                            panTilt = new Vector2D { space = null, x = -0.5f, y = -0.5f };
+                            panTilt = new DevicePTZ.Vector2D { space = null, x = -0.5f, y = -0.5f };
                             break;
                         case Enums.PtzCommand.ZoomIn:
-                            zoom = new Vector1D { space = null, x = 0.5f };
+                            zoom = new DevicePTZ.Vector1D { space = null, x = 0.5f };
                             break;
                         case Enums.PtzCommand.ZoomOut:
-                            zoom = new Vector1D { space = null, x = -0.5f };
+                            zoom = new DevicePTZ.Vector1D { space = null, x = -0.5f };
                             break;
                         case Enums.PtzCommand.Center:
-                            ProcessOnvifCommand(_cameraControl.Camobject.settings.ptzautohomecommand);
+                            //ProcessOnvifCommand(_cameraControl.CameraObject.settings.ptzautohomecommand);
                             return;
                         case Enums.PtzCommand.Stop:
-                            PTZSession.Stop(PTZProfile.token, true, true).RunSynchronously();
+                            ptz.Stop(PTZToken, true, true);
                             return;
                     }
-                    PTZSession.ContinuousMove(PTZProfile.token, new PTZSpeed() { panTilt = panTilt, zoom = zoom },
-                                              null).RunSynchronously();
+                    var ptzSpeed = new DevicePTZ.PTZSpeed() { PanTilt = panTilt, Zoom = zoom };
+                    ptz.ContinuousMove(PTZToken, ptzSpeed, null);
                 }
                 catch (Exception ex)
                 {
@@ -896,26 +791,23 @@ namespace iSpyApplication
 
         void ProcessOnvifCommand(string name)
         {
-            if (PTZProfile != null)
+            if (PTZToken != null)
             {
                 try
                 {
-                    var l = PTZSession.GetPresets(PTZProfile.token).RunSynchronously();
-                    string t = "";
-                    foreach (var p in l)
+                    var ptz = _cameraControl?.ONVIFDevice?.PTZClient;
+                    if (ptz != null)
                     {
-                        if (p.name == name)
+                        var presets = ptz.GetPresets(PTZToken);
+                        foreach (var p in presets)
                         {
-                            t = p.token;
-                            break;
+                            if (p.Name == name)
+                            {
+                                ptz.GotoPreset(PTZToken, p.token, null);
+                                break;
+                            }
                         }
                     }
-
-                    if (t != "")
-                        PTZSession.GotoPreset(PTZProfile.token, t, null).RunSynchronously();
-
-
-
                 }
                 catch (Exception ex)
                 {
@@ -925,19 +817,26 @@ namespace iSpyApplication
             }
         }
 
-        public string[] ONVIFPresets
+        private string PTZToken
+        {
+            get { return _cameraControl?.ONVIFDevice?.Profile?.token; }
+        }
+
+        public PTZPreset[] ONVIFPresets
         {
             get
             {
-                var pl = new List<string>();
+                var pl = new List<PTZPreset>();
                 try
                 {
-                    if (PTZProfile != null && PTZSession != null)
+                    if (PTZToken != null)
                     {
-
-                        var presets = PTZSession.GetPresets(PTZProfile.token).RunSynchronously();
-                        pl.AddRange(presets.Select(p => p.name));
-
+                        var ptz = _cameraControl?.ONVIFDevice?.PTZClient;
+                        if (ptz != null)
+                        {
+                            var presets = ptz.GetPresets(PTZToken);
+                            pl.AddRange(presets);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -947,7 +846,6 @@ namespace iSpyApplication
                 return pl.ToArray();
             }
         }
-
 
         void ProcessPelco(Enums.PtzCommand command, bool usePelcoP)
         {

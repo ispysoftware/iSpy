@@ -1,0 +1,28 @@
+﻿{
+    "sections": [
+        { "text": "Settings", "type": "Button", "command": "getSettings", "resultFunction": "openRender" },
+        {
+            "text": "IP Camera Wizard",
+            "type": "Button",
+            "command": "runWizard",
+            "resultFunction": "openRender"
+        },
+        {
+            "text": "Add Video Source",
+            "type": "DropDownButton",
+            "options": [
+                SOURCETYPES
+            ]
+        },
+        {
+            "text": "Add Audio Source",
+            "type": "DropDownButton",
+            "options": [
+                AUDIOTYPES
+            ]
+        }
+    ],
+    "ptzmodels": [ 
+        PTZMODELS
+    ]
+}
