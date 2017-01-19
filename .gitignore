@@ -9,5 +9,5 @@ VLC64/
 *.opensdf
 FFMPEG
 DLLS/managed
-bin/x64/
-bin/x86/
+bin/x64
+bin/x86
