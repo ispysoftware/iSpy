@@ -1461,7 +1461,6 @@
     <Content Include="DLLS\x86\swresample-2.dll" />
     <Content Include="DLLS\x86\swscale-4.dll" />
     <Content Include="DLLS\xiApi.NET.dll" />
-    <Content Include="FFMPEG\readme.txt" />
     <Content Include="XML\Translations.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
