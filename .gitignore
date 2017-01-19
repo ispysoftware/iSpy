@@ -7,7 +7,7 @@ wix/ispy64/bin
 packages/
 VLC64/
 *.opensdf
-FFMPEG
-DLLS/managed
-bin/x64
-bin/x86
+FFMPEG/
+DLLS/managed/
+bin/x64/
+bin/x86/
