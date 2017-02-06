@@ -196,12 +196,11 @@ internal static class Program
             
             AppIdle = new WinFormsAppIdleHandler {Enabled = false};
             var mf = new MainForm(silentstartup, command);
-
+            GC.KeepAlive(FfmpegMutex);
             
             Application.Run(mf);
             FfmpegMutex.Close();
 
-            GC.KeepAlive(FfmpegMutex);
             AppIdle.Enabled = false;
             ffmpeg.avformat_network_deinit();
 

@@ -1648,7 +1648,6 @@ namespace iSpyApplication
             string res = "OK";
             try
             {
-                Program.FfmpegMutex.WaitOne();
                 string source = cmbFile.Text;
                 
 
@@ -1678,17 +1677,6 @@ namespace iSpyApplication
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                try
-                {
-                    Program.FfmpegMutex.ReleaseMutex();
-                }
-                catch (ObjectDisposedException)
-                {
-                    //can happen on shutdown
-                }
             }
             
         }

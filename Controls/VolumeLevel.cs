@@ -1652,8 +1652,6 @@ namespace iSpyApplication.Controls
                         _writer = new MediaWriter(filename + ".mp3", AVCodecID.AV_CODEC_ID_MP3);
                         try
                         {
-                            Program.FfmpegMutex.WaitOne();
-
                             try
                             {
                                 string url = (X509.SslEnabled ? "https" : "http") + "://" + MainForm.IPAddress + "/";
@@ -1665,19 +1663,6 @@ namespace iSpyApplication.Controls
                             }
                             DoAlert("recordingstarted", linktofile);
                         }
-                        finally
-                        {
-                            try
-                            {
-                                Program.FfmpegMutex.ReleaseMutex();
-                            }
-                            catch (ObjectDisposedException)
-                            {
-                                //can happen on shutdown
-                            }
-                        }
-
-
 
                         double maxlevel = 0;
                         bool first = true;
@@ -1766,7 +1751,6 @@ namespace iSpyApplication.Controls
                         {
                             try
                             {
-                                Program.FfmpegMutex.WaitOne();
                                 _writer.Close();
                             }
                             catch (Exception ex)
@@ -1775,14 +1759,7 @@ namespace iSpyApplication.Controls
                             }
                             finally
                             {
-                                try
-                                {
-                                    Program.FfmpegMutex.ReleaseMutex();
-                                }
-                                catch (ObjectDisposedException)
-                                {
-                                    //can happen on shutdown
-                                }
+                                
                             }
                         }
 

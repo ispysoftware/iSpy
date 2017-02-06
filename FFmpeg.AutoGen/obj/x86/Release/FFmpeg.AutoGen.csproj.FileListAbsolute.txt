@@ -4,3 +4,9 @@ D:\Projects\FFmpeg.AutoGen-master\FFmpeg.AutoGen\bin\x86\Release\FFmpeg.AutoGen.
 D:\Projects\FFmpeg.AutoGen-master\FFmpeg.AutoGen\obj\x86\Release\FFmpeg.AutoGen.dll
 D:\Projects\FFmpeg.AutoGen-master\FFmpeg.AutoGen\obj\x86\Release\FFmpeg.AutoGen.pdb
 D:\Projects\FFmpeg.AutoGen-master\FFmpeg.AutoGen\obj\x86\Release\FFmpeg.AutoGen.csprojResolveAssemblyReference.cache
+D:\Projects\iSpy\iSpy\FFmpeg.AutoGen\bin\x86\Release\FFmpeg.AutoGen.dll.config
+D:\Projects\iSpy\iSpy\FFmpeg.AutoGen\bin\x86\Release\FFmpeg.AutoGen.dll
+D:\Projects\iSpy\iSpy\FFmpeg.AutoGen\bin\x86\Release\FFmpeg.AutoGen.pdb
+D:\Projects\iSpy\iSpy\FFmpeg.AutoGen\obj\x86\Release\FFmpeg.AutoGen.csprojResolveAssemblyReference.cache
+D:\Projects\iSpy\iSpy\FFmpeg.AutoGen\obj\x86\Release\FFmpeg.AutoGen.dll
+D:\Projects\iSpy\iSpy\FFmpeg.AutoGen\obj\x86\Release\FFmpeg.AutoGen.pdb

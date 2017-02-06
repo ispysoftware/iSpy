@@ -2327,7 +2327,6 @@ namespace iSpyApplication.Controls
             {
                 try
                 {
-                    Program.FfmpegMutex.WaitOne();
                     _timeLapseWriter = new MediaWriter(filename+CodecExtension,_videoWidth, _videoHeight, Codec, Camobject.recorder.timelapseframerate, AVCodecID.AV_CODEC_ID_NONE);
 
                     success = true;
@@ -2339,17 +2338,7 @@ namespace iSpyApplication.Controls
                     _timeLapseWriter = null;
                     //Camobject.recorder.timelapse = 0;
                 }
-                finally
-                {
-                    try
-                    {
-                        Program.FfmpegMutex.ReleaseMutex();
-                    }
-                    catch (ObjectDisposedException)
-                    {
-                        //can happen on shutdown
-                    }
-                }
+                
             }
             catch (Exception ex)
             {
@@ -2368,25 +2357,13 @@ namespace iSpyApplication.Controls
 
             try
             {
-                Program.FfmpegMutex.WaitOne();
                 _timeLapseWriter.Close();
             }
             catch (Exception ex)
             {
                 ErrorHandler?.Invoke(ex.Message);
             }
-            finally
-            {
-                try
-                {
-                    Program.FfmpegMutex.ReleaseMutex();
-                }
-                catch (ObjectDisposedException)
-                {
-                    //can happen on shutdown
-                }
-            }
-
+            
             _timeLapseWriter = null;
 
             var fpath = Dir.Entry + "video\\" + Camobject.directory + "\\" + TimeLapseVideoFileName + CodecExtension;
@@ -3176,10 +3153,6 @@ namespace iSpyApplication.Controls
 
                             try
                             {
-
-                                Program.FfmpegMutex.WaitOne();
-
-
                                 if (bAudio)
                                 {
                                     _writer = new MediaWriter(videopath, _videoWidth, _videoHeight, Codec,
@@ -3205,19 +3178,7 @@ namespace iSpyApplication.Controls
                                 DoAlert("recordingstarted", linktofile);
 
                             }
-                            finally
-                            {
-                                try
-                                {
-                                    Program.FfmpegMutex.ReleaseMutex();
-                                }
-                                catch (ObjectDisposedException)
-                                {
-                                    //can happen on shutdown
-                                }
-                            }
-
-
+                            
                             Helper.FrameAction? peakFrame = null;
                             bool first = true;
 
@@ -3296,25 +3257,13 @@ namespace iSpyApplication.Controls
                             {
                                 try
                                 {
-                                    Program.FfmpegMutex.WaitOne();
                                     _writer.Close();
                                 }
                                 catch (Exception ex)
                                 {
                                     ErrorHandler?.Invoke(ex.Message);
                                 }
-                                finally
-                                {
-                                    try
-                                    {
-                                        Program.FfmpegMutex.ReleaseMutex();
-                                    }
-                                    catch (ObjectDisposedException)
-                                    {
-                                        //can happen on shutdown
-                                    }
-                                }
-
+                                
                                 _writer = null;
                             }
                             if (bAudio)

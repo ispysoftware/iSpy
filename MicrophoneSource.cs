@@ -414,9 +414,7 @@ namespace iSpyApplication
             btnTest.Enabled = false;
 
             try
-            {
-                Program.FfmpegMutex.WaitOne();
-                
+            {               
                 string source = cmbFFMPEGURL.Text;
                 int i = source.IndexOf("://", StringComparison.Ordinal);
                 if (i > -1)
@@ -440,17 +438,6 @@ namespace iSpyApplication
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                try
-                {
-                    Program.FfmpegMutex.ReleaseMutex();
-                }
-                catch (ObjectDisposedException)
-                {
-                    //can happen on shutdown
-                }                
             }
            
         }

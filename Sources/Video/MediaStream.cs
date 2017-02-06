@@ -185,11 +185,13 @@ namespace iSpyApplication.Sources.Video
                 pFormatContext->interrupt_callback.callback = _interruptCallbackAddress;
                 pFormatContext->interrupt_callback.opaque = null;
 
-
+                Program.FfmpegMutex.WaitOne();
                 if (ffmpeg.avformat_open_input(&pFormatContext, URL, _inputFormat, &options) != 0)
                 {
+                    Program.FfmpegMutex.ReleaseMutex();
                     throw new ApplicationException(@"Could not open source");
                 }
+                Program.FfmpegMutex.ReleaseMutex();
 
                 _formatContext = pFormatContext;
 
@@ -557,58 +559,70 @@ namespace iSpyApplication.Sources.Video
                 } while (!_abort);
             } while (!_abort);
 
-            if (pConvertedFrame != null)
-                ffmpeg.av_free(pConvertedFrame);
+            try {
+                Program.FfmpegMutex.WaitOne();
 
-            if (pConvertedFrameBuffer != null)
-                ffmpeg.av_free(pConvertedFrameBuffer);
+                if (pConvertedFrame != null)
+                    ffmpeg.av_free(pConvertedFrame);
 
-            if (_formatContext != null)
-            {
-                if (_formatContext->streams != null)
+                if (pConvertedFrameBuffer != null)
+                    ffmpeg.av_free(pConvertedFrameBuffer);
+
+                if (_formatContext != null)
                 {
-                    int j = (int)_formatContext->nb_streams;
-                    for (var i = j - 1; i >= 0; i--)
+                    if (_formatContext->streams != null)
                     {
-                        AVStream* stream = _formatContext->streams[i];
-
-                        if (stream != null && stream->codec != null && stream->codec->codec != null)
+                        int j = (int)_formatContext->nb_streams;
+                        for (var i = j - 1; i >= 0; i--)
                         {
-                            stream->discard = AVDiscard.AVDISCARD_ALL;
-                            ffmpeg.avcodec_close(stream->codec);
+                            AVStream* stream = _formatContext->streams[i];
+
+                            if (stream != null && stream->codec != null && stream->codec->codec != null)
+                            {
+                                stream->discard = AVDiscard.AVDISCARD_ALL;
+                                ffmpeg.avcodec_close(stream->codec);
+                            }
                         }
                     }
+                    fixed (AVFormatContext** f = &_formatContext)
+                    {
+                        ffmpeg.avformat_close_input(f);
+                    }
+                    _formatContext = null;
                 }
-                fixed (AVFormatContext** f = &_formatContext)
+
+                _videoStream = null;
+                _audioStream = null;
+                _audioCodecContext = null;
+                _codecContext = null;
+
+                if (_swrContext != null)
                 {
-                    ffmpeg.avformat_close_input(f);
+                    fixed (SwrContext** s = &_swrContext)
+                    {
+                        ffmpeg.swr_free(s);
+                    }
+                    _swrContext = null;
                 }
-                _formatContext = null;
-            }
 
-            _videoStream = null;
-            _audioStream = null;
-            _audioCodecContext = null;
-            _codecContext = null;
-
-            if (_swrContext != null)
-            {
-                fixed (SwrContext** s = &_swrContext)
+                if (pConvertContext != null)
                 {
-                    ffmpeg.swr_free(s);
+                    ffmpeg.sws_freeContext(pConvertContext);
                 }
-                _swrContext = null;
-            }
 
-            if (pConvertContext != null)
-            {
-                ffmpeg.sws_freeContext(pConvertContext);
+                if (sampleChannel != null)
+                {
+                    sampleChannel.PreVolumeMeter -= SampleChannelPreVolumeMeter;
+                    sampleChannel = null;
+                }
             }
-
-            if (sampleChannel != null)
+            catch (Exception ex)
             {
-                sampleChannel.PreVolumeMeter -= SampleChannelPreVolumeMeter;
-                sampleChannel = null;
+                Logger.LogExceptionToFile(ex, "Media Stream (close)");
+            }
+            finally
+            {
+                Program.FfmpegMutex.ReleaseMutex();
             }
 
             PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
