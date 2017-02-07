@@ -1,7 +1,0 @@
-D:\Projects\iSpy\iSpy\Wix\Bootstrap32\bin\Debug\WindowsXP-KB942288-v3-x86.exe
-D:\Projects\iSpy\iSpy\Wix\Bootstrap32\bin\Debug\WindowsServer2003-KB942288-v4-x86.exe
-D:\Projects\iSpy\iSpy\Wix\Bootstrap32\bin\Debug\WindowsServer2003-KB942288-v4-x64.exe
-D:\Projects\iSpy\iSpy\Wix\Bootstrap32\bin\Debug\Windows6.0-KB942288-v2-x86.msu
-D:\Projects\iSpy\iSpy\Wix\Bootstrap32\bin\Debug\Windows6.0-KB942288-v2-x64.msu
-D:\Projects\iSpy\iSpy\Wix\Bootstrap32\bin\Debug\iSpySetup.exe
-D:\Projects\iSpy\iSpy\Wix\Bootstrap32\bin\Debug\iSpySetup.wixpdb

@@ -1,8 +1,0 @@
-D:\Projects\iSpy\iSpy\Wix\WixCA\bin\Debug\WixCA.dll
-D:\Projects\iSpy\iSpy\Wix\WixCA\bin\Debug\WixCA.CA.dll
-D:\Projects\iSpy\iSpy\Wix\WixCA\bin\Debug\WixCA.pdb
-D:\Projects\iSpy\iSpy\Wix\WixCA\bin\Debug\Microsoft.Deployment.WindowsInstaller.dll
-D:\Projects\iSpy\iSpy\Wix\WixCA\bin\Debug\Microsoft.Deployment.WindowsInstaller.xml
-D:\Projects\iSpy\iSpy\Wix\WixCA\obj\x86\Debug\WixCA.dll
-D:\Projects\iSpy\iSpy\Wix\WixCA\obj\x86\Debug\WixCA.pdb
-D:\Projects\iSpy\iSpy\Wix\WixCA\obj\x86\Debug\WixCA.csprojResolveAssemblyReference.cache
