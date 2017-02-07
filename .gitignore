@@ -13,6 +13,13 @@ Plugins/*
 VLC64/*
 !VLC64/readme.txt
 
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.GhostDoc.xml
+
 # Visual C++ cache files
 ipch/
 *.aps
