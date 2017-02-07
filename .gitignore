@@ -1,13 +1,30 @@
 /obj/
-wix/ispy32/obj
-wix/ispy64/obj
-wix/ispy32/bin
-wix/ispy64/bin
-.vs
+wix/**/bin/
+wix/**/obj/
+.vs/
 packages/
-VLC64/
-*.opensdf
 FFMPEG/
 DLLS/managed/
-bin/x64/
-bin/x86/
+bin/
+
+# Readmes
+Plugins/*
+!Plugins/readme.txt
+VLC64/*
+!VLC64/readme.txt
+
+# Visual C++ cache files
+ipch/
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+
+# Windows thumbnail cache files
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
