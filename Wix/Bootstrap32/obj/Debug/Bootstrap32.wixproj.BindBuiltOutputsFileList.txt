@@ -1,2 +1,0 @@
-D:\Projects\iSpy\iSpy\Wix\Bootstrap32\bin\Debug\iSpySetup.exe
-D:\Projects\iSpy\iSpy\Wix\Bootstrap32\bin\Debug\iSpySetup.wixpdb
