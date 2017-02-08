@@ -3151,34 +3151,33 @@ namespace iSpyApplication.Controls
                             if (!Directory.Exists(folder))
                                 Directory.CreateDirectory(folder);
 
+                            
+                            if (bAudio)
+                            {
+                                _writer = new MediaWriter(videopath, _videoWidth, _videoHeight, Codec,
+                                    CodecFramerate,
+                                    CodecAudio);
+                            }
+                            else
+                            {
+                                _writer = new MediaWriter(videopath, _videoWidth, _videoHeight, Codec,
+                                    CodecFramerate,
+                                    AVCodecID.AV_CODEC_ID_NONE);
+                            }
+                                
+                                
                             try
                             {
-                                if (bAudio)
-                                {
-                                    _writer = new MediaWriter(videopath, _videoWidth, _videoHeight, Codec,
-                                        CodecFramerate,
-                                        CodecAudio);
-                                }
-                                else
-                                {
-                                    _writer = new MediaWriter(videopath, _videoWidth, _videoHeight, Codec,
-                                        CodecFramerate,
-                                        AVCodecID.AV_CODEC_ID_NONE);
-                                }
-                                
-                                
-                                try
-                                {
-                                    linktofile = Uri.EscapeDataString(MainForm.IPAddress + "loadclip.mp4?oid=" + Camobject.id + "&ot=2&fn=" + VideoFileName + CodecExtension + "&auth=" + MainForm.Identifier);
-                                }
-                                catch (Exception ex)
-                                {
-                                    Logger.LogExceptionToFile(ex, "Generating external link to file");
-                                }
-                                DoAlert("recordingstarted", linktofile);
-
+                                linktofile = Uri.EscapeDataString(MainForm.IPAddress + "loadclip.mp4?oid=" + Camobject.id + "&ot=2&fn=" + VideoFileName + CodecExtension + "&auth=" + MainForm.Identifier);
                             }
+                            catch (Exception ex)
+                            {
+                                Logger.LogExceptionToFile(ex, "Generating external link to file");
+                            }
+                            DoAlert("recordingstarted", linktofile);
+
                             
+                           
                             Helper.FrameAction? peakFrame = null;
                             bool first = true;
 

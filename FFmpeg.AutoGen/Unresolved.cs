@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FFmpeg.AutoGen
+﻿namespace FFmpeg.AutoGen
 {
  
     public struct pp_mode
@@ -21,6 +15,6 @@ namespace FFmpeg.AutoGen
 
     public struct size_t
     {
-        public uint @value;
+        public uint Value;
     }
 }

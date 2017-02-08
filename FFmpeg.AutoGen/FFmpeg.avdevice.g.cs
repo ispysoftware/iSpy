@@ -43,6 +43,10 @@ namespace FFmpeg.AutoGen
     {
     }
     
+    public unsafe partial struct AVBSFList
+    {
+    }
+    
     public unsafe partial struct AVBPrint
     {
     }
@@ -139,57 +143,58 @@ namespace FFmpeg.AutoGen
     public unsafe static partial class ffmpeg
     {
         public const int LIBAVDEVICE_VERSION_MAJOR = 57;
-        public const int LIBAVDEVICE_VERSION_MINOR = 0;
-        public const int LIBAVDEVICE_VERSION_MICRO = 101;
-        
+        public const int LIBAVDEVICE_VERSION_MINOR = 1;
+        public const int LIBAVDEVICE_VERSION_MICRO = 100;
         private const string libavdevice = "avdevice-57";
         
-        [DllImport(libavdevice, EntryPoint = "avdevice_version", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libavdevice, EntryPoint = "avdevice_version", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern uint avdevice_version();
         
-        [DllImport(libavdevice, EntryPoint = "avdevice_configuration", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libavdevice, EntryPoint = "avdevice_configuration", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(ConstCharPtrMarshaler))]
         public static extern string avdevice_configuration();
         
-        [DllImport(libavdevice, EntryPoint = "avdevice_license", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libavdevice, EntryPoint = "avdevice_license", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(ConstCharPtrMarshaler))]
         public static extern string avdevice_license();
         
-        [DllImport(libavdevice, EntryPoint = "avdevice_register_all", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libavdevice, EntryPoint = "avdevice_register_all", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern void avdevice_register_all();
         
-        [DllImport(libavdevice, EntryPoint = "av_input_audio_device_next", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libavdevice, EntryPoint = "av_input_audio_device_next", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern AVInputFormat* av_input_audio_device_next(AVInputFormat* @d);
         
-        [DllImport(libavdevice, EntryPoint = "av_input_video_device_next", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libavdevice, EntryPoint = "av_input_video_device_next", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern AVInputFormat* av_input_video_device_next(AVInputFormat* @d);
         
-        [DllImport(libavdevice, EntryPoint = "av_output_audio_device_next", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libavdevice, EntryPoint = "av_output_audio_device_next", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern AVOutputFormat* av_output_audio_device_next(AVOutputFormat* @d);
         
-        [DllImport(libavdevice, EntryPoint = "av_output_video_device_next", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libavdevice, EntryPoint = "av_output_video_device_next", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern AVOutputFormat* av_output_video_device_next(AVOutputFormat* @d);
         
-        [DllImport(libavdevice, EntryPoint = "avdevice_app_to_dev_control_message", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libavdevice, EntryPoint = "avdevice_app_to_dev_control_message", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int avdevice_app_to_dev_control_message(AVFormatContext* @s, AVAppToDevMessageType @type, void* @data, ulong @data_size);
         
-        [DllImport(libavdevice, EntryPoint = "avdevice_dev_to_app_control_message", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libavdevice, EntryPoint = "avdevice_dev_to_app_control_message", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int avdevice_dev_to_app_control_message(AVFormatContext* @s, AVDevToAppMessageType @type, void* @data, ulong @data_size);
         
-        [DllImport(libavdevice, EntryPoint = "avdevice_capabilities_create", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libavdevice, EntryPoint = "avdevice_capabilities_create", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int avdevice_capabilities_create(AVDeviceCapabilitiesQuery** @caps, AVFormatContext* @s, AVDictionary** @device_options);
         
-        [DllImport(libavdevice, EntryPoint = "avdevice_capabilities_free", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libavdevice, EntryPoint = "avdevice_capabilities_free", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern void avdevice_capabilities_free(AVDeviceCapabilitiesQuery** @caps, AVFormatContext* @s);
         
-        [DllImport(libavdevice, EntryPoint = "avdevice_list_devices", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libavdevice, EntryPoint = "avdevice_list_devices", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int avdevice_list_devices(AVFormatContext* @s, AVDeviceInfoList** @device_list);
         
-        [DllImport(libavdevice, EntryPoint = "avdevice_free_list_devices", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libavdevice, EntryPoint = "avdevice_free_list_devices", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern void avdevice_free_list_devices(AVDeviceInfoList** @device_list);
         
-        [DllImport(libavdevice, EntryPoint = "avdevice_list_input_sources", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libavdevice, EntryPoint = "avdevice_list_input_sources", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int avdevice_list_input_sources(AVInputFormat* @device, [MarshalAs(UnmanagedType.LPStr)] string @device_name, AVDictionary* @device_options, AVDeviceInfoList** @device_list);
         
-        [DllImport(libavdevice, EntryPoint = "avdevice_list_output_sinks", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(libavdevice, EntryPoint = "avdevice_list_output_sinks", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern int avdevice_list_output_sinks(AVOutputFormat* @device, [MarshalAs(UnmanagedType.LPStr)] string @device_name, AVDictionary* @device_options, AVDeviceInfoList** @device_list);
         
     }

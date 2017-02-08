@@ -518,6 +518,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Sources\Audio\talk\TalkFoscam.cs" />
     <Compile Include="Sources\Video\MediaStream.cs" />
     <Compile Include="TagConfigure.cs">
       <SubType>Form</SubType>
@@ -2170,7 +2171,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\FFmpeg.AutoGen-master\FFmpeg.AutoGen\FFmpeg.AutoGen.csproj">
+    <ProjectReference Include="FFmpeg.AutoGen\FFmpeg.AutoGen.csproj">
       <Project>{a536b02a-b0b1-4753-8328-17369ef09976}</Project>
       <Name>FFmpeg.AutoGen</Name>
     </ProjectReference>

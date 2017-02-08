@@ -1650,19 +1650,18 @@ namespace iSpyApplication.Controls
 
 
                         _writer = new MediaWriter(filename + ".mp3", AVCodecID.AV_CODEC_ID_MP3);
+
                         try
                         {
-                            try
-                            {
-                                string url = (X509.SslEnabled ? "https" : "http") + "://" + MainForm.IPAddress + "/";
-                                linktofile = Uri.EscapeDataString(url + "loadclip.mp3?oid=" + Micobject.id + "&ot=1&fn=" + AudioFileName + ".mp3&auth=" + MainForm.Identifier);
-                            }
-                            catch (Exception ex)
-                            {
-                                Logger.LogExceptionToFile(ex, "Generating external link to file");
-                            }
-                            DoAlert("recordingstarted", linktofile);
+                            string url = (X509.SslEnabled ? "https" : "http") + "://" + MainForm.IPAddress + "/";
+                            linktofile = Uri.EscapeDataString(url + "loadclip.mp3?oid=" + Micobject.id + "&ot=1&fn=" + AudioFileName + ".mp3&auth=" + MainForm.Identifier);
                         }
+                        catch (Exception ex)
+                        {
+                            Logger.LogExceptionToFile(ex, "Generating external link to file");
+                        }
+                        DoAlert("recordingstarted", linktofile);
+
 
                         double maxlevel = 0;
                         bool first = true;
