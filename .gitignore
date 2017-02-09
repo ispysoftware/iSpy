@@ -1,6 +1,8 @@
 /obj/
 wix/**/bin/
 wix/**/obj/
+wix/Bootstrap32/bin/*
+wix/Bootstrap64/bin/*
 .vs/
 packages/
 FFmpeg.AutoGen/bin/
