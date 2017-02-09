@@ -1,16 +1,18 @@
 /obj/
-wix/**/bin/
-wix/**/obj/
-wix/Bootstrap32/bin/release/
-wix/Bootstrap32/bin/debug/
-wix/Bootstrap64/bin/release/
-wix/Bootstrap64/bin/debug/
+Wix/**/bin/
+Wix/**/obj/
+Wix/Bootstrap32/bin/Release/
+Wix/Bootstrap32/bin/Debug/
+Wix/Bootstrap64/bin/Release/
+Wix/Bootstrap64/bin/Debug/
 .vs/
 packages/
 FFmpeg.AutoGen/bin/
 FFmpeg.AutoGen/obj/
 DLLS/managed/
-bin/
+[Bb]in
+[Dd]ebug*/
+[Rr]elease*/
 
 # Readmes
 Plugins/*
