@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Include>
-  <?define OutputDir = "$(var.SolutionDir)bin\x86\Release" ?>
-  <?define SourceCodeDir = "$(var.SolutionDir)" ?>
-</Include>

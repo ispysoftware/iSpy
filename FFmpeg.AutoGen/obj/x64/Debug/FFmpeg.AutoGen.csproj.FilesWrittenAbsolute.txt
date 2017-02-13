@@ -1,4 +1,0 @@
-D:\Projects\FFmpeg.AutoGen-master\FFmpeg.AutoGen\obj\x64\Debug\.NETFramework,Version=v4.5.AssemblyAttribute.cs
-D:\Projects\FFmpeg.AutoGen-master\FFmpeg.AutoGen\bin\x64\Debug\FFmpeg.AutoGen.dll.config
-D:\Projects\FFmpeg.AutoGen-master\FFmpeg.AutoGen\bin\x64\Debug\FFmpeg.AutoGen.dll
-D:\Projects\FFmpeg.AutoGen-master\FFmpeg.AutoGen\obj\x64\Debug\FFmpeg.AutoGen.dll
