@@ -1,0 +1,7 @@
+bin/
+obj/
+wix/ispy32/obj
+wix/ispy64/obj
+wix/ispy32/bin
+wix/ispy64/bin
+.vs

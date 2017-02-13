@@ -1,0 +1,375 @@
+﻿{
+    "header": "Edit Camera",
+    "okResult": "UploadJSON",
+    "name": "EditCamera",
+    "sections": [
+        {
+            "header": "General",
+            "displayType": "Form",
+            "items": [
+                { "text": "Name", "value": "", "type": "String", "bindto": "name" },
+                { "text": "Enabled", "value": "", "type": "Boolean", "bindto": "settings.active", "live": true },
+                {
+                    "text": "Source Type",
+                    "value": 0,
+                    "type": "Select",
+                    "bindto": "settings.sourceindex",
+                    "id": "ddlSourceType",
+                    "options": [
+                        { "text": "Wizard", "value": "-1" },
+                        SOURCETYPES
+                    ],
+                    "live": true
+                },
+                { "text": "Configure", "value": "...", "type": "Button", "action": "editsource" },
+                { "text": "Scheduling", "value": "", "type": "Boolean", bindto: "schedule.active" },
+                { "text": "Schedule", "value": "...", "type": "Button", "action": "showschedule" },
+                {
+                    "text": "Transform",
+                    "value": 0,
+                    "type": "Select",
+                    "bindto": "rotateMode",
+                    "options": [
+                        ROTATEMODES
+                    ],
+                    "live": true
+                },
+                { "text": "Groups", "value": "", "type": "String", "bindto": "settings.accessgroups", "help": "Example: home,office  - see permissions" },
+                { "text": "Max Framerate", "value": 10, "type": "Int32", "min": 1, "max": 200, "bindto": "settings.maxframerate" }
+            ]
+        },
+        {
+            "header": "Overlays",
+            "displayType": "Form",
+            "items": [
+                { "text": "Mask", "value": "", "type": "Header", "bindto": "" },
+                {
+
+                    "text": "Image",
+                    "value": "",
+                    "type": "Select",
+                    "bindto": "settings.maskimage",
+                    "help": "Add more images (.png) in MASKFOLDER",
+                    "options": [
+                        MASKS
+                    ],
+                    "live": true
+                },
+                { "text": "Timestamp", "value": "", "type": "Header", "bindto": "" },
+                { "text": "Formatter", "value": "", "type": "String", "bindto": "settings.timestampformatter", "live": true, "help": "Example: {FPS},{0:G},{0:T},{CAMERA},{REC},{0:dd MMM yy}"},
+                { "text": "Text Color", "value": "", "type": "Color", "bindto": "settings.timestampforecolor", "converter": "rgbtohex" },
+                { "text": "Back Color", "value": "", "type": "Color", "bindto": "settings.timestampbackcolor", "converter": "rgbtohex" },
+                { "text": "Show Background", "value": "", "type": "Boolean", "bindto": "settings.timestampshowback", "live": true },
+                { "text": " Font Size", "value": 12, "type": "Decimal", "min": 1, "max": 200, "bindto": "settings.timestampfont", "converter": "fonttofontsize", "live": true },
+                { "text": " GMT Offset", "value": 0, "type": "Decimal", "bindto": "settings.timestampoffset", "live": true },
+                {
+                    "text": " Location",
+                    "value": "0",
+                    "type": "Select",
+                    "bindto": "settings.timestamplocation",
+                    "options": [
+                        { "text": "Top Left", "value": 1 },
+                        { "text": "Top Center", "value": 2 },
+                        { "text": "Top Right", "value": 3 },
+                        { "text": "Bottom Left", "value": 4 },
+                        { "text": "Bottom Center", "value": 5 },
+                        { "text": "Bottom Right", "value": 6 }
+                    ],
+                    "live": true
+                },
+                { "text": "Picture in Picture", "value": "", "type": "Header", "bindto": "" },
+                { "text": "Enabled", "value": "", "type": "Boolean", "bindto": "settings.pip.enabled", "live": true },
+                { "text": "Cameras", "value": [ PiPs ], "type": "PiPManager", "help": "Select a camera and drag out an area to overlay. Drag areas out to delete." }
+            ]
+        },
+        {
+            "header": "Audio",
+            "displayType": "Form",
+            "items": [
+                {
+                    "text": "Microphone",
+                    "value": "",
+                    "type": "Select",
+                    "bindto": "settings.micpair",
+                    "options": [
+                        AUDIOSOURCES
+                    ],
+                    "help": "Add a microphone to the server to add to this list"
+                },
+                { "text": "Ignore Audio", "value": "", "type": "Boolean", "bindto": "settings.ignoreaudio" },
+                { "text": "Talk", "value": "", "type": "Header" },
+                {
+                    "text": "Model",
+                    "value": "",
+                    "type": "Select",
+                    "bindto": "settings.audiomodel",
+                    "options": [
+                        { "text": "None", "value": "None" },
+                        { "text": "Local Playback", "value": "Local Playback" },
+                        { "text": "Axis", "value": "Axis", "noTranslate": true  },
+                        { "text": "Foscam", "value": "Foscam", "noTranslate": true  },
+                        { "text": "iSpy Server", "value": "iSpy Server", "noTranslate": true  },
+                        { "text": "Network Kinect", "value": "Network Kinect", "noTranslate": true  },
+                        { "text": "IP Webcam (Android)", "value": "IP Webcam (Android)", "noTranslate": true  }
+                    ],
+                    "help": "Controls where audio is played back when talking"
+                }
+            ]
+        },
+        {
+            "header": "Recording",
+            "displayType": "Form",
+            "items": [
+                { "text": "Video", "value": "", "type": "Header", "bindto": "" },
+                { "text": "Record on Detect", "value": "", "type": "Boolean", "bindto": "detector.recordondetect" },
+                { "text": "Record on Alert", "value": "", "type": "Boolean", "bindto": "detector.recordonalert" },
+                { "text": "Quality", "value": 0, "type": "Slider", "range": false, "min": 1, "max": 10, "bindto": "recorder.quality" },
+                { "text": "Max Framerate", "value": 10, "type": "Int32", "min": 1, "max": 200, "bindto": "settings.maxframeraterecord" },
+                { "text": "Max Record Time", "value": 0, "type": "Int32", "min": 1, "max": 999999999999, "bindto": "recorder.maxrecordtime", "help": "Maximum time to record before starting a new file (s)" },
+                { "text": "Min Record Time", "value": 0, "type": "Int32", "min": 1, "max": 999999999999, "bindto": "recorder.minrecordtime", "help": "Minimum time to record (s)" },
+                { "text": "Buffer", "value": 0, "type": "Int32", "min": 0, "max": 200, "bindto": "recorder.bufferseconds","help": "How much video to buffer in memory (s)" },
+                { "text": "Timelapse", "value": "", "type": "Header", "bindto": "" },
+                { "text": "Enabled", "value": "", "type": "Boolean", "bindto": "recorder.timelapseenabled" },
+                { "text": "Frame Rate", "value": 0, "type": "Int32", "min": 1, "max": 200, "bindto": "recorder.timelapseframerate", "help": "Frame rate of the generated file (fps)" },
+                { "text": "Video Frame Interval", "value": 1, "type": "Int32", "min": 0, "max": 999999, "bindto": "recorder.timelapse", "help": "Time between video frames (0 = disable) (s)" },
+                { "text": "Snapshot Frame Interval", "value": 1, "type": "Int32", "min": 0, "max": 999999, "bindto": "recorder.timelapseframes", "help": "Time between snapshot frames (0 = disable) (s)" },
+                { "text": "Save Every", "value": 0, "type": "Int32", "min": 1, "max": 9999999999, "bindto": "recorder.timelapsesave", "help": "(minutes)" },
+                { "text": "Snapshots", "value": "", "type": "Header", "bindto": "" },
+                { "text": "Enabled", "value": "", "type": "Boolean", "bindto": "savelocal.enabled" },
+                {
+                    "text": "Mode",
+                    "value": "",
+                    "type": "Select",
+                    "bindto": "savelocal.mode",
+                    "options": [
+                        { "text": "Motion", "value": 0 },
+                        { "text": "Alert", "value": 1 },
+                        { "text": "Interval", "value": 2 }
+                    ]
+                },
+                { "text": "Quality", "value": 0, "type": "Slider", "range": false, "min": 1, "max": 100, "bindto": "savelocal.quality" },
+                { "text": "Overlay Text", "value": "", "type": "String", "bindto": "savelocal.text" },
+                { "text": "Filename", "value": "", "type": "String", "bindto": "savelocal.filename", "help": "Example: {0:yyyy-MM-dd_HH-mm-ss_fff}.jpg or {C}.jpg" },
+                { "text": "Counter Max", "value": 0, "type": "Int32", "min": 1, "max": 9999999999, "bindto": "savelocal.countermax" },
+                { "text": "Interval", "value": 0, "type": "Decimal", "min": 1, "max": 9999999999, "bindto": "savelocal.intervalnew", "help": "When mode is interval saves a frame (s)" },
+                { "text": "Delay", "value": 0, "type": "Decimal", "min": 0, "max": 9999, "bindto": "savelocal.minimumdelay", "help": "When mode is motion or alert, minimum time between snapshots (s)" }
+            ]
+        },
+        {
+            "header": "Motion",
+            "displayType": "Form",
+            "items": [
+                {
+                    "text": "Detector",
+                    "value": "",
+                    "type": "Select",
+                    "bindto": "detector.type",
+                    "options": [
+                        { "text": "None", "value": "None" },
+                        { "text": "Two Frames", "value": "Two Frames" },
+                        { "text": "Custom Frame", "value": "Custom Frame" },
+                        { "text": "Background Modeling", "value": "Background Modeling" },
+                        { "text": "Two Frames (Color)", "value": "Two Frames (Color)" },
+                        { "text": "Custom Frame (Color)", "value": "Custom Frame (Color)" },
+                        { "text": "Background Modeling (Color)", "value": "Background Modeling (Color)" }
+                    ],
+                    "live": true
+                },
+                {
+                    "text": "Display Style",
+                    "value": "",
+                    "type": "Select",
+                    "bindto": "detector.postprocessor",
+                    "options": [
+                        { "text": "None", "value": "None" },
+                        { "text": "Grid Processing", "value": "Grid Processing" },
+                        { "text": "Object Tracking", "value": "Object Tracking" },
+                        { "text": "Border Highlighting", "value": "Border Highlighting" },
+                        { "text": "Area Highlighting", "value": "Area Highlighting" }
+                    ],
+                    "live": true
+                },
+                { "text": "Color", "value": "", "type": "Color", "bindto": "detector.color", "help": "Color of the motion detection overlay" },
+                { "text": "Sensitivity", "value": [ ], "type": "Slider", "min": 1, "max": 100, "range": true, "bindto": "detector.minsensitivity,detector.maxsensitivity", "id": "arrSensitivity", "help": "This controls how much motion triggers the motion detector." },
+                { "text": "Gain", "value": 0, "type": "Decimal", "min": 1, "max": 100, "bindto": "detector.gain", "help": "Multiplier for the motion detector.", "id": "numGain" },
+                { "text": "Filter Noise", "value": "", "type": "Boolean", "bindto": "settings.suppressnoise", "live": true },
+                { "text": "Process Frame", "value": 0, "type": "Int32", "min": 1, "max": 200, "bindto": "detector.processeveryframe", "help": "1= process every frame, 2= process every other frame etc" },
+                { "text": "Zones", "value": [ ZONES ], "type": "ZoneManager", "help": "Drag out zones to monitor. Live motion and trigger range is displayed at the bottom. Drag zones out to delete." }
+            ]
+        },
+        {
+            "header": "Alerts",
+            "displayType": "Form",
+            "items": [
+                { "text": "Enabled", "value": "", "type": "Boolean", "bindto": "alerts.active" },
+                {
+                    "text": "Mode",
+                    "value": "",
+                    "type": "Select",
+                    "bindto": "alerts.mode",
+                    "options": [
+                        { "text": "Movement", "value": "movement" },
+                        { "text": "No Movement", "value": "nomovement" },
+                        { "text": "Object Count", "value": "objectcount" },
+                        { "text": "Plugin", "value": "plugin" }
+                    ]
+                },
+                { "text": "Movement delay", "value": 0, "type": "Decimal", "min": 0, "max": 9999, "bindto": "detector.movementintervalnew", "help": "Trigger an alert after movement (s)" },
+                { "text": "No movement delay", "value": 1, "type": "Decimal", "min": 1, "max": 9999, "bindto": "detector.nomovementintervalnew", "help": "Trigger an alert after inactivity (s)" },
+                { "text": "Calibration delay", "value": 0, "type": "Int32", "min": 0, "max": 9999, "bindto": "detector.calibrationdelay", "help": "Suppresses alerts after switching on or moving the camera (s)" },
+                { "text": "Messaging", "value": "", "type": "Boolean", "bindto": "settings.messaging" },
+                { "text": "Actions", "value": "...", "type": "Button", "action": "showactions", "help": "Specify actions to take on alert" },
+                { "text": "Intervals", "value": "", "type": "Header", "bindto": "" },
+                { "text": "Minimum Interval", "value": 0, "type": "Int32", "min": 1, "max": 99999999, "bindto": "alerts.minimuminterval", "help": "Minimum time between alerts (s)" },
+                { "text": "Group", "value": "", "type": "String", "bindto": "alerts.groupname", "help": "Specify a group name to combine intervals with other cameras" },
+                { "text": "Reset Interval", "value": 0, "type": "Int32", "min": 1, "max": 99999999, "bindto": "alerts.resetinterval", "help": "Time to reset after an alert is raised in the group" }
+            ]
+        },
+        {
+            "header": "PTZ",
+            "displayType": "Form",
+            "items": [
+                {
+                    "text": "Model",
+                    "value": "",
+                    "type": "Select",
+                    "bindto": "ptz,ptzentryindex",
+                    "command": "getlist&source=ptzcommands&task=filllist&target=ptzhomecommand",
+                    "id": "ptzModelList",
+                    "options": [ ]
+                },
+                { "text": "Pelco", "value": "...", "type": "Button", "action": "editpelco" },
+                { "text": "URL", "value": "", "type": "String", "id": "txtPTZURL", "bindto": "settings.ptzurlbase" },
+                { "text": "Channel", "value": "", "type": "String", "bindto": "settings.ptzchannel" },
+                { "text": "Username", "value": "", "type": "String", "bindto": "settings.ptzusername" },
+                { "text": "Password", "value": "", "type": "Password", "bindto": "settings.ptzpassword" },
+                { "text": "Flip-X", "value": "", "type": "Boolean", "bindto": "settings.ptzflipx" },
+                { "text": "Flip-Y", "value": "", "type": "Boolean", "bindto": "settings.ptzflipy","help":"Use if your camera is mounted upside down etc" },
+                { "text": "Rotate 90", "value": "", "type": "Boolean", "bindto": "settings.ptzrotate90" },
+                { "text": "Scheduler", "type": "Header" },
+                { "text": "Enabled", "value": false, "type": "Boolean", "bindto": "ptzschedule.active" },
+                { "text": "Suspend on Motion", "value": false, "type": "Boolean", "bindto": "ptzschedule.suspend" },
+                { "text": "Schedule", "value": "...", "type": "Button", "action": "showptzschedule" },
+                { "text": "Tracking", "value": "", "type": "Header" },
+                { "text": "Enabled", "value": "", "type": "Boolean", "bindto": "settings.ptzautotrack", "help": "This overrides motion detection and processing settings" },
+                { "text": "Reverse", "value": "", "type": "Boolean", "bindto": "settings.ptzautotrackreverse", "help": "Use for fast moving objects like cars" },
+                {
+                    "text": "Home Command",
+                    "value": "",
+                    "id": "ptzhomecommand",
+                    "type": "Select",
+                    "bindto": "settings.ptzautohomecommand",
+                    "options": [
+                        PTZCOMMANDS
+                    ]
+                },
+                { "text": "Auto Home", "value": "", "type": "Boolean", "bindto": "settings.ptzautohome", "help": "Go home after a period of inactivity" },
+                { "text": "Auto Home Delay", "value": 0, "type": "Int32", "min": 1, "max": 99999999, "bindto": "settings.ptzautohomedelay", "help": "Minimum time to wait before going home (s)" },
+                {
+                    "text": "Tracking Mode",
+                    "value": "",
+                    "type": "Select",
+                    "bindto": "settings.ptzautotrackmode",
+                    "options": [
+                        { "text": "Any Direction", "value": 0 },
+                        { "text": "Vertical Only", "value": 1 },
+                        { "text": "Horizontal Only", "value": 2 }
+                    ]
+                }
+
+            ]
+        },
+        {
+            "header": "Uploads",
+            "displayType": "Form",
+            "items": [
+                { "text": "FTP", "value": "", "type": "Header" },
+                { "text": "Enabled", "value": "", "type": "Boolean", "bindto": "ftp.enabled" },
+                {
+                    "text": "Mode",
+                    "value": "",
+                    "type": "Select",
+                    "bindto": "ftp.mode",
+                    "options": [
+                        { "text": "Motion", "value": 0 },
+                        { "text": "Alert", "value": 1 },
+                        { "text": "Interval", "value": 2 }
+                    ]
+                },
+                {
+                    "text": "Server",
+                    "value": "",
+                    "type": "Select",
+                    "bindto": "ftp.ident",
+                    "options": [
+                        FTPSERVERS
+                    ],
+                    "help": "See Server Settings to add FTP Servers"
+                },
+                { "text": "Quality", "value": "", "type": "Slider", "max": 100, "bindto": "ftp.quality" },
+                { "text": "Overlay Text", "value": "", "type": "String", "bindto": "ftp.text" },
+                { "text": "Filename", "value": "", "type": "String", "bindto": "ftp.filename", "help": "example: {0:yyyy-MM-dd_HH-mm-ss_fff}.jpg or {C}.jpg" },
+                { "text": "Counter Max", "value": 0, "type": "Int32", "min": 1, "max": 99999999, "bindto": "ftp.countermax" },
+                { "text": "Interval", "value": 0, "type": "Decimal", "min": 1, "max": 9999999999, "bindto": "ftp.intervalnew", "help": "When mode is interval uploads a frame (s)" },
+              {
+                "text": "Delay",
+                "value": 0,
+                "type": "Decimal",
+                "min": 0,
+                "max": 200,
+                "bindto": "ftp.minimumdelay",
+                "help": "Minimum time between FTP when mode is motion or alert (s)"
+              },
+              {
+                "text": "FTP Recordings",
+                "value": "",
+                "type": "Header"
+              },
+              { "text": "Enabled", "value": "", "type": "Boolean", "bindto": "recorder.ftpenabled" },
+              { "text": "Filename", "value": "", "type": "String", "bindto": "recorder.ftpfilename", "help": "example: {0:yyyy-MM-dd_HH-mm-ss_fff}.jpg or {C}.mp4" },
+                { "text": "Counter Max", "value": 0, "type": "Int32", "min": 1, "max": 99999999, "bindto": "recorder.ftpcountermax" },
+
+                { "text": "Cloud", "value": "", "type": "Header" },
+                {
+                    "text": " Provider",
+                    "value": "",
+                    "type": "Select",
+                    "bindto": "settings.cloudprovider.provider",
+                    "options": [
+                        { "text": "None", "value": "None" },
+                        { "text": "Google Drive", "value": "Google Drive", "noTranslate": true  },
+                        { "text": "Dropbox", "value": "Dropbox", "noTranslate": true  }
+                    ],
+                    "help": "See Server Settings to enable cloud services"
+                },
+                { "text": " Path", "value": "", "type": "String", "bindto": "settings.cloudprovider.path" },
+                { "text": " Upload Recordings", "value": "", "type": "Boolean", "bindto": "settings.cloudprovider.recordings" },
+                { "text": " Upload Snapshots", "value": "", "type": "Boolean", "bindto": "settings.cloudprovider.images" },
+                { "text": "YouTube", "value": "", "type": "Header", "help": "Due to licensing agreements we cannot auto upload to YouTube." },
+                { "text": " Public", "value": "", "type": "Boolean", "bindto": "settings.youtube.public" },
+                { "text": " Tags", "value": "", "type": "String", "bindto": "settings.youtube.tags" }
+            ]
+        },
+        {
+            "header": "Storage",
+            "displayType": "Form",
+            "items": [
+                {
+                    "text": "Drive",
+                    "value": "",
+                    "type": "Select",
+                    "bindto": "settings.directoryIndex",
+                    "options": [
+                        DIRECTORIES
+                    ],
+                    "help": "Add or edit locations in settings"
+                },
+                { "text": "Folder", "value": "", "type": "String", "bindto": "directory", "help": "Relative folder path from storage location" },
+                { "text": "Management", "value": "", "type": "Boolean", "bindto": "settings.storagemanagement.enabled" },
+                { "text": "Archive", "value": "", "type": "Boolean", "bindto": "settings.storagemanagement.archive", "help": "Move to the archive directory (see server settings) instead of deleting" },
+                { "text": "Max Size", "value": "", "type": "Int32", "bindto": "settings.storagemanagement.maxsize", "help": "Maximum size of folder (MB)" },
+                { "text": "Max Age", "value": "", "type": "Int32", "bindto": "settings.storagemanagement.maxage", "help":  "Maximum age of content (hours)" }
+            ]
+        }
+    ]
+}

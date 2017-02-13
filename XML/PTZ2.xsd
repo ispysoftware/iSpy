@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="PTZSettings2">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" name="Camera">
+          <xs:complexType mixed="true">
+            <xs:sequence>
+              <xs:element name="Makes">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="Make">
+                      <xs:complexType>
+                        <xs:attribute name="Name" type="xs:string" use="required" />
+                        <xs:attribute name="Model" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="CommandURL" type="xs:string" />
+              <xs:element minOccurs="0" name="port" type="xs:int" />
+              <xs:element minOccurs="0" name="POST" type="xs:boolean" />
+              <xs:element name="Method" type="xs:string" default="GET" />
+              <xs:element minOccurs="0" name="Cookies" type="xs:string" />
+              <xs:element name="Commands">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Center" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Left" type="xs:string" />
+                    <xs:element name="LeftUp" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Right" type="xs:string" />
+                    <xs:element name="RightUp" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Up" type="xs:string" />
+                    <xs:element name="Down" type="xs:string" />
+                    <xs:element name="LeftDown" type="xs:string" minOccurs="0"/>
+                    <xs:element name="RightDown" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Stop" type="xs:string" minOccurs="0"/>
+                    <xs:element name="ZoomIn" type="xs:string" minOccurs="0"/>
+                    <xs:element name="ZoomOut" type="xs:string" minOccurs="0"/>
+                    <xs:element name="ZoomInStop" type="xs:string" minOccurs="0"/>
+                    <xs:element name="ZoomOutStop" type="xs:string" minOccurs="0"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="ExtendedCommands">
+                <xs:complexType mixed="true">
+                  <xs:sequence minOccurs="0">
+                    <xs:element maxOccurs="unbounded" name="Command">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="Name" type="xs:string" use="required" />
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:int" use="required" />
+            <xs:attribute name="AppendAuth" type="xs:string" use="optional" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

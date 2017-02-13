@@ -1,0 +1,30 @@
+﻿{
+    "header": "Video Source",
+    "okResult": "UploadJSON",
+    "name": "EditVideoSource",
+    "sections": [
+        {
+            "header": "Video Source",
+            "displayType": "Form",
+            "items": SOURCEEDITOR
+        },
+        {
+            "header": "Advanced",
+            "displayType": "Form",
+            "items": [
+                { "text": "Calibrate", "value": "", "type": "Boolean", "bindto": "settings.calibrateonreconnect" },
+                { "text": "Cookies", "value": "", "type": "String", "bindto": "settings.cookies" },
+                { "text": "Basic Authentication", "value": "", "type": "Boolean", "bindto": "settings.forcebasic" },
+                { "text": "Use HTTP 1.0", "value": "", "type": "Boolean", "bindto": "settings.usehttp10" },
+                { "text": "Headers", "value": "", "type": "String", "bindto": "settings.headers", "help": "HTTP Headers to send in the request" },
+                { "text": "User Agent", "value": "", "type": "String", "bindto": "settings.useragent"},
+                { "text": "Resize", "value": "", "type": "Boolean", "bindto": "settings.resize" },
+                { "text": "Resize Width", "value": "", "type": "Int32", "max": 9999, "min": 2, "bindto": "settings.desktopresizewidth" },
+                { "text": "Resize Height", "value": "", "type": "Int32", "max": 9999, "min": 2, "bindto": "settings.desktopresizeheight" },
+                { "text": "Connection Timeout", "value": "", "type": "Int32", "min": 100, "max": 60000, "bindto": "settings.timeout", "help": "Time in milliseconds to timeout network connections" },
+                { "text": "Reconnect Interval", "value": "", "type": "Int32", "min": 0, "max": 60000, "bindto": "settings.reconnectinterval", "help": "Time in seconds between automated reconnects (0=never)" }
+
+            ]
+        }
+    ]
+}

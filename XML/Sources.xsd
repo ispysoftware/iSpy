@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="Manufacturers">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="Manufacturer">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" name="url">
+                                <xs:complexType>
+                                    <xs:attribute name="version" type="xs:string" use="required" />
+                                    <xs:attribute name="confirmed" type="xs:string" default="false" use="optional" />
+                                    <xs:attribute name="prefix" type="xs:string" use="required" />
+                                    <xs:attribute name="Source" type="xs:string" use="required" />
+                                    <xs:attribute name="url" type="xs:string" use="required" />
+                                    <xs:attribute name="fixed" type="xs:boolean" use="optional" default="false"/>
+                                    <xs:attribute name="AudioModel" type="xs:string" use="optional" />
+                                    <xs:attribute name="flags" type="xs:string" use="optional"/>
+                                    <xs:attribute name="port" type="xs:string" use="optional"/>
+                                    <xs:attribute name="cookies" type="xs:string" default=""/>
+                                    <xs:attribute name="AudioSource" type="xs:string" use="optional"/>
+                                    <xs:attribute name="AudioURL" type="xs:string" use="optional"/>
+                                    <xs:attribute name="id" type="xs:int" use="optional"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="name" type="xs:string" use="required" />
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

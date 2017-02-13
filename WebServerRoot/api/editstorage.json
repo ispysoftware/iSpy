@@ -1,0 +1,16 @@
+﻿{
+    "header": "Storage",
+    "okResult": "UploadJSON",
+    "name": "EditStorage",
+    "ident": "new",
+    "sections": [
+        {
+            "header": "Server",
+            "displayType": "Form",
+            "items": [
+                { "text": "Directory", "value": "", "type": "String", "bindto": "Entry" },
+                { "text": "Default", "value": false, "type": "Boolean", "bindto": "default" }
+            ]
+        }
+    ]
+}
