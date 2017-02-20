@@ -1,16 +1,12 @@
 /obj/
 Wix/**/bin/
 Wix/**/obj/
-Wix/Bootstrap32/bin/Release/
-Wix/Bootstrap32/bin/Debug/
-Wix/Bootstrap64/bin/Release/
-Wix/Bootstrap64/bin/Debug/
 .vs/
 packages/
 FFmpeg.AutoGen/bin/
 FFmpeg.AutoGen/obj/
 DLLS/managed/
-[Bb]in
+[Bb]in/
 [Dd]ebug*/
 [Rr]elease*/
 
@@ -45,6 +41,8 @@ ipch/
 *.cachefile
 *.VC.db
 *.VC.VC.opendb
+*.bak
+*.DotSettings
 
 # Windows thumbnail cache files
 Thumbs.db
