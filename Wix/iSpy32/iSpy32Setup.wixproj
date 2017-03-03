@@ -47,10 +47,7 @@
   <Import Project="$(WixTargetsPath)" />
   <PropertyGroup>
     <PostBuildEvent>if NOT "%25ComputerName%25" == "DEVPC" GOTO end
-if $(PlatformName) == "x86"
 call "D:\Projects\iSpy\signing\Wix_iSpySetup.bat"
-else
-call "D:\Projects\iSpy\signing\Wix_iSpy64Setup.bat"
 :end</PostBuildEvent>
   </PropertyGroup>
   <!--
