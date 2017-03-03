@@ -4,7 +4,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>3.10</ProductVersion>
-    <ProjectGuid>{4b65a69e-d1a7-47fc-ad92-12dc18f526ce}</ProjectGuid>
+    <ProjectGuid>{5783b777-ef53-4651-ad1b-f4f3c105d3f9}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
     <OutputName>iSpy64</OutputName>
     <OutputType>Package</OutputType>

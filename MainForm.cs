@@ -17,6 +17,7 @@ using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
 using Antiufo.Controls;
+using FFmpeg.AutoGen;
 using iSpyApplication.Cloud;
 using iSpyApplication.Controls;
 using iSpyApplication.Joystick;
@@ -449,7 +450,6 @@ namespace iSpyApplication
         private ToolStripMenuItem gridViewsToolStripMenuItem;
         private ToolStripMenuItem maximiseToolStripMenuItem;
         private ToolStripMenuItem uploadToCloudToolStripMenuItem;
-        private Panel panel1;
         private MediaPanelControl mediaPanelControl1;
         private ToolStripMenuItem viewLogFileToolStripMenuItem;
         private ToolStripMenuItem switchToolStripMenuItem;
@@ -882,7 +882,18 @@ namespace iSpyApplication
                 Logger.LogExceptionToFile(ex);
             }
 
-            
+            try
+            {
+                ffmpeg.avdevice_register_all();
+                ffmpeg.avcodec_register_all();
+                ffmpeg.avfilter_register_all();
+                ffmpeg.avformat_network_init();
+                ffmpeg.av_register_all();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogExceptionToFile(ex);
+            }
 
             if (!SilentStartup)
             {
@@ -1257,10 +1268,14 @@ namespace iSpyApplication
                                     }
                                     break;
                                 case "webserver":
-                                    Webserver = nv[1].Trim().Trim('/');
-                                    if (!setSecure)
-                                        WebserverSecure = Webserver;
-                                    CustomWebserver = true;
+                                    string ws = nv[1].Trim().Trim('/');
+                                    if (!string.IsNullOrEmpty(ws))
+                                    {
+                                        Webserver = ws;
+                                        if (!setSecure)
+                                            WebserverSecure = Webserver;
+                                        CustomWebserver = true;
+                                    }
                                     break;
                                 case "webserversecure":
                                     WebserverSecure = nv[1].Trim().Trim('/');
@@ -1447,73 +1462,83 @@ namespace iSpyApplication
         {
             _rescanIPTimer.Stop();
             _rescanIPTimer = null;
-            if (Conf.IPMode == "IPv4")
+            try
             {
-                _ipv4Addresses = null;
-                bool iplisted = false;
-                foreach (IPAddress ip in AddressListIPv4)
+                if (Conf.IPMode == "IPv4")
                 {
-                    if (Conf.IPv4Address == ip.ToString())
-                        iplisted = true;
+                    _ipv4Addresses = null;
+                    bool iplisted = false;
+                    foreach (IPAddress ip in AddressListIPv4)
+                    {
+                        if (Conf.IPv4Address == ip.ToString())
+                            iplisted = true;
+                    }
+                    if (!iplisted)
+                    {
+                        _ipv4Address = "";
+                        Conf.IPv4Address = AddressIPv4;
+                    }
+                    if (iplisted)
+                        return;
                 }
-                if (!iplisted)
+                if (!string.IsNullOrEmpty(Conf.WSUsername) && !string.IsNullOrEmpty(Conf.WSPassword))
                 {
-                    _ipv4Address = "";
-                    Conf.IPv4Address = AddressIPv4;
-                }
-                if (iplisted)
-                    return;
-            }
-            if (!string.IsNullOrEmpty(Conf.WSUsername) && !string.IsNullOrEmpty(Conf.WSPassword))
-            {
-                switch (Conf.IPMode)
-                {
-                    case "IPv4":
+                    switch (Conf.IPMode)
+                    {
+                        case "IPv4":
 
-                        Logger.LogErrorToFile("Your IP address has changed. Please set a static IP address for your local computer to ensure uninterrupted connectivity.");
-                        //force reload of ip info
-                        AddressIPv4 = Conf.IPv4Address;
-                        if (Conf.DHCPReroute && Conf.IPMode == "IPv4")
-                        {
-                            //check if IP address has changed
-                            if (Conf.UseUPNP)
+                            Logger.LogErrorToFile(
+                                "Your IP address has changed. Please set a static IP address for your local computer to ensure uninterrupted connectivity.");
+                            //force reload of ip info
+                            AddressIPv4 = Conf.IPv4Address;
+                            if (Conf.DHCPReroute && Conf.IPMode == "IPv4")
                             {
-                                //change router ports
-                                if (NATControl.SetPorts(Conf.ServerPort, Conf.LANPort))
-                                    Logger.LogMessageToFile("Router port forwarding has been updated. (" +
-                                                     Conf.IPv4Address + ")");
+                                //check if IP address has changed
+                                if (Conf.UseUPNP)
+                                {
+                                    //change router ports
+                                    if (NATControl.SetPorts(Conf.ServerPort, Conf.LANPort))
+                                        Logger.LogMessageToFile("Router port forwarding has been updated. (" +
+                                                                Conf.IPv4Address + ")");
+                                }
+                                else
+                                {
+                                    Logger.LogMessageToFile(
+                                        "Please check Use UPNP in web settings to handle this automatically");
+                                }
                             }
                             else
                             {
-                                Logger.LogMessageToFile("Please check Use UPNP in web settings to handle this automatically");
+                                Logger.LogMessageToFile(
+                                    "Enable DHCP Reroute in Web Settings to handle this automatically");
                             }
-                        }
-                        else
-                        {
-                            Logger.LogMessageToFile("Enable DHCP Reroute in Web Settings to handle this automatically");
-                        }
-                        MWS.StopServer();
-                        MWS.StartServer();
-                        WsWrapper.ForceSync();
-                        break;
-                    case "IPv6":
-                        _ipv6Addresses = null;
-                        bool iplisted = false;
-                        foreach (IPAddress ip in AddressListIPv6)
-                        {
-                            if (Conf.IPv6Address == ip.ToString())
-                                iplisted = true;
-                        }
-                        if (!iplisted)
-                        {
-                            Logger.LogErrorToFile(
-                                "Your IP address has changed. Please set a static IP address for your local computer to ensure uninterrupted connectivity.");
-                            _ipv6Address = "";
-                            AddressIPv6 = Conf.IPv6Address;
-                            Conf.IPv6Address = AddressIPv6;
-                        }
-                        break;
+                            MWS.StopServer();
+                            MWS.StartServer();
+                            WsWrapper.ForceSync();
+                            break;
+                        case "IPv6":
+                            _ipv6Addresses = null;
+                            bool iplisted = false;
+                            foreach (IPAddress ip in AddressListIPv6)
+                            {
+                                if (Conf.IPv6Address == ip.ToString())
+                                    iplisted = true;
+                            }
+                            if (!iplisted)
+                            {
+                                Logger.LogErrorToFile(
+                                    "Your IP address has changed. Please set a static IP address for your local computer to ensure uninterrupted connectivity.");
+                                _ipv6Address = "";
+                                AddressIPv6 = Conf.IPv6Address;
+                                Conf.IPv6Address = AddressIPv6;
+                            }
+                            break;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogExceptionToFile(ex,"network change");
             }
         }
 
@@ -4727,10 +4752,12 @@ namespace iSpyApplication
             this.tsslPRO = new System.Windows.Forms.ToolStripStatusLabel();
             this._pnlContent = new System.Windows.Forms.Panel();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.flowPreview = new iSpyApplication.Controls.MediaPanel();
             this.flCommands = new System.Windows.Forms.FlowLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this._pnlCameras = new iSpyApplication.Controls.LayoutPanel();
+            this.mediaPanelControl1 = new iSpyApplication.Controls.MediaPanelControl();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.ctxtPlayer = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.iSpyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -4742,9 +4769,6 @@ namespace iSpyApplication
             this.archiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this._pnlCameras = new iSpyApplication.Controls.LayoutPanel();
-            this.mediaPanelControl1 = new iSpyApplication.Controls.MediaPanelControl();
-            this.flowPreview = new iSpyApplication.Controls.MediaPanel();
             this.ctxtMainForm.SuspendLayout();
             this.toolStripMenu.SuspendLayout();
             this.ctxtMnu.SuspendLayout();
@@ -4760,7 +4784,6 @@ namespace iSpyApplication
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.ctxtPlayer.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -6290,6 +6313,7 @@ namespace iSpyApplication
             // splitContainer2.Panel1
             // 
             this.splitContainer2.Panel1.Controls.Add(this.flowPreview);
+            this.splitContainer2.Panel1.Controls.Add(this.mediaPanelControl1);
             this.splitContainer2.Panel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             // 
             // splitContainer2.Panel2
@@ -6299,6 +6323,22 @@ namespace iSpyApplication
             this.splitContainer2.Size = new System.Drawing.Size(887, 146);
             this.splitContainer2.SplitterDistance = 630;
             this.splitContainer2.TabIndex = 88;
+            // 
+            // flowPreview
+            // 
+            this.flowPreview.AutoScroll = true;
+            this.flowPreview.BackColor = System.Drawing.Color.Transparent;
+            this.flowPreview.ContextMenuStrip = this.ctxtMainForm;
+            this.flowPreview.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowPreview.Location = new System.Drawing.Point(0, 32);
+            this.flowPreview.Margin = new System.Windows.Forms.Padding(0);
+            this.flowPreview.Name = "flowPreview";
+            this.flowPreview.Padding = new System.Windows.Forms.Padding(2);
+            this.flowPreview.Size = new System.Drawing.Size(630, 114);
+            this.flowPreview.TabIndex = 0;
+            this.flowPreview.MouseDown += new System.Windows.Forms.MouseEventHandler(this.flowPreview_MouseDown);
+            this.flowPreview.MouseEnter += new System.EventHandler(this.flowPreview_MouseEnter);
+            this.flowPreview.MouseLeave += new System.EventHandler(this.flowPreview_MouseLeave);
             // 
             // flCommands
             // 
@@ -6337,21 +6377,40 @@ namespace iSpyApplication
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.panel1);
             this.splitContainer1.Panel2.Controls.Add(this._pnlContent);
             this.splitContainer1.Panel2MinSize = 20;
             this.splitContainer1.Size = new System.Drawing.Size(887, 520);
             this.splitContainer1.SplitterDistance = 370;
             this.splitContainer1.TabIndex = 21;
             // 
-            // panel1
+            // _pnlCameras
             // 
-            this.panel1.AutoSize = true;
-            this.panel1.Controls.Add(this.mediaPanelControl1);
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(418, 39);
-            this.panel1.TabIndex = 22;
+            this._pnlCameras.AutoScroll = true;
+            this._pnlCameras.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this._pnlCameras.BackColor = System.Drawing.Color.DimGray;
+            this._pnlCameras.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this._pnlCameras.ContextMenuStrip = this.ctxtMainForm;
+            this._pnlCameras.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._pnlCameras.Location = new System.Drawing.Point(0, 0);
+            this._pnlCameras.Margin = new System.Windows.Forms.Padding(0);
+            this._pnlCameras.Name = "_pnlCameras";
+            this._pnlCameras.Size = new System.Drawing.Size(887, 370);
+            this._pnlCameras.TabIndex = 19;
+            this._pnlCameras.Scroll += new System.Windows.Forms.ScrollEventHandler(this._pnlCameras_Scroll);
+            this._pnlCameras.MouseDown += new System.Windows.Forms.MouseEventHandler(this._pnlCameras_MouseDown);
+            this._pnlCameras.Resize += new System.EventHandler(this._pnlCameras_Resize);
+            // 
+            // mediaPanelControl1
+            // 
+            this.mediaPanelControl1.AutoSize = true;
+            this.mediaPanelControl1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.mediaPanelControl1.Location = new System.Drawing.Point(0, 0);
+            this.mediaPanelControl1.Margin = new System.Windows.Forms.Padding(0);
+            this.mediaPanelControl1.Name = "mediaPanelControl1";
+            this.mediaPanelControl1.Padding = new System.Windows.Forms.Padding(0, 0, 0, 2);
+            this.mediaPanelControl1.Size = new System.Drawing.Size(630, 32);
+            this.mediaPanelControl1.TabIndex = 21;
+            this.mediaPanelControl1.Load += new System.EventHandler(this.mediaPanelControl1_Load);
             // 
             // ctxtPlayer
             // 
@@ -6433,51 +6492,6 @@ namespace iSpyApplication
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
-            // _pnlCameras
-            // 
-            this._pnlCameras.AutoScroll = true;
-            this._pnlCameras.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this._pnlCameras.BackColor = System.Drawing.Color.DimGray;
-            this._pnlCameras.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this._pnlCameras.ContextMenuStrip = this.ctxtMainForm;
-            this._pnlCameras.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._pnlCameras.Location = new System.Drawing.Point(0, 0);
-            this._pnlCameras.Margin = new System.Windows.Forms.Padding(0);
-            this._pnlCameras.Name = "_pnlCameras";
-            this._pnlCameras.Size = new System.Drawing.Size(887, 370);
-            this._pnlCameras.TabIndex = 19;
-            this._pnlCameras.Scroll += new System.Windows.Forms.ScrollEventHandler(this._pnlCameras_Scroll);
-            this._pnlCameras.MouseDown += new System.Windows.Forms.MouseEventHandler(this._pnlCameras_MouseDown);
-            this._pnlCameras.Resize += new System.EventHandler(this._pnlCameras_Resize);
-            // 
-            // mediaPanelControl1
-            // 
-            this.mediaPanelControl1.AutoSize = true;
-            this.mediaPanelControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mediaPanelControl1.Location = new System.Drawing.Point(0, 0);
-            this.mediaPanelControl1.Margin = new System.Windows.Forms.Padding(0);
-            this.mediaPanelControl1.Name = "mediaPanelControl1";
-            this.mediaPanelControl1.Padding = new System.Windows.Forms.Padding(0, 0, 0, 2);
-            this.mediaPanelControl1.Size = new System.Drawing.Size(418, 39);
-            this.mediaPanelControl1.TabIndex = 21;
-            this.mediaPanelControl1.Load += new System.EventHandler(this.mediaPanelControl1_Load);
-            // 
-            // flowPreview
-            // 
-            this.flowPreview.AutoScroll = true;
-            this.flowPreview.BackColor = System.Drawing.Color.Transparent;
-            this.flowPreview.ContextMenuStrip = this.ctxtMainForm;
-            this.flowPreview.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowPreview.Location = new System.Drawing.Point(0, 0);
-            this.flowPreview.Margin = new System.Windows.Forms.Padding(0);
-            this.flowPreview.Name = "flowPreview";
-            this.flowPreview.Padding = new System.Windows.Forms.Padding(2);
-            this.flowPreview.Size = new System.Drawing.Size(630, 146);
-            this.flowPreview.TabIndex = 0;
-            this.flowPreview.MouseDown += new System.Windows.Forms.MouseEventHandler(this.flowPreview_MouseDown);
-            this.flowPreview.MouseEnter += new System.EventHandler(this.flowPreview_MouseEnter);
-            this.flowPreview.MouseLeave += new System.EventHandler(this.flowPreview_MouseLeave);
-            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -6510,6 +6524,7 @@ namespace iSpyApplication
             this.statusStrip1.PerformLayout();
             this._pnlContent.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
@@ -6517,11 +6532,8 @@ namespace iSpyApplication
             this.flCommands.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.ctxtPlayer.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

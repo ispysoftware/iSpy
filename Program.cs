@@ -76,6 +76,30 @@ internal static class Program
             }
         }
 
+        var version = Environment.OSVersion.Version;
+        bool canrun = true;
+        switch (version.Major)
+        {
+            case 5:
+                canrun = false;
+                break;
+            case 6:
+                switch (version.Minor)
+                {
+                    case 0:
+                        canrun = false;
+                        break;
+                    
+                }
+                break;
+        }
+        if (!canrun)
+        {
+            MessageBox.Show("iSpy is not supported on this operating system. Please uninstall and download v6.5.8.0 instead. Your settings will be saved.");
+            Process.Start("http://www.ispyconnect.com/download.aspx");
+            return;
+        }
+
         try
         {
             Application.EnableVisualStyles();            
@@ -184,13 +208,7 @@ internal static class Program
             
             Application.ThreadException += ApplicationThreadException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainUnhandledException;
-
-            ffmpeg.avdevice_register_all();
-            ffmpeg.avcodec_register_all();
-            ffmpeg.avfilter_register_all();
-            ffmpeg.avformat_network_init();
-            ffmpeg.av_register_all();
-            
+           
 
             _previousExecutionState = NativeCalls.SetThreadExecutionState(NativeCalls.EsContinuous | NativeCalls.EsSystemRequired);
             
@@ -231,6 +249,14 @@ internal static class Program
 
                 }
             }
+        }
+        try
+        {
+            Logger.WriteLogs();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
         }
     }
 

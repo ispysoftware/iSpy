@@ -222,9 +222,10 @@ namespace iSpyApplication.Realtime
 
         public void Close()
         {
-            Program.FfmpegMutex.WaitOne();
+            
             try
             {
+                Program.FfmpegMutex.WaitOne();
                 _recordingEndTime = DateTime.UtcNow;
                 if (_formatContext != null)
                 {
@@ -340,7 +341,14 @@ namespace iSpyApplication.Realtime
             }
             finally
             {
-                Program.FfmpegMutex.ReleaseMutex();
+                try
+                {
+                    Program.FfmpegMutex.ReleaseMutex();
+                }
+                catch
+                {
+
+                }
             }
         }
         
@@ -817,10 +825,24 @@ namespace iSpyApplication.Realtime
                 _videoCodecContext->flags |= ffmpeg.CODEC_FLAG_GLOBAL_HEADER;
             }
 
+            int cdc;
+            try
+            {
+                Program.FfmpegMutex.WaitOne();
 
-            Program.FfmpegMutex.WaitOne();
-            var cdc = ffmpeg.avcodec_open2(_videoCodecContext, _videoCodec, null);
-            Program.FfmpegMutex.ReleaseMutex();
+                cdc = ffmpeg.avcodec_open2(_videoCodecContext, _videoCodec, null);
+            }
+            finally
+            {
+                try
+                {
+                    Program.FfmpegMutex.ReleaseMutex();
+                }
+                catch
+                {
+                    
+                }
+            }
             if (cdc >= 0)
                 return true;
 

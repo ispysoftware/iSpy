@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using FFmpeg.AutoGen;
 using iSpyApplication.Sources.Audio;
 using iSpyApplication.Utilities;
@@ -92,6 +93,12 @@ namespace iSpyApplication.Sources.Video
                 return;
 
             _starting = true;
+            Task.Factory.StartNew(DoStart);
+            
+        }
+
+        private void DoStart()
+        {
             AVDictionary* options = null;
 
             _res = ReasonToFinishPlaying.StoppedByUser;
@@ -175,6 +182,7 @@ namespace iSpyApplication.Sources.Video
             _abort = false;
             try
             {
+                Program.FfmpegMutex.WaitOne();
                 var pFormatContext = ffmpeg.avformat_alloc_context();
                 _lastPacket = DateTime.UtcNow;
 
@@ -185,26 +193,34 @@ namespace iSpyApplication.Sources.Video
                 pFormatContext->interrupt_callback.callback = _interruptCallbackAddress;
                 pFormatContext->interrupt_callback.opaque = null;
 
-                Program.FfmpegMutex.WaitOne();
+
                 if (ffmpeg.avformat_open_input(&pFormatContext, URL, _inputFormat, &options) != 0)
                 {
-                    Program.FfmpegMutex.ReleaseMutex();
                     throw new ApplicationException(@"Could not open source");
                 }
-                Program.FfmpegMutex.ReleaseMutex();
-
                 _formatContext = pFormatContext;
 
 
                 SetupFormat();
             }
-            catch (ApplicationException ex)
+            catch (Exception ex)
             {
                 ErrorHandler?.Invoke(ex.Message);
                 _res = ReasonToFinishPlaying.VideoSourceError;
                 PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
                 AudioFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
 
+            }
+            finally
+            {
+                try
+                {
+                    Program.FfmpegMutex.ReleaseMutex();
+                }
+                catch
+                {
+
+                }
             }
             _starting = false;
         }
@@ -622,7 +638,14 @@ namespace iSpyApplication.Sources.Video
             }
             finally
             {
-                Program.FfmpegMutex.ReleaseMutex();
+                try
+                {
+                    Program.FfmpegMutex.ReleaseMutex();
+                }
+                catch
+                {
+
+                }
             }
 
             PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));

@@ -3398,7 +3398,6 @@ namespace iSpyApplication.Server
                         Image myThumbnail = Image.FromStream(fs).GetThumbnailImage(w, h, ThumbnailCallback,
                                                                                     IntPtr.Zero);
 
-                        // put the image into the memory stream
                         using (var ms = new MemoryStream())
                         {
                             myThumbnail.Save(ms, ImageFormat.Jpeg);

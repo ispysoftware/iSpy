@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.IO.Ports;
 using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading;
 using iSpyApplication.Controls;
 using iSpyApplication.DevicePTZ;
@@ -1403,7 +1399,7 @@ namespace iSpyApplication
             }
             else
             {
-                if (_cameraControl.Camobject.settings.login == string.Empty)
+                if (string.IsNullOrEmpty(_cameraControl.Camobject.settings.login))
                 {
                     //get from url
                     un = uri.UserName;

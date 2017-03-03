@@ -258,9 +258,6 @@
       <Component Id="Component105" Guid="{9480F521-D2CE-48FC-A968-3000AE00B3A1}">
         <File Id="Zlib.Portable.dll" Source="$(var.OutputDir)\Zlib.Portable.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Id="Component106" Guid="{6D8ED581-1448-4044-9E13-8D090CB76155}">
-        <File Id="Zlib.Portable.xml" Source="$(var.OutputDir)\Zlib.Portable.xml" KeyPath="yes" Checksum="yes" />
-      </Component>
       <Component Id="Monitor" Guid="{C7362D48-A9F1-45FE-8997-19A5D1A0A0EE}">
         <File Id="ispymonitor" Source="$(var.SourceCodeDir)\Supporting\iSpyMonitor.exe" KeyPath="yes" Checksum="yes" />
       </Component>
