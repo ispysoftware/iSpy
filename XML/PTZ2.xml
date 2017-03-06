@@ -6791,4 +6791,124 @@ in the camera's web interface-->
       <Command Name="Contrast 100">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=100</Command>
     </ExtendedCommands>
   </Camera>
+<Camera id="237">
+    <Makes>
+      <Make Name="Mustcam" Model="H806" />
+    </Makes>
+    <CommandURL></CommandURL>
+    <Commands>
+      <Center>/media/?action=cmd&amp;code=2&amp;value=25</Center>
+      <Left>/media/?action=cmd&amp;code=2&amp;value=4</Left>
+      <LeftUp>/media/?action=cmd&amp;code=2&amp;value=6</LeftUp>
+      <Right>/media/?action=cmd&amp;code=2&amp;value=3</Right>
+      <RightUp>/media/?action=cmd&amp;code=2&amp;value=5</RightUp>
+      <Up>/media/?action=cmd&amp;code=2&amp;value=1</Up>
+      <Down>/media/?action=cmd&amp;code=2&amp;value=2</Down>
+      <LeftDown>/media/?action=cmd&amp;code=2&amp;value=8</LeftDown>
+      <RightDown>/media/?action=cmd&amp;code=2&amp;value=7</RightDown>
+      <Stop>/media/?action=cmd&amp;code=3&amp;value=11</Stop>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Patrol - Horizontal: Start">/media/?action=cmd&amp;code=2&amp;value=9</Command>
+      <Command Name="Patrol - Horizontal: Stop">/media/?action=cmd&amp;code=3&amp;value=9</Command>
+      <Command Name="Patrol - Vertical: Start">/media/?action=cmd&amp;code=2&amp;value=10</Command>
+      <Command Name="Patrol - Vertical: Stop">/media/?action=cmd&amp;code=3&amp;value=10</Command>
+      <Command Name="Patrol - Center: Start">/media/?action=cmd&amp;code=2&amp;value=11</Command>
+      <Command Name="Patrol - Center: Stop">/media/?action=cmd&amp;code=3&amp;value=11</Command>
+      <Command Name="Flip - Horizontal">/media/?action=cmd&amp;code=9&amp;value=13</Command>
+      <Command Name="Flip - Vertical">/media/?action=cmd&amp;code=9&amp;value=23</Command>
+      <Command Name="Brightness: 1">/media/?action=cmd&amp;code=6&amp;value=1</Command>
+      <Command Name="Brightness: 2">/media/?action=cmd&amp;code=6&amp;value=2</Command>
+      <Command Name="Brightness: 3">/media/?action=cmd&amp;code=6&amp;value=3</Command>
+      <Command Name="Brightness: 4">/media/?action=cmd&amp;code=6&amp;value=4</Command>
+      <Command Name="Brightness: 5">/media/?action=cmd&amp;code=6&amp;value=5</Command>
+      <Command Name="Brightness: 6">/media/?action=cmd&amp;code=6&amp;value=6</Command>
+      <Command Name="Brightness: 7">/media/?action=cmd&amp;code=6&amp;value=7</Command>
+      <Command Name="Brightness: 8">/media/?action=cmd&amp;code=6&amp;value=8</Command>
+      <Command Name="Brightness: 9">/media/?action=cmd&amp;code=6&amp;value=9</Command>
+      <Command Name="Brightness: 10">/media/?action=cmd&amp;code=5&amp;value=10</Command>
+      <Command Name="Contrast: 1">/media/?action=cmd&amp;code=5&amp;value=1</Command>
+      <Command Name="Contrast: 2">/media/?action=cmd&amp;code=5&amp;value=2</Command>
+      <Command Name="Contrast: 3">/media/?action=cmd&amp;code=5&amp;value=3</Command>
+      <Command Name="Contrast: 4">/media/?action=cmd&amp;code=5&amp;value=4</Command>
+      <Command Name="Contrast: 5">/media/?action=cmd&amp;code=5&amp;value=5</Command>
+      <Command Name="Contrast: 6">/media/?action=cmd&amp;code=5&amp;value=6</Command>
+      <Command Name="Contrast: 7">/media/?action=cmd&amp;code=5&amp;value=7</Command>
+      <Command Name="Contrast: 8">/media/?action=cmd&amp;code=5&amp;value=8</Command>
+      <Command Name="Contrast: 9">/media/?action=cmd&amp;code=5&amp;value=9</Command>
+      <Command Name="Contrast: 10">/media/?action=cmd&amp;code=5&amp;value=10</Command>
+      <Command Name="Pan/Tilt Speed: Fastest">/set_misc.cgi?ptz_patrol_rate=0</Command>
+      <Command Name="Pan/Tilt Speed: Faster">/set_misc.cgi?ptz_patrol_rate=2</Command>
+      <Command Name="Pan/Tilt Speed: Normal">/set_misc.cgi?ptz_patrol_rate=4</Command>
+      <Command Name="Pan/Tilt Speed: Slower">/set_misc.cgi?ptz_patrol_rate=7</Command>
+      <Command Name="Pan/Tilt Speed: Slowest">/set_misc.cgi?ptz_patrol_rate=10</Command>
+      <Command Name="Pan/Tilt Speed: Slower">/set_misc.cgi?ptz_patrol_rate=7</Command>
+      <Command Name="Pan/Tilt Speed: Slowest">/set_misc.cgi?ptz_patrol_rate=10</Command>
+      <Command Name="Infra-Red: Close">/goform/formSetMiscCfg?chk_pwr=1&amp;chkled=0&amp;chkir=0&amp;sch_value=</Command>
+      <Command Name="Infra-Red: Auto">/goform/formSetMiscCfg?chk_pwr=1&amp;chkled=0&amp;chkir=1&amp;sch_value=</Command>
+      <Command Name="Infra-Red: Schedule (24/7)">/goform/formSetMiscCfg?chk_pwr=1&amp;chkled=0&amp;chkir=2&amp;sch_value=11111111111111111111111111111111%5E11111111111111111111111111111111%5E11111111111111111111111111111111%5E%2C</Command>
+    </ExtendedCommands>
+  </Camera>
+<Camera id="238" AppendAuth="user=[USERNAME]&amp;pwd=[PASSWORD]">
+    <Makes>
+      <Make Name="Ouvis" Model="VZ1" />
+    </Makes>
+    <CommandURL>/decoder_control.cgi</CommandURL>
+    <Commands>
+      <Center>command=25</Center>
+      <Up>command=0&amp;onestep=1</Up>
+      <Left>command=4&amp;onestep=1</Left>
+      <LeftUp>command=90&amp;onestep=1</LeftUp>
+      <Right>command=6&amp;onestep=1</Right>
+      <RightUp>command=91&amp;onestep=1</RightUp>
+      <Down>command=2&amp;onestep=1</Down>
+      <LeftDown>command=92&amp;onestep=1</LeftDown>
+      <RightDown>command=93&amp;onestep=1</RightDown>
+      <ZoomIn>
+      </ZoomIn>
+      <ZoomOut>
+      </ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Stop">command=1</Command>
+      <Command Name="IR on">/camera_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;param=14&amp;value=1</Command>
+      <Command Name="IR off">/camera_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;param=14&amp;value=0</Command>
+      <Command Name="H Patrol On">command=28&amp;onestep=0</Command>
+      <Command Name="H Patrol Off">command=29&amp;onestep=0</Command>
+      <Command Name="V Patrol On">command=26&amp;onestep=0</Command>
+      <Command Name="V Patrol Off">command=27&amp;onestep=0</Command>
+      <Command Name="Set Preset 1">command=30&amp;onestep=0&amp;sit=30</Command>
+      <Command Name="Go Preset 1">command=31&amp;onestep=0&amp;sit=31</Command>
+      <Command Name="Set Preset 2">command=32&amp;onestep=0&amp;sit=32</Command>
+      <Command Name="Go Preset 2">command=33&amp;onestep=0&amp;sit=33</Command>
+      <Command Name="Set Preset 3">command=34&amp;onestep=0&amp;sit=34</Command>
+      <Command Name="Go Preset 3">command=35&amp;onestep=0&amp;sit=35</Command>
+      <Command Name="Set Preset 4">command=36&amp;onestep=0&amp;sit=36</Command>
+      <Command Name="Go Preset 4">command=37&amp;onestep=0&amp;sit=37</Command>
+      <Command Name="Set Preset 5">command=38&amp;onestep=0&amp;sit=38</Command>
+      <Command Name="Go Preset 5">command=39&amp;onestep=0&amp;sit=39</Command>
+      <Command Name="Set Preset 6">command=40&amp;onestep=0&amp;sit=40</Command>
+      <Command Name="Go Preset 6">command=41&amp;onestep=0&amp;sit=41</Command>
+      <Command Name="Set Preset 7">command=42&amp;onestep=0&amp;sit=41</Command>
+      <Command Name="Go Preset 7">command=43&amp;onestep=0&amp;sit=43</Command>
+      <Command Name="Set Preset 8">command=44&amp;onestep=0&amp;sit=44</Command>
+      <Command Name="Go Preset 8">command=45&amp;onestep=0&amp;sit=45</Command>
+      <Command Name="Set Preset 9">command=46&amp;onestep=0&amp;sit=46</Command>
+      <Command Name="Go Preset 9">command=47&amp;onestep=0&amp;sit=47</Command>
+      <Command Name="Set Preset 10">command=48&amp;onestep=0&amp;sit=48</Command>
+      <Command Name="Go Preset 10">command=49&amp;onestep=0&amp;sit=49</Command>
+      <Command Name="Set Preset 11">command=50&amp;onestep=0&amp;sit=50</Command>
+      <Command Name="Go Preset 11">command=51&amp;onestep=0&amp;sit=51</Command>
+      <Command Name="Set Preset 12">command=52&amp;onestep=0&amp;sit=52</Command>
+      <Command Name="Go Preset 12">command=53&amp;onestep=0&amp;sit=53</Command>
+      <Command Name="Set Preset 13">command=54&amp;onestep=0&amp;sit=54</Command>
+      <Command Name="Go Preset 13">command=55&amp;onestep=0&amp;sit=55</Command>
+      <Command Name="Set Preset 14">command=56&amp;onestep=0&amp;sit=56</Command>
+      <Command Name="Go Preset 14">command=57&amp;onestep=0&amp;sit=57</Command>
+      <Command Name="Set Preset 15">command=58&amp;onestep=0&amp;sit=58</Command>
+      <Command Name="Go Preset 15">command=59&amp;onestep=0&amp;sit=59</Command>
+      <Command Name="Set Preset 16">command=60&amp;onestep=0&amp;sit=60</Command>
+      <Command Name="Go Preset 16">command=61&amp;onestep=0&amp;sit=61</Command>
+    </ExtendedCommands>
+  </Camera>
 </PTZSettings2>

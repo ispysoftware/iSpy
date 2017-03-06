@@ -89,9 +89,7 @@ namespace iSpyApplication.Sources.Video
 
         public void Start()
         {
-            if (_starting)
-                return;
-
+            if (_starting || IsRunning) return;
             _starting = true;
             Task.Factory.StartNew(DoStart);
             
