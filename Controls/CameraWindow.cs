@@ -2518,7 +2518,7 @@ namespace iSpyApplication.Controls
                             cr.X += 1;
                             cr.Y += 1;
                             cr.Width = Math.Max(cr.Width - 2, 2);
-                            cr.Height = Math.Max(cr.Height - 26, 26);
+                            cr.Height = Math.Max(cr.Height - 2, 2);
 
                             _rc = Helper.GetArea(cr, Camera.Width, Camera.Height);
                             return _rc;
@@ -2532,7 +2532,7 @@ namespace iSpyApplication.Controls
                 _rc.X += 1;
                 _rc.Y += 1;
                 _rc.Width = Math.Max(_rc.Width - 2, 2);
-                _rc.Height = Math.Max(_rc.Height - 26, 26);
+                _rc.Height = Math.Max(_rc.Height - 2, 2);
 
 
                 return _rc;

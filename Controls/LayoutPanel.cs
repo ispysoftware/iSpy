@@ -181,7 +181,7 @@ namespace iSpyApplication.Controls
                             if (bmp != null)
                             {
                                 p.Width = bmp.Width + 2;
-                                p.Height = bmp.Height + 32;
+                                p.Height = bmp.Height + 2;
                             }
                         }
                     }
@@ -574,13 +574,12 @@ namespace iSpyApplication.Controls
             }
         }
 
-        public void LayoutOptimised()
+        public void LayoutOptimized(double aspectRatio = 1.333)
         {
             double numberCameras = MainForm.Cameras.Count;
             int useX = 320, useY = 200;
             int dispArea = Width * Height;
             int lastArea = dispArea;
-
 
             for (int y = 1; y <= numberCameras; y++)
             {
@@ -588,18 +587,18 @@ namespace iSpyApplication.Controls
                 var camY = (int)Math.Round((numberCameras / y) + 0.499999999, 0);
 
                 int dispWidth = Width / camX;
-                int dispHeight = dispWidth / 4 * 3;
-                int camArea = (int)numberCameras * (dispWidth * (dispHeight + 40));
-                if (((dispArea - camArea) <= lastArea) && ((dispArea - camArea) > 0) && (((camY * (dispHeight + 40)) < Height)))
+                int dispHeight = Convert.ToInt32(dispWidth / aspectRatio);
+                int camArea = (int)numberCameras * (dispWidth * (dispHeight + 2));
+                if (((dispArea - camArea) <= lastArea) && ((dispArea - camArea) > 0) && (((camY * (dispHeight + 2)) < Height)))
                 {
                     useX = dispWidth;
                     useY = dispHeight;
                     lastArea = dispArea - camArea;
                 }
 
-                dispHeight = (Height - (camY * 40)) / camY;
-                dispWidth = dispHeight * 4 / 3;
-                camArea = (int)numberCameras * (dispWidth * (dispHeight + 40));
+                dispHeight = (Height - (camY * 2)) / camY;
+                dispWidth = Convert.ToInt32(dispHeight * aspectRatio);
+                camArea = (int)numberCameras * (dispWidth * (dispHeight + 2));
                 if (((dispArea - camArea) <= lastArea) && ((dispArea - camArea) > 0) && (((camX * dispWidth) < Width)))
                 {
                     useX = dispWidth;
