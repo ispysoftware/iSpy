@@ -58,9 +58,9 @@
     <Property Id="WixShellExecTarget" Value="[#iSpy.exe]" />
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
     <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
-    <PropertyRef Id="WIX_IS_NETFRAMEWORK_40_OR_LATER_INSTALLED" />
-    <Condition Message="This application requires .NET Framework 4. Please install the .NET Framework then run this installer again.">
-      <![CDATA[Installed OR WIX_IS_NETFRAMEWORK_40_OR_LATER_INSTALLED]]>
+    <PropertyRef Id="WIX_IS_NETFRAMEWORK_45_OR_LATER_INSTALLED" />
+    <Condition Message="This application requires .NET Framework 4.5. Please install the .NET Framework then run this installer again.">
+      <![CDATA[Installed OR WIX_IS_NETFRAMEWORK_45_OR_LATER_INSTALLED]]>
     </Condition>
     <Icon Id="icon.ico" SourceFile="$(var.OutputDir)\ispy.ico" />
     <Property Id="ARPPRODUCTICON" Value="icon.ico" />
@@ -183,9 +183,6 @@
       <Component Id="Component52" Guid="{F1FDADED-CFB5-463B-B9E7-CE02FD1A153F}">
         <File Id="Microsoft.Kinect.dll" Source="$(var.OutputDir)\Microsoft.Kinect.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Id="Component53" Guid="{E78E9C67-9EC2-4A1B-878D-7C4ACFA94B96}">
-        <File Id="Microsoft.Threading.Tasks.dll" Source="$(var.OutputDir)\Microsoft.Threading.Tasks.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
       <Component Id="Component54" Guid="{7119800D-E490-40B4-9E9A-EFF383B2EC23}">
         <File Id="Microsoft.Threading.Tasks.Extensions.Desktop.dll" Source="$(var.OutputDir)\Microsoft.Threading.Tasks.Extensions.Desktop.dll" KeyPath="yes" Checksum="yes" />
       </Component>
@@ -228,26 +225,11 @@
       <Component Id="Component79" Guid="{18AA1BCB-2EEB-4234-A5F5-A9C5E7A543B8}">
         <File Id="SharpDX.dll" Source="$(var.OutputDir)\SharpDX.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Id="Component83" Guid="{3D9C2168-BF25-4EE9-B813-9C27061DC74E}">
-        <File Id="System.IO.dll" Source="$(var.OutputDir)\System.IO.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component85" Guid="{8114FA26-623B-41A2-BF39-51AA832F9CD1}">
-        <File Id="System.Net.Http.dll" Source="$(var.OutputDir)\System.Net.Http.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
       <Component Id="Component86" Guid="{E2090ED0-639C-415D-BB9E-090FDDA5B65D}">
         <File Id="System.Net.Http.Extensions.dll" Source="$(var.OutputDir)\System.Net.Http.Extensions.dll" KeyPath="yes" Checksum="yes" />
       </Component>
       <Component Id="Component88" Guid="{B5FE01D3-A983-46B4-B84A-123B2721A40E}">
         <File Id="System.Net.Http.Primitives.dll" Source="$(var.OutputDir)\System.Net.Http.Primitives.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component90" Guid="{365BF5AD-262A-4277-A82A-EA8BC633CAE7}">
-        <File Id="System.Net.Http.WebRequest.dll" Source="$(var.OutputDir)\System.Net.Http.WebRequest.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component96" Guid="{800514B1-3A27-43A1-97FC-A7E57BB04D59}">
-        <File Id="System.Runtime.dll" Source="$(var.OutputDir)\System.Runtime.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Id="Component98" Guid="{7C7C8477-4B99-4CAB-9218-5A6C1E909F60}">
-        <File Id="System.Threading.Tasks.dll" Source="$(var.OutputDir)\System.Threading.Tasks.dll" KeyPath="yes" Checksum="yes" />
       </Component>
       <Component Id="Component103" Guid="{E525BAE8-D11A-424D-AA13-438EF420EC4A}">
         <File Id="Windows7ToolStripRenderer.dll" Source="$(var.OutputDir)\Windows7ToolStripRenderer.dll" KeyPath="yes" Checksum="yes" />

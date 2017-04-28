@@ -401,14 +401,16 @@ namespace iSpyApplication.Controls
                     else
                     {
                         if (minimiseIfMaximised)
+                        {
                             Minimize(window, false);
-                        cameraControl.RestoreRect = Rectangle.Empty;
-                        
+                            cameraControl.RestoreRect = Rectangle.Empty;
+                        }
+
                     }
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex);
+                    Logger.LogException(ex);
                 }
                 return;
             }

@@ -86,7 +86,7 @@ namespace iSpyApplication
                             catch (Exception ex)
                             {
                                 success = false;
-                                Logger.LogExceptionToFile(ex);
+                                Logger.LogException(ex);
                                 DialogResult = DialogResult.Cancel;
                                 aborting = true;
                             }
@@ -95,12 +95,12 @@ namespace iSpyApplication
                     }
                     else
                     {
-                        Logger.LogMessageToFile("Update cancelled");
+                        Logger.LogMessage("Update cancelled");
                     }
                 }
                 else
                 {
-                    Logger.LogErrorToFile("Response stream from " + Url + " failed");
+                    Logger.LogError("Response stream from " + Url + " failed");
                 }
             }
             response.Close();

@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
 using System.Windows.Forms;
 using iSpyApplication.Onvif;
 using iSpyApplication.Utilities;
@@ -110,16 +105,6 @@ namespace iSpyApplication.Controls
         public void Deinit()
         {
             //Discovery.DiscoveryComplete -= Discovery_DiscoveryComplete;
-        }
-
-        private void Discovery_DiscoveryComplete(object sender, EventArgs e)
-        {
-            UISync.Execute(() =>
-                           {
-                               btnFind.Enabled = true;
-                               BindDevices();
-                               btnFind.Text = LocRm.GetString("Find");
-                           });
         }
 
         private void BindDevices()

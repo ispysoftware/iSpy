@@ -40,7 +40,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex);
+                    Logger.LogException(ex);
                 }
             }
 

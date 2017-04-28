@@ -148,7 +148,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
             }
             if (empty)
             {
@@ -318,7 +318,7 @@ namespace iSpyApplication
             catch(Exception)
             {
                 //Ximea DLL not installed
-                //Logger.LogMessageToFile("This is not a XIMEA device");
+                //Logger.LogMessage("This is not a XIMEA device");
             }
 
             pnlXimea.Enabled = deviceCount>0;
@@ -381,7 +381,7 @@ namespace iSpyApplication
             catch (Exception)
             {
                 //Type error if not installed
-                Logger.LogMessageToFile("Kinect is not installed");
+                Logger.LogMessage("Kinect is not installed");
             }
             if (deviceCount>0)
             {
@@ -1156,7 +1156,7 @@ namespace iSpyApplication
             }
             catch ( Exception ex )
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
                 MessageBox.Show( ex.Message, LocRm.GetString("Error"),
                     MessageBoxButtons.OK, MessageBoxIcon.Error );
             }
@@ -1329,6 +1329,12 @@ namespace iSpyApplication
                     CameraControl.Camobject.settings.ptzpassword = fc.Password;
                     CameraControl.Camobject.settings.ptzurlbase = MainForm.PTZs.Single(p => p.id == fc.Ptzid).CommandURL;
                 }
+                
+
+                CameraControl.Camobject.settings.tokenconfig.tokenpath = fc.tokenPath;
+                CameraControl.Camobject.settings.tokenconfig.tokenpost = fc.tokenPost;
+                CameraControl.Camobject.settings.tokenconfig.tokenport = fc.tokenPort;
+               
 
                 if (!string.IsNullOrEmpty(fc.AudioModel))
                 {
@@ -1365,6 +1371,8 @@ namespace iSpyApplication
                     vc.Micobject.settings.needsupdate = true;
                 }
                 FriendlyName = CameraControl.Camobject.name;
+                CameraLogin = fc.Username;
+                CameraPassword = fc.Password;
             }
         }
 
@@ -1529,7 +1537,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
             }
             finally
             {
@@ -1649,24 +1657,14 @@ namespace iSpyApplication
             try
             {
                 string source = cmbFile.Text;
-                
+                int i = source.IndexOf("://", StringComparison.Ordinal);
+                if (i > -1)
+                {
+                    source = source.Substring(0, i).ToLower() + source.Substring(i);
+                }
+                CameraControl.Camobject.settings.videosourcestring = source;
 
-                    int i = source.IndexOf("://", StringComparison.Ordinal);
-                    if (i > -1)
-                    {
-                        source = source.Substring(0, i).ToLower() + source.Substring(i);
-                    }
-                vfr = new MediaStream(source)
-                      {
-                          Timeout = CameraControl.Camobject.settings.timeout,
-                          AnalyzeDuration = (int) numAnalyseDuration.Value,
-                          Cookies = CameraControl.Camobject.settings.cookies,
-                          UserAgent = CameraControl.Camobject.settings.useragent,
-                          Headers = CameraControl.Camobject.settings.headers,
-                          RTSPmode = Helper.RTSPMode(ddlRTSP.SelectedIndex),
-                          Flags = -1,
-                          NoBuffer = true
-                      };
+                vfr = new MediaStream(CameraControl.Camobject);
                 vfr.NewFrame += Vfr_NewFrame;
                 vfr.ErrorHandler += Vfr_ErrorHandler;
                 vfr.PlayingFinished += Vfr_PlayingFinished;

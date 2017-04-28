@@ -67,7 +67,7 @@ namespace iSpyApplication
             }
             catch (NullReferenceException)
             {
-                Logger.LogErrorToFile("No Translation for token " + identifier);
+                Logger.LogError("No Translation for token " + identifier);
                 if (MainForm.Conf.Language != "en")
                 {
                     Res.Add(languageCode+"."+identifier, identifier);

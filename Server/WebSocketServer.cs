@@ -56,7 +56,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex,"Broadcast Websockets");
+                Logger.LogException(ex,"Broadcast Websockets");
             }
             _tmrBroadcast.Start();
         }
@@ -87,7 +87,7 @@ namespace iSpyApplication.Server
                     }
                     catch (Exception ex)
                     {
-                        Logger.LogExceptionToFile(ex, "Websocket Server");
+                        Logger.LogException(ex, "Websocket Server");
 
                     }
                 }
@@ -141,7 +141,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex,"Broadcast SendToAll");
+                Logger.LogException(ex,"Broadcast SendToAll");
             }
         }       
 

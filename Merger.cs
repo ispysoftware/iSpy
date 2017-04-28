@@ -131,7 +131,7 @@ namespace iSpyApplication
                                         UseShellExecute = false,
                                         CreateNoWindow = false
                                     };
-                    Logger.LogMessageToFile("Merge: " + startInfo.FileName + " " + startInfo.Arguments);
+                    Logger.LogMessage("Merge: " + startInfo.FileName + " " + startInfo.Arguments);
                     _ffmpegProcess = new Process {StartInfo = startInfo, EnableRaisingEvents = true};
                     _ffmpegProcess.Exited += FfmpegMergeProcessExited;
                     _ffmpegProcess.ErrorDataReceived += FfmpegMergeProcessErrorDataReceived;
@@ -142,7 +142,7 @@ namespace iSpyApplication
                     catch (Exception e)
                     {
                         _ffmpegProcess = null;
-                        Logger.LogExceptionToFile(e);
+                        Logger.LogException(e);
                     }
                 }
                 button1.Enabled = false;
@@ -152,7 +152,7 @@ namespace iSpyApplication
 
         void FfmpegMergeProcessErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
-            Logger.LogErrorToFile("merge process error: "+e.Data);
+            Logger.LogError("merge process error: "+e.Data);
             DoClose();
         }
 
@@ -246,7 +246,7 @@ namespace iSpyApplication
             }
             else
             {
-                Logger.LogErrorToFile("FFMPEG process exited with code " + _ffmpegProcess.ExitCode);
+                Logger.LogError("FFMPEG process exited with code " + _ffmpegProcess.ExitCode);
                 MessageBox.Show(this, LocRm.GetString("ErrorCheckLogFile"));
             }
             DoClose();

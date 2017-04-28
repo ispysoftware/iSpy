@@ -589,6 +589,11 @@ namespace iSpyApplication.Sources.Video
                 Application.DoEvents();
         }
 
+        public void Restart()
+        {
+            
+        }
+
         /// <summary>
         /// Display property window for the video capture device providing its configuration
         /// capabilities.
@@ -1404,7 +1409,7 @@ namespace iSpyApplication.Sources.Video
             }
             catch ( Exception ex )
             {
-                Logger.LogExceptionToFile(ex,"Device");
+                Logger.LogException(ex,"Device");
                 // provide information to clients
                 res = ReasonToFinishPlaying.DeviceLost;
             }
@@ -1478,7 +1483,7 @@ namespace iSpyApplication.Sources.Video
                 catch(Exception ex)
                 {
                     // ignored
-                    Logger.LogExceptionToFile(ex,"SetResolution");
+                    Logger.LogException(ex,"SetResolution");
                 }
             }
 
@@ -1507,7 +1512,7 @@ namespace iSpyApplication.Sources.Video
                 }
                 catch ( InvalidCastException ex)
                 {
-                    Logger.LogExceptionToFile(ex, "GetPinCapabilities");
+                    Logger.LogException(ex, "GetPinCapabilities");
                 }
 
                 if ( streamConfig != null )
@@ -1521,7 +1526,7 @@ namespace iSpyApplication.Sources.Video
                         }
                         catch(Exception ex)
                         {
-                            Logger.LogExceptionToFile(ex, "Device Caps");
+                            Logger.LogException(ex, "Device Caps");
 
                         }
                     }

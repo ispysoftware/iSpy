@@ -9,14 +9,15 @@ using iSpyApplication.Utilities;
 namespace iSpyApplication.Sources.Video
 {
     /// <summary>
-    /// MJPEG video source.
+    ///     MJPEG video source.
     /// </summary>
-    /// 
-    /// <remarks><para>The video source downloads JPEG images from the specified URL, which represents
-    /// MJPEG stream.</para>
-    /// 
-    /// <para>Sample usage:</para>
-    /// <code>
+    /// <remarks>
+    ///     <para>
+    ///         The video source downloads JPEG images from the specified URL, which represents
+    ///         MJPEG stream.
+    ///     </para>
+    ///     <para>Sample usage:</para>
+    ///     <code>
     /// // create MJPEG video source
     /// MJPEGStream stream = new MJPEGStream2( "some url" );
     /// // set event handlers
@@ -25,12 +26,15 @@ namespace iSpyApplication.Sources.Video
     /// stream.Start( );
     /// // ...
     /// </code>
-    /// 
-    /// <para><note>Some cameras produce HTTP header, which does not conform strictly to
-    /// standard, what leads to .NET exception. To avoid this exception the <b>useUnsafeHeaderParsing</b>
-    /// configuration option of <b>httpWebRequest</b> should be set, what may be done using application
-    /// configuration file.</note></para>
-    /// <code>
+    ///     <para>
+    ///         <note>
+    ///             Some cameras produce HTTP header, which does not conform strictly to
+    ///             standard, what leads to .NET exception. To avoid this exception the <b>useUnsafeHeaderParsing</b>
+    ///             configuration option of <b>httpWebRequest</b> should be set, what may be done using application
+    ///             configuration file.
+    ///         </note>
+    ///     </para>
+    ///     <code>
     /// &lt;configuration&gt;
     /// 	&lt;system.net&gt;
     /// 		&lt;settings&gt;
@@ -40,190 +44,173 @@ namespace iSpyApplication.Sources.Video
     /// &lt;/configuration&gt;
     /// </code>
     /// </remarks>
-    /// 
-    public class MJPEGStream : IVideoSource, IDisposable
+    public class MJPEGStream : VideoBase, IVideoSource, IDisposable
     {
+        // if we should use basic authentication when connecting to the video source
+
+        // buffer size used to download MJPEG stream
+        private const int BufSize = 1024*1024;
+        // size of portion to read at once
+        private const int ReadSize = 1024;
+
+        private readonly string _headers;
+        // use separate HTTP connection group or use default
+        // timeout value for web request
+        private readonly int _requestTimeout;
         // URL for MJPEG stream
-        private string _source;
+        private readonly objectsCamera _source;
+        // received byte count
+        private long _bytesReceived;
+        private readonly string _cookies;
+
+        private readonly string _decodeKey;
+
+        private bool _disposed;
+        
         // login and password for HTTP authentication
         // proxy information
         // received frames count
         private int _framesReceived;
-        // received byte count
-        private long _bytesReceived;
-        // use separate HTTP connection group or use default
-        // timeout value for web request
-        private int _requestTimeout = 5000;
-        // if we should use basic authentication when connecting to the video source
 
-        // buffer size used to download MJPEG stream
-        private const int BufSize = 1024 * 1024;
-        // size of portion to read at once
-        private const int ReadSize = 1024;
+
+        private readonly string _httpUserAgent;
+
+        private readonly string _login;
+        private readonly string _password;
+        private ManualResetEvent _abort = new ManualResetEvent(false);
+        private ReasonToFinishPlaying _res = ReasonToFinishPlaying.DeviceLost;
 
         private Thread _thread;
-        private ManualResetEvent _stopEvent;
-        private ManualResetEvent _reloadEvent;
+        private readonly bool _useHttp10;
 
-        public string Headers = "";
 
         /// <summary>
-        /// New frame event.
+        ///     Initializes a new instance of the <see cref="MJPEGStream" /> class.
         /// </summary>
-        /// 
-        /// <remarks><para>Notifies clients about new available frame from video source.</para>
-        /// 
-        /// <para><note>Since video source may have multiple clients, each client is responsible for
-        /// making a copy (cloning) of the passed video frame, because the video source disposes its
-        /// own original copy after notifying of clients.</note></para>
+        /// <param name="source">URL, which provides MJPEG stream.</param>
+        public MJPEGStream(objectsCamera source) : base(source)
+        {
+            _source = source;
+
+            var ckies = source.settings.cookies ?? "";
+            ckies = ckies.Replace("[USERNAME]", source.settings.login);
+            ckies = ckies.Replace("[PASSWORD]", source.settings.password);
+            ckies = ckies.Replace("[CHANNEL]", source.settings.ptzchannel);
+
+            var hdrs = source.settings.headers ?? "";
+            hdrs = hdrs.Replace("[USERNAME]", source.settings.login);
+            hdrs = hdrs.Replace("[PASSWORD]", source.settings.password);
+            hdrs = hdrs.Replace("[CHANNEL]", source.settings.ptzchannel);
+
+
+            _login = source.settings.login;
+            _password = source.settings.password;
+            _requestTimeout = source.settings.timeout;
+            _httpUserAgent = source.settings.useragent;
+            _decodeKey = source.decodekey;
+            _useHttp10 = source.settings.usehttp10;
+            _cookies = ckies;
+            _headers = hdrs;
+            
+        }
+
+        /// <summary>
+        ///     Gets or sets proxy information for the request.
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         The local computer or application config file may specify that a default
+        ///         proxy to be used. If the Proxy property is specified, then the proxy settings from the Proxy
+        ///         property override the local computer or application config file and the instance will use
+        ///         the proxy settings specified. If no proxy is specified in a config file
+        ///         and the Proxy property is unspecified, the request uses the proxy settings
+        ///         inherited from Internet Explorer on the local computer. If there are no proxy settings
+        ///         in Internet Explorer, the request is sent directly to the server.
+        ///     </para>
         /// </remarks>
-        /// 
+        public IWebProxy Proxy { get; set; }
+
+        // Public implementation of Dispose pattern callable by consumers. 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        ///     New frame event.
+        /// </summary>
+        /// <remarks>
+        ///     <para>Notifies clients about new available frame from video source.</para>
+        ///     <para>
+        ///         <note>
+        ///             Since video source may have multiple clients, each client is responsible for
+        ///             making a copy (cloning) of the passed video frame, because the video source disposes its
+        ///             own original copy after notifying of clients.
+        ///         </note>
+        ///     </para>
+        /// </remarks>
         public event NewFrameEventHandler NewFrame;
 
         /// <summary>
-        /// Video playing finished event.
+        ///     Video playing finished event.
         /// </summary>
-        /// 
-        /// <remarks><para>This event is used to notify clients that the video playing has finished.</para>
+        /// <remarks>
+        ///     <para>This event is used to notify clients that the video playing has finished.</para>
         /// </remarks>
-        /// 
         public event PlayingFinishedEventHandler PlayingFinished;
 
         /// <summary>
-        /// Use or not separate connection group.
+        ///     Video source.
         /// </summary>
-        /// 
-        /// <remarks>The property indicates to open web request in separate connection group.</remarks>
-        /// 
-        public bool SeparateConnectionGroup { get; set; } = true;
-
-        /// <summary>
-        /// Use or not HTTP Protocol 1.0
-        /// </summary>
-        /// 
-        /// <remarks>The property indicates to open web request using HTTP 1.0 protocol.</remarks>
-        /// 
-        public bool UseHttp10 { get; set; }
-
-        /// <summary>
-        /// Video source.
-        /// </summary>
-        /// 
         /// <remarks>URL, which provides MJPEG stream.</remarks>
-        /// 
         public string Source
         {
-            get { return _source; }
+            get { return _source.settings.videosourcestring; }
             set
             {
-                _source = value;
-                // signal to reload
-                if (_thread != null)
-                    _reloadEvent.Set();
+                _source.settings.videosourcestring = value;
             }
         }
 
         /// <summary>
-        /// Login value.
+        ///     Received frames count.
         /// </summary>
-        /// 
-        /// <remarks>Login required to access video source.</remarks>
-        /// 
-        public string Login { get; set; }
-
-        /// <summary>
-        /// Password value.
-        /// </summary>
-        /// 
-        /// <remarks>Password required to access video source.</remarks>
-        /// 
-        public string Password { get; set; }
-
-        /// <summary>
-        /// Gets or sets proxy information for the request.
-        /// </summary>
-        /// 
-        /// <remarks><para>The local computer or application config file may specify that a default
-        /// proxy to be used. If the Proxy property is specified, then the proxy settings from the Proxy
-        /// property override the local computer or application config file and the instance will use
-        /// the proxy settings specified. If no proxy is specified in a config file
-        /// and the Proxy property is unspecified, the request uses the proxy settings
-        /// inherited from Internet Explorer on the local computer. If there are no proxy settings
-        /// in Internet Explorer, the request is sent directly to the server.
-        /// </para></remarks>
-        /// 
-        public IWebProxy Proxy { get; set; }
-
-        /// <summary>
-        /// User agent to specify in HTTP request header.
-        /// </summary>
-        /// 
-        /// <remarks><para>Some IP cameras check what is the requesting user agent and depending
-        /// on it they provide video in different formats or do not provide it at all. The property
-        /// sets the value of user agent string, which is sent to camera in request header.
-        /// </para>
-        /// 
-        /// <para>Default value is set to "Mozilla/5.0". If the value is set to <see langword="null"/>,
-        /// the user agent string is not sent in request header.</para>
+        /// <remarks>
+        ///     Number of frames the video source provided from the moment of the last
+        ///     access to the property.
         /// </remarks>
-        /// 
-        public string HttpUserAgent { get; set; } = "Mozilla/5.0";
-
-        /// <summary>
-        /// Received frames count.
-        /// </summary>
-        /// 
-        /// <remarks>Number of frames the video source provided from the moment of the last
-        /// access to the property.
-        /// </remarks>
-        /// 
         public int FramesReceived
         {
             get
             {
-                int frames = _framesReceived;
+                var frames = _framesReceived;
                 _framesReceived = 0;
                 return frames;
             }
         }
 
         /// <summary>
-        /// Received bytes count.
+        ///     Received bytes count.
         /// </summary>
-        /// 
-        /// <remarks>Number of bytes the video source provided from the moment of the last
-        /// access to the property.
+        /// <remarks>
+        ///     Number of bytes the video source provided from the moment of the last
+        ///     access to the property.
         /// </remarks>
-        /// 
         public long BytesReceived
         {
             get
             {
-                long bytes = _bytesReceived;
+                var bytes = _bytesReceived;
                 _bytesReceived = 0;
                 return bytes;
             }
         }
 
         /// <summary>
-        /// Request timeout value.
+        ///     State of the video source.
         /// </summary>
-        /// 
-        /// <remarks>The property sets timeout value in milliseconds for web requests.
-        /// Default value is 5000 milliseconds.</remarks>
-        /// 
-        public int RequestTimeout
-        {
-            get { return _requestTimeout; }
-            set { _requestTimeout = value; }
-        }
-
-        /// <summary>
-        /// State of the video source.
-        /// </summary>
-        /// 
         /// <remarks>Current state of video source object - running or not.</remarks>
-        /// 
         public bool IsRunning
         {
             get
@@ -243,146 +230,71 @@ namespace iSpyApplication.Sources.Video
         }
 
         /// <summary>
-        /// Force using of basic authentication when connecting to the video source.
+        ///     Start video source.
         /// </summary>
-        /// 
-        /// <remarks><para>For some IP cameras (TrendNET IP cameras, for example) using standard .NET's authentication via credentials
-        /// does not seem to be working (seems like camera does not request for authentication, but expects corresponding headers to be
-        /// present on connection request). So this property allows to force basic authentication by adding required HTTP headers when
-        /// request is sent.</para>
-        /// 
-        /// <para>Default value is set to <see langword="false"/>.</para>
+        /// <remarks>
+        ///     Starts video source and return execution to caller. Video source
+        ///     object creates background thread and notifies about new frames with the
+        ///     help of <see cref="NewFrame" /> event.
         /// </remarks>
-        /// 
-        public bool ForceBasicAuthentication { get; set; }
-
-        public string Cookies { get; set; } = "";
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MJPEGStream"/> class.
-        /// </summary>
-        /// 
-        public MJPEGStream() { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MJPEGStream"/> class.
-        /// </summary>
-        /// 
-        /// <param name="source">URL, which provides MJPEG stream.</param>
-        /// 
-        public MJPEGStream(string source)
-        {
-            _source = source;
-        }
-
-        public string DecodeKey;
-
-        /// <summary>
-        /// Start video source.
-        /// </summary>
-        /// 
-        /// <remarks>Starts video source and return execution to caller. Video source
-        /// object creates background thread and notifies about new frames with the
-        /// help of <see cref="NewFrame"/> event.</remarks>
-        /// 
         /// <exception cref="ArgumentException">Video source is not specified.</exception>
-        /// 
         public void Start()
         {
             if (!IsRunning)
             {
                 // check source
-                if (string.IsNullOrEmpty(_source))
+                if (string.IsNullOrEmpty(_source.settings.videosourcestring))
                     throw new ArgumentException("Video source is not specified.");
 
                 _framesReceived = 0;
                 _bytesReceived = 0;
 
                 // create events
-                _stopEvent = new ManualResetEvent(false);
-                _reloadEvent = new ManualResetEvent(false);
+                _abort.Reset();
+                _res = ReasonToFinishPlaying.DeviceLost;
 
                 // create and start new thread
-                _thread = new Thread(WorkerThread) {Name = _source, IsBackground = true};
+                _thread = new Thread(WorkerThread) {Name = _source.settings.videosourcestring, IsBackground = true};
                 _thread.Start();
             }
         }
 
         /// <summary>
-        /// Signal video source to stop its work.
+        ///     Stop video source.
         /// </summary>
-        /// 
-        /// <remarks>Signals video source to stop its background thread, stop to
-        /// provide new frames and free resources.</remarks>
-        /// 
-        public void SignalToStop()
-        {
-            // stop thread
-            if (_thread != null)
-            {
-                // signal to stop
-                _stopEvent.Set();
-            }
-        }
-
-        /// <summary>
-        /// Wait for video source has stopped.
-        /// </summary>
-        /// 
-        /// <remarks>Waits for source stopping after it was signalled to stop using
-        /// <see cref="SignalToStop"/> method.</remarks>
-        /// 
-        public void WaitForStop()
+        /// <remarks>
+        ///     <para>Stops video source aborting its thread.</para>
+        ///     <para>
+        ///         <note>
+        ///             Since the method aborts background thread, its usage is highly not preferred
+        ///             and should be done only if there are no other options. The correct way of stopping camera
+        ///             is <see cref="SignalToStop">signaling it stop</see> and then
+        ///             <see cref="WaitForStop">waiting</see> for background thread's completion.
+        ///         </note>
+        ///     </para>
+        /// </remarks>
+        public void Stop()
         {
             if (IsRunning)
             {
-                // wait for thread stop
-                _stopEvent.Set();
-                if (_thread != null && !_thread.Join(MainForm.ThreadKillDelay))
-                    _thread.Abort();
-                Free();
+                _res = ReasonToFinishPlaying.StoppedByUser;
+                _abort.Set();
             }
-        }
-
-        /// <summary>
-        /// Stop video source.
-        /// </summary>
-        /// 
-        /// <remarks><para>Stops video source aborting its thread.</para>
-        /// 
-        /// <para><note>Since the method aborts background thread, its usage is highly not preferred
-        /// and should be done only if there are no other options. The correct way of stopping camera
-        /// is <see cref="SignalToStop">signaling it stop</see> and then
-        /// <see cref="WaitForStop">waiting</see> for background thread's completion.</note></para>
-        /// </remarks>
-        /// 
-        public void Stop()
-        {
-            WaitForStop();
-        }
-
-        /// <summary>
-        /// Free resource.
-        /// </summary>
-        /// 
-        private void Free()
-        {
-            _thread = null;
-
-            // release events
-            if (_stopEvent != null)
+            else
             {
-                _stopEvent.Close();
-                _stopEvent.Dispose();
+                _res = ReasonToFinishPlaying.StoppedByUser;
+                PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
             }
-            _stopEvent = null;
-            if (_reloadEvent != null)
-            {
-                _reloadEvent.Close();
-                _reloadEvent.Dispose();
-            }
-            _reloadEvent = null;
         }
+
+        public void Restart()
+        {
+            if (!IsRunning)
+                return;
+            _res = ReasonToFinishPlaying.Restart;
+            _abort.Set();
+        }
+
 
         // Worker thread
         private void WorkerThread()
@@ -390,16 +302,13 @@ namespace iSpyApplication.Sources.Video
             // buffer to read stream
             var buffer = new byte[BufSize];
             // JPEG magic number
-            var jpegMagic = new byte[] { 0xFF, 0xD8, 0xFF };
+            var jpegMagic = new byte[] {0xFF, 0xD8, 0xFF};
 
 
             var encoding = new ASCIIEncoding();
-            var res = ReasonToFinishPlaying.StoppedByUser;
 
-            while (!_stopEvent.WaitOne(0, false))
+            while (!_abort.WaitOne(20) && !MainForm.ShuttingDown)
             {
-                // reset reload event
-                _reloadEvent.Reset();
                 // HTTP web request
                 HttpWebRequest request = null;
                 // web response
@@ -410,12 +319,12 @@ namespace iSpyApplication.Sources.Video
                 string boudaryStr = null;
                 // length of boundary
                 // flag signaling if boundary was checked or not
-                bool boundaryIsChecked = false;
+                var boundaryIsChecked = false;
                 // read amounts and positions
                 int todo = 0, total = 0, pos = 0, align = 1;
-                int start = 0;
+                var start = 0;
 
-
+                ConnectionFactory connectionFactory = new ConnectionFactory();
                 // align
                 //  1 = searching for image start
                 //  2 = searching for image end
@@ -424,12 +333,15 @@ namespace iSpyApplication.Sources.Video
                 {
                     // create request
                     // get response
-                    response = ConnectionFactory.GetResponse(_source, Cookies, Headers, HttpUserAgent, Login, Password, "GET", "", UseHttp10, out request);
-                    if (response==null)
+                    var vss = Tokenise();
+
+                    response = connectionFactory.GetResponse(vss, _cookies, _headers, _httpUserAgent, _login, _password,
+                        "GET", "", "", _useHttp10, out request);
+                    if (response == null)
                         throw new Exception("Stream could not connect");
                     // check content type
-                    string contentType = response.ContentType;
-                    string[] contentTypeArray = contentType.Split('/');
+                    var contentType = response.ContentType;
+                    var contentTypeArray = contentType.Split('/');
 
                     // "application/octet-stream"
                     int boundaryLen;
@@ -439,10 +351,10 @@ namespace iSpyApplication.Sources.Video
                         boundaryLen = 0;
                         boundary = new byte[0];
                     }
-                    else if ((contentTypeArray[0] == "multipart") && (contentType.Contains("mixed")))
+                    else if ((contentTypeArray[0] == "multipart") && contentType.Contains("mixed"))
                     {
                         // get boundary
-                        int boundaryIndex = contentType.IndexOf("boundary", 0, StringComparison.Ordinal);
+                        var boundaryIndex = contentType.IndexOf("boundary", 0, StringComparison.Ordinal);
                         if (boundaryIndex != -1)
                         {
                             boundaryIndex = contentType.IndexOf("=", boundaryIndex + 8, StringComparison.Ordinal);
@@ -482,7 +394,7 @@ namespace iSpyApplication.Sources.Video
                     stream.ReadTimeout = _requestTimeout;
 
                     // loop
-                    while ((!_stopEvent.WaitOne(0, false)) && (!_reloadEvent.WaitOne(0, false)))
+                    while (!_abort.WaitOne(0) && !MainForm.ShuttingDown)
                     {
                         // check total read
                         if (total > BufSize - ReadSize)
@@ -502,7 +414,7 @@ namespace iSpyApplication.Sources.Video
                         _bytesReceived += read;
 
                         // do we need to check boundary ?
-                        if ((boundaryLen != 0) && (!boundaryIsChecked))
+                        if ((boundaryLen != 0) && !boundaryIsChecked)
                         {
                             // some IP cameras, like AirLink, claim that boundary is "myboundary",
                             // when it is really "--myboundary". this needs to be corrected.
@@ -512,16 +424,16 @@ namespace iSpyApplication.Sources.Video
                             if (pos == -1)
                                 continue;
 
-                            for (int i = pos - 1; i >= 0; i--)
+                            for (var i = pos - 1; i >= 0; i--)
                             {
-                                byte ch = buffer[i];
+                                var ch = buffer[i];
 
-                                if ((ch == (byte)'\n') || (ch == (byte)'\r'))
+                                if ((ch == (byte) '\n') || (ch == (byte) '\r'))
                                 {
                                     break;
                                 }
 
-                                boudaryStr = (char)ch + boudaryStr;
+                                boudaryStr = (char) ch + boudaryStr;
                             }
 
                             boundary = encoding.GetBytes(boudaryStr);
@@ -548,14 +460,14 @@ namespace iSpyApplication.Sources.Video
                             }
                         }
 
-                        bool decode = !string.IsNullOrEmpty(DecodeKey);
+                        var decode = !string.IsNullOrEmpty(_decodeKey);
 
                         // search for image end ( boundaryLen can be 0, so need extra check )
                         while ((align == 2) && (todo != 0) && (todo >= boundaryLen))
                         {
-                            int stop = ByteArrayUtils.Find(buffer,
-                                                           (boundaryLen != 0) ? boundary : jpegMagic,
-                                                           pos, todo);
+                            var stop = ByteArrayUtils.Find(buffer,
+                                boundaryLen != 0 ? boundary : jpegMagic,
+                                pos, todo);
 
                             if (stop != -1)
                             {
@@ -563,26 +475,31 @@ namespace iSpyApplication.Sources.Video
                                 _framesReceived++;
                                 var nf = NewFrame;
                                 // image at stop
-                                if (nf != null && (!_stopEvent.WaitOne(0, false)))
+                                if (nf != null)
                                 {
                                     if (decode)
                                     {
-                                        byte[] marker = Encoding.ASCII.GetBytes(DecodeKey);
+                                        var marker = Encoding.ASCII.GetBytes(_decodeKey);
 
-                                        using (var ms = new MemoryStream(buffer, start + jpegMagic.Length, jpegMagic.Length+marker.Length))
+                                        using (
+                                            var ms = new MemoryStream(buffer, start + jpegMagic.Length,
+                                                jpegMagic.Length + marker.Length))
                                         {
                                             var key = new byte[marker.Length];
                                             ms.Read(key, 0, marker.Length);
 
                                             if (!ByteArrayUtils.UnsafeCompare(marker, key))
                                             {
-                                                throw (new Exception("Image Decode Failed - Check the decode key matches the encode key on ispy server"));
+                                                throw new Exception(
+                                                    "Image Decode Failed - Check the decode key matches the encode key on ispy server");
                                             }
                                         }
 
-                                        
-                                        using (var ms = new MemoryStream(buffer, start + marker.Length, stop - start - marker.Length))
-                                        {  
+
+                                        using (
+                                            var ms = new MemoryStream(buffer, start + marker.Length,
+                                                stop - start - marker.Length))
+                                        {
                                             ms.Seek(0, SeekOrigin.Begin);
                                             ms.WriteByte(jpegMagic[0]);
                                             ms.WriteByte(jpegMagic[1]);
@@ -595,15 +512,15 @@ namespace iSpyApplication.Sources.Video
                                                 nf.Invoke(this, da);
                                             }
                                         }
-                                        
                                     }
                                     else
-                                    {  
+                                    {
                                         using (var ms = new MemoryStream(buffer, start, stop - start))
                                         {
-                                            using (var bmp = (Bitmap)Image.FromStream(ms)) { 
+                                            using (var bmp = (Bitmap) Image.FromStream(ms))
+                                            {
                                                 var da = new NewFrameEventArgs(bmp);
-                                                nf.Invoke(this, da);                                            
+                                                nf.Invoke(this, da);
                                             }
                                         }
                                     }
@@ -612,7 +529,7 @@ namespace iSpyApplication.Sources.Video
                                 // shift array
                                 pos = stop + boundaryLen;
                                 todo = total - pos;
-                                System.Array.Copy(buffer, pos, buffer, 0, todo);
+                                Array.Copy(buffer, pos, buffer, 0, todo);
 
                                 total = todo;
                                 pos = 0;
@@ -648,8 +565,8 @@ namespace iSpyApplication.Sources.Video
                 catch (Exception ex)
                 {
                     // provide information to clients
-                    Logger.LogExceptionToFile(ex,"MJPEG");
-                    res = ReasonToFinishPlaying.DeviceLost;
+                    Logger.LogException(ex, "MJPEG");
+                    _res = ReasonToFinishPlaying.DeviceLost;
                     break;
                     // wait for a while before the next try
                     //Thread.Sleep(250);
@@ -664,15 +581,7 @@ namespace iSpyApplication.Sources.Video
                 }
             }
 
-            PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(res));
-        }
-
-        private bool _disposed;
-        // Public implementation of Dispose pattern callable by consumers. 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
         }
 
         // Protected implementation of Dispose pattern. 
@@ -683,8 +592,8 @@ namespace iSpyApplication.Sources.Video
 
             if (disposing)
             {
-                _reloadEvent?.Close();
-                _stopEvent?.Close();
+                _abort.Close();
+                _abort.Dispose();
             }
 
             // Free any unmanaged objects here. 

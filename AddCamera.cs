@@ -871,7 +871,7 @@ namespace iSpyApplication
             }
             catch(Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
             }
         }
 
@@ -1599,7 +1599,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
                 MessageBox.Show(ex.Message, LocRm.GetString("Error"));
             }
         }

@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.ServiceModel.Configuration;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using iSpyApplication.iSpyWS;
 using iSpyApplication.Utilities;
@@ -65,7 +66,7 @@ namespace iSpyApplication
                             Process.Start(MainForm.Conf.AlertOnDisconnect);
                         }catch (Exception ex)
                         {
-                            Logger.LogExceptionToFile(ex);
+                            Logger.LogException(ex);
                         }
                     }
                 }
@@ -79,7 +80,7 @@ namespace iSpyApplication
                             Process.Start(MainForm.Conf.AlertOnReconnect);
                         }catch (Exception ex)
                         {
-                            Logger.LogExceptionToFile(ex);
+                            Logger.LogException(ex);
                         }
                     }
                     
@@ -159,7 +160,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex, "Webservices");
+                    Logger.LogException(ex, "Webservices");
                     WebsiteLive = false;
                 }
                 if (WebsiteLive)
@@ -194,7 +195,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex);
+                    Logger.LogException(ex);
                     WebsiteLive = false;
                 }
                 if (WebsiteLive)
@@ -249,7 +250,7 @@ namespace iSpyApplication
 
             if (LastLiveCheck < Helper.Now.AddSeconds(0 - (PingDelays[_pingIndex])))
             {
-                if (_pingRequestThread == null || _pingRequestThread.Join(TimeSpan.Zero))
+                if (_pingRequestThread == null)
                 {
                     _pingRequestThread = new Thread(DoPingRequest);
                     _pingRequestThread.Start();
@@ -280,7 +281,7 @@ namespace iSpyApplication
                 WebsiteLive = false;
                 _pingIndex = Math.Min(_pingIndex+1, PingDelays.Length-1);
             }
-
+            _pingRequestThread = null;
         }
 
         public static void Disconnect()
@@ -290,14 +291,13 @@ namespace iSpyApplication
                 int port = MainForm.Conf.ServerPort;
                 if (MainForm.Conf.IPMode == "IPv6")
                     port = MainForm.Conf.LANPort;
+                 
                 try
                 {
-                    Wsa.DisconnectAsync(MainForm.Conf.WSUsername, MainForm.Conf.WSPassword, port, Guid.NewGuid());                       
+                    Wsa.Disconnect(MainForm.Conf.WSUsername, MainForm.Conf.WSPassword, port);
                 }
-                catch (Exception ex)
+                catch
                 {
-                    Logger.LogExceptionToFile(ex);
-                    WebsiteLive = false;
                 }
             }
         }
@@ -339,12 +339,12 @@ namespace iSpyApplication
         {
             if (e.Error != null)
             {
-                Logger.LogExceptionToFile(e.Error);
+                Logger.LogException(e.Error);
             }
             else
             {
                 if (e.Result != "OK")
-                    Logger.LogErrorToFile("Send Alert: " + e.Result);
+                    Logger.LogError("Send Alert: " + e.Result);
             }
 
         }
@@ -353,12 +353,12 @@ namespace iSpyApplication
         {
             if (e.Error != null)
             {
-                Logger.LogExceptionToFile(e.Error);
+                Logger.LogException(e.Error);
             }
             else
             {
                 if (e.Result != "OK")
-                    Logger.LogErrorToFile("Send Content: " + e.Result);    
+                    Logger.LogError("Send Content: " + e.Result);    
             }
             
 
@@ -374,12 +374,12 @@ namespace iSpyApplication
         {
             if (e.Error != null)
             {
-                Logger.LogExceptionToFile(e.Error);
+                Logger.LogException(e.Error);
             }
             else
             {
                 if (e.Result != "OK")
-                    Logger.LogErrorToFile("Send Alert With Image: " + e.Result);
+                    Logger.LogError("Send Alert With Image: " + e.Result);
             }
 
         }
@@ -388,12 +388,12 @@ namespace iSpyApplication
         {
             if (e.Error != null)
             {
-                Logger.LogExceptionToFile(e.Error);
+                Logger.LogException(e.Error);
             }
             else
             {
                 if (e.Result != "OK")
-                    Logger.LogErrorToFile("Send SMS: " + e.Result);
+                    Logger.LogError("Send SMS: " + e.Result);
             }
 
         }
@@ -402,12 +402,12 @@ namespace iSpyApplication
         {
             if (e.Error != null)
             {
-                Logger.LogExceptionToFile(e.Error);
+                Logger.LogException(e.Error);
             }
             else
             {
                 if (e.Result != "OK")
-                    Logger.LogErrorToFile("Send Tweet: " + e.Result);
+                    Logger.LogError("Send Tweet: " + e.Result);
             }
 
         }
@@ -418,12 +418,12 @@ namespace iSpyApplication
             {
                 WebsiteLive = false;
                 MainForm.NeedsSync = true;
-                Logger.LogExceptionToFile(e.Error);
+                Logger.LogException(e.Error);
             }
             else
             {
                 if (e.Result != "OK")
-                    Logger.LogErrorToFile("Sync: " + e.Result);
+                    Logger.LogError("Sync: " + e.Result);
             }
         }
 
@@ -461,7 +461,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
                 WebsiteLive = false;
             }
 
@@ -470,7 +470,7 @@ namespace iSpyApplication
                 LoginFailed = (r == "Webservices_LoginFailed");
                 if (r != "OK")
                 {
-                    Logger.LogErrorToFile("Webservices: " + r);
+                    Logger.LogError("Webservices: " + r);
                     return LocRm.GetString(r);
                 }
                 return r;
@@ -497,7 +497,7 @@ namespace iSpyApplication
             catch (Exception ex)
             {
                 WebsiteLive = false;
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
             }
             if (WebsiteLive)
             {
@@ -505,12 +505,12 @@ namespace iSpyApplication
                 if (r.Length == 1 && r[0] != "OK")
                 {
                     r[0] = LocRm.GetString(r[0]);                    
-                    Logger.LogErrorToFile("Webservices: "+r[0]);
+                    Logger.LogError("Webservices: "+r[0]);
                 }
                 if (r.Length > 3 && r[3] != "")
                 {
                     r[3] = LocRm.GetString(r[3]);
-                    Logger.LogErrorToFile("Webservices: " + r[3]);
+                    Logger.LogError("Webservices: " + r[3]);
                 }
                 return r;
             }

@@ -43,7 +43,7 @@ namespace iSpyApplication.Reporting {
         
         /// <remarks/>
         public Reporting() {
-            this.Url = global::iSpyApplication.Properties.Settings.Default.iSpy_Reporting_Reporting;
+            this.Url = "http://www.ispyconnect.com/webservices/reporting.asmx";
             if ((this.IsLocalFileSystemWebService(this.Url) == true)) {
                 this.UseDefaultCredentials = true;
                 this.useDefaultCredentialsSetExplicitly = false;

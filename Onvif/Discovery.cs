@@ -21,22 +21,28 @@ namespace iSpyApplication.Onvif
 
         public static void FindDevices()
         {
-            NetworkChange.NetworkAddressChanged += NetworkChangeNetworkAddressChanged;
+            try
+            {
+                NetworkChange.NetworkAddressChanged += NetworkChangeNetworkAddressChanged;
 
-            StartService();
-            DiscoverAdapters();
+                StartService();
+                DiscoverAdapters();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex,"Onvif Startup");
+            }
         }
 
         private static void NetworkChangeNetworkAddressChanged(object sender, EventArgs e)
         {
-            Logger.LogMessageToFile("Network Change");
+            Logger.LogMessage("Network Change");
             DiscoveredDevices.Clear();
             DiscoverAdapters();
         }
 
         private static void StartService()
         {
-
             _announcementSrv = new AnnouncementService();
             var epAnnouncement = new UdpAnnouncementEndpoint(DiscoveryVersion.WSDiscoveryApril2005);
             ((CustomBinding)epAnnouncement.Binding).Elements.Insert(0, new MulticastCapabilitiesBindingElement(true));
@@ -65,8 +71,6 @@ namespace iSpyApplication.Onvif
                 DiscoverAdapter(adapter);
             }
         }
-
-        
         
 
         private static void AnnouncementSrvOfflineAnnouncementReceived(object sender, AnnouncementEventArgs args)
@@ -76,7 +80,8 @@ namespace iSpyApplication.Onvif
                 return;
             foreach (var uri in uris)
             {
-                RemoveDevice(uri.ToString());
+                if (uri!=null)
+                    RemoveDevice(uri.ToString());
             }
         }
 
@@ -87,20 +92,28 @@ namespace iSpyApplication.Onvif
 
         private static void CheckDevice(EndpointDiscoveryMetadata epMeta)
         {
-            var uris = epMeta?.ListenUris;
-            if (uris == null || uris.Count==0)
-                return;
-
-            if (CtNs.Any(ctn => epMeta.ContractTypeNames.Contains(ctn)))
+            try
             {
-                foreach (var uri in uris)
+                var uris = epMeta?.ListenUris;
+                if (uris == null || uris.Count == 0)
+                    return;
+
+                if (CtNs.Any(ctn => epMeta.ContractTypeNames.Contains(ctn)))
                 {
-                    AddDevice(uri.ToString());
+                    foreach (var uri in uris)
+                    {
+                        AddDevice(uri.ToString());
+                    }
+                    return;
                 }
-                return;
+                var names = epMeta.ContractTypeNames.Aggregate("",
+                    (current, ctn) => current + (ctn.Name + " (" + ctn.Namespace + ") "));
+                Logger.LogMessage("Ignored device at " + uris[0] + "  " + names);
             }
-            var names = epMeta.ContractTypeNames.Aggregate("", (current, ctn) => current + (ctn.Name + " (" + ctn.Namespace + ") "));
-            Logger.LogMessageToFile("Ignored device at "+uris[0]+"  "+names);
+            catch (Exception ex)
+            {
+                Logger.LogException(ex,"Onvif CheckDevice");
+            }
         }
 
         private static void AddDevice(string uri)
@@ -109,7 +122,7 @@ namespace iSpyApplication.Onvif
                 if (!DiscoveredDevices.Contains(uri))
                 {
                     DiscoveredDevices.Add(uri);
-                    Logger.LogMessageToFile("Added device: "+uri);
+                    Logger.LogMessage("Added device: "+uri);
                 }
         }
 
@@ -118,7 +131,7 @@ namespace iSpyApplication.Onvif
             lock (Lock)
             {
                 DiscoveredDevices.RemoveAll(p => p == uri);
-                Logger.LogMessageToFile("Removed device: " + uri);
+                Logger.LogMessage("Removed device: " + uri);
             }
         }
 
@@ -145,7 +158,7 @@ namespace iSpyApplication.Onvif
         //        }
         //        if (dc.Count == 0)
         //        {
-        //            Logger.LogMessageToFile("Discovery completed");
+        //            Logger.LogMessage("Discovery completed");
         //            DiscoveryComplete?.Invoke(null, EventArgs.Empty);
         //        }
         //    }
@@ -158,19 +171,26 @@ namespace iSpyApplication.Onvif
 
         private static void DiscoverAdapter(NetworkInterface adapter)
         {
-            if (!adapter.GetIPProperties().MulticastAddresses.Any())
-                return; // most of VPN adapters will be skipped
-            if (!adapter.SupportsMulticast)
-                return; // multicast is meaningless for this type of connection
-            if (OperationalStatus.Up != adapter.OperationalStatus)
-                return; // this adapter is off or not connected
-            //IPv4InterfaceProperties p = adapter.GetIPProperties().GetIPv4Properties();
-            //if (null == p)
-            //    continue; // IPv4 is not configured on this adapter
+            try
+            {
+                if (!adapter.GetIPProperties().MulticastAddresses.Any())
+                    return; // most of VPN adapters will be skipped
+                if (!adapter.SupportsMulticast)
+                    return; // multicast is meaningless for this type of connection
+                if (OperationalStatus.Up != adapter.OperationalStatus)
+                    return; // this adapter is off or not connected
+                //IPv4InterfaceProperties p = adapter.GetIPProperties().GetIPv4Properties();
+                //if (null == p)
+                //    continue; // IPv4 is not configured on this adapter
 
-            var dc = GenerateDiscoveryClients(adapter.Id);
-            if (dc != null)
-                DiscoveryClients.AddRange(dc);
+                var dc = GenerateDiscoveryClients(adapter.Id);
+                if (dc != null)
+                    DiscoveryClients.AddRange(dc);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex,"Onvif Discovery");
+            }
         }
 
         private static DiscoveryClient[] GenerateDiscoveryClients(string adapterId)
@@ -193,9 +213,14 @@ namespace iSpyApplication.Onvif
             if (b == null)
                 return null;
 
-            epDiscovery.TransportSettings.MulticastInterfaceId = adapterId;
-            b.Elements.Insert(0, new MulticastCapabilitiesBindingElement(true));
+            TransportBindingElement transportBindingElement = b.Elements.Find<TransportBindingElement>();
+            var tbe = transportBindingElement as UdpTransportBindingElement;
+            if (tbe != null)
+            {
+                tbe.MulticastInterfaceId = adapterId;
+            }
 
+            b.Elements.Insert(0, new MulticastCapabilitiesBindingElement(true));
             var discoveryClient = new DiscoveryClient(epDiscovery);
 
             discoveryClient.FindProgressChanged += DiscoveryClientFindProgressChanged;

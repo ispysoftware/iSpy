@@ -547,7 +547,7 @@ namespace iSpyApplication
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(6);
-            this.tabPage2.Size = new System.Drawing.Size(725, 288);
+            this.tabPage2.Size = new System.Drawing.Size(192, 74);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "MJPEG URL";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -582,7 +582,7 @@ namespace iSpyApplication
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(713, 149);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(163, 149);
             this.tableLayoutPanel2.TabIndex = 49;
             // 
             // txtDecodeKey

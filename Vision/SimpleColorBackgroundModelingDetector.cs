@@ -105,7 +105,7 @@ namespace iSpyApplication.Vision
         private readonly BinaryDilatation3x3 _dilatationFilter = new BinaryDilatation3x3( );
 
         // dummy object to lock for synchronization
-        private readonly object _sync = new object( );
+        //private readonly object _sync = new object( );
 
         /// <summary>
         /// Difference threshold value, [1, 255].
@@ -122,7 +122,7 @@ namespace iSpyApplication.Vision
             get { return _differenceThreshold; }
             set
             {
-                lock ( _sync )
+                //lock ( _sync )
                 {
                     _differenceThreshold = Math.Max( 1, Math.Min( 255, value ) );
                 }
@@ -142,7 +142,7 @@ namespace iSpyApplication.Vision
         {
             get
             {
-                lock ( _sync )
+                //lock ( _sync )
                 {
                     return (float) _pixelsChanged / ( _width * _height );
                 }
@@ -165,7 +165,7 @@ namespace iSpyApplication.Vision
         {
             get
             {
-                lock ( _sync )
+               // lock ( _sync )
                 {
                     return _motionFrame;
                 }
@@ -191,7 +191,7 @@ namespace iSpyApplication.Vision
             get { return _suppressNoise; }
             set
             {
-                lock ( _sync )
+                //lock ( _sync )
                 {
                     _suppressNoise = value;
 
@@ -229,7 +229,7 @@ namespace iSpyApplication.Vision
             get { return _keepObjectEdges; }
             set
             {
-                lock ( _sync )
+               //lock ( _sync )
                 {
                     _keepObjectEdges = value;
                 }
@@ -341,7 +341,7 @@ namespace iSpyApplication.Vision
         ///
         public unsafe void ProcessFrame( UnmanagedImage videoFrame )
         {
-            lock ( _sync )
+            //lock ( _sync )
             {
                 // check background frame
                 if ( _backgroundFrame == null )
@@ -503,7 +503,7 @@ namespace iSpyApplication.Vision
         /// 
         public void Reset( )
         {
-            lock ( _sync )
+           // lock ( _sync )
             {
                 if ( _backgroundFrame != null )
                 {

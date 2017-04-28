@@ -27,7 +27,7 @@
   <MainColor>153,153,153</MainColor>
   <AreaColor>255,255,255</AreaColor>
   <BackColor>64,64,64</BackColor>
-  <MaxMediaFolderSizeMB>400</MaxMediaFolderSizeMB>
+  <MaxMediaFolderSizeMB>4000</MaxMediaFolderSizeMB>
   <DeleteFilesOlderThanDays>3</DeleteFilesOlderThanDays>
   <ServerAddress>www.ispyconnect.com</ServerAddress>
   <Enabled_ShowGettingStarted>true</Enabled_ShowGettingStarted>

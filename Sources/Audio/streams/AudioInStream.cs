@@ -115,6 +115,10 @@ namespace iSpyApplication.Sources.Audio.streams
         {
         }
 
+        public void Restart()
+        {
+        }
+
 
         public WaveFormat RecordingFormat { get; set; }
     }

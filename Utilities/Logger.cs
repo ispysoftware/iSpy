@@ -21,14 +21,14 @@ namespace iSpyApplication.Utilities
             "<?xml version=\"1.0\" encoding=\"utf-8\"?><PluginLog username=\"" + Environment.UserName +
             "\"><!--CONTENT--></PluginLog>";
 
-        internal static void LogExceptionToFile(Exception ex, string info)
+        internal static void LogException(Exception ex, string info)
         {
             ex.HelpLink = info + ": " + ex.Message;
-            Logger.LogExceptionToFile(ex);
+            Logger.LogException(ex);
         }
 
 
-        internal static void LogExceptionToFile(Exception ex)
+        internal static void LogException(Exception ex)
         {
             if (!_logging || !MainForm.Conf.Logging.Enabled)
                 return;
@@ -45,11 +45,11 @@ namespace iSpyApplication.Utilities
                 // ignored
             }
         }
-        internal static void LogMessageToFile(String message, string e)
+        internal static void LogMessage(String message, string e)
         {
-            Logger.LogMessageToFile(String.Format(message, e));
+            Logger.LogMessage(String.Format(message, e));
         }
-        internal static void LogMessageToFile(String message)
+        internal static void LogMessage(String message)
         {
             if (!_logging || !MainForm.Conf.Logging.Enabled)
                 return;
@@ -71,7 +71,7 @@ namespace iSpyApplication.Utilities
             PluginLogFile.Append("<message name=\"" + name + "\" id=\"" + id + "\" action=\"" + action + "\" timestamp=\"" + dt.Ticks + "\">" + detail.Replace("&", "&amp;") + "</message>");
         }
 
-        internal static void LogErrorToFile(String message)
+        internal static void LogError(String message)
         {
             if (!_logging || !MainForm.Conf.Logging.Enabled)
                 return;
@@ -86,7 +86,7 @@ namespace iSpyApplication.Utilities
                 //do nothing
             }
         }
-        internal static void LogErrorToFile(String message, string message2)
+        internal static void LogError(String message, string message2)
         {
             if (!_logging || !MainForm.Conf.Logging.Enabled)
                 return;

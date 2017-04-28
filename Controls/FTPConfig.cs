@@ -98,7 +98,7 @@ namespace iSpyApplication.Controls
                     }
                     catch (Exception ex)
                     {
-                        Logger.LogExceptionToFile(ex);
+                        Logger.LogException(ex);
                         MessageBox.Show(ex.Message);
                     }
                     imageStream.Close();

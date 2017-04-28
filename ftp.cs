@@ -64,7 +64,7 @@ namespace iSpyApplication
                 var response = (FtpWebResponse)request.GetResponse();
                 if (response.StatusCode != FtpStatusCode.ClosingData)
                 {
-                    Logger.LogErrorToFile("FTP Failed: " + response.StatusDescription, "FTP");
+                    Logger.LogError("FTP Failed: " + response.StatusDescription, "FTP");
                     failed = true;
                 }
 
@@ -86,7 +86,7 @@ namespace iSpyApplication
                         if (response.StatusCode != FtpStatusCode.ActionNotTakenFileUnavailable &&
                             response.StatusCode != FtpStatusCode.FileActionOK)
                         {
-                            Logger.LogErrorToFile("FTP Delete Failed: " + response.StatusDescription, "FTP");
+                            Logger.LogError("FTP Delete Failed: " + response.StatusDescription, "FTP");
                             failed = true;
                         }
 
@@ -94,7 +94,7 @@ namespace iSpyApplication
                     }
                     catch
                     {
-                        //Logger.LogExceptionToFile(ex, "FTP");
+                        //Logger.LogException(ex, "FTP");
                         //ignore
                     }
 
@@ -113,7 +113,7 @@ namespace iSpyApplication
                         response = (FtpWebResponse)request.GetResponse();
                         if (response.StatusCode != FtpStatusCode.FileActionOK)
                         {
-                            Logger.LogErrorToFile("FTP Rename Failed: " + response.StatusDescription, "FTP");
+                            Logger.LogError("FTP Rename Failed: " + response.StatusDescription, "FTP");
                             failed = true;
                         }
                         response.Close();
@@ -121,7 +121,7 @@ namespace iSpyApplication
                 }
                 if (!failed)
                 {
-                    Logger.LogMessageToFile("FTP'd " + filename + " to " + server + ":" + port, "FTP");
+                    Logger.LogMessage("FTP'd " + filename + " to " + server + ":" + port, "FTP");
                 }
                 error = failed ? "FTP Failed. Check Log" : "";
             }
@@ -200,7 +200,7 @@ namespace iSpyApplication
                 }
 
 
-                Logger.LogMessageToFile("SFTP'd " + filename + " to " + server + " port " + port, "SFTP");
+                Logger.LogMessage("SFTP'd " + filename + " to " + server + " port " + port, "SFTP");
             }
             catch (Exception ex)
             {
@@ -224,7 +224,7 @@ namespace iSpyApplication
 
             if (error != "")
             {
-                Logger.LogErrorToFile(error, "FTP");
+                Logger.LogError(error, "FTP");
             }
 
             objectsCamera oc = MainForm.Cameras.SingleOrDefault(p => p.id == task.CameraId);

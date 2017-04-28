@@ -48,7 +48,7 @@ namespace iSpyApplication.Server
 
             string connectUrl = s.prefix;
 
-            if (!string.IsNullOrEmpty(username))
+            if (!string.IsNullOrEmpty(username) && s.url.IndexOf("[TOKEN]", StringComparison.Ordinal) == -1)
             {
                 connectUrl += username;
 

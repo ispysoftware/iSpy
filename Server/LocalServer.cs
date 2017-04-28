@@ -166,14 +166,14 @@ namespace iSpyApplication.Server
             }
             catch (Exception e)
             {
-                Logger.LogExceptionToFile(e,"Server");
+                Logger.LogException(e,"Server");
                 StopServer();
                 message = "Could not start local iSpy server - please select a different LAN port in settings. The port specified is in use. See the log file for more information.";
                 ServerStartupFailed = true;
             }
             if (message != "")
             {
-                Logger.LogMessageToFile(message, "Server");
+                Logger.LogMessage(message, "Server");
                 return message;
             }
             try 
@@ -191,7 +191,7 @@ namespace iSpyApplication.Server
             catch (Exception e)
             {
                 message = e.Message;
-                Logger.LogExceptionToFile(e, "Server");
+                Logger.LogException(e, "Server");
             }
 
             lock (_threadLock)
@@ -222,7 +222,7 @@ namespace iSpyApplication.Server
                 catch (SocketException ex)
                 {
                     //During one socket disconnected we can faced exception
-                    Logger.LogExceptionToFile(ex, "Server");
+                    Logger.LogException(ex, "Server");
                 }
             }
 
@@ -234,7 +234,7 @@ namespace iSpyApplication.Server
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex, "Server");
+                    Logger.LogException(ex, "Server");
                 }
                 finally
                 {
@@ -402,7 +402,7 @@ namespace iSpyApplication.Server
                     req.Stream.Write(bSendData,0,bSendData.Length);
                     return true;
                     //if (req.TcpClient.Client.Send(bSendData) == -1)
-                    //  Logger.LogExceptionToFile(new Exception("Socket Error cannot Send Packet"));
+                    //  Logger.LogException(new Exception("Socket Error cannot Send Packet"));
                 }
             }
             catch (SocketException)
@@ -430,7 +430,7 @@ namespace iSpyApplication.Server
                 {
                     req.Stream.Write(bSendData, 0, datalength);
                     //if (req.TcpClient.Client.Send(bSendData) == -1)
-                    //  Logger.LogExceptionToFile(new Exception("Socket Error cannot Send Packet"));
+                    //  Logger.LogException(new Exception("Socket Error cannot Send Packet"));
                 }
             }
             catch (SocketException)
@@ -439,7 +439,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception e)
             {
-                Logger.LogExceptionToFile(e, "Server");
+                Logger.LogException(e, "Server");
             }
         }
 
@@ -473,7 +473,7 @@ namespace iSpyApplication.Server
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex, "Server");
+                    Logger.LogException(ex, "Server");
                     break;
                 }
                 // Wait until a connection is made and processed before  
@@ -492,13 +492,13 @@ namespace iSpyApplication.Server
                 switch (sslPolicyErrors)
                 {
                     case SslPolicyErrors.RemoteCertificateNameMismatch:
-                        Logger.LogErrorToFile("Client name mismatch. End communication", "Server");
+                        Logger.LogError("Client name mismatch. End communication", "Server");
                         return false;
                     case SslPolicyErrors.RemoteCertificateNotAvailable:
-                        Logger.LogErrorToFile("Client's certificate not available. End communication", "Server");
+                        Logger.LogError("Client's certificate not available. End communication", "Server");
                         return false;
                     case SslPolicyErrors.RemoteCertificateChainErrors:
-                        Logger.LogErrorToFile("Client's certificate validation failed. End communication", "Server");
+                        Logger.LogError("Client's certificate validation failed. End communication", "Server");
                         return false;
                 }
             }
@@ -526,7 +526,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
                 DisconnectRequest(req);
                 return;
             }
@@ -601,7 +601,7 @@ namespace iSpyApplication.Server
                         //ignore connection timeout errors
                         if (ex.ErrorCode != 10060)
                         {
-                            Logger.LogExceptionToFile(ex, "Server");
+                            Logger.LogException(ex, "Server");
                             NumErr++;
 
                         }
@@ -620,7 +620,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex, "Server");
+                Logger.LogException(ex, "Server");
                 NumErr++;
             }
         }
@@ -762,7 +762,7 @@ namespace iSpyApplication.Server
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex,"Server (parse request)");
+                    Logger.LogException(ex,"Server (parse request)");
                     goto Finish;
                 }
                 if (!bServe && string.IsNullOrEmpty(sRequestedFile))
@@ -899,7 +899,7 @@ namespace iSpyApplication.Server
                 //ignore connection timeout errors
                 if (ex.ErrorCode != 10060)
                 {
-                    Logger.LogExceptionToFile(ex, "Server");
+                    Logger.LogException(ex, "Server");
                     NumErr++;
 
                 }
@@ -907,7 +907,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex,"Server");
+                Logger.LogException(ex,"Server");
             }
         }
 
@@ -1699,7 +1699,7 @@ namespace iSpyApplication.Server
                         }
                         catch (Exception ex)
                         {
-                            Logger.LogExceptionToFile(ex, "Server");
+                            Logger.LogException(ex, "Server");
                             resp = "Command Failed: " + ex.Message + ",OK";
                         }
                     }
@@ -1730,7 +1730,7 @@ namespace iSpyApplication.Server
                         }
                         catch (Exception e)
                         {
-                            Logger.LogExceptionToFile(e);
+                            Logger.LogException(e);
                         }
                     }
                     if (otid == 2)
@@ -1751,7 +1751,7 @@ namespace iSpyApplication.Server
                         }
                         catch (Exception e)
                         {
-                            Logger.LogExceptionToFile(e);
+                            Logger.LogException(e);
                         }
                     }
                     resp = "OK";
@@ -1779,14 +1779,14 @@ namespace iSpyApplication.Server
                             }
                             catch (Exception ex)
                             {
-                                Logger.LogExceptionToFile(ex, "Playback");
+                                Logger.LogException(ex, "Playback");
                                 MessageBox.Show(ex.Message);
                             }
                             resp = "OK";
                         }
                         catch (Exception ex)
                         {
-                            Logger.LogExceptionToFile(ex, "Server");
+                            Logger.LogException(ex, "Server");
                             return ex.Message;
                         }
                     }
@@ -1857,7 +1857,7 @@ namespace iSpyApplication.Server
                         }
                         catch (Exception ex)
                         {
-                            Logger.LogExceptionToFile(ex, "Server");
+                            Logger.LogException(ex, "Server");
                         }
                     }
 
@@ -1875,7 +1875,7 @@ namespace iSpyApplication.Server
                         }
                         catch (Exception ex)
                         {
-                            Logger.LogExceptionToFile(ex, "Server");
+                            Logger.LogException(ex, "Server");
                         }
                     }
                     resp = "OK";
@@ -2055,7 +2055,7 @@ namespace iSpyApplication.Server
                                     }
                                     catch (Exception ex)
                                     {
-                                        Logger.LogErrorToFile(LocRm.GetString("Validate_Camera_PTZIPOnly") + ": " +
+                                        Logger.LogError(LocRm.GetString("Validate_Camera_PTZIPOnly") + ": " +
                                                                 ex.Message, "Server");
                                     }
                                 }
@@ -3052,7 +3052,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                Logger.LogErrorToFile("Failed to get path for request: " + sRequest + " (" + sMyWebServerRoot + ") - " + ex.Message, "Server");
+                Logger.LogError("Failed to get path for request: " + sRequest + " (" + sMyWebServerRoot + ") - " + ex.Message, "Server");
                 sLocalDir = "";
                 sDirName = "";
             }
@@ -3354,7 +3354,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex, "Server");
+                Logger.LogException(ex, "Server");
             }
 
             if (disposeFrame)
@@ -3426,7 +3426,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex, "Server");
+                Logger.LogException(ex, "Server");
             }
         }
 
@@ -3506,7 +3506,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex, "Server");
+                Logger.LogException(ex, "Server");
             }
         }
 
@@ -3586,7 +3586,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex,"Server");
+                Logger.LogException(ex,"Server");
             }
         }
 
@@ -3624,7 +3624,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex, "Server");
+                Logger.LogException(ex, "Server");
             }
         }
 
@@ -3799,7 +3799,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex, "Server");
+                Logger.LogException(ex, "Server");
             }
             overlayBackgroundBrush.Dispose();
             drawfont.Dispose();
@@ -3835,7 +3835,7 @@ namespace iSpyApplication.Server
             }
             if (cams.Count == 0)
             {
-                Logger.LogErrorToFile("Camera list invalid","MJPEG multi feed");
+                Logger.LogError("Camera list invalid","MJPEG multi feed");
             }
             return cams;
         }
@@ -3927,7 +3927,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex, "Server");
+                Logger.LogException(ex, "Server");
             }
         }
         

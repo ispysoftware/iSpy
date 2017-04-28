@@ -263,6 +263,11 @@ namespace iSpyApplication.Sources.Audio.talk
             }
         }
 
+        public void Restart()
+        {
+            
+        }
+
 
         public WaveFormat RecordingFormat { get; set; }
     }

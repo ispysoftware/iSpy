@@ -45,7 +45,8 @@ namespace iSpyApplication.Sources
         /// Video playing has finished because of some error happened the video source (camera, stream, file, etc.).
         /// A error reporting event usually is fired to provide error information.
         /// </summary>
-        VideoSourceError
+        VideoSourceError,
+        Restart
     }
 
     /// <summary>
@@ -95,6 +96,8 @@ namespace iSpyApplication.Sources
         /// 
         public ReasonToFinishPlaying ReasonToFinishPlaying { get; }
     }
+
+    
 
     public delegate void AlertEventHandler(object sender, AlertEventArgs e);
 

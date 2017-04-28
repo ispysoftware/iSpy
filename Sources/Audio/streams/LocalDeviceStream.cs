@@ -16,6 +16,8 @@ namespace iSpyApplication.Sources.Audio.streams
         private WaveInProvider _waveProvider;
         private SampleChannel _sampleChannel;
 
+        private ReasonToFinishPlaying _res = ReasonToFinishPlaying.DeviceLost;
+
         public BufferedWaveProvider WaveOutProvider { get; set; }
 
 
@@ -183,8 +185,8 @@ namespace iSpyApplication.Sources.Audio.streams
                     AudioFinished?.Invoke(this, new PlayingFinishedEventArgs(ReasonToFinishPlaying.DeviceLost));
                     return;
                 }
-
                 _started = true;
+                _res = ReasonToFinishPlaying.DeviceLost;
                 _waveIn = new WaveInEvent
                           {
                               BufferMilliseconds = 200,
@@ -229,7 +231,7 @@ namespace iSpyApplication.Sources.Audio.streams
                 var af = AudioFinished;
                 af?.Invoke(this, new PlayingFinishedEventArgs(ReasonToFinishPlaying.DeviceLost));
 
-                Logger.LogExceptionToFile(ex, "AudioDevice");
+                Logger.LogException(ex, "AudioDevice");
             }
         }
 
@@ -237,10 +239,9 @@ namespace iSpyApplication.Sources.Audio.streams
         void WaveInRecordingStopped(object sender, StoppedEventArgs e)
         {
             _started = false;
-            var res = ReasonToFinishPlaying.StoppedByUser;
             if (e.Exception!=null && e.Exception.Message.IndexOf("NoDriver", StringComparison.Ordinal)!=-1)
-                res = ReasonToFinishPlaying.DeviceLost;
-            AudioFinished?.Invoke(this, new PlayingFinishedEventArgs(res));
+                _res = ReasonToFinishPlaying.DeviceLost;
+            AudioFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
         }
 
         /// <summary>
@@ -252,6 +253,17 @@ namespace iSpyApplication.Sources.Audio.streams
         /// 
         public void Stop()
         {
+            _res = ReasonToFinishPlaying.StoppedByUser;
+            if (_waveIn == null)
+            {
+                AudioFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
+            }
+            else
+                StopSource();
+        }
+
+        private void StopSource()
+        {
             var wi = _waveIn;
             if (wi == null)
                 return;
@@ -260,14 +272,23 @@ namespace iSpyApplication.Sources.Audio.streams
             if (sc != null)
                 sc.PreVolumeMeter -= SampleChannelPreVolumeMeter;
             wi.DataAvailable -= WaveInDataAvailable;
-            try { wi.StopRecording();}
+            try { wi.StopRecording(); }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex,"Device");
+                Logger.LogException(ex, "Device");
             }
             wi.RecordingStopped -= WaveInRecordingStopped;
-            if (WaveOutProvider?.BufferedBytes>0) WaveOutProvider?.ClearBuffer();
+            if (WaveOutProvider?.BufferedBytes > 0) WaveOutProvider?.ClearBuffer();
+
+            wi.Dispose();
+            _waveIn = null;
             _started = false;
+        }
+
+        public void Restart()
+        {
+            _res = ReasonToFinishPlaying.Restart;
+            StopSource();
         }
 
 

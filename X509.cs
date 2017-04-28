@@ -18,12 +18,12 @@ namespace iSpyApplication
             try
             {
                 _sslCertificate = X509Certificate.CreateFromCertFile(fileName);
-                Logger.LogMessageToFile("Loaded SSL Certificate: " + _sslCertificate.ToString(false));
+                Logger.LogMessage("Loaded SSL Certificate: " + _sslCertificate.ToString(false));
                 return "OK";
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
                 return ex.Message;
             }
         }

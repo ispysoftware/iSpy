@@ -107,7 +107,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex);
+                    Logger.LogException(ex);
                     MessageBox.Show(this,
                                        LocRm.GetString("ErrorFromFirewall") +Environment.NewLine+ ex.Message +Environment.NewLine+
                                        LocRm.GetString("AddFirewallExceptionManually"));

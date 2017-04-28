@@ -27,7 +27,7 @@ namespace iSpyApplication.Sources.Video.discovery
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex,"LocalDevice");
+                Logger.LogException(ex,"LocalDevice");
             }
         }
 

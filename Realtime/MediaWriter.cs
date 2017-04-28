@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
@@ -47,10 +48,10 @@ namespace iSpyApplication.Realtime
             {
                 if (!_abort)
                 {
-                    Logger.LogMessageToFile("Writer Timeout");
+                    Logger.LogMessage("Writer Timeout");
                 }
 
-                Logger.LogMessageToFile("Aborting Writer");
+                Logger.LogMessage("Aborting Writer");
                 _abort = true;
                 return 1;
             }
@@ -628,9 +629,12 @@ namespace iSpyApplication.Realtime
                         _audioFrame->nb_samples = dstNbSamples;
 
                         _audioFrame->pts = pts;
-                        if (_lastAudioPts >= pts)
-                            _audioFrame->pts = _lastAudioPts + 1;
-                        _lastAudioPts = _audioFrame->pts;
+
+                        //if (_lastAudioPts > pts)
+                        //{
+                        //    _audioFrame->pts = _lastAudioPts+1;
+                        //}
+                        //_lastAudioPts = _audioFrame->pts;
 
                         var dstSamplesSize = ffmpeg.av_samples_get_buffer_size(null, _audioCodecContext->channels,
                             _audioFrame->nb_samples,
@@ -720,7 +724,7 @@ namespace iSpyApplication.Realtime
                     {
                         if (TryOpenVideoCodec(baseCodec))
                         {
-                            Logger.LogMessageToFile("using Nvidia hardware encoder");
+                            Logger.LogMessage("using Nvidia hardware encoder");
                             return;
                         }
                     }
@@ -734,10 +738,10 @@ namespace iSpyApplication.Realtime
                     {
                         if (TryOpenVideoCodec(baseCodec))
                         {
-                            Logger.LogMessageToFile("using Intel QSV hardware encoder");
+                            Logger.LogMessage("using Intel QSV hardware encoder");
                             return;
                         }
-                        Logger.LogMessageToFile("Install Intel Media Server Studio and restart iSpy to use QSV");
+                        Logger.LogMessage("Install Intel Media Server Studio and restart iSpy to use QSV");
                         _hwqsv = false;
                     }
                 }
@@ -748,11 +752,11 @@ namespace iSpyApplication.Realtime
 
             if (TryOpenVideoCodec(baseCodec))
             {
-                Logger.LogMessageToFile("using software encoder");
+                Logger.LogMessage("using software encoder");
                 return;
             }
 
-            Logger.LogMessageToFile("could not open any encoder codec");
+            Logger.LogMessage("could not open any encoder codec");
             throw new Exception("Failed opening any codec");
         }
 

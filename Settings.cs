@@ -142,7 +142,7 @@ namespace iSpyApplication
                 if (!Directory.Exists(MainForm.Conf.Archive))
                 {
                     MainForm.Conf.Archive = "";
-                    Logger.LogErrorToFile("Archive directory ignored - couldn't be found on disk");
+                    Logger.LogError("Archive directory ignored - couldn't be found on disk");
                 }
             }
 
@@ -191,7 +191,7 @@ namespace iSpyApplication
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
-                    Logger.LogExceptionToFile(ex);
+                    Logger.LogException(ex);
                 }
             }
             else
@@ -204,7 +204,7 @@ namespace iSpyApplication
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
-                    Logger.LogExceptionToFile(ex);
+                    Logger.LogException(ex);
                 }
             }
 
@@ -451,7 +451,7 @@ namespace iSpyApplication
             }
             catch (ApplicationException ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
                 ddlTalkMic.Items.Add(_noDevices);
                 ddlTalkMic.Enabled = false;
             }

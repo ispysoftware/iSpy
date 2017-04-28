@@ -48,6 +48,7 @@ namespace iSpyApplication.Onvif
             var token = GetElement(xml);
 
             MessageHeader securityHeader = MessageHeader.CreateHeader("Security", Namespace, token, true);
+
             request.Headers.Add(securityHeader);
             int limit = request.Headers.Count;
             for (int i = 0; i < limit; ++i)

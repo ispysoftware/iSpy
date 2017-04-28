@@ -368,7 +368,7 @@
                 { "text": "Management", "value": "", "type": "Boolean", "bindto": "settings.storagemanagement.enabled" },
                 { "text": "Archive", "value": "", "type": "Boolean", "bindto": "settings.storagemanagement.archive", "help": "Move to the archive directory (see server settings) instead of deleting" },
                 { "text": "Max Size", "value": "", "type": "Int32", "bindto": "settings.storagemanagement.maxsize", "help": "Maximum size of folder (MB)" },
-                { "text": "Max Age", "value": "", "type": "Int32", "bindto": "settings.storagemanagement.maxage", "help":  "Maximum age of content (hours)" }
+                { "text": "Max Age (Hours)", "value": "", "type": "Int32", "bindto": "settings.storagemanagement.maxage", "help":  "Maximum age of content (hours)" }
             ]
         }
     ]

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO.Ports;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using iSpyApplication.Controls;
 using iSpyApplication.DevicePTZ;
@@ -16,6 +17,7 @@ namespace iSpyApplication
 {
     public class PTZController
     {
+        readonly ConnectionFactory _connectionFactory = new ConnectionFactory();
         public static string[] PelcoCommands =
                                              {
                                                  "Focus Near", "Focus Far", "Open Iris", "Close Iris", "Switch On",
@@ -72,7 +74,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
             }
             _addr = Convert.ToUInt16(cfg[5]);
         }
@@ -125,7 +127,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
             }
         }
 
@@ -137,7 +139,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
             }
         }
 
@@ -691,7 +693,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex);
+                    Logger.LogException(ex);
                 }
             }
         }
@@ -718,7 +720,7 @@ namespace iSpyApplication
             }
             else
             {
-                Logger.LogMessageToFile("Camera control flags are not manual");
+                Logger.LogMessage("Camera control flags are not manual");
             }
 
         }
@@ -780,7 +782,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex);
+                    Logger.LogException(ex);
                 }
             }
         }
@@ -807,7 +809,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex);
+                    Logger.LogException(ex);
                 }
 
             }
@@ -837,7 +839,7 @@ namespace iSpyApplication
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex);
+                    Logger.LogException(ex);
                 }
                 return pl.ToArray();
             }
@@ -862,7 +864,7 @@ namespace iSpyApplication
                     {
                         _serialPort.Dispose();
                         _serialPort = null;
-                        Logger.LogExceptionToFile(ex);
+                        Logger.LogException(ex);
                         return;
                     }
                     //SerialPort.DataReceived += SerialPort_DataReceived;
@@ -990,7 +992,7 @@ namespace iSpyApplication
                     {
                         _serialPort.Dispose();
                         _serialPort = null;
-                        Logger.LogExceptionToFile(ex);
+                        Logger.LogException(ex);
                         return;
                     }
                     //SerialPort.DataReceived += SerialPort_DataReceived;
@@ -1345,7 +1347,7 @@ namespace iSpyApplication
             }
             catch (Exception e)
             {
-                Logger.LogExceptionToFile(e, "PTZ Controller");
+                Logger.LogException(e, "PTZ Controller");
                 return;
             }
 
@@ -1429,6 +1431,18 @@ namespace iSpyApplication
             url = url.Replace("[PASSWORD]", Uri.EscapeDataString(pwd));
             url = url.Replace("[CHANNEL]", _cameraControl.Camobject.settings.ptzchannel);
 
+            byte[] data = {};
+            if (ptz.Method != "GET")
+            {
+                var j = url.IndexOf("?", StringComparison.Ordinal);
+                if (j > -1 && j < url.Length)
+                {
+                    var pd = url.Substring(j + 1);
+                    var encoding = new ASCIIEncoding();
+                    data = encoding.GetBytes(pd);
+                }
+            }
+            
             var co = new ConnectionOptions
             {
                 channel = _cameraControl.Camobject.settings.ptzchannel,
@@ -1440,13 +1454,14 @@ namespace iSpyApplication
                 proxy = null,
                 requestTimeout = 5000,
                 source = url,
+                data = data,
                 useHttp10 = _cameraControl.Camobject.settings.usehttp10,
                 useSeparateConnectionGroup = false,
                 userAgent = _cameraControl.Camobject.settings.useragent
             };
 
 
-            ConnectionFactory.BeginGetResponse(co, CoCallback);
+            _connectionFactory.BeginGetResponse(co, CoCallback);
         }
 
         public void CoCallback(object sender, EventArgs e)

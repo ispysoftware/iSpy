@@ -107,7 +107,7 @@ namespace iSpyApplication.Server
                             oid = MainForm.NextCameraId;
                             break;
                     }
-                    MainForm.InstanceReference.AddObjectExternal(ot,stid,320,240,"","");
+                    MainForm.InstanceReference.AddObjectExternal(ot,stid,640,480,"","");
                     resp = "{\"actionResult\":\"editsource\",\"typeID\":" + ot + ",\"ID\":" + oid + "}";
                     break;
                 case "createfromwizard":
@@ -145,7 +145,7 @@ namespace iSpyApplication.Server
 
                                 oid = MainForm.NextCameraId;
                                 
-                                cw = (CameraWindow) MainForm.InstanceReference.AddObjectExternal(2, sourceTypeID,320,240,"",sourceUri);
+                                cw = (CameraWindow) MainForm.InstanceReference.AddObjectExternal(2, sourceTypeID,640,480,"",sourceUri);
                                     
                                 cw.Camobject.settings.videosourcestring = sourceUri;
                                 cw.Camobject.settings.cookies = mmurl.cookies;
@@ -223,6 +223,11 @@ namespace iSpyApplication.Server
                                     cw.Camobject.settings.audiousername = username;
                                     cw.Camobject.settings.audiopassword = password;
                                 }
+                                
+                                cw.Camobject.settings.tokenconfig.tokenpath = mmurl.tokenPath;
+                                cw.Camobject.settings.tokenconfig.tokenpost = mmurl.tokenPost;
+                                cw.Camobject.settings.tokenconfig.tokenport = mmurl.tokenPort;
+                                
 
                                 if (audioSourceTypeID > -1)
                                 {
@@ -543,7 +548,7 @@ namespace iSpyApplication.Server
                                             }
                                             catch (ApplicationException ex)
                                             {
-                                                Logger.LogExceptionToFile(ex, "LocalDevice");
+                                                Logger.LogException(ex, "LocalDevice");
                                             }
                                             break;
                                         case "5":
@@ -1521,7 +1526,7 @@ namespace iSpyApplication.Server
                             }
                             catch (Exception ex)
                             {
-                                Logger.LogExceptionToFile(ex, "Server");
+                                Logger.LogException(ex, "Server");
                                 resp = string.Format(commandFailed, ex.Message);
                             }
                         }
@@ -1575,7 +1580,7 @@ namespace iSpyApplication.Server
                             }
                             catch (Exception ex)
                             {
-                                Logger.LogErrorToFile(LocRm.GetString("Validate_Camera_PTZIPOnly") + ": " +
+                                Logger.LogError(LocRm.GetString("Validate_Camera_PTZIPOnly") + ": " +
                                                       ex.Message, "Server");
                             }
                         }
@@ -2295,12 +2300,7 @@ namespace iSpyApplication.Server
                             PopulateObject(d, c);
                             
                             var vl = MainForm.InstanceReference.GetVolumeLevel(c.id);
-                            if (vl != null)
-                            {
-                                vl.Disable();
-                                vl.Enable();
-                            }
-                            
+                            vl?.Restart();
                         }
                         resp = "{\"actionResult\":\"waiteditobject\"}";
                     }
@@ -2318,11 +2318,7 @@ namespace iSpyApplication.Server
                                 }
 
                                 var cw = MainForm.InstanceReference.GetCameraWindow(c.id);
-                                if (cw != null)
-                                {
-                                    cw.Disable();
-                                    cw.Enable();
-                                }
+                                cw?.Restart();
                                 resp = "{\"actionResult\":\"waiteditobject\"}";
                             }
 
@@ -2336,7 +2332,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex, "JSON Parser");
+                Logger.LogException(ex, "JSON Parser");
             }
             if (saveObjects)
             {
@@ -2346,7 +2342,7 @@ namespace iSpyApplication.Server
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex, "JSON Parser");
+                    Logger.LogException(ex, "JSON Parser");
                 }
             }
 
@@ -2412,7 +2408,7 @@ namespace iSpyApplication.Server
             }
             catch
             {
-                Logger.LogExceptionToFile(new Exception(apiJson),"BuildAPIPopulate");
+                Logger.LogException(new Exception(apiJson),"BuildAPIPopulate");
                 throw;
             }
         }
@@ -2709,7 +2705,7 @@ namespace iSpyApplication.Server
                     }
                     catch (Exception ex)
                     {
-                        Logger.LogExceptionToFile(ex, "Conversion from web setting");
+                        Logger.LogException(ex, "Conversion from web setting");
                     }
                     i++;
                 }
@@ -2728,7 +2724,7 @@ namespace iSpyApplication.Server
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex, "Conversion from web setting");
+                    Logger.LogException(ex, "Conversion from web setting");
                 }
             }
         }

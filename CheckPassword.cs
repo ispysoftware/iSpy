@@ -22,7 +22,7 @@ namespace iSpyApplication
                     MainForm.NeedsResourceUpdate = true;
                 MainForm.Group = g.name;
                 DialogResult = DialogResult.OK;
-                Logger.LogMessageToFile("Login: "+g.name);
+                Logger.LogMessage("Login: "+g.name);
                 Close();
                 return;
             }

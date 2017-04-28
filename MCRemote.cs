@@ -300,7 +300,7 @@ namespace iSpyApplication
                     (uint)Marshal.SizeOf(rid[0]))
                     )
                 {
-                    Logger.LogMessageToFile("Failed to register raw input devices.");
+                    Logger.LogMessage("Failed to register raw input devices.");
                 }
             }
 

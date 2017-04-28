@@ -15412,30 +15412,6 @@
     <url version="3mp" prefix="rtsp://" Source="FFMPEG" url="/0/888888:888888/main" />
   </Manufacturer>
   <Manufacturer name="Focuscam">
-    <url version="8018" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="8910" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="f18904w" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="f18910w" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="F19805E" prefix="http://" Source="JPEG" url="cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=[USERNAME]&amp;pwd=[PASSWORD]&amp;" />
-    <url version="F19821P" prefix="http://" Source="JPEG" url="cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=[USERNAME]&amp;pwd=[PASSWORD]&amp;" />
-    <url version="F19821W" prefix="http://" Source="JPEG" url="cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="F19821W" prefix="http://" Source="JPEG" url="cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=[USERNAME]&amp;pwd=[PASSWORD]&amp;" />
-    <url version="F19821W" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="FI8905E" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="FI8907W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="FI8910E" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="FI8910W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="FI8910W" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="fi8918w" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="fi8918w" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="FI8918W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="FI8918W" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;count=0" />
-    <url version="FI8918W" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" />
-    <url version="FI8931W" prefix="http://" Source="JPEG" url="cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=[USERNAME]&amp;pwd=[PASSWORD]&amp;" />
-    <url version="Fi9821p" prefix="http://" Source="JPEG" url="cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=[USERNAME]&amp;pwd=[PASSWORD]&amp;" />
-    <url version="Fl8906W" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="FL8906W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="Fl8910w" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="fr4020" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
@@ -16094,7 +16070,6 @@
     <url version="FI8910W" prefix="http://" Source="JPEG" url="cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=[USERNAME]&amp;pwd=[PASSWORD]" port="88" />
     <url version="FI8910W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="FI8910W" prefix="http://" Source="FFMPEG" url="videostream.asf" />
-    <url version="FI8910W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="FI8910W" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="FI8910W" prefix="rtsp://" Source="FFMPEG" url="videoMain" />
     <url version="FI8910W" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" />
@@ -16133,9 +16108,7 @@
     <url version="FI8910W TQ" prefix="http://" Source="JPEG" url="cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=[USERNAME]&amp;pwd=[PASSWORD]" port="88" />
     <url version="FI8910W_DW" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="FI8910W-H" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="FI8910W-roger" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0" />
     <url version="FI8910W-X" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="FI8910W-Zangerle" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="FI8916P" prefix="rtsp://" Source="FFMPEG" url="/videoMain" />
     <url version="FI8916P" prefix="http://" Source="JPEG" url="cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="FI8916w" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -22469,18 +22442,6 @@
   </Manufacturer>
   <Manufacturer name="ipcam-oprit">
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
-  </Manufacturer>
-  <Manufacturer name="IPC-BO">
-    <url version="IP3M952E" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" port="1030" />
-    <url version="Other" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="qcam" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="Qsee" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="reolinc RLC-410" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="reo-link" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="reolink RCL-410" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="RLC-423" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="st 105" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="USGBCD5404" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_sub" />
   </Manufacturer>
   <Manufacturer name="IPCC">
     <url version="20hd" prefix="http://" Source="JPEG" url="cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=[USERNAME]&amp;pwd=[PASSWORD]&amp;" />
@@ -30051,53 +30012,17 @@
     <url version="RC-ID10WF3" prefix="http://" Source="JPEG" url="img/snapshot.cgi?size=2" />
   </Manufacturer>
   <Manufacturer name="Reolink">
-    <url version="RLC-423" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_sub" />
-  </Manufacturer>
-  <Manufacturer name="Reo-Link">
-    <url version="1411" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="1440P" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="2mp" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="410S" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="410WS" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="411" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="411ws" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="420" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="422" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="423" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="432" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="abc" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="DomeCamera" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="DomeZoomCam" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="hlc420" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="IPC-BO" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="IRC-410" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="Other" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="PTZ" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="RC-410" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_sub" />
-    <url version="RC-410" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="RC423" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="RCL410" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="RCL-410S" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="RCL-411WS" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="RCL-423" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="REO-423" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="RL-410" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="RLC" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="RLC 423" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="RLC-410" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="RLC-410" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" />
-    <url version="RLC-410S" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="RLC-410WS" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="RLC-411" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="RLC-411S" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="RLC-420" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="RLC422" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="RLC-423 1080p" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="RSL-411" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="sdcard" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="Standard" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="TC-410" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
-    <url version="WS411" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
+    <url version="RLC-410" prefix="rtmp://" port="1935" Source="FFMPEG" url="/bcs/channel0_main.bcs?token=[TOKEN]&amp;channel=0&amp;stream=0" tokenPath="cgi-bin/api.cgi?cmd=Login&amp;token=null" tokenPost="[{&quot;cmd&quot;:&quot;Login&quot;,&quot;action&quot;:0,&quot;param&quot;:{&quot;User&quot;:{&quot;userName&quot;:&quot;[USERNAME]&quot;,&quot;password&quot;:&quot;[PASSWORD]&quot;}}}]" tokenPort="80"/>
+    <url version="RLC-410S" prefix="rtmp://" port="1935" Source="FFMPEG" url="/bcs/channel0_main.bcs?token=[TOKEN]&amp;channel=0&amp;stream=0" tokenPath="cgi-bin/api.cgi?cmd=Login&amp;token=null" tokenPost="[{&quot;cmd&quot;:&quot;Login&quot;,&quot;action&quot;:0,&quot;param&quot;:{&quot;User&quot;:{&quot;userName&quot;:&quot;[USERNAME]&quot;,&quot;password&quot;:&quot;[PASSWORD]&quot;}}}]" tokenPort="80"/>
+    <url version="RLC-410WS" prefix="rtmp://" port="1935" Source="FFMPEG" url="/bcs/channel0_main.bcs?token=[TOKEN]&amp;channel=0&amp;stream=0" tokenPath="cgi-bin/api.cgi?cmd=Login&amp;token=null" tokenPost="[{&quot;cmd&quot;:&quot;Login&quot;,&quot;action&quot;:0,&quot;param&quot;:{&quot;User&quot;:{&quot;userName&quot;:&quot;[USERNAME]&quot;,&quot;password&quot;:&quot;[PASSWORD]&quot;}}}]" tokenPort="80"/>
+    <url version="RLC-411" prefix="rtmp://" port="1935" Source="FFMPEG" url="/bcs/channel0_main.bcs?token=[TOKEN]&amp;channel=0&amp;stream=0" tokenPath="cgi-bin/api.cgi?cmd=Login&amp;token=null" tokenPost="[{&quot;cmd&quot;:&quot;Login&quot;,&quot;action&quot;:0,&quot;param&quot;:{&quot;User&quot;:{&quot;userName&quot;:&quot;[USERNAME]&quot;,&quot;password&quot;:&quot;[PASSWORD]&quot;}}}]" tokenPort="80"/>
+    <url version="RLC-411S" prefix="rtmp://" port="1935" Source="FFMPEG" url="/bcs/channel0_main.bcs?token=[TOKEN]&amp;channel=0&amp;stream=0" tokenPath="cgi-bin/api.cgi?cmd=Login&amp;token=null" tokenPost="[{&quot;cmd&quot;:&quot;Login&quot;,&quot;action&quot;:0,&quot;param&quot;:{&quot;User&quot;:{&quot;userName&quot;:&quot;[USERNAME]&quot;,&quot;password&quot;:&quot;[PASSWORD]&quot;}}}]" tokenPort="80"/>
+    <url version="RLC-411WS" prefix="rtmp://" port="1935" Source="FFMPEG" url="/bcs/channel0_main.bcs?token=[TOKEN]&amp;channel=0&amp;stream=0" tokenPath="cgi-bin/api.cgi?cmd=Login&amp;token=null" tokenPost="[{&quot;cmd&quot;:&quot;Login&quot;,&quot;action&quot;:0,&quot;param&quot;:{&quot;User&quot;:{&quot;userName&quot;:&quot;[USERNAME]&quot;,&quot;password&quot;:&quot;[PASSWORD]&quot;}}}]" tokenPort="80"/>
+    <url version="RLC-420" prefix="rtmp://" port="1935" Source="FFMPEG" url="/bcs/channel0_main.bcs?token=[TOKEN]&amp;channel=0&amp;stream=0" tokenPath="cgi-bin/api.cgi?cmd=Login&amp;token=null" tokenPost="[{&quot;cmd&quot;:&quot;Login&quot;,&quot;action&quot;:0,&quot;param&quot;:{&quot;User&quot;:{&quot;userName&quot;:&quot;[USERNAME]&quot;,&quot;password&quot;:&quot;[PASSWORD]&quot;}}}]" tokenPort="80"/>
+    <url version="RLC-422" prefix="rtmp://" port="1935" Source="FFMPEG" url="/bcs/channel0_main.bcs?token=[TOKEN]&amp;channel=0&amp;stream=0" tokenPath="cgi-bin/api.cgi?cmd=Login&amp;token=null" tokenPost="[{&quot;cmd&quot;:&quot;Login&quot;,&quot;action&quot;:0,&quot;param&quot;:{&quot;User&quot;:{&quot;userName&quot;:&quot;[USERNAME]&quot;,&quot;password&quot;:&quot;[PASSWORD]&quot;}}}]" tokenPort="80"/>
+    <url version="RLC-423" prefix="rtmp://" port="1935" Source="FFMPEG" url="/bcs/channel0_main.bcs?token=[TOKEN]&amp;channel=0&amp;stream=0" tokenPath="cgi-bin/api.cgi?cmd=Login&amp;token=null" tokenPost="[{&quot;cmd&quot;:&quot;Login&quot;,&quot;action&quot;:0,&quot;param&quot;:{&quot;User&quot;:{&quot;userName&quot;:&quot;[USERNAME]&quot;,&quot;password&quot;:&quot;[PASSWORD]&quot;}}}]" tokenPort="80"/>
+    <url version="C1" prefix="rtmp://" port="1935" Source="FFMPEG" url="/bcs/channel0_main.bcs?token=[TOKEN]&amp;channel=0&amp;stream=0" tokenPath="cgi-bin/api.cgi?cmd=Login&amp;token=null" tokenPost="[{&quot;cmd&quot;:&quot;Login&quot;,&quot;action&quot;:0,&quot;param&quot;:{&quot;User&quot;:{&quot;userName&quot;:&quot;[USERNAME]&quot;,&quot;password&quot;:&quot;[PASSWORD]&quot;}}}]" tokenPort="80"/>
+    <url version="C2" prefix="rtmp://" port="1935" Source="FFMPEG" url="/bcs/channel0_main.bcs?token=[TOKEN]&amp;channel=0&amp;stream=0" tokenPath="cgi-bin/api.cgi?cmd=Login&amp;token=null" tokenPost="[{&quot;cmd&quot;:&quot;Login&quot;,&quot;action&quot;:0,&quot;param&quot;:{&quot;User&quot;:{&quot;userName&quot;:&quot;[USERNAME]&quot;,&quot;password&quot;:&quot;[PASSWORD]&quot;}}}]" tokenPort="80"/>
   </Manufacturer>
   <Manufacturer name="Repotec">
     <url version="Other" prefix="http://" Source="JPEG" url="IMAGE.JPG" />
@@ -32640,9 +32565,6 @@
     <url version="CTO185" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="dome" prefix="rtsp://" Source="FFMPEG" url="/onvif1" />
     <url version="Floureon" prefix="rtsp://" Source="FFMPEG" url="/onvif1" />
-    <url version="frank- ipcam" prefix="http://" Source="JPEG" url="cgi/snapshot.cgi?action=getdata&amp;channel.[CHANNEL].capture=true&amp;channel.[CHANNEL].resolution=1" />
-    <url version="Frank ipcam" prefix="http://" Source="JPEG" url="cgi/snapshot.cgi?action=getdata&amp;channel.[CHANNEL].capture=true&amp;channel.[CHANNEL].resolution=1" />
-    <url version="Front Door" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="h.264" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" port="81" />
     <url version="Home" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" port="81" />
     <url version="INNE CAM" prefix="rtsp://" Source="FFMPEG" url="/onvif1" />

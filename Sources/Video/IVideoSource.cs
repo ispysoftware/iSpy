@@ -80,23 +80,7 @@
         /// 
         void Start();
 
-        /// <summary>
-        /// Signal video source to stop its work.
-        /// </summary>
-        /// 
-        /// <remarks>Signals video source to stop its background thread, stop to
-        /// provide new frames and free resources.</remarks>
-        /// 
-        void SignalToStop();
-
-        /// <summary>
-        /// Wait for video source has stopped.
-        /// </summary>
-        /// 
-        /// <remarks>Waits for video source stopping after it was signalled to stop using
-        /// <see cref="SignalToStop"/> method.</remarks>
-        /// 
-        void WaitForStop();
+        void Restart();
 
         /// <summary>
         /// Stop video source.

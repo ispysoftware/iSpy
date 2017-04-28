@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using iSpyApplication.Controls;
+using iSpyApplication.Server;
 using iSpyApplication.Utilities;
 
 namespace iSpyApplication
@@ -38,6 +39,9 @@ namespace iSpyApplication
         public string AudioModel = "";
         public string Flags = "";
         public string Cookies = "";
+        public string tokenPath = "";
+        public string tokenPost = "";
+        public int tokenPort = 80;
         public static List<String> DnsEntries = new List<string>();
         private Thread _urlscanner;
 
@@ -207,7 +211,7 @@ namespace iSpyApplication
             }
 
             UISync.Execute(() => pbScanner.Maximum = ipranges.Count * 254);
-            Logger.LogMessageToFile("Scanning LAN");
+            Logger.LogMessage("Scanning LAN");
             j = 0;
             foreach (string IP in DnsEntries)
             {
@@ -293,7 +297,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
             }
             
             UISync.Execute(ResetControls);
@@ -344,7 +348,7 @@ namespace iSpyApplication
             }
             if (found)
             {
-                Logger.LogMessageToFile("Ping response from " + ipaddress);
+                Logger.LogMessage("Ping response from " + ipaddress);
                 string hostname = "Unknown";
                 try
                 {
@@ -378,11 +382,11 @@ namespace iSpyApplication
                         }
                         catch (Exception ex)
                         {
-                            Logger.LogMessageToFile("Web error from " + ipaddress + ":" + iport + " " + ex.Message);
+                            Logger.LogMessage("Web error from " + ipaddress + ":" + iport + " " + ex.Message);
                         }
                         if (response != null)
                         {
-                            Logger.LogMessageToFile("Web response from " + ipaddress + ":" + iport + " " +
+                            Logger.LogMessage("Web response from " + ipaddress + ":" + iport + " " +
                                                       response.StatusCode);
                             if (response.Headers != null)
                             {
@@ -407,7 +411,7 @@ namespace iSpyApplication
                     }
                     catch (Exception ex)
                     {
-                        Logger.LogMessageToFile("Web error from " + ipaddress + ":" + iport + " " + ex.Message);
+                        Logger.LogMessage("Web error from " + ipaddress + ":" + iport + " " + ex.Message);
 
                     }
                 }
@@ -470,7 +474,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
             }
 
             var manager = new Thread(p => PortScannerManager(host)) { Name = "Port Scanner", IsBackground = true, Priority = ThreadPriority.Normal };
@@ -606,17 +610,17 @@ namespace iSpyApplication
             //scan all possible urls
             
 
-            var lp = new List<String>();
+            //var lp = new List<String>();
             string login =  Uri.EscapeDataString(txtUsername.Text);
             string password = Uri.EscapeDataString(txtPassword.Text);
 
             //list urls for current make first
             var m = MainForm.Sources.Where(p=>p.name.ToUpper()==make.ToUpper()).ToList();           
-            ListCameras(m, ref lp, login, password);
+            ListCameras(m, login, password);
             if (!_quiturlscanner)
             {
                 m = MainForm.Sources.Where(p => p.name.ToUpper() != make.ToUpper()).ToList();
-                ListCameras(m, ref lp, login, password);
+                ListCameras(m, login, password);
             }
 
             int i = 0;
@@ -643,8 +647,8 @@ namespace iSpyApplication
         private void ScanListedUrLs()
         {
             _quiturlscanner = false;
-            string login = Uri.EscapeDataString(txtUsername.Text);
-            string password = Uri.EscapeDataString(txtPassword.Text);
+            Username = Uri.EscapeDataString(txtUsername.Text);
+            Password = Uri.EscapeDataString(txtPassword.Text);
 
             
             var mmurl = new List<ManufacturersManufacturerUrl>();
@@ -659,30 +663,15 @@ namespace iSpyApplication
             {
                 var u = mmurl[k];
 
-                string addr = GetAddr(u);
-                switch (u.prefix.ToUpper())
-                {
-                    default:
-                        UISync.Execute(() => tsslCurrent.Text = "Trying: " + addr);
-                        //test this url
-                        if (!SendHTTPReq(addr, u.cookies, login, password))
-                        {
-                            int j1 = j;
-                            UISync.Execute(() => pnlOptions.Controls.RemoveAt(j1));
-                            j--;
-                        }
-                        break;
-                    case "RTSP://":
-                        addr = GetAddr(u);
-                        UISync.Execute(() => tsslCurrent.Text = "Trying: " + addr);
-                        if (!SendRTSPReq(addr, login, password))
-                        {
-                            int j1 = j;
-                            UISync.Execute(() => pnlOptions.Controls.RemoveAt(j1));
-                            j--;
-                        }
-                        break;
+                Uri addr = GetAddr(u);
 
+                UISync.Execute(() => tsslCurrent.Text = "Trying: " + addr);
+                bool found = Helper.TestAddress(addr, u, Username, Password);
+                if (!found)
+                {
+                    int j1 = j;
+                    UISync.Execute(() => pnlOptions.Controls.RemoveAt(j1));
+                    j--;
                 }
                 j++;
                 k++;
@@ -712,7 +701,7 @@ namespace iSpyApplication
 
         }
 
-        private void ListCameras(IEnumerable<ManufacturersManufacturer> m, ref List<string> lp, string login, string password)
+        private void ListCameras(IEnumerable<ManufacturersManufacturer> m, string login, string password)
         {
             foreach(var s in m)
             {
@@ -722,41 +711,12 @@ namespace iSpyApplication
 
                 foreach (var u in cand)
                 {
-                    string addr;
-                    switch (u.prefix.ToUpper())
+                    Uri addr = GetAddr(u);
+                    UISync.Execute(() => tsslCurrent.Text = addr.ToString());
+                    bool found = Helper.TestAddress(addr,u,login,password);
+                    if (found)
                     {
-                        default:
-                            if (MainForm.IPHTTP)
-                            {
-                                addr = GetAddr(u);
-                                if (!lp.Contains(addr))
-                                {
-                                    lp.Add(addr);
-                                    UISync.Execute(() => tsslCurrent.Text =  addr);
-                                    //test this url
-                                    if (SendHTTPReq(addr, u.cookies, login, password))
-                                    {
-                                        AddCamera(addr, s, u);
-                                    }
-                                }
-                            }
-                            break;
-                        case "RTSP://":
-                            if (MainForm.IPRTSP)
-                            {
-                                addr = GetAddr(u);
-                                if (!lp.Contains(addr))
-                                {
-                                    lp.Add(addr);
-                                    UISync.Execute(() => tsslCurrent.Text = addr);
-                                    //test this url
-                                    if (SendRTSPReq(addr, login, password))
-                                    {
-                                        AddCamera(addr, s, u);
-                                    }
-                                }
-                            }
-                            break;
+                        AddCamera(addr.ToString(), s, u);
                     }
                     if (_quiturlscanner)
                         break;
@@ -786,81 +746,6 @@ namespace iSpyApplication
  
         }
 
-        private static bool SendHTTPReq(string source, string cookies, string login, string password)
-        {
-            bool b = false;
-            HttpStatusCode sc = 0;
-
-            HttpWebRequest req;
-            var res = ConnectionFactory.GetResponse(source, cookies, "","",login, password, "GET","", false,out req);
-            if (res != null)
-            {
-                sc = res.StatusCode;
-                if (sc == HttpStatusCode.OK)
-                {
-                    string ct = res.ContentType.ToLower();
-                    if (ct.IndexOf("text", StringComparison.Ordinal) == -1)
-                    {
-                        b = true;
-                    }
-                }
-                res.Close();
-            }
-
-            Logger.LogMessageToFile("Status " + sc + " at " + source, "Uri Checker");
-
-            return b;
-        }
-
-        private static bool SendRTSPReq(string addr, string login, string password)
-        {
-            bool b = false;
-            try
-            {
-                var uri = new Uri(addr);
-
-                var request = "OPTIONS " + addr + " RTSP/1.0\r\n" +
-                              "CSeq: 1\r\n" +
-                              "User-Agent: iSpy\r\n" +
-                              "Accept: */*\r\n";
-
-                if (!string.IsNullOrEmpty(login))
-                {
-                    var authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(login + ":" + password));
-                    request +="Authorization: Basic " + authInfo+"\r\n";
-                }
-
-                request += "\r\n";
-
-                IPAddress host = IPAddress.Parse(uri.DnsSafeHost);
-                
-                var hostep = new IPEndPoint(host, !uri.IsDefaultPort?uri.Port:554);
-
-                var sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
-                               {ReceiveTimeout = 2000};
-                sock.Connect(hostep);
-
-                var response = sock.Send(Encoding.UTF8.GetBytes(request));
-                if (response > 0)
-                {
-                    var bytesReceived = new byte[200];
-                    var bytes = sock.Receive(bytesReceived, bytesReceived.Length, 0);
-                    string resp = Encoding.ASCII.GetString(bytesReceived, 0, bytes);
-                    if (resp.IndexOf("200 OK", StringComparison.Ordinal) != -1)
-                    {
-                        b = true;
-                    }
-                    Logger.LogMessageToFile("RTSP attempt: " + resp + " at " + addr);
-                }
-                sock.Close();
-            }
-            catch (Exception ex)
-            {
-                Logger.LogExceptionToFile(ex);
-            }
-            return b;
-        }
-
         private void ListCameras(string make, string model)  {
 
             var m = MainForm.Sources.FirstOrDefault(p => p.name == make);
@@ -883,7 +768,7 @@ namespace iSpyApplication
             pnlOptions.SuspendLayout();
             foreach (var u in cand)
             {
-                string addr = GetAddr(u);
+                var addr = GetAddr(u).ToString();
                 if (!added.Contains(addr))
                 {
                     AddCamera(addr, m, u);
@@ -934,7 +819,7 @@ namespace iSpyApplication
         {
             var d = new downloader
                         {
-                            Url = MainForm.ContentSource + "/getcontent.aspx?name=sources2",
+                            Url = MainForm.ContentSource + "/getcontent.aspx?name=sources3",
                             SaveLocation = Program.AppDataPath + @"XML\Sources.xml"
                         };
             d.ShowDialog(this);
@@ -1052,7 +937,7 @@ namespace iSpyApplication
                     return;
                 }
 
-                FinalUrl = GetAddr(s);
+                FinalUrl = GetAddr(s).ToString();
 
                 string source = s.Source;
                 if (source == "VLC" && !_vlc)
@@ -1090,7 +975,7 @@ namespace iSpyApplication
                             AudioSourceType = 6;
                             break;
                     }
-                    AudioUrl = GetAddr(s, true);
+                    AudioUrl = GetAddr(s, true).ToString();
                 }
 
                 Ptzid = -1;
@@ -1145,6 +1030,12 @@ namespace iSpyApplication
                 LastConfig.URL = s.url;
                 LastConfig.Cookies = s.cookies;
                 LastConfig.Flags = s.flags;
+
+                tokenPath = s.tokenPath;
+                tokenPost = s.tokenPost;
+                tokenPort = s.tokenPort;
+
+
                 if (!string.IsNullOrEmpty(s.port))
                     LastConfig.Port = Convert.ToInt32(s.port);
 
@@ -1171,7 +1062,7 @@ namespace iSpyApplication
 
         
 
-        private string GetAddr(ManufacturersManufacturerUrl s, bool audio = false)
+        private Uri GetAddr(ManufacturersManufacturerUrl s, bool audio = false)
         {
             Username = txtUsername.Text;
             Password = txtPassword.Text;
@@ -1181,49 +1072,17 @@ namespace iSpyApplication
             Flags = s.flags;
             Cookies = s.cookies;
 
+
             var nPort = (int)numPort.Value;
 
             if (!string.IsNullOrEmpty(s.port))
                 nPort = Convert.ToInt32(s.port);
             
-            string connectUrl = s.prefix;
+            int channel;
+            var uri = new Uri("http://"+addr+":"+nPort);
+            int.TryParse(txtChannel.Text.Trim(), out channel);
+            return Conf.GetAddr(s, uri, channel, Username, Password, audio);
 
-            if (!string.IsNullOrEmpty(Username))
-            {
-                connectUrl += Uri.EscapeDataString(Username);
-
-                if (!string.IsNullOrEmpty(Password))
-                    connectUrl += ":" + Uri.EscapeDataString(Password);
-                connectUrl += "@";
-                     
-            }
-
-            if (s.prefix.ToLower().StartsWith("http"))
-                connectUrl += addr + ":" + nPort;
-            else
-            {
-                connectUrl += addr;
-            }
-
-            string url = !audio?s.url:s.AudioURL;
-            if (!url.StartsWith("/"))
-                url = "/" + url;
-            
-            url = url.Replace("[USERNAME]", Uri.EscapeDataString(Username)).Replace("[PASSWORD]", Uri.EscapeDataString(Password));
-            url = url.Replace("[CHANNEL]", txtChannel.Text.Trim());
-            //defaults:
-            url = url.Replace("[WIDTH]", "320");
-            url = url.Replace("[HEIGHT]", "240");
-
-            if (url.IndexOf("[AUTH]", StringComparison.Ordinal)!=-1)
-            {
-                string credentials = string.Format("{0}:{1}", Uri.EscapeDataString(Username), Uri.EscapeDataString(Password));
-                byte[] bytes = Encoding.ASCII.GetBytes(credentials);
-                url = url.Replace("[AUTH]", Convert.ToBase64String(bytes));
-            }
-                
-            connectUrl += url;
-            return connectUrl;
         }
 
         private void btnBack_Click(object sender, EventArgs e)

@@ -13,7 +13,7 @@
     </BootstrapperApplicationRef>
     <Variable Name="LaunchTarget" Value="[InstallFolder]\iSpy.exe"/>
     <Chain>
-      <PackageGroupRef Id="NetFx40Web"/>
+      <PackageGroupRef Id="NetFx45Web"/>
       <PackageGroupRef Id="WindowsInstaller45"/>
       <RollbackBoundary />
       <MsiPackage Id="iSpy" SourceFile="$(var.iSpy64Setup.TargetPath)" DisplayInternalUI="no" Compressed="yes" Vital="yes" Visible="yes">

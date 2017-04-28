@@ -38,7 +38,7 @@ namespace iSpyApplication.Sources.Audio.talk
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex,"TalkKinect");
+                Logger.LogException(ex,"TalkKinect");
                 TalkStopped?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -131,7 +131,7 @@ namespace iSpyApplication.Sources.Audio.talk
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex, "TalkKinect");
+                Logger.LogException(ex, "TalkKinect");
                 StopTalk();
             }
         }

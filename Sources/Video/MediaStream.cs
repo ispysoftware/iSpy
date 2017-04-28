@@ -12,7 +12,7 @@ using NAudio.Wave.SampleProviders;
 
 namespace iSpyApplication.Sources.Video
 {
-    public unsafe class MediaStream : IVideoSource, IAudioSource, ISupportsAudio
+    public unsafe class MediaStream : VideoBase, IVideoSource, IAudioSource, ISupportsAudio
     {
         private AVFormatContext* _formatContext;
         private AVCodecContext* _codecContext;
@@ -29,7 +29,7 @@ namespace iSpyApplication.Sources.Video
 
         public int InterruptCb(void* ctx)
         {
-            if ((DateTime.UtcNow - _lastPacket).TotalMilliseconds > Timeout || _abort)
+            if ((DateTime.UtcNow - _lastPacket).TotalMilliseconds > _timeout || _abort)
             {
                 if (!_abort)
                 {
@@ -45,9 +45,15 @@ namespace iSpyApplication.Sources.Video
         private bool _abort;
         private Thread _thread;
         private DateTime _lastVideoFrame;
-        private ReasonToFinishPlaying _res = ReasonToFinishPlaying.StoppedByUser;
+        private ReasonToFinishPlaying _res = ReasonToFinishPlaying.DeviceLost;
 
-        public string URL, Cookies = "", UserAgent = "", Headers = "", RTSPmode = "tcp", Options = "";
+        private readonly string _cookies = "";
+        private readonly string _userAgent = "";
+        private readonly string _headers = "";
+        private readonly string RTSPmode = "tcp";
+        private readonly string _options = "";
+        private readonly objectsCamera _source;
+        private readonly objectsMicrophone _audiosource;
 
         public event NewFrameEventHandler NewFrame;
         public event PlayingFinishedEventHandler PlayingFinished;
@@ -58,20 +64,40 @@ namespace iSpyApplication.Sources.Video
 
         private readonly AVInputFormat* _inputFormat;
 
-        public int Flags = -1, Timeout = 5000, AnalyzeDuration = 2000;
+        private readonly int _timeout = 5000;
+        private readonly int _analyzeDuration = 2000;
 
-        public bool NoBuffer = true;
         private volatile bool _starting;
+        private readonly bool _modeAudio;
 
-        public MediaStream(string url)
+        public MediaStream(objectsCamera source): base(source)
         {
-            URL = url;
+            _source = source;
             _inputFormat = null;
+            _modeAudio = false;
+
+            _cookies = source.settings.cookies;
+            _analyzeDuration = source.settings.analyseduration;
+            _timeout = source.settings.timeout;
+            _userAgent = source.settings.useragent;
+            _headers = source.settings.headers;
+            RTSPmode = Helper.RTSPMode(source.settings.rtspmode);
+
         }
 
-        public MediaStream(string format, string url)
+        public MediaStream(objectsMicrophone source) : base(null)
         {
-            URL = url;
+            _audiosource = source;
+            _inputFormat = null;
+            _modeAudio = true;
+            _timeout = source.settings.timeout;
+            _analyzeDuration = source.settings.analyzeduration;
+            _options = source.settings.ffmpeg;
+        }
+
+        public MediaStream(string format, objectsCamera source) : base(source)
+        {
+            _source = source;
             _inputFormat = ffmpeg.av_find_input_format(format);
             if (_inputFormat == null)
             {
@@ -79,10 +105,20 @@ namespace iSpyApplication.Sources.Video
             }
         }
 
+        public string Source
+        {
+            get
+            {
+                if (_modeAudio)
+                    return _audiosource.settings.sourcename;
+
+                return _source.settings.videosourcestring;
+            }
+        }
+
         public void Close()
         {
-            _abort = true;
-
+            Stop();
         }
 
 
@@ -90,6 +126,8 @@ namespace iSpyApplication.Sources.Video
         public void Start()
         {
             if (_starting || IsRunning) return;
+            _abort = false;
+            _res = ReasonToFinishPlaying.DeviceLost;
             _starting = true;
             Task.Factory.StartNew(DoStart);
             
@@ -97,34 +135,38 @@ namespace iSpyApplication.Sources.Video
 
         private void DoStart()
         {
-            AVDictionary* options = null;
+            var vss = Source;
+            if (!_modeAudio)
+                vss = Tokenise();
 
-            _res = ReasonToFinishPlaying.StoppedByUser;
+            AVDictionary* options = null;
             if (_inputFormat == null)
             {
-                ffmpeg.av_dict_set(&options, "analyzeduration", AnalyzeDuration.ToString(), 0);
+                ffmpeg.av_dict_set(&options, "analyzeduration", _analyzeDuration.ToString(), 0);
+                
 
-                string prefix = URL.ToLower().Substring(0, URL.IndexOf(":", StringComparison.Ordinal));
+
+                string prefix = vss.ToLower().Substring(0, vss.IndexOf(":", StringComparison.Ordinal));
                 switch (prefix)
                 {
                     case "http":
                     case "mmsh":
                     case "mms":
-                        ffmpeg.av_dict_set(&options, "timeout", Timeout.ToString(), 0);
-                        ffmpeg.av_dict_set(&options, "stimeout", (Timeout * 1000).ToString(), 0);
+                        ffmpeg.av_dict_set(&options, "timeout", _timeout.ToString(), 0);
+                        ffmpeg.av_dict_set(&options, "stimeout", (_timeout * 1000).ToString(), 0);
 
-                        if (Cookies != "")
+                        if (_cookies != "")
                         {
-                            ffmpeg.av_dict_set(&options, "cookies", Cookies, 0);
+                            ffmpeg.av_dict_set(&options, "cookies", _cookies, 0);
                         }
 
-                        if (Headers != "")
+                        if (_headers != "")
                         {
-                            ffmpeg.av_dict_set(&options, "headers", Headers, 0);
+                            ffmpeg.av_dict_set(&options, "headers", _headers, 0);
                         }
-                        if (UserAgent != "")
+                        if (_userAgent != "")
                         {
-                            ffmpeg.av_dict_set(&options, "user-agent", UserAgent, 0);
+                            ffmpeg.av_dict_set(&options, "user-agent", _userAgent, 0);
                         }
                         break;
                     case "tcp":
@@ -133,14 +175,14 @@ namespace iSpyApplication.Sources.Video
                     case "sdp":
                     case "mmst":
                     case "ftp":
-                        ffmpeg.av_dict_set(&options, "timeout", Timeout.ToString(), 0);
+                        ffmpeg.av_dict_set(&options, "timeout", _timeout.ToString(), 0);
                         break;
                     case "rtsp":
                     case "rtmp":
-                        ffmpeg.av_dict_set(&options, "stimeout", (Timeout * 1000).ToString(), 0);
-                        if (UserAgent != "")
+                        ffmpeg.av_dict_set(&options, "stimeout", (_timeout * 1000).ToString(), 0);
+                        if (_userAgent != "")
                         {
-                            ffmpeg.av_dict_set(&options, "user-agent", UserAgent, 0);
+                            ffmpeg.av_dict_set(&options, "user-agent", _userAgent, 0);
                         }
                         break;
                 }
@@ -150,7 +192,7 @@ namespace iSpyApplication.Sources.Video
 
             ffmpeg.av_dict_set(&options, "rtbufsize", "10000000", 0);
 
-            var lo = Options.Split(Environment.NewLine.ToCharArray());
+            var lo = _options.Split(Environment.NewLine.ToCharArray());
             foreach (var nv in lo)
             {
                 if (!string.IsNullOrEmpty(nv))
@@ -192,7 +234,7 @@ namespace iSpyApplication.Sources.Video
                 pFormatContext->interrupt_callback.opaque = null;
 
 
-                if (ffmpeg.avformat_open_input(&pFormatContext, URL, _inputFormat, &options) != 0)
+                if (ffmpeg.avformat_open_input(&pFormatContext, vss, _inputFormat, &options) != 0)
                 {
                     throw new ApplicationException(@"Could not open source");
                 }
@@ -223,14 +265,12 @@ namespace iSpyApplication.Sources.Video
             _starting = false;
         }
 
-        public void SignalToStop()
-        {
-            Stop();
-        }
 
-        public void WaitForStop()
+        public void Restart()
         {
-            Stop();
+            if (!IsRunning) return;
+            _res = ReasonToFinishPlaying.Restart;
+            _abort = true;
         }
 
         public void Stop()
@@ -249,14 +289,8 @@ namespace iSpyApplication.Sources.Video
             }
 
 
-            if (Flags > -1)
-                _formatContext->flags |= Flags;
-            else
-                _formatContext->flags |= ffmpeg.AVFMT_FLAG_DISCARD_CORRUPT;
-
-
-            if (NoBuffer)
-                _formatContext->flags |= ffmpeg.AVFMT_FLAG_NOBUFFER;
+            _formatContext->flags |= ffmpeg.AVFMT_FLAG_DISCARD_CORRUPT;
+            _formatContext->flags |= ffmpeg.AVFMT_FLAG_NOBUFFER;
 
             for (int i = 0; i < _formatContext->nb_streams; i++)
             {
@@ -302,7 +336,7 @@ namespace iSpyApplication.Sources.Video
                         break;
                     if (hwaccel->id == _codecContext->codec_id && hwaccel->pix_fmt == _codecContext->pix_fmt)
                     {
-                        Logger.LogMessageToFile("USing HW decoder");
+                        Logger.LogMessage("USing HW decoder");
                         _codecContext->hwaccel = hwaccel;
                         break;
                     }
@@ -360,7 +394,7 @@ namespace iSpyApplication.Sources.Video
 
             _lastPacket = DateTime.UtcNow;
 
-            _thread = new Thread(ReadFrames) { Name = URL, IsBackground = true };
+            _thread = new Thread(ReadFrames) { Name = Source, IsBackground = true };
             _thread.Start();
         }
 
@@ -370,174 +404,171 @@ namespace iSpyApplication.Sources.Video
             sbyte* pConvertedFrameBuffer = null;
             SwsContext* pConvertContext = null;
 
-
-            _res = ReasonToFinishPlaying.StoppedByUser;
-
             BufferedWaveProvider waveProvider = null;
             SampleChannel sampleChannel = null;
 
             bool audioInited = false;
             bool videoInited = false;
+
             do
             {
-                do
+                AVPacket packet = new AVPacket();
+                ffmpeg.av_init_packet(&packet);
+
+                AVFrame* frame = ffmpeg.av_frame_alloc();
+                ffmpeg.av_frame_unref(frame);
+
+                if (ffmpeg.av_read_frame(_formatContext, &packet) < 0)
                 {
-                    AVPacket packet = new AVPacket();
-                    ffmpeg.av_init_packet(&packet);
+                    _abort = true;
+                    _res = ReasonToFinishPlaying.VideoSourceError;
+                    break;
+                }
 
-                    AVFrame* frame = ffmpeg.av_frame_alloc();
-                    ffmpeg.av_frame_unref(frame);
+                if ((packet.flags & ffmpeg.AV_PKT_FLAG_CORRUPT) == ffmpeg.AV_PKT_FLAG_CORRUPT)
+                {
+                    break;
+                }
 
-                    if (ffmpeg.av_read_frame(_formatContext, &packet) < 0)
+                AVPacket packetTemp = packet;
+                var nf = NewFrame;
+                var da = DataAvailable;
+
+                _lastPacket = DateTime.UtcNow;
+                if (_audioStream != null && packetTemp.stream_index == _audioStream->index)
+                {
+                    if (HasAudioStream != null)
                     {
-                        _abort = true;
-                        _res = ReasonToFinishPlaying.VideoSourceError;
-                        break;
+                        HasAudioStream?.Invoke(this, EventArgs.Empty);
+                        HasAudioStream = null;
                     }
-
-                    if ((packet.flags & ffmpeg.AV_PKT_FLAG_CORRUPT) == ffmpeg.AV_PKT_FLAG_CORRUPT)
+                    if (da != null)
                     {
-                        break;
-                    }
 
-                    AVPacket packetTemp = packet;
-                    var nf = NewFrame;
-                    var da = DataAvailable;
+                        int s = 0;
+                        var buffer = new sbyte[_audioCodecContext->sample_rate*2];
+                        var tbuffer = new sbyte[_audioCodecContext->sample_rate*2];
+                        bool b = false;
 
-                    _lastPacket = DateTime.UtcNow;
-                    if (_audioStream != null && packetTemp.stream_index == _audioStream->index)
-                    {
-                        if (HasAudioStream != null)
+                        fixed (sbyte** outPtrs = new sbyte*[32])
                         {
-                            HasAudioStream?.Invoke(this, EventArgs.Empty);
-                            HasAudioStream = null;
-                        }
-                        if (da != null)
-                        {
-
-                            int s = 0;
-                            var buffer = new sbyte[_audioCodecContext->sample_rate*2];
-                            var tbuffer = new sbyte[_audioCodecContext->sample_rate*2];
-                            bool b = false;
-
-                            fixed (sbyte** outPtrs = new sbyte*[32])
+                            fixed (sbyte* bPtr = &tbuffer[0])
                             {
-                                fixed (sbyte* bPtr = &tbuffer[0])
+                                outPtrs[0] = bPtr;
+                                do
                                 {
-                                    outPtrs[0] = bPtr;
-                                    do
+                                    int gotFrame = 0;
+                                    int inUsed = ffmpeg.avcodec_decode_audio4(_audioCodecContext, frame, &gotFrame,
+                                        &packetTemp);
+
+                                    if (inUsed < 0 || gotFrame == 0)
                                     {
-                                        int gotFrame = 0;
-                                        int inUsed = ffmpeg.avcodec_decode_audio4(_audioCodecContext, frame, &gotFrame,
-                                            &packetTemp);
+                                        b = true;
+                                        break;
+                                    }
 
-                                        if (inUsed < 0 || gotFrame == 0)
-                                        {
-                                            b = true;
-                                            break;
-                                        }
+                                    int numSamplesOut = ffmpeg.swr_convert(_swrContext,
+                                        outPtrs,
+                                        _audioCodecContext->sample_rate,
+                                        &frame->data0,
+                                        frame->nb_samples);
 
-                                        int numSamplesOut = ffmpeg.swr_convert(_swrContext,
-                                            outPtrs,
-                                            _audioCodecContext->sample_rate,
-                                            &frame->data0,
-                                            frame->nb_samples);
-
-                                        var l = numSamplesOut*2*_audioCodecContext->channels;
-                                        Buffer.BlockCopy(tbuffer, 0, buffer, s, l);
-                                        s += l;
+                                    var l = numSamplesOut*2*_audioCodecContext->channels;
+                                    Buffer.BlockCopy(tbuffer, 0, buffer, s, l);
+                                    s += l;
 
 
-                                        packetTemp.data += inUsed;
-                                        packetTemp.size -= inUsed;
-                                    } while (packetTemp.size > 0);
-                                }
-                            }
-
-                            if (b)
-                            {
-                                break;
-                            }
-
-                            ffmpeg.av_free_packet(&packet);
-                            ffmpeg.av_frame_free(&frame);
-
-
-                            if (!audioInited)
-                            {
-                                audioInited = true;
-                                RecordingFormat = new WaveFormat(_audioCodecContext->sample_rate, 16,
-                                    _audioCodecContext->channels);
-                                waveProvider = new BufferedWaveProvider(RecordingFormat)
-                                               {
-                                                   DiscardOnBufferOverflow = true,
-                                                   BufferDuration =
-                                                       TimeSpan.FromMilliseconds(500)
-                                               };
-                                sampleChannel = new SampleChannel(waveProvider);
-
-                                sampleChannel.PreVolumeMeter += SampleChannelPreVolumeMeter;
-                            }
-
-                            byte[] ba = new byte[s];
-                            Buffer.BlockCopy(buffer, 0, ba, 0, s);
-
-
-                            waveProvider.AddSamples(ba, 0, s);
-
-                            var sampleBuffer = new float[s];
-                            int read = sampleChannel.Read(sampleBuffer, 0, s);
-
-
-                            da(this, new DataAvailableEventArgs(ba, read));
-
-
-                            if (Listening)
-                            {
-                                WaveOutProvider?.AddSamples(ba, 0, read);
+                                    packetTemp.data += inUsed;
+                                    packetTemp.size -= inUsed;
+                                } while (packetTemp.size > 0);
                             }
                         }
-                    }
 
-                    if (nf != null && _videoStream != null && packet.stream_index == _videoStream->index)
-                    {
-                        int frameFinished = 0;
-                        //decode video frame
-
-                        int ret = ffmpeg.avcodec_decode_video2(_codecContext, frame, &frameFinished, &packetTemp);
-                        if (ret < 0)
+                        if (b)
                         {
-                            ffmpeg.av_free_packet(&packet);
-                            ffmpeg.av_frame_free(&frame);
                             break;
                         }
 
-                        if (frameFinished == 1)
+                        ffmpeg.av_free_packet(&packet);
+                        ffmpeg.av_frame_free(&frame);
+
+
+                        if (!audioInited)
                         {
-                            if (!videoInited)
-                            {
-                                videoInited = true;
-                                pConvertedFrame = ffmpeg.av_frame_alloc();
-                                var convertedFrameBufferSize = ffmpeg.avpicture_get_size(AVPixelFormat.AV_PIX_FMT_BGR24,
-                                    _codecContext->width, _codecContext->height);
+                            audioInited = true;
+                            RecordingFormat = new WaveFormat(_audioCodecContext->sample_rate, 16,
+                                _audioCodecContext->channels);
+                            waveProvider = new BufferedWaveProvider(RecordingFormat)
+                                            {
+                                                DiscardOnBufferOverflow = true,
+                                                BufferDuration =
+                                                    TimeSpan.FromMilliseconds(500)
+                                            };
+                            sampleChannel = new SampleChannel(waveProvider);
 
-                                pConvertedFrameBuffer = (sbyte*)ffmpeg.av_malloc((ulong)convertedFrameBufferSize);
+                            sampleChannel.PreVolumeMeter += SampleChannelPreVolumeMeter;
+                        }
 
-                                ffmpeg.avpicture_fill((AVPicture*)pConvertedFrame, pConvertedFrameBuffer,
-                                    AVPixelFormat.AV_PIX_FMT_BGR24, _codecContext->width, _codecContext->height);
+                        byte[] ba = new byte[s];
+                        Buffer.BlockCopy(buffer, 0, ba, 0, s);
 
-                                pConvertContext = ffmpeg.sws_getContext(_codecContext->width, _codecContext->height,
-                                    _codecContext->pix_fmt, _codecContext->width, _codecContext->height,
-                                    AVPixelFormat.AV_PIX_FMT_BGR24, ffmpeg.SWS_FAST_BILINEAR, null, null, null);
-                            }
-                            var src = &frame->data0;
-                            var dst = &pConvertedFrame->data0;
-                            var srcStride = frame->linesize;
-                            var dstStride = pConvertedFrame->linesize;
-                            ffmpeg.sws_scale(pConvertContext, src, srcStride, 0, _codecContext->height, dst, dstStride);
 
-                            var convertedFrameAddress = pConvertedFrame->data0;
+                        waveProvider.AddSamples(ba, 0, s);
 
+                        var sampleBuffer = new float[s];
+                        int read = sampleChannel.Read(sampleBuffer, 0, s);
+
+
+                        da(this, new DataAvailableEventArgs(ba, read));
+
+
+                        if (Listening)
+                        {
+                            WaveOutProvider?.AddSamples(ba, 0, read);
+                        }
+                    }
+                }
+
+                if (nf != null && _videoStream != null && packet.stream_index == _videoStream->index)
+                {
+                    int frameFinished = 0;
+                    //decode video frame
+
+                    int ret = ffmpeg.avcodec_decode_video2(_codecContext, frame, &frameFinished, &packetTemp);
+                    if (ret < 0)
+                    {
+                        ffmpeg.av_free_packet(&packet);
+                        ffmpeg.av_frame_free(&frame);
+                        break;
+                    }
+
+                    if (frameFinished == 1)
+                    {
+                        if (!videoInited)
+                        {
+                            videoInited = true;
+                            pConvertedFrame = ffmpeg.av_frame_alloc();
+                            var convertedFrameBufferSize = ffmpeg.avpicture_get_size(AVPixelFormat.AV_PIX_FMT_BGR24,
+                                _codecContext->width, _codecContext->height);
+
+                            pConvertedFrameBuffer = (sbyte*)ffmpeg.av_malloc((ulong)convertedFrameBufferSize);
+
+                            ffmpeg.avpicture_fill((AVPicture*)pConvertedFrame, pConvertedFrameBuffer,
+                                AVPixelFormat.AV_PIX_FMT_BGR24, _codecContext->width, _codecContext->height);
+
+                            pConvertContext = ffmpeg.sws_getContext(_codecContext->width, _codecContext->height,
+                                _codecContext->pix_fmt, _codecContext->width, _codecContext->height,
+                                AVPixelFormat.AV_PIX_FMT_BGR24, ffmpeg.SWS_FAST_BILINEAR, null, null, null);
+                        }
+                        var src = &frame->data0;
+                        var dst = &pConvertedFrame->data0;
+                        var srcStride = frame->linesize;
+                        var dstStride = pConvertedFrame->linesize;
+                        ffmpeg.sws_scale(pConvertContext, src, srcStride, 0, _codecContext->height, dst, dstStride);
+
+                        var convertedFrameAddress = pConvertedFrame->data0;
+                        if (convertedFrameAddress != null)
+                        {
                             var imageBufferPtr = new IntPtr(convertedFrameAddress);
 
                             var linesize = dstStride[0];
@@ -550,28 +581,32 @@ namespace iSpyApplication.Sources.Video
                             }
 
                             using (
-                                var mat = new Bitmap(_codecContext->width, _codecContext->height,linesize, PixelFormat.Format24bppRgb,imageBufferPtr))
+                                var mat = new Bitmap(_codecContext->width, _codecContext->height, linesize,
+                                    PixelFormat.Format24bppRgb, imageBufferPtr))
                             {
-                                var nfe = new NewFrameEventArgs((Bitmap)mat.Clone());
+                                var nfe = new NewFrameEventArgs((Bitmap) mat.Clone());
                                 nf.Invoke(this, nfe);
                             }
 
                             _lastVideoFrame = DateTime.UtcNow;
                         }
-                        else
-                        {
-                            //check for broken feed
-                            if ((_lastVideoFrame - DateTime.UtcNow).TotalMilliseconds > Timeout)
-                            {
-                                _res = ReasonToFinishPlaying.DeviceLost;
-                                _abort = true;
-                            }
-                        }
                     }
-                    ffmpeg.av_free_packet(&packet);
-                    ffmpeg.av_frame_free(&frame);
-                } while (!_abort);
-            } while (!_abort);
+                }
+
+                if (_videoStream != null)
+                {
+                    if ((DateTime.UtcNow - _lastVideoFrame).TotalMilliseconds > _timeout)
+                    {
+                        _res = ReasonToFinishPlaying.DeviceLost;
+                        _abort = true;
+                    }
+                }
+
+                ffmpeg.av_free_packet(&packet);
+                ffmpeg.av_frame_free(&frame);
+                Thread.SpinWait(20);
+            } while (!_abort && !MainForm.ShuttingDown);
+
 
             try {
                 Program.FfmpegMutex.WaitOne();
@@ -632,7 +667,7 @@ namespace iSpyApplication.Sources.Video
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex, "Media Stream (close)");
+                Logger.LogException(ex, "Media Stream (close)");
             }
             finally
             {
@@ -649,12 +684,6 @@ namespace iSpyApplication.Sources.Video
             PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
             AudioFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
 
-        }
-
-
-        public string Source
-        {
-            get { return URL; }
         }
 
         public event HasAudioStreamEventHandler HasAudioStream;

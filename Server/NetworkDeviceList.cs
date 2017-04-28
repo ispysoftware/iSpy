@@ -89,7 +89,7 @@ namespace iSpyApplication.Server
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex, "ARP Table");
+                Logger.LogException(ex, "ARP Table");
             }
             if (_arpList.Count > 0)
             {

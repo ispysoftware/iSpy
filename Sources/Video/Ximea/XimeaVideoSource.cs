@@ -57,7 +57,8 @@ namespace iSpyApplication.Sources.Video.Ximea
         private int _frameInterval = 200;
 
         private Thread _thread;
-        private ManualResetEvent _stopEvent;
+        private volatile bool _abort;
+        private ReasonToFinishPlaying _res = ReasonToFinishPlaying.DeviceLost;
 
         // dummy object to lock for synchronization
         private readonly object _sync = new object( );
@@ -219,30 +220,12 @@ namespace iSpyApplication.Sources.Video.Ximea
                     _bytesReceived = 0;
 
                     // create events
-                    _stopEvent = new ManualResetEvent( false );
+                    _abort = false;
+                    _res = ReasonToFinishPlaying.DeviceLost;
 
                     // create and start new thread
                     _thread = new Thread(WorkerThread) {Name = Source};
                     _thread.Start( );
-                }
-            }
-        }
-
-        /// <summary>
-        /// Signal video source to stop its work.
-        /// </summary>
-        /// 
-        /// <remarks><para></para></remarks>
-        /// 
-        public void SignalToStop( )
-        {
-            lock ( _sync )
-            {
-                // stop thread
-                if ( _thread != null )
-                {
-                    // signal to stop
-                    _stopEvent.Set( );
                 }
             }
         }
@@ -281,22 +264,18 @@ namespace iSpyApplication.Sources.Video.Ximea
         /// 
         public void Stop( )
         {
-            Thread tempThread;
+            if (!IsRunning)
+                return;
+            _res = ReasonToFinishPlaying.StoppedByUser;
+            _abort = true;
+        }
 
-            lock ( _sync )
-            {
-                tempThread = _thread;
-            }
-
-            if ( tempThread != null )
-            {
-                if ( tempThread.Join( 0 ) == false )
-                {
-                    tempThread.Abort( );
-                    tempThread.Join( );
-                }
-                Free( );
-            }
+        public void Restart()
+        {
+            if (!IsRunning)
+                return;
+            _res = ReasonToFinishPlaying.Restart;
+            _abort = true;
         }
 
         /// <summary>
@@ -375,32 +354,20 @@ namespace iSpyApplication.Sources.Video.Ximea
         // Free resources
         private void Free( )
         {
-            lock ( _sync )
-            {
-                _thread = null;
-
-                // release events
-                if ( _stopEvent != null )
-                {
-                    _stopEvent.Close( );
-                    _stopEvent = null;
-                }
-
-                _camera.Close( );
-            }
+            _thread = null;
+            _camera.Close( );
+            
         }
 
         // Worker thread
         private void WorkerThread( )
         {
-            ReasonToFinishPlaying reasonToStop = ReasonToFinishPlaying.StoppedByUser;
-
             try
             {
                 _camera.StartAcquisition( );
 
                 // while there is no request for stop
-                while ( !_stopEvent.WaitOne( 0, false ) )
+                while ( !_abort && !MainForm.ShuttingDown )
                 {
                     // start time
                     DateTime start = DateTime.Now;
@@ -425,15 +392,15 @@ namespace iSpyApplication.Sources.Video.Ximea
                         // miliseconds to sleep
                         int msec = _frameInterval - (int) span.TotalMilliseconds;
 
-                        if ( ( msec > 0 ) && ( _stopEvent.WaitOne( msec, false ) ) )
+                        if ( ( msec > 0 ) || _abort)
                             break;
                     }
                 }
             }
             catch ( Exception ex )
             {
-                Logger.LogExceptionToFile(ex, "XIMEA");
-                reasonToStop = ReasonToFinishPlaying.VideoSourceError;
+                Logger.LogException(ex, "XIMEA");
+                _res = ReasonToFinishPlaying.VideoSourceError;
             }
             finally
             {
@@ -446,7 +413,7 @@ namespace iSpyApplication.Sources.Video.Ximea
                 }
             }
 
-            PlayingFinished?.Invoke( this, new PlayingFinishedEventArgs(reasonToStop));
+            PlayingFinished?.Invoke( this, new PlayingFinishedEventArgs(_res));
         }
 
         private bool _disposed;
@@ -465,7 +432,6 @@ namespace iSpyApplication.Sources.Video.Ximea
 
             if (disposing)
             {
-                _stopEvent?.Close();
             }
 
             // Free any unmanaged objects here. 

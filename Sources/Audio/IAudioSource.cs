@@ -106,5 +106,7 @@ namespace iSpyApplication.Sources.Audio
         /// <remarks>Stops Audio source aborting its thread.</remarks>
         /// 
         void Stop();
+
+        void Restart();
     }
 }

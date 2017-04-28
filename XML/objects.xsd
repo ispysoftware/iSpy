@@ -138,8 +138,17 @@
                                                           <xs:element name="path" type="xs:string" default="[MEDIATYPE]/[NAME]/" />
                                                         </xs:sequence>
                                                       </xs:complexType>
-                                                    </xs:element>  
-                                                    <xs:element name="storagemanagement">
+                                                    </xs:element>
+                                                  <xs:element name="tokenconfig">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="tokenpath" type="xs:string" default=""/>
+                                                        <xs:element name="tokenpost" type="xs:string" default=""/>
+                                                        <xs:element name="tokenport" type="xs:int" default="80"/>
+                                                      </xs:sequence>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                  <xs:element name="storagemanagement">
                                                         <xs:complexType>
                                                           <xs:sequence>
                                                             <xs:element name="enabled" type="xs:boolean" default="false"/>

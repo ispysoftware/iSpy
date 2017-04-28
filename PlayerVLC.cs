@@ -118,7 +118,7 @@ namespace iSpyApplication
                     }
                     catch (Exception ex)
                     {
-                        Logger.LogExceptionToFile(ex);
+                        Logger.LogException(ex);
                         MessageBox.Show(this, LocRm.GetString("CouldNotOpen")+Environment.NewLine + filename);
                         return;
                     }
@@ -328,7 +328,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
             }
         }
 

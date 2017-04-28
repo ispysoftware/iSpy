@@ -9,7 +9,11 @@
             "displayType": "Form",
             "items": [
                 { "text": "Directory", "value": "", "type": "String", "bindto": "Entry" },
-                { "text": "Default", "value": false, "type": "Boolean", "bindto": "default" }
+                { "text": "Management", "value": false, "type": "Boolean", "bindto": "Enable_Storage_Management" },
+                { "text": "Stop Saving", "value": false, "type": "Boolean", "bindto": "StopSavingOnStorageLimit" },
+                { "text": "Archive", "value": false, "type": "Boolean", "bindto": "archive" },
+                { "text": "Max Size", "value": 20, "type": "Int32", "min": 1, "max": 9999999999, "bindto": "MaxMediaFolderSizeMB", "help": "Maximum size of folder (MB)" },
+                { "text": "Max Age", "value": 20, "type": "Int32", "min": 0, "max": 9999999999, "bindto": "DeleteFilesOlderThanDays", "help":  "Maximum age of content (days)" }
             ]
         }
     ]

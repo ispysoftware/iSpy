@@ -71,7 +71,7 @@ namespace iSpyApplication.Onvif
                             }
                             catch (Exception ex)
                             {
-                                Logger.LogExceptionToFile(ex, "Onvif device (1)");
+                                Logger.LogException(ex, "Onvif device (1)");
                                 break;
                             }
                         }
@@ -79,7 +79,7 @@ namespace iSpyApplication.Onvif
                     }
                     catch (Exception ex)
                     {
-                        Logger.LogExceptionToFile(ex, "Onvif device (2)");
+                        Logger.LogException(ex, "Onvif device (2)");
                     }
                 }
                 return _mediaEndpoints;
@@ -155,7 +155,7 @@ namespace iSpyApplication.Onvif
                     }
                     catch (Exception ex)
                     {
-                        Logger.LogExceptionToFile(ex);
+                        Logger.LogException(ex);
                     }
                 }
                 return _profiles;
@@ -216,7 +216,7 @@ namespace iSpyApplication.Onvif
                     }
                     catch (Exception ex)
                     {
-                        Logger.LogExceptionToFile(ex, "ONVIF time query");
+                        Logger.LogException(ex, "ONVIF time query");
                     }
                     PasswordDigestBehavior digest = new PasswordDigestBehavior(Username, Password, diff);
                     Client.Endpoint.Behaviors.Add(digest);
@@ -235,7 +235,7 @@ namespace iSpyApplication.Onvif
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex, "Onvif auth");
+                    Logger.LogException(ex, "Onvif auth");
                 }
                 return _mediaClient;
             }

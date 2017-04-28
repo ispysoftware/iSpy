@@ -46,7 +46,6 @@ namespace iSpyApplication.Controls
         public double RealFramerate;
         private Queue<double> _framerates;
         private HSLFiltering _filter;
-        private volatile bool _requestedToStop;
         private readonly object _sync = new object();
         private MotionDetector _motionDetector;
         private int _processFrameCount;
@@ -312,9 +311,9 @@ namespace iSpyApplication.Controls
             }
         }
 
-        public void WaitForStop()
+        public void Restart()
         {
-            VideoSource?.WaitForStop();
+            VideoSource?.Restart();
         }
 
         //
@@ -383,7 +382,7 @@ namespace iSpyApplication.Controls
         public void ClearMotionZones()
         {
             MotionZoneRectangles = null;
-            if (_motionDetector != null)
+            if (_motionDetector != null && _motionDetector.MotionZones!=null)
                 _motionDetector.MotionZones = null;
         }
 
@@ -398,7 +397,6 @@ namespace iSpyApplication.Controls
         {
             if (VideoSource != null)
             {
-                _requestedToStop = false;
                 _framerates = new Queue<double>();
                 _lastframeEvent = DateTime.MinValue;
                 _motionRecentlyDetected = false;
@@ -413,15 +411,11 @@ namespace iSpyApplication.Controls
         }
 
         // Signal video source to stop
-        public void SignalToStop()
+        public void Stop()
         {
-            if (CW.IsClone || _requestedToStop)
+            if (CW.IsClone)
                 return;
-            if (VideoSource != null)
-            {
-                _requestedToStop = true;
-                VideoSource.SignalToStop();
-            }
+            VideoSource?.Stop();
             _motionRecentlyDetected = false;
         }
 
@@ -502,7 +496,7 @@ namespace iSpyApplication.Controls
         {
             var nf = NewFrame;
             var f = e.Frame;
-            if (_requestedToStop || nf==null || f==null)
+            if (nf==null || f==null)
                 return;
     
             
@@ -649,10 +643,9 @@ namespace iSpyApplication.Controls
                 }
             }
 
-            if (!_requestedToStop)
-            {
-                nf.Invoke(this, new NewFrameEventArgs(bmOrig));
-            }
+            
+            nf.Invoke(this, new NewFrameEventArgs(bmOrig));
+            
             if (bMotion)
             {
                 TriggerDetect(this);
@@ -680,7 +673,7 @@ namespace iSpyApplication.Controls
 
                         foreach (var pip in _piPEntries)
                         {
-                            if (pip.CW != null && !pip.CW.VideoSourceErrorState && !pip.CW.IsReconnect)
+                            if (pip.CW != null && !pip.CW.VideoSourceErrorState)
                             {
                                 var bmppip = pip.CW.LastFrame;
                                 if (bmppip != null)
@@ -699,7 +692,7 @@ namespace iSpyApplication.Controls
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
             }
         }
 
@@ -975,7 +968,10 @@ namespace iSpyApplication.Controls
             _nextFrameTarget = _nextFrameTarget.AddMilliseconds(dMin);
             var d = Helper.Now;
             if (_nextFrameTarget < d)
-                _nextFrameTarget = d.AddMilliseconds(dMin);
+            {
+                var t = Math.Min(dMin, (d - _nextFrameTarget).TotalMilliseconds);
+                _nextFrameTarget = d.AddMilliseconds(t);
+            }
 
 
             TimeSpan tsFr = d - _lastframeEvent;
@@ -1093,9 +1089,14 @@ namespace iSpyApplication.Controls
 
             
             _disposing = true;
+            ClearMotionZones();
             lock (_sync)
-            {                  
-                ClearMotionZones();
+            {
+                Alarm = null;
+                NewFrame = null;
+                PlayingFinished = null;
+                Plugin = null;
+
                 ForeBrush.Dispose();
                 BackBrush.Dispose();
                 DrawFont.Dispose();
@@ -1106,25 +1107,21 @@ namespace iSpyApplication.Controls
                     Mask.Dispose();
                     Mask = null;
                 }
-                Alarm = null;
-                NewFrame = null;
-                PlayingFinished = null;
-                Plugin = null;
-
+                
                 VideoSource = null;
+            }
 
-                if (MotionDetector != null)
+            if (MotionDetector != null)
+            {
+                try
                 {
-                    try
-                    {
-                        MotionDetector.Reset();
-                    }
-                    catch (Exception ex)
-                    {
-                        ErrorHandler?.Invoke(ex.Message);
-                    }
-                    MotionDetector = null;
+                    MotionDetector.Reset();
                 }
+                catch (Exception ex)
+                {
+                    ErrorHandler?.Invoke(ex.Message);
+                }
+                MotionDetector = null;
             }
         }
 

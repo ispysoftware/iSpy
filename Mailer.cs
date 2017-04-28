@@ -89,7 +89,7 @@ namespace iSpyApplication
             catch (Exception ex)
             {
                 success = false;
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
             }
             return success;
         }

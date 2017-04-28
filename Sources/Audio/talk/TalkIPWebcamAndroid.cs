@@ -36,7 +36,7 @@ namespace iSpyApplication.Sources.Audio.talk
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex,"Talk (Android)");
+                Logger.LogException(ex,"Talk (Android)");
                 TalkStopped?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -132,7 +132,7 @@ namespace iSpyApplication.Sources.Audio.talk
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex,"Talk (Android)");
+                Logger.LogException(ex,"Talk (Android)");
                 StopTalk();
             }
         }

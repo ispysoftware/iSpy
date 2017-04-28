@@ -136,7 +136,7 @@ namespace iSpyApplication.Cloud
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
                 return false;
 
             }
@@ -217,7 +217,7 @@ namespace iSpyApplication.Cloud
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex);
+                    Logger.LogException(ex);
                 }
                 Upload(null);
             }
@@ -239,7 +239,7 @@ namespace iSpyApplication.Cloud
                     break;
 
                 case UploadStatus.Failed:
-                    Logger.LogMessageToFile($"Upload to YouTube failed ({progress.Exception})");
+                    Logger.LogMessage($"Upload to YouTube failed ({progress.Exception})");
                     break;
             }
         }
@@ -249,7 +249,7 @@ namespace iSpyApplication.Cloud
             string msg = "YouTube video uploaded: <a href=\"http://www.youtube.com/watch?v=" + video.Id + "\">" +
                                 video.Id + "</a>";
             msg += " ("+video.Status.PrivacyStatus+")";
-            Logger.LogMessageToFile(msg);
+            Logger.LogMessage(msg);
             _uploaded = true;
         }
 

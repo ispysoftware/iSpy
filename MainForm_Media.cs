@@ -166,7 +166,7 @@ namespace iSpyApplication
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
             }
             flowPreview.Controls.Remove(pb);
             pb.MouseDown -= PbMouseDown;

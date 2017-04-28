@@ -140,7 +140,7 @@ internal static class Program
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex, "startup");
+                    Logger.LogException(ex, "startup");
                 }
             }
 
@@ -200,7 +200,7 @@ internal static class Program
             File.WriteAllText(AppDataPath + "external_command.txt", "");
 
             // in case our https certificate ever expires or there is some other issue
-            //ServicePointManager.ServerCertificateValidationCallback += ValidateRemoteCertificate;
+            ServicePointManager.ServerCertificateValidationCallback += ValidateRemoteCertificate;
             ServicePointManager.Expect100Continue = false;
             ServicePointManager.DefaultConnectionLimit = 1000;
 
@@ -233,7 +233,7 @@ internal static class Program
         {
             try
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
             } catch
             {
                 
@@ -242,7 +242,7 @@ internal static class Program
             {
                 try
                 {
-                    Logger.LogExceptionToFile(ex);
+                    Logger.LogException(ex);
                 }
                 catch
                 {
@@ -271,13 +271,13 @@ internal static class Program
         try
         {
             var ex = (Exception)e.ExceptionObject;          
-            Logger.LogExceptionToFile(ex);
+            Logger.LogException(ex);
         }
         catch (Exception ex2)
         {
             try
             {
-                Logger.LogExceptionToFile(ex2);
+                Logger.LogException(ex2);
             }
             catch
             {
@@ -384,13 +384,13 @@ internal static class Program
                 //USB audio plugged/ unplugged (typically the cause) - no other way to catch this exception in the volume level control due to limitation in NAudio
             }
             if (e!=null)
-                Logger.LogExceptionToFile(e.Exception);
+                Logger.LogException(e.Exception);
         }
         catch (Exception ex2)
         {
             try
             {
-                Logger.LogExceptionToFile(ex2);
+                Logger.LogException(ex2);
             }
             catch
             {

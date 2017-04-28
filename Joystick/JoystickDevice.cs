@@ -36,7 +36,7 @@ namespace iSpyApplication.Joystick
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
             }
         }
 
@@ -54,7 +54,7 @@ namespace iSpyApplication.Joystick
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
             }
             return ret;
         }
@@ -98,7 +98,7 @@ namespace iSpyApplication.Joystick
                                     }
                                     catch (Exception ex)
                                     {
-                                        Logger.LogExceptionToFile(ex);
+                                        Logger.LogException(ex);
                                     }
                                 }
                                 break;
@@ -115,7 +115,7 @@ namespace iSpyApplication.Joystick
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
                 return false;
             }
 

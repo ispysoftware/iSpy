@@ -264,7 +264,7 @@ namespace iSpyApplication
             }
             catch (ApplicationException ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
                 ddlDevice.Items.Add(_noDevices);
                 ddlDevice.Enabled = false;
             }
@@ -421,19 +421,14 @@ namespace iSpyApplication
                 {
                     source = source.Substring(0, i).ToLower() + source.Substring(i);
                 }
-
-                afr = new MediaStream(source)
-                          {
-                              Timeout = Mic.settings.timeout,
-                              AnalyzeDuration = (int) numAnalyseDuration.Value
-                          };
+                Mic.settings.sourcename = source;
+                Mic.settings.analyzeduration = (int) numAnalyseDuration.Value;
+                afr = new MediaStream(Mic);
 
                 afr.DataAvailable += Afr_AudioAvailable;
                 afr.ErrorHandler += Afr_ErrorHandler;
                 afr.PlayingFinished += Afr_PlayingFinished;
-                afr.Start();
-                
-                afr = null;              
+                afr.Start();            
             }
             catch (Exception ex)
             {

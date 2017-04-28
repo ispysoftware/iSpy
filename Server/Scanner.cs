@@ -23,7 +23,7 @@ namespace iSpyApplication.Server
                 manualEvents[k] = new ManualResetEvent(true);
             }
 
-            Logger.LogMessageToFile("Scanning LAN", "NetworkDiscovery");
+            Logger.LogMessage("Scanning LAN", "NetworkDiscovery");
 
 
             if (!MainForm.ShuttingDown)
@@ -71,7 +71,7 @@ namespace iSpyApplication.Server
                 manualEvents[k] = new ManualResetEvent(true);
             }
 
-            Logger.LogMessageToFile("ARP Scan", "NetworkDiscovery");
+            Logger.LogMessage("ARP Scan", "NetworkDiscovery");
 
 
             if (!MainForm.ShuttingDown)
@@ -139,11 +139,11 @@ namespace iSpyApplication.Server
                     }
                     catch (Exception ex)
                     {
-                        Logger.LogMessageToFile("Web error from " + ipaddress + ":" + iport + " " + ex.Message, "NetworkDiscovery");
+                        Logger.LogMessage("Web error from " + ipaddress + ":" + iport + " " + ex.Message, "NetworkDiscovery");
                     }
                     if (response != null)
                     {
-                        Logger.LogMessageToFile("Web response from " + ipaddress + ":" + iport + " " +
+                        Logger.LogMessage("Web response from " + ipaddress + ":" + iport + " " +
                                                     response.StatusCode, "NetworkDiscovery");
                         if (response.Headers != null)
                         {
@@ -164,7 +164,7 @@ namespace iSpyApplication.Server
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogMessageToFile("Web error from " + ipaddress + ":" + iport + " " + ex.Message, "NetworkDiscovery");
+                    Logger.LogMessage("Web error from " + ipaddress + ":" + iport + " " + ex.Message, "NetworkDiscovery");
 
                 }
             }

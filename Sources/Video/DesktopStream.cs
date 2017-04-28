@@ -17,7 +17,8 @@ namespace iSpyApplication.Sources.Video
         private int _framesReceived;
         private int _screenindex;
         private readonly Rectangle _area = Rectangle.Empty;
-        private ManualResetEvent _stopEvent;
+        private ManualResetEvent _abort = new ManualResetEvent(false);
+        private ReasonToFinishPlaying _res = ReasonToFinishPlaying.DeviceLost;
         private Thread _thread;
         private bool _error;
 
@@ -102,7 +103,8 @@ namespace iSpyApplication.Sources.Video
             _bytesReceived = 0;
 
             // create events
-            _stopEvent = new ManualResetEvent(false);
+            _abort.Reset();
+            _res = ReasonToFinishPlaying.DeviceLost;
 
             // create and start new thread
             _thread = new Thread(WorkerThread) { Name = "desktop" + _screenindex, IsBackground = true};
@@ -110,69 +112,37 @@ namespace iSpyApplication.Sources.Video
             _thread.Start();
         }
 
-
-        public void SignalToStop()
+        public void Restart()
         {
-            // stop thread
-            if (_thread != null)
-            {
-                // signal to stop
-                _stopEvent.Set();
-            }
-        }
-
-
-        public void WaitForStop()
-        {
-            if (IsRunning)
-            {
-                // wait for thread stop
-                _stopEvent.Set();
-                try
-                {
-                    _thread.Join(MainForm.ThreadKillDelay);
-                    if (_thread != null && !_thread.Join(TimeSpan.Zero))
-                        _thread.Abort();
-                }
-                catch
-                {
-                }
-                Free();
-            }
+            if (!IsRunning) return;
+            _res = ReasonToFinishPlaying.Restart;
+            _abort.Set();
         }
 
 
         public void Stop()
         {
-            WaitForStop();
+            if (IsRunning)
+            {
+                _res = ReasonToFinishPlaying.StoppedByUser;
+                _abort.Set();
+            }
+            else
+            {
+                _res = ReasonToFinishPlaying.StoppedByUser;
+                PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
+            }
         }
 
         #endregion
 
-        /// <summary>
-        /// Free resource.
-        /// </summary>
-        /// 
-        private void Free()
-        {
-            _thread = null;
-
-            // release events
-            if (_stopEvent != null)
-            {
-                _stopEvent.Close();
-                _stopEvent.Dispose();
-            }
-            _stopEvent = null;
-        }
-
+        
         private Rectangle _screenSize = Rectangle.Empty;
 
         // Worker thread
         private void WorkerThread()
         {
-            var res = ReasonToFinishPlaying.StoppedByUser;
-            while (!_stopEvent.WaitOne(0, false) && !MainForm.ShuttingDown)
+            while (!_abort.WaitOne(20) && !MainForm.ShuttingDown)
             {
                 try
                 {
@@ -243,7 +213,7 @@ namespace iSpyApplication.Sources.Video
                         TimeSpan span = DateTime.UtcNow.Subtract(start);
                         // milliseconds to sleep
                         int msec = _frameInterval - (int)span.TotalMilliseconds;
-                        if ((msec > 0) && (_stopEvent.WaitOne(msec, false)))
+                        if ((msec > 0) || _abort.WaitOne(0))
                             break;
                     }
                 }
@@ -251,18 +221,18 @@ namespace iSpyApplication.Sources.Video
                 {
                     if (!_error)
                     {
-                        Logger.LogExceptionToFile(ex, "Desktop");
+                        Logger.LogException(ex, "Desktop");
                         _error = true;
                     }
                     // provide information to clients
-                    res = ReasonToFinishPlaying.DeviceLost;
+                    _res = ReasonToFinishPlaying.DeviceLost;
                     // wait for a while before the next try
                     Thread.Sleep(250);
                     break;
                 }
             }
 
-            PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(res));
+            PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
         }
 
         private bool _disposed;
@@ -281,9 +251,9 @@ namespace iSpyApplication.Sources.Video
 
             if (disposing)
             {
-                _stopEvent?.Close();
+                _abort.Close();
+                _abort.Dispose();
             }
-
             // Free any unmanaged objects here. 
             //
             _disposed = true;

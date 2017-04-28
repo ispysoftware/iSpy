@@ -50,7 +50,7 @@ namespace iSpyApplication.Cloud
             catch (Exception ex)
             {
                 err = ex.Message;
-                Logger.LogExceptionToFile(ex, "DropBox");
+                Logger.LogException(ex, "DropBox");
                 return "";
             }
         }
@@ -94,7 +94,7 @@ namespace iSpyApplication.Cloud
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
                 return false;
             }
             return true;
@@ -131,7 +131,7 @@ namespace iSpyApplication.Cloud
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex);
+                    Logger.LogException(ex);
                 }
                 return false;
             }
@@ -142,7 +142,7 @@ namespace iSpyApplication.Cloud
             success = false;
             if (!Authorised)
             {
-                Logger.LogMessageToFile("Authorise dropbox in settings");
+                Logger.LogMessage("Authorise dropbox in settings");
                 return LocRm.GetString("CloudAddSettings");
             }
             if (UploadList.SingleOrDefault(p => p.SourceFilename == filename) != null)
@@ -216,11 +216,11 @@ namespace iSpyApplication.Cloud
                     {
                         string p = "/" + entry.DestinationPath.Replace("\\", "/").Trim('/') + "/";
                         var r = Service.UploadFile(p, fi.Name, stream);
-                        Logger.LogMessageToFile("Uploaded to dropbox: /iSpy" + r.Path);
+                        Logger.LogMessage("Uploaded to dropbox: /iSpy" + r.Path);
                     }
                     catch (Exception ex)
                     {
-                        Logger.LogExceptionToFile(ex);
+                        Logger.LogException(ex);
                     }
                 }
                 Upload(null);

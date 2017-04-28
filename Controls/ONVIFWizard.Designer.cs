@@ -36,7 +36,6 @@
             this.lbOnvifURLs = new System.Windows.Forms.ListBox();
             this.lblURL = new System.Windows.Forms.Label();
             this.pnlStep1 = new System.Windows.Forms.TableLayoutPanel();
-            this.ddlDeviceURL = new System.Windows.Forms.ComboBox();
             this.ddlConnectWith = new System.Windows.Forms.ComboBox();
             this.lblConnectWith = new System.Windows.Forms.Label();
             this.lblPassword = new System.Windows.Forms.Label();
@@ -47,6 +46,7 @@
             this.txtOnvifPassword = new System.Windows.Forms.TextBox();
             this.ddlTransport = new System.Windows.Forms.ComboBox();
             this.btnConnect = new System.Windows.Forms.Button();
+            this.ddlDeviceURL = new System.Windows.Forms.ComboBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.lblStep = new System.Windows.Forms.Label();
             this.btnFind = new System.Windows.Forms.Button();
@@ -137,7 +137,6 @@
             this.pnlStep1.ColumnCount = 2;
             this.pnlStep1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this.pnlStep1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.pnlStep1.Controls.Add(this.ddlDeviceURL, 1, 2);
             this.pnlStep1.Controls.Add(this.ddlConnectWith, 1, 4);
             this.pnlStep1.Controls.Add(this.lblConnectWith, 0, 4);
             this.pnlStep1.Controls.Add(this.lblPassword, 0, 1);
@@ -148,6 +147,7 @@
             this.pnlStep1.Controls.Add(this.txtOnvifPassword, 1, 1);
             this.pnlStep1.Controls.Add(this.ddlTransport, 1, 3);
             this.pnlStep1.Controls.Add(this.btnConnect, 1, 5);
+            this.pnlStep1.Controls.Add(this.ddlDeviceURL, 1, 2);
             this.pnlStep1.Location = new System.Drawing.Point(29, 12);
             this.pnlStep1.Name = "pnlStep1";
             this.pnlStep1.RowCount = 6;
@@ -159,16 +159,6 @@
             this.pnlStep1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.pnlStep1.Size = new System.Drawing.Size(329, 269);
             this.pnlStep1.TabIndex = 1;
-            // 
-            // ddlDeviceURL
-            // 
-            this.ddlDeviceURL.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ddlDeviceURL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
-            this.ddlDeviceURL.FormattingEnabled = true;
-            this.ddlDeviceURL.Location = new System.Drawing.Point(153, 65);
-            this.ddlDeviceURL.Name = "ddlDeviceURL";
-            this.ddlDeviceURL.Size = new System.Drawing.Size(173, 94);
-            this.ddlDeviceURL.TabIndex = 41;
             // 
             // ddlConnectWith
             // 
@@ -265,6 +255,16 @@
             this.btnConnect.UseVisualStyleBackColor = true;
             this.btnConnect.Click += new System.EventHandler(this.button1_Click);
             // 
+            // ddlDeviceURL
+            // 
+            this.ddlDeviceURL.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ddlDeviceURL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+            this.ddlDeviceURL.FormattingEnabled = true;
+            this.ddlDeviceURL.Location = new System.Drawing.Point(153, 65);
+            this.ddlDeviceURL.Name = "ddlDeviceURL";
+            this.ddlDeviceURL.Size = new System.Drawing.Size(173, 94);
+            this.ddlDeviceURL.TabIndex = 45;
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.lblStep);
@@ -339,8 +339,8 @@
         public System.Windows.Forms.ComboBox ddlConnectWith;
         public System.Windows.Forms.TextBox txtOnvifUsername;
         public System.Windows.Forms.TextBox txtOnvifPassword;
-        public System.Windows.Forms.ComboBox ddlDeviceURL;
         public System.Windows.Forms.ComboBox ddlTransport;
         public System.Windows.Forms.ListBox lbOnvifURLs;
+        public System.Windows.Forms.ComboBox ddlDeviceURL;
     }
 }

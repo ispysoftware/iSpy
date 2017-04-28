@@ -84,50 +84,26 @@ namespace iSpyApplication.Server
                     Uri addr;
                     Uri audioUri = null;
                     int audioSourceTypeID = -1;
-                    switch (u.prefix.ToUpper())
+                    addr = Conf.GetAddr(u, Uri, Channel, Username, Password);
+                    if (!lp.Contains(addr))
                     {
-                        default:
-                            addr = Conf.GetAddr(u, Uri, Channel, Username, Password);
-                            if (!lp.Contains(addr))
+                        lp.Add(addr);
+                        URLScan?.Invoke(addr, EventArgs.Empty);
+
+                        bool found = Helper.TestAddress(addr,u,Username,Password);
+                        if (found)
+                        {
+                            if (!string.IsNullOrEmpty(u.AudioSource))
                             {
-                                lp.Add(addr);
-                                URLScan?.Invoke(addr, EventArgs.Empty);
-                                if (Helper.TestHttpurl(addr.ToString(), u.cookies, Username, Password))
-                                {
-                                    if (!string.IsNullOrEmpty(u.AudioSource))
-                                    {
-                                        audioUri = Conf.GetAddr(u, Uri, Channel, Username, Password, true);
-                                        audioSourceTypeID = Conf.GetSourceType(u.AudioSource, 1);
-                                    }
-
-                                    ManufacturersManufacturerUrl u1 = u;
-                                    URLFound?.Invoke(this,
-                                        new ConnectionOptionEventArgs(new ConnectionOption(addr, audioUri, Conf.GetSourceType(u1.Source, 2), audioSourceTypeID, u1)));
-                                }
+                                audioUri = Conf.GetAddr(u, Uri, Channel, Username, Password, true);
+                                audioSourceTypeID = Conf.GetSourceType(u.AudioSource, 1);
                             }
+                            ManufacturersManufacturerUrl u1 = u;
 
-                            break;
-                        case "RTSP://":
-                            addr = Conf.GetAddr(u, Uri, Channel, Username, Password);
-                            if (!lp.Contains(addr))
-                            {
-                                lp.Add(addr);
-                                URLScan?.Invoke(addr, EventArgs.Empty);
-                                if (Helper.TestRtspurl(addr, Username, Password))
-                                {
-                                    if (!string.IsNullOrEmpty(u.AudioSource))
-                                    {
-                                        audioUri = Conf.GetAddr(u, Uri, Channel, Username, Password, true);
-                                        audioSourceTypeID = Conf.GetSourceType(u.AudioSource, 1);
-                                    }
-                                    ManufacturersManufacturerUrl u1 = u;
-
-                                    URLFound?.Invoke(this,
-                                        new ConnectionOptionEventArgs(new ConnectionOption(addr, audioUri,
-                                            Conf.GetSourceType(u1.Source, 2), audioSourceTypeID, u1)));
-                                }
-                            }
-                            break;
+                            URLFound?.Invoke(this,
+                                new ConnectionOptionEventArgs(new ConnectionOption(addr, audioUri,
+                                    Conf.GetSourceType(u1.Source, 2), audioSourceTypeID, u1)));                            
+                        }
                     }
                     if (Quiturlscanner)
                     {
@@ -142,6 +118,7 @@ namespace iSpyApplication.Server
 
 
     }
+
 
     public class ConnectionOptionEventArgs : EventArgs
     {

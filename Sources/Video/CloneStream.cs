@@ -84,22 +84,15 @@ namespace iSpyApplication.Sources.Video
         }
 
 
-        public void SignalToStop()
-        {
-            Stop();
-        }
-
-
-        public void WaitForStop()
-        {
-            Stop();
-        }
-
-
         public void Stop()
         {
             if (_source != null)
                 _source.NewFrame -= SourceNewFrame;
+        }
+
+        public void Restart()
+        {
+            //ignore
         }
 
         #endregion

@@ -260,7 +260,7 @@
                   <xs:attribute name="Enable_Storage_Management" type="xs:boolean" default="false" />
                   <xs:attribute name="StopSavingOnStorageLimit" type="xs:boolean" default="false"/>
                   <xs:attribute name="StopSavingFlag" type="xs:boolean" default="false"/>
-                  <xs:attribute name="MaxMediaFolderSizeMB" type="xs:int" default="200" />
+                  <xs:attribute name="MaxMediaFolderSizeMB" type="xs:int" default="2000" />
                   <xs:attribute name="DeleteFilesOlderThanDays" type="xs:int" default="0"/>
                   <xs:attribute name="ID" type="xs:int" default="0"/>
                   <xs:attribute name="archive" type="xs:boolean" default="false" />

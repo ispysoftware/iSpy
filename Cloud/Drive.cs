@@ -116,7 +116,7 @@ namespace iSpyApplication.Cloud
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
                 return false;
             }
 
@@ -141,7 +141,7 @@ namespace iSpyApplication.Cloud
             }
             catch (Exception ex)
             {
-                Logger.LogExceptionToFile(ex);
+                Logger.LogException(ex);
                 return "";
             }
             bool first = true;
@@ -256,7 +256,7 @@ namespace iSpyApplication.Cloud
                 catch(Exception ex)
                 {
                     //file doesn't exist
-                    Logger.LogExceptionToFile(ex);
+                    Logger.LogException(ex);
                     return;
                 }
                 var mt = MimeTypes.GetMimeType(fi.Extension);
@@ -278,13 +278,13 @@ namespace iSpyApplication.Cloud
                         }
                         catch (Exception ex)
                         {
-                            Logger.LogExceptionToFile(ex);
+                            Logger.LogException(ex);
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogExceptionToFile(ex);
+                    Logger.LogException(ex);
                 }
                 Upload(null);
             }
@@ -297,7 +297,7 @@ namespace iSpyApplication.Cloud
         static void RequestResponseReceived(File obj)
         {
             string msg = "File uploaded to google drive: <a href=\"" + obj.DownloadUrl + "\">" +obj.Title + "</a>";
-            Logger.LogMessageToFile(msg);
+            Logger.LogMessage(msg);
         }
 
         private static void RequestProgressChanged(IUploadProgress obj)
@@ -306,17 +306,17 @@ namespace iSpyApplication.Cloud
             {
                 case UploadStatus.Failed:
                     if (obj.Exception!=null)
-                        Logger.LogErrorToFile("Upload to Google Drive failed ("+obj.Exception.Message+")");
+                        Logger.LogError("Upload to Google Drive failed ("+obj.Exception.Message+")");
                     else
                     {
-                        Logger.LogErrorToFile("Upload to Google Drive failed");
+                        Logger.LogError("Upload to Google Drive failed");
                     }
                     break;
             }
 
             if (obj.Exception != null)
             {
-                Logger.LogExceptionToFile(obj.Exception);
+                Logger.LogException(obj.Exception);
             }
 
 
