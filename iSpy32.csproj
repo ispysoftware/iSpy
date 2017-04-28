@@ -2342,7 +2342,7 @@
     <PreBuildEvent>
     </PreBuildEvent>
     <PostBuildEvent>xcopy "$(ProjectDir)dlls\$(PlatformName)\*.*" "$(ProjectDir)$(OutDir)" /Y
-if NOT %25ComputerName%25 == DEVPC GOTO end
+if NOT %25ComputerName%25 == DEVPC GOTO:end
 REM signing certificate is not part of the solution
 if $(PlatformName) == "x86" (
 call "D:\projects\ispy\signing\iSpy.bat"
