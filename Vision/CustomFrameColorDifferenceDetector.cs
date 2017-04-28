@@ -336,13 +336,15 @@ namespace iSpyApplication.Vision
                 if ( _suppressNoise )
                 {
                     // suppress noise and calculate motion amount
-                    AForge.SystemTools.CopyUnmanagedMemory( _tempFrame.ImageData, _motionFrame.ImageData, _motionSize );
-                    _erosionFilter.Apply( _tempFrame, _motionFrame );
+                    _erosionFilter.Apply( _motionFrame, _tempFrame );    // src -> dst
 
                     if ( _keepObjectEdges )
                     {
-                        AForge.SystemTools.CopyUnmanagedMemory( _tempFrame.ImageData, _motionFrame.ImageData, _motionSize );
-                        _dilatationFilter.Apply( _tempFrame, _motionFrame );
+                        _dilatationFilter.Apply( _tempFrame, _motionFrame );  // src -> dst
+                    }
+                    else
+                    {
+                        AForge.SystemTools.CopyUnmanagedMemory( _motionFrame.ImageData, _tempFrame.ImageData, _motionSize );  // dst <- src
                     }
                 }
 

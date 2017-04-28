@@ -5284,7 +5284,7 @@ namespace iSpyApplication.Controls
                 case "Two Frames":
                     Camera.MotionDetector =
                         new MotionDetector(
-                            new TwoFramesDifferenceDetector(Camobject.settings.suppressnoise));
+                            new TwoFramesDifferenceDetector(Camobject.settings.suppressnoise,Camobject.detector.keepobjectedges));
                     SetProcessor();
                     break;
                 case "Custom Frame":
@@ -5302,7 +5302,7 @@ namespace iSpyApplication.Controls
                 case "Two Frames (Color)":
                     Camera.MotionDetector =
                         new MotionDetector(
-                            new TwoFramesColorDifferenceDetector(Camobject.settings.suppressnoise));
+                            new TwoFramesColorDifferenceDetector(Camobject.settings.suppressnoise,Camobject.detector.keepobjectedges));
                     SetProcessor();
                     break;
                 case "Custom Frame (Color)":
