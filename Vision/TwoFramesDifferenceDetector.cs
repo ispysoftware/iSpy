@@ -68,14 +68,8 @@ namespace iSpyApplication.Vision
         private bool _suppressNoise = true;
 
         // threshold values
-        private int _differenceThreshold    =  15;
-        private int _differenceThresholdNeg = -15;
-
-        // binary erosion filter
-        private readonly BinaryErosion3x3 _erosionFilter = new BinaryErosion3x3( );
-
-        // dummy object to lock for synchronization
-        //private readonly object _sync = new object( );
+        private int _differenceLevel = 16;
+        private UInt64 _differenceThresholMask = 0xF0F0F0F0F0F0F0F0;
 
         /// <summary>
         /// Difference threshold value, [1, 255].
@@ -84,21 +78,38 @@ namespace iSpyApplication.Vision
         /// <remarks><para>The value specifies the amount off difference between pixels, which is treated
         /// as motion pixel.</para>
         /// 
-        /// <para>Default value is set to <b>15</b>.</para>
+        /// <para>Default value is set to <b>16</b>.</para>
         /// </remarks>
         /// 
         public int DifferenceThreshold
         {
-            get { return _differenceThreshold; }
+            get { return _differenceLevel; }
             set
             {
-                //lock ( _sync )
                 {
-                    _differenceThreshold = Math.Max( 1, Math.Min( 255, value ) );
-                    _differenceThresholdNeg = -_differenceThreshold;
+                    _differenceLevel = Math.Max(1, Math.Min(255, value));
+                    if ((_differenceLevel & 0x80) != 0)
+                        _differenceThresholMask = 0x8080808080808080; // difference >= 128 per byte
+                    else if ((_differenceLevel & 0x40) != 0)
+                        _differenceThresholMask = 0xC0C0C0C0C0C0C0C0; // difference >= 64 per byte
+                    else if ((_differenceLevel & 0x20) != 0)
+                        _differenceThresholMask = 0xE0E0E0E0E0E0E0E0; // difference >= 32 per byte
+                    else if ((_differenceLevel & 0x10) != 0)
+                        _differenceThresholMask = 0xF0F0F0F0F0F0F0F0; // difference >= 16 per byte
+                    else if ((_differenceLevel & 0x08) != 0)
+                        _differenceThresholMask = 0xF8F8F8F8F8F8F8F8; // difference >= 8 per byte
+                    else if ((_differenceLevel & 0x04) != 0)
+                        _differenceThresholMask = 0xFCFCFCFCFCFCFCFC; // difference >= 4 per byte
+                    else if ((_differenceLevel & 0x02) != 0)
+                        _differenceThresholMask = 0xFEFEFEFEFEFEFEFE; // difference >= 2 per byte
+                    else
+                        _differenceThresholMask = 0xFFFFFFFFFFFFFFFF; // difference >= 1 per byte
                 }
             }
         }
+
+        // binary erosion filter
+        private readonly BinaryErosion3x3 _erosionFilter = new BinaryErosion3x3( );
 
         /// <summary>
         /// Motion level value, [0, 1].
@@ -246,38 +257,68 @@ namespace iSpyApplication.Vision
                 // convert current image to grayscale
                 Tools.ConvertToGrayscale( videoFrame, _motionFrame );
 
-                // pointers to previous and current frames
-                byte* prevFrame = (byte*) _previousFrame.ImageData.ToPointer( );
-                byte* currFrame = (byte*) _motionFrame.ImageData.ToPointer( );
+                UInt64* prevFrame = (UInt64*)_previousFrame.ImageData.ToPointer();
+                UInt64* currFrame = (UInt64*)_motionFrame.ImageData.ToPointer();
                 // difference value
 
                 // 1 - get difference between frames
                 // 2 - threshold the difference
                 // 3 - copy current frame to previous frame
-                for ( int i = 0; i < _frameSize; i++, prevFrame++, currFrame++ )
+                for (int i = 0; i < _frameSize / sizeof(UInt64); i++, prevFrame++, currFrame++)
                 {
                     // difference
-                    var diff = *currFrame -  *prevFrame;
+                    var diff = (*currFrame ^ *prevFrame) & _differenceThresholMask;
                     // copy current frame to previous
                     *prevFrame = *currFrame;
                     // treshold
-                    *currFrame = ( ( diff >= _differenceThreshold ) || ( diff <= _differenceThresholdNeg ) ) ? (byte) 255 : (byte) 0;
+                    *currFrame = 0;
+                    if ((diff & 0xFF00000000000000) != 0) // take care of the 1st byte
+                        *currFrame |= 0xFF00000000000000;
+                    if ((diff & 0x00FF000000000000) != 0) // take care of the 2nd byte
+                        *currFrame |= 0x00FF000000000000;
+                    if ((diff & 0x0000FF0000000000) != 0) // take care of the 3rd byte
+                        *currFrame |= 0x0000FF0000000000;
+                    if ((diff & 0x000000FF00000000) != 0) // take care of the 4th byte
+                        *currFrame |= 0x000000FF00000000;
+                    if ((diff & 0x00000000FF000000) != 0) // take care of the 5th byte
+                        *currFrame |= 0x00000000FF000000;
+                    if ((diff & 0x0000000000FF0000) != 0) // take care of the 6th byte
+                        *currFrame |= 0x0000000000FF0000;
+                    if ((diff & 0x000000000000FF00) != 0) // take care of the 7th byte
+                        *currFrame |= 0x000000000000FF00;
+                    if ((diff & 0x00000000000000FF) != 0) // take care of the 8th byte
+                        *currFrame |= 0x00000000000000FF;
                 }
 
-                if ( _suppressNoise )
+                if (_suppressNoise)
                 {
                     // suppress noise and calculate motion amount
-                    AForge.SystemTools.CopyUnmanagedMemory( _tempFrame.ImageData, _motionFrame.ImageData, _frameSize );
-                    _erosionFilter.Apply( _tempFrame, _motionFrame );
+                    AForge.SystemTools.CopyUnmanagedMemory(_tempFrame.ImageData, _motionFrame.ImageData, _frameSize);
+                    _erosionFilter.Apply(_tempFrame, _motionFrame);
                 }
 
                 // calculate amount of motion pixels
                 _pixelsChanged = 0;
-                byte* motion = (byte*) _motionFrame.ImageData.ToPointer( );
+                UInt64* motion = (UInt64*)_motionFrame.ImageData.ToPointer();
 
-                for ( int i = 0; i < _frameSize; i++, motion++ )
+                for (int i = 0; i < _frameSize / sizeof(UInt64); i++, motion++)
                 {
-                    _pixelsChanged += ( *motion & 1 );
+                    if ((*motion & 0xFF00000000000000) != 0) // take care of the 1st byte
+                        _pixelsChanged++;
+                    if ((*motion & 0x00FF000000000000) != 0) // take care of the 2nd byte
+                        _pixelsChanged++;
+                    if ((*motion & 0x0000FF0000000000) != 0) // take care of the 3rd byte
+                        _pixelsChanged++;
+                    if ((*motion & 0x000000FF00000000) != 0) // take care of the 4th byte
+                        _pixelsChanged++;
+                    if ((*motion & 0x00000000FF000000) != 0) // take care of the 5th byte
+                        _pixelsChanged++;
+                    if ((*motion & 0x0000000000FF0000) != 0) // take care of the 6th byte
+                        _pixelsChanged++;
+                    if ((*motion & 0x000000000000FF00) != 0) // take care of the 7th byte
+                        _pixelsChanged++;
+                    if ((*motion & 0x00000000000000FF) != 0) // take care of the 8th byte
+                        _pixelsChanged++;
                 }
             }
         }

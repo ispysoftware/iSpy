@@ -35,6 +35,7 @@ using iSpyPRO.DirectShow.Internals;
 using xiApi.NET;
 using Encoder = System.Drawing.Imaging.Encoder;
 using Image = System.Drawing.Image;
+using System.Runtime.Remoting.Messaging;
 
 namespace iSpyApplication.Controls
 {
@@ -2938,32 +2939,7 @@ namespace iSpyApplication.Controls
                     _reconnectFailCount = 0;
                 }
 
-                lock (_lockobject)
-                {
-                    
-                    var dt = Helper.Now.AddSeconds(0 - Camobject.recorder.bufferseconds);
-                    if (!Recording)
-                    {
-                        while (Buffer.Count > 0)
-                        {
-                            Helper.FrameAction fa;
-                            if (Buffer.TryPeek(out fa))
-                            {
-                                if (fa.TimeStamp < dt)
-                                {
-                                    if (Buffer.TryDequeue(out fa))
-                                        fa.Nullify();
-                                }
-                                else
-                                {
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    Buffer.Enqueue(new Helper.FrameAction(e.Frame, Camera.MotionLevel, Helper.Now));
-                }
-                
+
 
                 if (_lastRedraw < Helper.Now.AddMilliseconds(0 - 1000 / MainForm.Conf.MaxRedrawRate))
                 {
@@ -2978,6 +2954,25 @@ namespace iSpyApplication.Controls
 
                 NewFrame?.Invoke(this, e);
 
+                var dt = Helper.Now.AddSeconds(0 - Camobject.recorder.bufferseconds);
+                while (Buffer.Count > 0)
+                {
+                    Helper.FrameAction fa;
+                    if (Buffer.TryPeek(out fa))
+                    {
+                        if (fa.TimeStamp < dt)
+                        {
+                            if (Buffer.TryDequeue(out fa))
+                                fa.Nullify();
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                EnqueueAsync.BeginInvoke(Buffer, e.Frame, Camera.MotionLevel, Helper.Now, null, null);
                 _errorTime = DateTime.MinValue;
 
             }
@@ -2986,6 +2981,11 @@ namespace iSpyApplication.Controls
                 ErrorHandler?.Invoke(ex.Message);
             }
         }
+
+        private static EnqueueAsyncDelegate EnqueueAsync = new EnqueueAsyncDelegate((q, b, f, d) => {
+            q.Enqueue(new Helper.FrameAction(b, f, d));
+        });
+        private delegate void EnqueueAsyncDelegate(ConcurrentQueue<Helper.FrameAction> buffer, Bitmap frame, float motionLevel, DateTime frameTime);
 
         public event NewFrameEventHandler NewFrame;
 
@@ -3172,23 +3172,12 @@ namespace iSpyApplication.Controls
                             Helper.FrameAction? peakFrame = null;
                             bool first = true;
 
-                            while (!_stopWrite.WaitOne(5))
+                            while (!_stopWrite.WaitOne(0))
                             {
                                 Helper.FrameAction fa;
                                 if (Buffer.TryDequeue(out fa))
                                 {
-                                    if (first)
-                                    {
-                                        recordingStart = fa.TimeStamp;
-                                        first = false;
-                                    }
-
-                                    WriteFrame(fa, recordingStart, ref lastvideopts, ref maxAlarm, ref peakFrame,
-                                        ref lastaudiopts);
-                                }
-                                if (bAudio)
-                                {
-                                    if (vc.Buffer.TryDequeue(out fa))
+                                    try
                                     {
                                         if (first)
                                         {
@@ -3198,6 +3187,31 @@ namespace iSpyApplication.Controls
 
                                         WriteFrame(fa, recordingStart, ref lastvideopts, ref maxAlarm, ref peakFrame,
                                             ref lastaudiopts);
+                                    }
+                                    finally
+                                    {
+                                        fa.Nullify();
+                                    }
+                                }
+                                if (bAudio)
+                                {
+                                    if (vc.Buffer.TryDequeue(out fa))
+                                    {
+                                        try
+                                        {
+                                            if (first)
+                                            {
+                                                recordingStart = fa.TimeStamp;
+                                                first = false;
+                                            }
+
+                                            WriteFrame(fa, recordingStart, ref lastvideopts, ref maxAlarm, ref peakFrame,
+                                                ref lastaudiopts);
+                                        }
+                                        finally
+                                        {
+                                            fa.Nullify();
+                                        }
                                     }
                                 }
                             }
@@ -3422,7 +3436,6 @@ namespace iSpyApplication.Controls
 
                     break;
             }
-            fa.Nullify();
         }
 
         public void Alarm(object sender, EventArgs e)

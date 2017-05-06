@@ -604,7 +604,6 @@ namespace iSpyApplication.Sources.Video
 
                 ffmpeg.av_free_packet(&packet);
                 ffmpeg.av_frame_free(&frame);
-                Thread.SpinWait(20);
             } while (!_abort && !MainForm.ShuttingDown);
 
 

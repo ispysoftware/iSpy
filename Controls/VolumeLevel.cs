@@ -1662,24 +1662,30 @@ namespace iSpyApplication.Controls
                                 Helper.FrameAction fa;
                                 while (Buffer.TryDequeue(out fa))
                                 {
-                                    if (recordingStart==DateTime.MinValue)
+                                    try
                                     {
-                                        recordingStart = fa.TimeStamp;
-                                    }
-                                    
-                                    if (fa.FrameType == Enums.FrameType.Audio)
-                                    {
-                                        var pts = (long)(fa.TimeStamp - recordingStart).TotalMilliseconds;
-                                        _writer.WriteAudio(fa.Content, fa.DataLength,0,pts);
-                                        float d = (float) fa.Level;
-                                        _soundData.Append(string.Format(CultureInfo.InvariantCulture,
-                                            "{0:0.000}", d));
-                                        _soundData.Append(",");
-                                        if (d > maxlevel)
-                                            maxlevel = d;
-                                    }
-                                    fa.Nullify();
+                                        if (recordingStart == DateTime.MinValue)
+                                        {
+                                            recordingStart = fa.TimeStamp;
+                                        }
 
+                                        if (fa.FrameType == Enums.FrameType.Audio)
+                                        {
+                                            var pts = (long)(fa.TimeStamp - recordingStart).TotalMilliseconds;
+                                            _writer.WriteAudio(fa.Content, fa.DataLength, 0, pts);
+                                            float d = (float)fa.Level;
+                                            _soundData.Append(string.Format(CultureInfo.InvariantCulture,
+                                                "{0:0.000}", d));
+                                            _soundData.Append(",");
+                                            if (d > maxlevel)
+                                                maxlevel = d;
+                                        }
+                                    }
+                                    finally
+                                    {
+                                        fa.Nullify();
+
+                                    }
                                 }
                             }
 
