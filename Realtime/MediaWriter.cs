@@ -151,18 +151,16 @@ namespace iSpyApplication.Realtime
             }
 
             _formatContext = ffmpeg.avformat_alloc_context();
+            if (_formatContext == null)
+            {
+                throw new Exception("Cannot allocate format context.");
+            }
 
             _interruptCallback = InterruptCb;
             _interruptCallbackAddress = Marshal.GetFunctionPointerForDelegate(_interruptCallback);
 
             _formatContext->interrupt_callback.callback = _interruptCallbackAddress;
             _formatContext->interrupt_callback.opaque = null;
-
-
-            if (_formatContext == null)
-            {
-                throw new Exception("Cannot allocate format context.");
-            }
             _formatContext->oformat = outputFormat;
 
             AVDictionary* opts = null;
@@ -464,7 +462,7 @@ namespace iSpyApplication.Realtime
                     packet.stream_index = _videoStream->index;
                     // write the compressed frame to the media file
                     _lastPacket = DateTime.UtcNow;
-                    ret = ffmpeg.av_interleaved_write_frame(_formatContext, &packet);
+                    ret = ffmpeg.av_write_frame(_formatContext, &packet);
                 }
             }
             ffmpeg.av_free_packet(&packet);

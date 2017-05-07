@@ -1983,7 +1983,7 @@ namespace iSpyApplication.Controls
                 g.PixelOffsetMode = PixelOffsetMode.HighSpeed;
                 g.SmoothingMode = SmoothingMode.None;
                 g.InterpolationMode = InterpolationMode.Default;
-                g.DrawImage(LastFrame, r);
+                g.DrawImage(frame, r);
             }
 
             frame.Dispose();
