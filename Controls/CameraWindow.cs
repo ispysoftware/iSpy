@@ -3080,7 +3080,7 @@ namespace iSpyApplication.Controls
                 }
             }
         }
-        [HandleProcessCorruptedStateExceptions]
+
         private void Record()
         {
             try
@@ -3171,7 +3171,6 @@ namespace iSpyApplication.Controls
                            
                             Helper.FrameAction? peakFrame = null;
                             bool first = true;
-
                             while (!_stopWrite.WaitOne(0))
                             {
                                 Helper.FrameAction fa;
@@ -3393,7 +3392,6 @@ namespace iSpyApplication.Controls
             }
         }
 
-        [HandleProcessCorruptedStateExceptions]
         private void WriteFrame(Helper.FrameAction fa, DateTime recordingStart, ref long lastvideopts, ref double maxAlarm,
             ref Helper.FrameAction? peakFrame, ref long lastaudiopts)
         {
@@ -4234,15 +4232,11 @@ namespace iSpyApplication.Controls
 
         private void ClearBuffer()
         {
-            lock (_lockobject)
+            Helper.FrameAction fa;
+            while (Buffer.TryDequeue(out fa))
             {
-                Helper.FrameAction fa;
-                while (Buffer.TryDequeue(out fa))
-                {
-                    fa.Nullify();
-                }
+                fa.Nullify();
             }
-            
         }
 
 
@@ -5391,26 +5385,23 @@ namespace iSpyApplication.Controls
         {
             if (Recording)
             {
-                lock (_lockobject)
-                {
-                    _stopWrite.Set();
-                }
-                try
-                {
-                    if (_recordingThread != null && !_recordingThread.Join(TimeSpan.Zero))
-                    {
-                        if (!_recordingThread.Join(3000))
-                        {
-                            _stopWrite.Set();
-                        }
-                    }
-                }
-                catch
-                {
-                    // ignored
-                }
+                _stopWrite.Set();
+                RecordingThreadWatchdog.BeginInvoke(_recordingThread,null,null);
+                _recordingThread = null;
             }
         }
+
+        private delegate void RecordingThreadWatchdogDelegate(Thread thread);
+        private static RecordingThreadWatchdogDelegate RecordingThreadWatchdog = new RecordingThreadWatchdogDelegate((t) => {
+            try
+            {
+                if (!t.Join(300000))
+                {
+                    t.Abort();
+                }
+            }
+            catch { }
+        });
 
         #region Windows Form Designer generated code
 

@@ -77,7 +77,6 @@ namespace iSpyPRO.DirectShow
         /// 
         /// <remarks>The returned filter's object should be released using <b>Marshal.ReleaseComObject()</b>.</remarks>
         /// 
-        [HandleProcessCorruptedStateExceptions] 
         public static object CreateFilter( string filterMoniker )
         {
             object filterObject = null;

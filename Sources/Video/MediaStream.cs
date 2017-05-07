@@ -409,10 +409,10 @@ namespace iSpyApplication.Sources.Video
 
             bool audioInited = false;
             bool videoInited = false;
+            AVPacket packet = new AVPacket();
 
             do
             {
-                AVPacket packet = new AVPacket();
                 ffmpeg.av_init_packet(&packet);
 
                 AVFrame* frame = ffmpeg.av_frame_alloc();
