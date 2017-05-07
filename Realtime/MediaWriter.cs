@@ -461,7 +461,7 @@ namespace iSpyApplication.Realtime
                     packet.stream_index = _videoStream->index;
                     // write the compressed frame to the media file
                     _lastPacket = DateTime.UtcNow;
-                    ret = ffmpeg.av_write_frame(_formatContext, &packet);
+                    ret = ffmpeg.av_interleaved_write_frame(_formatContext, &packet);
                 }
             }
             ffmpeg.av_free_packet(&packet);

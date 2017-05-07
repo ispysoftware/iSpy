@@ -5385,18 +5385,23 @@ namespace iSpyApplication.Controls
             if (Recording)
             {
                 _stopWritingFrames = true;
-                RecordingThreadWatchdog.BeginInvoke(_recordingThread,null,null);
+                RecordingThreadWatchdog.BeginInvoke(_recordingThread, _writer, null,null);
                 _recordingThread = null;
             }
         }
 
-        private delegate void RecordingThreadWatchdogDelegate(Thread thread);
-        private static RecordingThreadWatchdogDelegate RecordingThreadWatchdog = new RecordingThreadWatchdogDelegate((t) => {
+        private delegate void RecordingThreadWatchdogDelegate(Thread thread, MediaWriter writer);
+        private static RecordingThreadWatchdogDelegate RecordingThreadWatchdog = new RecordingThreadWatchdogDelegate((t, w) =>
+        {
             try
             {
                 if (!t.Join(300000))
                 {
                     t.Abort();
+                }
+                if (w != null && !w.Closed)
+                {
+                    w.Close();
                 }
             }
             catch { }
