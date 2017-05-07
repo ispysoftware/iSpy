@@ -51,7 +51,7 @@ namespace iSpyApplication.Controls
         private Color _customColor = Color.Black;
         private DateTime _lastRedraw = DateTime.MinValue;
         private DateTime _recordingStartTime;
-        private readonly ManualResetEventSlim _stopWrite = new ManualResetEventSlim(false);
+        private bool _stopWritingFrames;
         private double _autoofftimer;
         private bool _raiseStop;
         private double _timeLapse;
@@ -3031,7 +3031,7 @@ namespace iSpyApplication.Controls
                                        IsBackground = true,
                                        Priority = ThreadPriority.Normal
                                    };
-                _stopWrite.Reset();
+                _stopWritingFrames = false;
                 _recordingThread.Start();
             }
         }
@@ -3171,7 +3171,7 @@ namespace iSpyApplication.Controls
                            
                             Helper.FrameAction? peakFrame = null;
                             bool first = true;
-                            while (!_stopWrite.IsSet)
+                            while (!_stopWritingFrames)
                             {
                                 Helper.FrameAction fa;
                                 if (Buffer.TryDequeue(out fa))
@@ -5384,7 +5384,7 @@ namespace iSpyApplication.Controls
         {
             if (Recording)
             {
-                _stopWrite.Set();
+                _stopWritingFrames = true;
                 RecordingThreadWatchdog.BeginInvoke(_recordingThread,null,null);
                 _recordingThread = null;
             }
