@@ -28,7 +28,6 @@ namespace iSpyApplication.Realtime
         private int _width, _height, _framerate;//_bitRate
         private string movflags = "";//"faststart";
         private int _audioBufferSizeCurrent;
-        private long _lastAudioPts;
         private byte[] _audioBuffer = new byte[44100];
         public DateTime CreatedDate;
         public bool IsStreaming = false;

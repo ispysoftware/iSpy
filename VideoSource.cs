@@ -1653,7 +1653,6 @@ namespace iSpyApplication
         private void btnTest_Click(object sender, EventArgs e)
         {
            
-            string res = "OK";
             try
             {
                 string source = cmbFile.Text;

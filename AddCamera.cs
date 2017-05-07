@@ -2231,7 +2231,7 @@ namespace iSpyApplication
                         {
                             CameraControl.PTZ.AddPreset(s);
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             //sometimes seems to return an invalid result (camera bug?)
                         }
@@ -2255,7 +2255,7 @@ namespace iSpyApplication
                     {
                         CameraControl.PTZ.DeletePreset(li.Value);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
 
                     }

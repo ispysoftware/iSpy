@@ -3421,7 +3421,6 @@ namespace iSpyApplication.Controls
                         
                         
                         _motionData.Append(",");
-                        ms.Close();
                     }
                     break;
                 case Enums.FrameType.Audio:
