@@ -51,7 +51,7 @@ namespace iSpyApplication.Controls
         private Color _customColor = Color.Black;
         private DateTime _lastRedraw = DateTime.MinValue;
         private DateTime _recordingStartTime;
-        private readonly ManualResetEvent _stopWrite = new ManualResetEvent(false);
+        private readonly ManualResetEventSlim _stopWrite = new ManualResetEventSlim(false);
         private double _autoofftimer;
         private bool _raiseStop;
         private double _timeLapse;
@@ -3171,7 +3171,7 @@ namespace iSpyApplication.Controls
                            
                             Helper.FrameAction? peakFrame = null;
                             bool first = true;
-                            while (!_stopWrite.WaitOne(0))
+                            while (!_stopWrite.IsSet)
                             {
                                 Helper.FrameAction fa;
                                 if (Buffer.TryDequeue(out fa))
