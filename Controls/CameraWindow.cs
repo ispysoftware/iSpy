@@ -2973,7 +2973,7 @@ namespace iSpyApplication.Controls
                     }
                 }
                 if(_asyncCompression)
-                    EnqueueAsync.BeginInvoke(Buffer, e.Frame, Camera.MotionLevel, Helper.Now, null, null);
+                    EnqueueAsync.BeginInvoke(Buffer, (Bitmap) e.Frame.Clone(), Camera.MotionLevel, Helper.Now, null, null);
                 else
                     EnqueueAsync.Invoke(Buffer, e.Frame, Camera.MotionLevel, Helper.Now);
                 _errorTime = DateTime.MinValue;
@@ -2987,6 +2987,7 @@ namespace iSpyApplication.Controls
 
         private static EnqueueAsyncDelegate EnqueueAsync = new EnqueueAsyncDelegate((q, b, f, d) => {
             q.Enqueue(new Helper.FrameAction(b, f, d));
+            b.Dispose();
         });
         private delegate void EnqueueAsyncDelegate(ConcurrentQueue<Helper.FrameAction> buffer, Bitmap frame, float motionLevel, DateTime frameTime);
 
