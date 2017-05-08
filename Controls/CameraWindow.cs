@@ -64,6 +64,7 @@ namespace iSpyApplication.Controls
         private DateTime _errorTime = DateTime.MinValue;
         private DateTime _reconnectTime = DateTime.MinValue;
         private bool _firstFrame = true;
+        private bool _asyncCompression = true;
         private Thread _recordingThread;
         private int _calibrateTarget;
         private Camera _camera;
@@ -2971,8 +2972,10 @@ namespace iSpyApplication.Controls
                         }
                     }
                 }
-
-                EnqueueAsync.BeginInvoke(Buffer, e.Frame, Camera.MotionLevel, Helper.Now, null, null);
+                if(_asyncCompression)
+                    EnqueueAsync.BeginInvoke(Buffer, e.Frame, Camera.MotionLevel, Helper.Now, null, null);
+                else
+                    EnqueueAsync.Invoke(Buffer, e.Frame, Camera.MotionLevel, Helper.Now);
                 _errorTime = DateTime.MinValue;
 
             }
@@ -3191,6 +3194,10 @@ namespace iSpyApplication.Controls
                                     {
                                         fa.Nullify();
                                     }
+                                }
+                                else
+                                {
+                                    Thread.Yield();
                                 }
                                 if (bAudio)
                                 {
