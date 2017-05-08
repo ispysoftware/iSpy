@@ -3173,6 +3173,7 @@ namespace iSpyApplication.Controls
                             
                            
                             Helper.FrameAction? peakFrame = null;
+                            Helper.FrameAction? peakFrameTemp = null;
                             bool first = true;
                             while (!_stopWritingFrames)
                             {
@@ -3187,12 +3188,20 @@ namespace iSpyApplication.Controls
                                             first = false;
                                         }
 
-                                        WriteFrame(fa, recordingStart, ref lastvideopts, ref maxAlarm, ref peakFrame,
+                                        WriteFrame(fa, recordingStart, ref lastvideopts, ref maxAlarm, ref peakFrameTemp,
                                             ref lastaudiopts);
                                     }
                                     finally
                                     {
-                                        fa.Nullify();
+                                        if (peakFrame?.GetHashCode() != peakFrameTemp?.GetHashCode())
+                                        {
+                                            peakFrame?.Nullify();
+                                            peakFrame = peakFrameTemp;
+                                        }
+                                        else
+                                        {
+                                            fa.Nullify();
+                                        }
                                     }
                                 }
                                 else
@@ -3253,6 +3262,10 @@ namespace iSpyApplication.Controls
                                 catch (Exception ex)
                                 {
                                     ErrorHandler?.Invoke(ex.Message + ": " + ex.StackTrace);
+                                }
+                                finally
+                                {
+                                    peakFrame?.Nullify();
                                 }
                             }
                         }
