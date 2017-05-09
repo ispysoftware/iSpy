@@ -29,20 +29,20 @@ namespace iSpyApplication.Sources.Video
 
         public int InterruptCb(void* ctx)
         {
-            if ((DateTime.UtcNow - _lastPacket).TotalMilliseconds > _timeout || _abort)
+            if ((DateTime.UtcNow - _lastPacket).TotalMilliseconds > _timeout || _stopReadingFrames)
             {
-                if (!_abort)
+                if (!_stopReadingFrames)
                 {
                     _res = ReasonToFinishPlaying.DeviceLost;
                 }
-                _abort = true;
+                _stopReadingFrames = true;
                 return 1;
             }
             return 0;
         }
 
         private DateTime _lastPacket;
-        private bool _abort;
+        private bool _stopReadingFrames;
         private Thread _thread;
         private DateTime _lastVideoFrame;
         private ReasonToFinishPlaying _res = ReasonToFinishPlaying.DeviceLost;
@@ -126,7 +126,7 @@ namespace iSpyApplication.Sources.Video
         public void Start()
         {
             if (_starting || IsRunning) return;
-            _abort = false;
+            _stopReadingFrames = false;
             _res = ReasonToFinishPlaying.DeviceLost;
             _starting = true;
             Task.Factory.StartNew(DoStart);
@@ -137,7 +137,7 @@ namespace iSpyApplication.Sources.Video
         {
             var vss = Source;
             if (!_modeAudio)
-                vss = Tokenise();
+                vss = Tokenise(Source);
 
             AVDictionary* options = null;
             if (_inputFormat == null)
@@ -219,7 +219,7 @@ namespace iSpyApplication.Sources.Video
             }
 
 
-            _abort = false;
+            _stopReadingFrames = false;
             try
             {
                 Program.FfmpegMutex.WaitOne();
@@ -270,14 +270,14 @@ namespace iSpyApplication.Sources.Video
         {
             if (!IsRunning) return;
             _res = ReasonToFinishPlaying.Restart;
-            _abort = true;
+            _stopReadingFrames = true;
         }
 
         public void Stop()
         {
             if (!IsRunning) return;
             _res = ReasonToFinishPlaying.StoppedByUser;
-            _abort = true;
+            _stopReadingFrames = true;
         }
 
         private void SetupFormat()
@@ -409,10 +409,10 @@ namespace iSpyApplication.Sources.Video
 
             bool audioInited = false;
             bool videoInited = false;
+            AVPacket packet = new AVPacket();
 
             do
             {
-                AVPacket packet = new AVPacket();
                 ffmpeg.av_init_packet(&packet);
 
                 AVFrame* frame = ffmpeg.av_frame_alloc();
@@ -420,7 +420,7 @@ namespace iSpyApplication.Sources.Video
 
                 if (ffmpeg.av_read_frame(_formatContext, &packet) < 0)
                 {
-                    _abort = true;
+                    _stopReadingFrames = true;
                     _res = ReasonToFinishPlaying.VideoSourceError;
                     break;
                 }
@@ -598,14 +598,13 @@ namespace iSpyApplication.Sources.Video
                     if ((DateTime.UtcNow - _lastVideoFrame).TotalMilliseconds > _timeout)
                     {
                         _res = ReasonToFinishPlaying.DeviceLost;
-                        _abort = true;
+                        _stopReadingFrames = true;
                     }
                 }
 
                 ffmpeg.av_free_packet(&packet);
                 ffmpeg.av_frame_free(&frame);
-                Thread.SpinWait(20);
-            } while (!_abort && !MainForm.ShuttingDown);
+            } while (!_stopReadingFrames && !MainForm.ShuttingDown);
 
 
             try {

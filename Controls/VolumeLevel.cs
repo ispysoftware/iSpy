@@ -1685,7 +1685,6 @@ namespace iSpyApplication.Controls
                                     {
                                         fa.Nullify();
                                     }
-
                                 }
                             }
 

@@ -878,7 +878,6 @@ namespace iSpyApplication.Controls
             }
         }
 
-        [HandleProcessCorruptedStateExceptions] 
         private bool ApplyMotionDetector(UnmanagedImage lfu)
         {
             if (Alarm != null && lfu!=null)

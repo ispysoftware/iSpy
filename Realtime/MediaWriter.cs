@@ -28,7 +28,6 @@ namespace iSpyApplication.Realtime
         private int _width, _height, _framerate;//_bitRate
         private string movflags = "";//"faststart";
         private int _audioBufferSizeCurrent;
-        private long _lastAudioPts;
         private byte[] _audioBuffer = new byte[44100];
         public DateTime CreatedDate;
         public bool IsStreaming = false;
@@ -151,7 +150,6 @@ namespace iSpyApplication.Realtime
             }
 
             _formatContext = ffmpeg.avformat_alloc_context();
-
             if (_formatContext == null)
             {
                 throw new Exception("Cannot allocate format context.");
@@ -162,9 +160,6 @@ namespace iSpyApplication.Realtime
 
             _formatContext->interrupt_callback.callback = _interruptCallbackAddress;
             _formatContext->interrupt_callback.opaque = null;
-
-
-            
             _formatContext->oformat = outputFormat;
 
             AVDictionary* opts = null;
