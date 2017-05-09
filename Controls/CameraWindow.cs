@@ -3196,6 +3196,12 @@ namespace iSpyApplication.Controls
                                     WriteFrame(fa, recordingStart, ref lastvideopts, ref maxAlarm, ref peakFrame,
                                         ref lastaudiopts);
                                 }
+                                else
+                                {
+                                    // nothing to dequeue
+                                    // yield for now
+                                    Thread.Yield();
+                                }
                                 if (bAudio)
                                 {
                                     if (vc.Buffer.TryDequeue(out fa))
