@@ -152,6 +152,11 @@ namespace iSpyApplication.Realtime
 
             _formatContext = ffmpeg.avformat_alloc_context();
 
+            if (_formatContext == null)
+            {
+                throw new Exception("Cannot allocate format context.");
+            }
+
             _interruptCallback = InterruptCb;
             _interruptCallbackAddress = Marshal.GetFunctionPointerForDelegate(_interruptCallback);
 
@@ -159,10 +164,7 @@ namespace iSpyApplication.Realtime
             _formatContext->interrupt_callback.opaque = null;
 
 
-            if (_formatContext == null)
-            {
-                throw new Exception("Cannot allocate format context.");
-            }
+            
             _formatContext->oformat = outputFormat;
 
             AVDictionary* opts = null;

@@ -333,7 +333,7 @@ namespace iSpyApplication.Sources.Video
                 {
                     // create request
                     // get response
-                    var vss = Tokenise();
+                    var vss = Tokenise(_source.settings.videosourcestring);
 
                     response = connectionFactory.GetResponse(vss, _cookies, _headers, _httpUserAgent, _login, _password,
                         "GET", "", "", _useHttp10, out request);

@@ -2712,7 +2712,7 @@ namespace iSpyApplication
             oc.detector.minheight = 20;
             oc.detector.highlight = true;
 
-            oc.recorder.bufferseconds = 2;
+            oc.recorder.bufferseconds = 0;
             oc.recorder.inactiverecord = 8;
             oc.recorder.timelapse = 0;
             oc.recorder.timelapseframes = 0;

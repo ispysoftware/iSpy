@@ -5,8 +5,11 @@ namespace iSpyApplication.Sources.Video
     public class VideoBase
     {
         private readonly objectsCamera _source;
-        public string Tokenise()
+        public string Tokenise(string sourcestring)
         {
+            if (_source == null)
+                return sourcestring;
+
             var vss = _source.settings.videosourcestring;
             if (vss.IndexOf("[TOKEN]", StringComparison.Ordinal) != -1)
             {
@@ -17,7 +20,7 @@ namespace iSpyApplication.Sources.Video
                 //    _source.settings.reconnectinterval = t.ReconnectInterval;
                 return url;
             }
-            return vss;
+            return sourcestring;
         }
 
         public VideoBase(objectsCamera source)

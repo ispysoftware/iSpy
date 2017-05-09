@@ -281,7 +281,7 @@ namespace iSpyApplication.Sources.Video
 
             var vss = Source;
             if (!_modeAudio)
-                vss = Tokenise();
+                vss = Tokenise(vss);
 
             _mMedia = file ? _mFactory.CreateMedia<IMediaFromFile>(vss) : _mFactory.CreateMedia<IMedia>(vss);
 
