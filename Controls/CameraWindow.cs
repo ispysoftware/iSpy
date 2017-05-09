@@ -50,7 +50,7 @@ namespace iSpyApplication.Controls
         private Color _customColor = Color.Black;
         private DateTime _lastRedraw = DateTime.MinValue;
         private DateTime _recordingStartTime;
-        private readonly ManualResetEvent _stopWrite = new ManualResetEvent(false);
+        private bool _stopWrite = false;
         private readonly ManualResetEvent _writerStopped = new ManualResetEvent(false); 
         private double _autoofftimer;
         private bool _raiseStop;
@@ -3098,7 +3098,7 @@ namespace iSpyApplication.Controls
                 AbortedAudio = false;
                 LogToPlugin("Recording Started");
                 string linktofile = "";
-                _stopWrite.Reset();
+                _stopWrite = false;
                 _writerStopped.Reset();
 
                 string previewImage = "";
@@ -3182,7 +3182,7 @@ namespace iSpyApplication.Controls
                             Helper.FrameAction? peakFrame = null;
                             bool first = true;
 
-                            while (!_stopWrite.WaitOne(0))
+                            while (!_stopWrite)
                             {
                                 Helper.FrameAction fa;
                                 if (Buffer.TryDequeue(out fa))
@@ -3195,6 +3195,12 @@ namespace iSpyApplication.Controls
 
                                     WriteFrame(fa, recordingStart, ref lastvideopts, ref maxAlarm, ref peakFrame,
                                         ref lastaudiopts);
+                                }
+                                else
+                                {
+                                    // nothing to dequeue
+                                    // yield for now
+                                    Thread.Yield();
                                 }
                                 if (bAudio)
                                 {
@@ -5386,7 +5392,7 @@ namespace iSpyApplication.Controls
         {
             if (Recording)
             {
-               _stopWrite.Set();
+                _stopWrite = true;
                 _writerStopped.WaitOne();
             }
         }
