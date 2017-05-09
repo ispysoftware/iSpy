@@ -268,7 +268,7 @@ namespace iSpyApplication.Sources.Video
                 {
                     // set download start time
                     var start = DateTime.UtcNow;
-                    var vss = Tokenise();
+                    var vss = Tokenise(_source.settings.videosourcestring);
                     var url = vss + (vss.IndexOf('?') == -1 ? '?' : '&') + "fake=" + rand.Next();
 
                     response = connectionFactory.GetResponse(url, _cookies, _headers, _httpUserAgent, _login, _password,

@@ -109,7 +109,7 @@ namespace iSpyApplication.Vision
         }
 
         // binary erosion filter
-        private readonly BinaryErosion3x3 _erosionFilter = new BinaryErosion3x3( );
+        private readonly BinaryErosion3x3 _erosionFilter = new BinaryErosion3x3();
 
         /// <summary>
         /// Motion level value, [0, 1].
@@ -126,7 +126,7 @@ namespace iSpyApplication.Vision
             {
                 //lock ( _sync )
                 {
-                    return (float) _pixelsChanged / ( _width * _height );
+                    return (float)_pixelsChanged / (_width * _height);
                 }
             }
         }
@@ -177,15 +177,15 @@ namespace iSpyApplication.Vision
                     _suppressNoise = value;
 
                     // allocate temporary frame if required
-                    if ( ( _suppressNoise ) && ( _tempFrame == null ) && ( _motionFrame != null ) )
+                    if ((_suppressNoise) && (_tempFrame == null) && (_motionFrame != null))
                     {
-                        _tempFrame = UnmanagedImage.Create( _width, _height, PixelFormat.Format8bppIndexed );
+                        _tempFrame = UnmanagedImage.Create(_width, _height, PixelFormat.Format8bppIndexed);
                     }
 
                     // check if temporary frame is not required
-                    if ( ( !_suppressNoise ) && ( _tempFrame != null ) )
+                    if ((!_suppressNoise) && (_tempFrame != null))
                     {
-                        _tempFrame.Dispose( );
+                        _tempFrame.Dispose();
                         _tempFrame = null;
                     }
                 }
@@ -196,7 +196,7 @@ namespace iSpyApplication.Vision
         /// Initializes a new instance of the <see cref="TwoFramesDifferenceDetector"/> class.
         /// </summary>
         /// 
-        public TwoFramesDifferenceDetector( ) { }
+        public TwoFramesDifferenceDetector() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TwoFramesDifferenceDetector"/> class.
@@ -204,7 +204,7 @@ namespace iSpyApplication.Vision
         /// 
         /// <param name="suppressNoise">Suppress noise in video frames or not (see <see cref="SuppressNoise"/> property).</param>
         /// 
-        public TwoFramesDifferenceDetector( bool suppressNoise )
+        public TwoFramesDifferenceDetector(bool suppressNoise)
         {
             _suppressNoise = suppressNoise;
         }
@@ -221,41 +221,41 @@ namespace iSpyApplication.Vision
         /// (changes) in the processed frame.</para>
         /// </remarks>
         /// 
-        public unsafe void ProcessFrame( UnmanagedImage videoFrame )
+        public unsafe void ProcessFrame(UnmanagedImage videoFrame)
         {
             //lock ( _sync )
             {
                 // check previous frame
-                if ( _previousFrame == null )
+                if (_previousFrame == null)
                 {
                     // save image dimension
                     _width = videoFrame.Width;
                     _height = videoFrame.Height;
 
                     // alocate memory for previous and current frames
-                    _previousFrame = UnmanagedImage.Create( _width, _height, PixelFormat.Format8bppIndexed );
-                    _motionFrame = UnmanagedImage.Create( _width, _height, PixelFormat.Format8bppIndexed );
+                    _previousFrame = UnmanagedImage.Create(_width, _height, PixelFormat.Format8bppIndexed);
+                    _motionFrame = UnmanagedImage.Create(_width, _height, PixelFormat.Format8bppIndexed);
 
                     _frameSize = _motionFrame.Stride * _height;
 
                     // temporary buffer
-                    if ( _suppressNoise )
+                    if (_suppressNoise)
                     {
-                        _tempFrame = UnmanagedImage.Create( _width, _height, PixelFormat.Format8bppIndexed );
+                        _tempFrame = UnmanagedImage.Create(_width, _height, PixelFormat.Format8bppIndexed);
                     }
 
                     // convert source frame to grayscale
-                    Tools.ConvertToGrayscale( videoFrame, _previousFrame );
+                    Tools.ConvertToGrayscale(videoFrame, _previousFrame);
 
                     return;
                 }
 
                 // check image dimension
-                if ( ( videoFrame.Width != _width ) || ( videoFrame.Height != _height ) )
+                if ((videoFrame.Width != _width) || (videoFrame.Height != _height))
                     return;
 
                 // convert current image to grayscale
-                Tools.ConvertToGrayscale( videoFrame, _motionFrame );
+                Tools.ConvertToGrayscale(videoFrame, _motionFrame);
 
                 UInt64* prevFrame = (UInt64*)_previousFrame.ImageData.ToPointer();
                 UInt64* currFrame = (UInt64*)_motionFrame.ImageData.ToPointer();
@@ -332,25 +332,25 @@ namespace iSpyApplication.Vision
         /// may be also done at any time to restart motion detection algorithm.</para>
         /// </remarks>
         /// 
-        public void Reset( )
+        public void Reset()
         {
             //lock ( _sync )
             {
-                if ( _previousFrame != null )
+                if (_previousFrame != null)
                 {
-                    _previousFrame.Dispose( );
+                    _previousFrame.Dispose();
                     _previousFrame = null;
                 }
 
-                if ( _motionFrame != null )
+                if (_motionFrame != null)
                 {
-                    _motionFrame.Dispose( );
+                    _motionFrame.Dispose();
                     _motionFrame = null;
                 }
 
-                if ( _tempFrame != null )
+                if (_tempFrame != null)
                 {
-                    _tempFrame.Dispose( );
+                    _tempFrame.Dispose();
                     _tempFrame = null;
                 }
             }

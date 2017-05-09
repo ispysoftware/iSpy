@@ -2335,17 +2335,14 @@
     <PreBuildEvent>
     </PreBuildEvent>
     <PostBuildEvent>xcopy "$(ProjectDir)dlls\$(PlatformName)\*.*" "$(ProjectDir)$(OutDir)" /Y
-if NOT %25ComputerName%25 == DEVPC GOTO:end
+if %25ComputerName%25 == DEVPC (
 REM signing certificate is not part of the solution
 if $(PlatformName) == "x86" (
 call "D:\projects\ispy\signing\iSpy.bat"
 )
- if "$(PlatformName)" == "x64" (
+if "$(PlatformName)" == "x64" (
 call "D:\projects\ispy\signing\iSpy64.bat"
-)
-end if
-:end
-
+))
 
 if "$(ConfigurationName)"=="Release" (
  del "$(ProjectDir)$(OutDir)*.pdb"

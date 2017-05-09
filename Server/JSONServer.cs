@@ -2300,7 +2300,7 @@ namespace iSpyApplication.Server
                             PopulateObject(d, c);
                             
                             var vl = MainForm.InstanceReference.GetVolumeLevel(c.id);
-                            vl?.Restart();
+                            vl?.Disable();
                         }
                         resp = "{\"actionResult\":\"waiteditobject\"}";
                     }
@@ -2318,7 +2318,7 @@ namespace iSpyApplication.Server
                                 }
 
                                 var cw = MainForm.InstanceReference.GetCameraWindow(c.id);
-                                cw?.Restart();
+                                cw?.Disable();
                                 resp = "{\"actionResult\":\"waiteditobject\"}";
                             }
 

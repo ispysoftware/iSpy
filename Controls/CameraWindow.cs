@@ -52,6 +52,7 @@ namespace iSpyApplication.Controls
         private DateTime _lastRedraw = DateTime.MinValue;
         private DateTime _recordingStartTime;
         private bool _stopWritingFrames;
+        private readonly ManualResetEvent _writerStopped = new ManualResetEvent(false); 
         private double _autoofftimer;
         private bool _raiseStop;
         private double _timeLapse;
@@ -2940,8 +2941,6 @@ namespace iSpyApplication.Controls
                     _reconnectFailCount = 0;
                 }
 
-
-
                 if (_lastRedraw < Helper.Now.AddMilliseconds(0 - 1000 / MainForm.Conf.MaxRedrawRate))
                 {
                     LastFrame = e.Frame;
@@ -2989,6 +2988,7 @@ namespace iSpyApplication.Controls
             q.Enqueue(new Helper.FrameAction(b, f, d));
             b.Dispose();
         });
+
         private delegate void EnqueueAsyncDelegate(ConcurrentQueue<Helper.FrameAction> buffer, Bitmap frame, float motionLevel, DateTime frameTime);
 
         public event NewFrameEventHandler NewFrame;
@@ -3035,7 +3035,6 @@ namespace iSpyApplication.Controls
                                        IsBackground = true,
                                        Priority = ThreadPriority.Normal
                                    };
-                _stopWritingFrames = false;
                 _recordingThread.Start();
             }
         }
@@ -3093,8 +3092,9 @@ namespace iSpyApplication.Controls
                 AbortedAudio = false;
                 LogToPlugin("Recording Started");
                 string linktofile = "";
-                
-                
+                _stopWritingFrames = false;
+                _writerStopped.Reset();
+
                 string previewImage = "";
                 try
                 {
@@ -3411,6 +3411,7 @@ namespace iSpyApplication.Controls
             {
                 Logger.LogException(ex);
             }
+            _writerStopped.Set();
         }
 
         private void WriteFrame(Helper.FrameAction fa, DateTime recordingStart, ref long lastvideopts, ref double maxAlarm,
@@ -3437,10 +3438,7 @@ namespace iSpyApplication.Controls
                             peakFrame = fa;
                         }
 
-                        _motionData.Append(string.Format(CultureInfo.InvariantCulture, "{0:0.000}", Math.Min(fa.Level * 100, 100)));
-                        
-                        
-                        
+                        _motionData.Append(string.Format(CultureInfo.InvariantCulture, "{0:0.000}", Math.Min(fa.Level * 100, 100)));                     
                         _motionData.Append(",");
                     }
                     break;
