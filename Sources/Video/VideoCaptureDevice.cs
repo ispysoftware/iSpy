@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Windows.Forms;
 using iSpyApplication.Utilities;
 using iSpyPRO.DirectShow;
 using iSpyPRO.DirectShow.Internals;
@@ -14,6 +13,40 @@ namespace iSpyApplication.Sources.Video
 {
     using FilterInfo = FilterInfo;
 
+    /// <summary>
+    /// Video source for local video capture device (for example USB webcam).
+    /// </summary>
+    /// 
+    /// <remarks><para>This video source class captures video data from local video capture device,
+    /// like USB web camera (or internal), frame grabber, capture board - anything which
+    /// supports <b>DirectShow</b> interface. For devices which has a shutter button or
+    /// support external software triggering, the class also allows to do snapshots. Both
+    /// video size and snapshot size can be configured.</para>
+    /// 
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// // enumerate video devices
+    /// videoDevices = new FilterInfoCollection( FilterCategory.VideoInputDevice );
+    /// // create video source
+    /// VideoCaptureDevice videoSource = new VideoCaptureDevice( videoDevices[0].MonikerString );
+    /// // set NewFrame event handler
+    /// videoSource.NewFrame += new NewFrameEventHandler( video_NewFrame );
+    /// // start the video source
+    /// videoSource.Start( );
+    /// // ...
+    /// // signal to stop when you no longer need capturing
+    /// videoSource.SignalToStop( );
+    /// // ...
+    /// 
+    /// private void video_NewFrame( object sender, NewFrameEventArgs eventArgs )
+    /// {
+    ///     // get new frame
+    ///     Bitmap bitmap = eventArgs.Frame;
+    ///     // process the frame
+    /// }
+    /// </code>
+    /// </remarks>
+    /// 
     public class VideoCaptureDevice : IVideoSource, IDisposable
     {
         // moniker string of video capture device
@@ -29,9 +62,10 @@ namespace iSpyApplication.Sources.Video
 
         // provide snapshots or not
         private bool _provideSnapshots;
+        private ManualResetEvent _abort = new ManualResetEvent(false);
+        private ReasonToFinishPlaying _res = ReasonToFinishPlaying.DeviceLost;
 
         private Thread _thread;
-        private ManualResetEvent _stopEvent;
 
         private VideoCapabilities[] _videoCapabilities;
         private VideoCapabilities[] _snapshotCapabilities;
@@ -44,12 +78,12 @@ namespace iSpyApplication.Sources.Video
 
         // video capture source object
         private object _sourceObject;
-        
+
         // time of starting the DirectX graph
         private DateTime _startTime;
 
         // dummy object to lock for synchronization
-        private readonly object _sync = new object( );
+        private readonly object _sync = new object();
 
         // flag specifying if IAMCrossbar interface is supported by the running graph/source object
         private bool? _isCrossbarAvailable;
@@ -58,9 +92,9 @@ namespace iSpyApplication.Sources.Video
         private VideoInput _crossbarVideoInput = VideoInput.Default;
 
         // cache for video/snapshot capabilities and video inputs
-        private static readonly Dictionary<string, VideoCapabilities[]> CacheVideoCapabilities = new Dictionary<string,VideoCapabilities[]>( );
-        private static readonly Dictionary<string, VideoCapabilities[]> CacheSnapshotCapabilities = new Dictionary<string,VideoCapabilities[]>( );
-        private static readonly Dictionary<string, VideoInput[]> CacheCrossbarVideoInputs = new Dictionary<string,VideoInput[]>( );
+        private static readonly Dictionary<string, VideoCapabilities[]> CacheVideoCapabilities = new Dictionary<string, VideoCapabilities[]>();
+        private static readonly Dictionary<string, VideoCapabilities[]> CacheSnapshotCapabilities = new Dictionary<string, VideoCapabilities[]>();
+        private static readonly Dictionary<string, VideoInput[]> CacheCrossbarVideoInputs = new Dictionary<string, VideoInput[]>();
 
         /// <summary>
         /// Current video input of capture card.
@@ -112,28 +146,28 @@ namespace iSpyApplication.Sources.Video
         {
             get
             {
-                if ( _crossbarVideoInputs == null )
+                if (_crossbarVideoInputs == null)
                 {
-                    lock ( CacheCrossbarVideoInputs )
+                    lock (CacheCrossbarVideoInputs)
                     {
-                        if ( ( !string.IsNullOrEmpty( _deviceMoniker ) ) && ( CacheCrossbarVideoInputs.ContainsKey( _deviceMoniker ) ) )
+                        if ((!string.IsNullOrEmpty(_deviceMoniker)) && (CacheCrossbarVideoInputs.ContainsKey(_deviceMoniker)))
                         {
                             _crossbarVideoInputs = CacheCrossbarVideoInputs[_deviceMoniker];
                         }
                     }
 
-                    if ( _crossbarVideoInputs == null )
+                    if (_crossbarVideoInputs == null)
                     {
-                        if ( !IsRunning )
+                        if (!IsRunning)
                         {
                             // create graph without playing to collect available inputs
-                            WorkerThread( false );
+                            WorkerThread(false);
                         }
                         else
                         {
-                            for ( int i = 0; ( i < 500 ) && ( _crossbarVideoInputs == null ); i++ )
+                            for (int i = 0; (i < 500) && (_crossbarVideoInputs == null); i++)
                             {
-                                Thread.Sleep( 10 );
+                                Thread.Sleep(10);
                             }
                         }
                     }
@@ -353,29 +387,29 @@ namespace iSpyApplication.Sources.Video
         {
             get
             {
-                if ( _videoCapabilities == null )
+                if (_videoCapabilities == null)
                 {
-                    lock ( CacheVideoCapabilities )
+                    lock (CacheVideoCapabilities)
                     {
-                        if ( ( !string.IsNullOrEmpty( _deviceMoniker ) ) && ( CacheVideoCapabilities.ContainsKey( _deviceMoniker ) ) )
+                        if ((!string.IsNullOrEmpty(_deviceMoniker)) && (CacheVideoCapabilities.ContainsKey(_deviceMoniker)))
                         {
                             _videoCapabilities = CacheVideoCapabilities[_deviceMoniker];
                         }
                     }
 
-                    if ( _videoCapabilities == null )
+                    if (_videoCapabilities == null)
                     {
-                        if ( !IsRunning )
+                        if (!IsRunning)
                         {
                             // create graph without playing to get the video/snapshot capabilities only.
                             // not very clean but it works
-                            WorkerThread( false );
+                            WorkerThread(false);
                         }
                         else
                         {
-                            for ( int i = 0; ( i < 300 ) && ( _videoCapabilities == null ); i++ )
+                            for (int i = 0; (i < 300) && (_videoCapabilities == null); i++)
                             {
-                                Thread.Sleep( 10 );
+                                Thread.Sleep(10);
                             }
                         }
                     }
@@ -385,7 +419,7 @@ namespace iSpyApplication.Sources.Video
             }
         }
 
-        
+
 
         /// <summary>
         /// Snapshot capabilities of the device.
@@ -409,29 +443,29 @@ namespace iSpyApplication.Sources.Video
         {
             get
             {
-                if ( _snapshotCapabilities == null )
+                if (_snapshotCapabilities == null)
                 {
-                    lock ( CacheSnapshotCapabilities )
+                    lock (CacheSnapshotCapabilities)
                     {
-                        if ( ( !string.IsNullOrEmpty( _deviceMoniker ) ) && ( CacheSnapshotCapabilities.ContainsKey( _deviceMoniker ) ) )
+                        if ((!string.IsNullOrEmpty(_deviceMoniker)) && (CacheSnapshotCapabilities.ContainsKey(_deviceMoniker)))
                         {
                             _snapshotCapabilities = CacheSnapshotCapabilities[_deviceMoniker];
                         }
                     }
 
-                    if ( _snapshotCapabilities == null )
+                    if (_snapshotCapabilities == null)
                     {
-                        if ( !IsRunning )
+                        if (!IsRunning)
                         {
                             // create graph without playing to get the video/snapshot capabilities only.
                             // not very clean but it works
-                            WorkerThread( false );
+                            WorkerThread(false);
                         }
                         else
                         {
-                            for ( int i = 0; ( i < 500 ) && ( _snapshotCapabilities == null ); i++ )
+                            for (int i = 0; (i < 500) && (_snapshotCapabilities == null); i++)
                             {
-                                Thread.Sleep( 10 );
+                                Thread.Sleep(10);
                             }
                         }
                     }
@@ -459,7 +493,7 @@ namespace iSpyApplication.Sources.Video
         /// Initializes a new instance of the <see cref="VideoCaptureDevice"/> class.
         /// </summary>
         /// 
-        public VideoCaptureDevice( ) { }
+        public VideoCaptureDevice() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VideoCaptureDevice"/> class.
@@ -467,7 +501,7 @@ namespace iSpyApplication.Sources.Video
         /// 
         /// <param name="deviceMoniker">Moniker string of video capture device.</param>
         /// 
-        public VideoCaptureDevice( string deviceMoniker )
+        public VideoCaptureDevice(string deviceMoniker)
         {
             _deviceMoniker = deviceMoniker;
         }
@@ -480,13 +514,13 @@ namespace iSpyApplication.Sources.Video
         /// object creates background thread and notifies about new frames with the
         /// help of <see cref="NewFrame"/> event.</remarks>
         /// 
-        public void Start( )
+        public void Start()
         {
-            if ( !IsRunning )
+            if (!IsRunning)
             {
                 // check source
-                if ( string.IsNullOrEmpty( _deviceMoniker ) )
-                    throw new ArgumentException( "Video source is not specified." );
+                if (string.IsNullOrEmpty(_deviceMoniker))
+                    throw new ArgumentException("Video source is not specified.");
 
                 _framesReceived = 0;
                 _bytesReceived = 0;
@@ -494,70 +528,35 @@ namespace iSpyApplication.Sources.Video
                 _needToSetVideoInput = true;
 
                 // create events
-                _stopEvent = new ManualResetEvent( false );
+                _abort.Reset();
+                _res = ReasonToFinishPlaying.DeviceLost;
 
-                lock ( _sync )
-                {
-                    // create and start new thread
-                    _thread = new Thread( WorkerThread ) {Name = _deviceMoniker, IsBackground = true};
-                    _thread.TrySetApartmentState(ApartmentState.STA);
-                    _thread.Start( );
-                }
+                _thread = new Thread(WorkerThread) { Name = _deviceMoniker, IsBackground = true };
+                _thread.TrySetApartmentState(ApartmentState.STA);
+                _thread.Start();
+
             }
         }
 
-        /// <summary>
-        /// Signal video source to stop its work.
-        /// </summary>
-        /// 
-        /// <remarks>Signals video source to stop its background thread, stop to
-        /// provide new frames and free resources.</remarks>
-        /// 
-        public void SignalToStop( )
+        public void Stop()
         {
-            // stop thread
-            if (_thread != null)
+            if (IsRunning)
             {
-                // signal to stop
-                _stopEvent?.Set();
+                _res = ReasonToFinishPlaying.StoppedByUser;
+                _abort.Set();
             }
-        }
-
-        /// <summary>
-        /// Wait for video source has stopped.
-        /// </summary>
-        /// 
-        /// <remarks>Waits for source stopping after it was signaled to stop using
-        /// <see cref="SignalToStop"/> method.</remarks>
-        /// 
-        public void WaitForStop( )
-        {
-            Stop();
-        }
-
-        /// <summary>
-        /// Stop video source.
-        /// </summary>
-        /// 
-        /// <remarks><para>Stops video source aborting its thread.</para>
-        /// 
-        /// <para><note>Since the method aborts background thread, its usage is highly not preferred
-        /// and should be done only if there are no other options. The correct way of stopping camera
-        /// is <see cref="SignalToStop">signaling it stop</see> and then
-        /// <see cref="WaitForStop">waiting</see> for background thread's completion.</note></para>
-        /// </remarks>
-        /// 
-        public void Stop( )
-        {
-            if (!IsRunning) return;
-            _stopEvent?.Set();
-            while (IsRunning)
-                Application.DoEvents();
+            else
+            {
+                _res = ReasonToFinishPlaying.StoppedByUser;
+                PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
+            }
         }
 
         public void Restart()
         {
-            
+            if (!IsRunning) return;
+            _res = ReasonToFinishPlaying.Restart;
+            _abort.Set();
         }
 
         /// <summary>
@@ -576,15 +575,15 @@ namespace iSpyApplication.Sources.Video
         /// 
         /// <exception cref="NotSupportedException">The video source does not support configuration property page.</exception>
         /// 
-        public void DisplayPropertyPage( IntPtr parentWindow )
+        public void DisplayPropertyPage(IntPtr parentWindow)
         {
             // check source
-            if ( string.IsNullOrEmpty(_deviceMoniker) )
-                throw new ArgumentException( "Video source is not specified." );
+            if (string.IsNullOrEmpty(_deviceMoniker))
+                throw new ArgumentException("Video source is not specified.");
 
-            lock ( _sync )
+            lock (_sync)
             {
-                if ( IsRunning )
+                if (IsRunning)
                 {
                     // pass the request to backgroud thread if video source is running
                     _parentWindowForPropertyPage = parentWindow;
@@ -597,23 +596,23 @@ namespace iSpyApplication.Sources.Video
                 // create source device's object
                 try
                 {
-                    tempSourceObject = FilterInfo.CreateFilter( _deviceMoniker );
+                    tempSourceObject = FilterInfo.CreateFilter(_deviceMoniker);
                     if (tempSourceObject == null)
                         throw new Exception("source is null");
                 }
                 catch
                 {
-                    throw new ApplicationException( "Failed creating device object for moniker." );
+                    throw new ApplicationException("Failed creating device object for moniker.");
                 }
 
-                if ( !( tempSourceObject is ISpecifyPropertyPages ) )
+                if (!(tempSourceObject is ISpecifyPropertyPages))
                 {
-                    throw new NotSupportedException( "The video source does not support configuration property page." );
+                    throw new NotSupportedException("The video source does not support configuration property page.");
                 }
 
-                DisplayPropertyPage( parentWindow, tempSourceObject );
+                DisplayPropertyPage(parentWindow, tempSourceObject);
 
-                Marshal.FinalReleaseComObject( tempSourceObject );
+                Marshal.FinalReleaseComObject(tempSourceObject);
             }
         }
 
@@ -639,24 +638,24 @@ namespace iSpyApplication.Sources.Video
         /// <exception cref="ApplicationException">The video source must be running in order to display crossbar property page.</exception>
         /// <exception cref="NotSupportedException">Crossbar configuration is not supported by currently running video source.</exception>
         /// 
-        public void DisplayCrossbarPropertyPage( IntPtr parentWindow )
+        public void DisplayCrossbarPropertyPage(IntPtr parentWindow)
         {
-            lock ( _sync )
+            lock (_sync)
             {
                 // wait max 5 seconds till the flag gets initialized
-                for ( int i = 0; ( i < 500 ) && ( !_isCrossbarAvailable.HasValue ) && ( IsRunning ); i++ )
+                for (int i = 0; (i < 500) && (!_isCrossbarAvailable.HasValue) && (IsRunning); i++)
                 {
-                    Thread.Sleep( 10 );
+                    Thread.Sleep(10);
                 }
 
-                if ( ( !IsRunning ) || ( !_isCrossbarAvailable.HasValue ) )
+                if ((!IsRunning) || (!_isCrossbarAvailable.HasValue))
                 {
-                    throw new ApplicationException( "The video source must be running in order to display crossbar property page." );
+                    throw new ApplicationException("The video source must be running in order to display crossbar property page.");
                 }
 
-                if ( !_isCrossbarAvailable.Value )
+                if (!_isCrossbarAvailable.Value)
                 {
-                    throw new NotSupportedException( "Crossbar configuration is not supported by currently running video source." );
+                    throw new NotSupportedException("Crossbar configuration is not supported by currently running video source.");
                 }
 
                 // pass the request to background thread if video source is running
@@ -677,22 +676,22 @@ namespace iSpyApplication.Sources.Video
         /// using <see cref="DisplayCrossbarPropertyPage"/>.</para>
         /// </remarks>
         ///
-        public bool CheckIfCrossbarAvailable( )
+        public bool CheckIfCrossbarAvailable()
         {
-            lock ( _sync )
+            lock (_sync)
             {
-                if ( !_isCrossbarAvailable.HasValue )
+                if (!_isCrossbarAvailable.HasValue)
                 {
-                    if ( !IsRunning )
+                    if (!IsRunning)
                     {
                         // create graph without playing to collect available inputs
-                        WorkerThread( false );
+                        WorkerThread(false);
                     }
                     else
                     {
-                        for ( int i = 0; ( i < 500 ) && ( !_isCrossbarAvailable.HasValue ); i++ )
+                        for (int i = 0; (i < 500) && (!_isCrossbarAvailable.HasValue); i++)
                         {
-                            Thread.Sleep( 10 );
+                            Thread.Sleep(10);
                         }
                     }
                 }
@@ -714,7 +713,7 @@ namespace iSpyApplication.Sources.Video
         /// to enable receiving snapshots.</note></para>
         /// </remarks>
         /// 
-        public void SimulateTrigger( )
+        public void SimulateTrigger()
         {
             _needToSimulateTrigger = true;
         }
@@ -733,43 +732,43 @@ namespace iSpyApplication.Sources.Video
         /// <exception cref="ApplicationException">Failed creating device object for moniker.</exception>
         /// <exception cref="NotSupportedException">The video source does not support camera control.</exception>
         /// 
-        public bool SetCameraProperty( CameraControlProperty property, int value, CameraControlFlags controlFlags )
+        public bool SetCameraProperty(CameraControlProperty property, int value, CameraControlFlags controlFlags)
         {
             bool ret;
 
             // check if source was set
-            if ( string.IsNullOrEmpty( _deviceMoniker ) )
+            if (string.IsNullOrEmpty(_deviceMoniker))
             {
-                throw new ArgumentException( "Video source is not specified." );
+                throw new ArgumentException("Video source is not specified.");
             }
 
-            lock ( _sync )
+            lock (_sync)
             {
                 object tempSourceObject;
 
                 // create source device's object
                 try
                 {
-                    tempSourceObject = FilterInfo.CreateFilter( _deviceMoniker );
+                    tempSourceObject = FilterInfo.CreateFilter(_deviceMoniker);
                 }
                 catch
                 {
-                    throw new ApplicationException( "Failed creating device object for moniker." );
+                    throw new ApplicationException("Failed creating device object for moniker.");
                 }
 
-                if ( !( tempSourceObject is IAMCameraControl ) )
+                if (!(tempSourceObject is IAMCameraControl))
                 {
-                    throw new NotSupportedException( "The video source does not support camera control." );
+                    throw new NotSupportedException("The video source does not support camera control.");
                 }
 
-                var pCamControl = (IAMCameraControl) tempSourceObject;
-                int hr = pCamControl.Set( property, value, controlFlags );
+                var pCamControl = (IAMCameraControl)tempSourceObject;
+                int hr = pCamControl.Set(property, value, controlFlags);
 
-                ret = ( hr >= 0 );
+                ret = (hr >= 0);
 
-                Marshal.FinalReleaseComObject( tempSourceObject );
+                Marshal.FinalReleaseComObject(tempSourceObject);
             }
-            
+
             return ret;
         }
 
@@ -787,41 +786,41 @@ namespace iSpyApplication.Sources.Video
         /// <exception cref="ApplicationException">Failed creating device object for moniker.</exception>
         /// <exception cref="NotSupportedException">The video source does not support camera control.</exception>
         /// 
-        public bool GetCameraProperty( CameraControlProperty property, out int value, out CameraControlFlags controlFlags )
+        public bool GetCameraProperty(CameraControlProperty property, out int value, out CameraControlFlags controlFlags)
         {
             bool ret;
 
             // check if source was set
-            if ( string.IsNullOrEmpty( _deviceMoniker ) )
+            if (string.IsNullOrEmpty(_deviceMoniker))
             {
-                throw new ArgumentException( "Video source is not specified." );
+                throw new ArgumentException("Video source is not specified.");
             }
 
-            lock ( _sync )
+            lock (_sync)
             {
                 object tempSourceObject;
 
                 // create source device's object
                 try
                 {
-                    tempSourceObject = FilterInfo.CreateFilter( _deviceMoniker );
+                    tempSourceObject = FilterInfo.CreateFilter(_deviceMoniker);
                 }
                 catch
                 {
-                    throw new ApplicationException( "Failed creating device object for moniker." );
+                    throw new ApplicationException("Failed creating device object for moniker.");
                 }
 
-                if ( !( tempSourceObject is IAMCameraControl ) )
+                if (!(tempSourceObject is IAMCameraControl))
                 {
-                    throw new NotSupportedException( "The video source does not support camera control." );
+                    throw new NotSupportedException("The video source does not support camera control.");
                 }
 
-                var pCamControl = (IAMCameraControl) tempSourceObject;
-                int hr = pCamControl.Get( property, out value, out controlFlags );
+                var pCamControl = (IAMCameraControl)tempSourceObject;
+                int hr = pCamControl.Get(property, out value, out controlFlags);
 
-                ret = ( hr >= 0 );
+                ret = (hr >= 0);
 
-                Marshal.FinalReleaseComObject( tempSourceObject );
+                Marshal.FinalReleaseComObject(tempSourceObject);
             }
 
             return ret;
@@ -844,41 +843,41 @@ namespace iSpyApplication.Sources.Video
         /// <exception cref="ApplicationException">Failed creating device object for moniker.</exception>
         /// <exception cref="NotSupportedException">The video source does not support camera control.</exception>
         /// 
-        public bool GetCameraPropertyRange( CameraControlProperty property, out int minValue, out int maxValue, out int stepSize, out int defaultValue, out CameraControlFlags controlFlags )
+        public bool GetCameraPropertyRange(CameraControlProperty property, out int minValue, out int maxValue, out int stepSize, out int defaultValue, out CameraControlFlags controlFlags)
         {
             bool ret;
 
             // check if source was set
-            if ( string.IsNullOrEmpty( _deviceMoniker ) )
+            if (string.IsNullOrEmpty(_deviceMoniker))
             {
-                throw new ArgumentException( "Video source is not specified." );
+                throw new ArgumentException("Video source is not specified.");
             }
 
-            lock ( _sync )
+            lock (_sync)
             {
                 object tempSourceObject;
 
                 // create source device's object
                 try
                 {
-                    tempSourceObject = FilterInfo.CreateFilter( _deviceMoniker );
+                    tempSourceObject = FilterInfo.CreateFilter(_deviceMoniker);
                 }
                 catch
                 {
-                    throw new ApplicationException( "Failed creating device object for moniker." );
+                    throw new ApplicationException("Failed creating device object for moniker.");
                 }
 
-                if ( !( tempSourceObject is IAMCameraControl ) )
+                if (!(tempSourceObject is IAMCameraControl))
                 {
-                    throw new NotSupportedException( "The video source does not support camera control." );
+                    throw new NotSupportedException("The video source does not support camera control.");
                 }
 
-                var pCamControl = (IAMCameraControl) tempSourceObject;
-                int hr = pCamControl.GetRange( property, out minValue, out maxValue, out stepSize, out defaultValue, out controlFlags );
+                var pCamControl = (IAMCameraControl)tempSourceObject;
+                int hr = pCamControl.GetRange(property, out minValue, out maxValue, out stepSize, out defaultValue, out controlFlags);
 
-                ret = ( hr >= 0 );
+                ret = (hr >= 0);
 
-                Marshal.FinalReleaseComObject( tempSourceObject );
+                Marshal.FinalReleaseComObject(tempSourceObject);
             }
 
             return ret;
@@ -888,9 +887,9 @@ namespace iSpyApplication.Sources.Video
         /// Worker thread.
         /// </summary>
         /// 
-        private void WorkerThread( )
+        private void WorkerThread()
         {
-            WorkerThread( true );
+            WorkerThread(true);
         }
 
         /// <summary>
@@ -1107,14 +1106,13 @@ namespace iSpyApplication.Sources.Video
             return ret;
         }
 
-        private void WorkerThread( bool runGraph )
+        private void WorkerThread(bool runGraph)
         {
-            var res = ReasonToFinishPlaying.StoppedByUser;
             bool isSnapshotSupported = false;
 
             // grabber
-            var videoGrabber = new Grabber( this, false );
-            var snapshotGrabber = new Grabber( this, true );
+            var videoGrabber = new Grabber(this, false);
+            var snapshotGrabber = new Grabber(this, true);
 
             // objects
             object captureGraphObject = null;
@@ -1125,115 +1123,115 @@ namespace iSpyApplication.Sources.Video
 
             // interfaces
             IAMVideoControl videoControl = null;
-            IPin            pinStillImage = null;
-            IAMCrossbar     crossbar = null;
+            IPin pinStillImage = null;
+            IAMCrossbar crossbar = null;
 
             try
             {
                 // get type of capture graph builder
-                Type type = Type.GetTypeFromCLSID( Clsid.CaptureGraphBuilder2 );
-                if ( type == null )
-                    throw new ApplicationException( "Failed creating capture graph builder" );
+                Type type = Type.GetTypeFromCLSID(Clsid.CaptureGraphBuilder2);
+                if (type == null)
+                    throw new ApplicationException("Failed creating capture graph builder");
 
                 // create capture graph builder
-                captureGraphObject = Activator.CreateInstance( type );
-                var captureGraph = (ICaptureGraphBuilder2) captureGraphObject;
+                captureGraphObject = Activator.CreateInstance(type);
+                var captureGraph = (ICaptureGraphBuilder2)captureGraphObject;
 
                 // get type of filter graph
-                type = Type.GetTypeFromCLSID( Clsid.FilterGraph );
-                if ( type == null )
-                    throw new ApplicationException( "Failed creating filter graph" );
+                type = Type.GetTypeFromCLSID(Clsid.FilterGraph);
+                if (type == null)
+                    throw new ApplicationException("Failed creating filter graph");
 
                 // create filter graph
-                graphObject = Activator.CreateInstance( type );
-                var   graph = (IFilterGraph2) graphObject;
+                graphObject = Activator.CreateInstance(type);
+                var graph = (IFilterGraph2)graphObject;
 
                 // set filter graph to the capture graph builder
-                captureGraph.SetFiltergraph( graph );
+                captureGraph.SetFiltergraph(graph);
 
                 // create source device's object
-                _sourceObject = FilterInfo.CreateFilter( _deviceMoniker );
-                if ( _sourceObject == null )
-                    throw new ApplicationException( "Failed creating device object for moniker" );
+                _sourceObject = FilterInfo.CreateFilter(_deviceMoniker);
+                if (_sourceObject == null)
+                    throw new ApplicationException("Failed creating device object for moniker");
 
                 // get base filter interface of source device
-                var     sourceBase = (IBaseFilter) _sourceObject;
+                var sourceBase = (IBaseFilter)_sourceObject;
 
                 // get video control interface of the device
                 try
                 {
-                    videoControl = (IAMVideoControl) _sourceObject;
+                    videoControl = (IAMVideoControl)_sourceObject;
                 }
-                catch(InvalidCastException)
+                catch (InvalidCastException)
                 {
                     // some camera drivers may not support IAMVideoControl interface
                 }
 
                 // get type of sample grabber
-                type = Type.GetTypeFromCLSID( Clsid.SampleGrabber );
-                if ( type == null )
-                    throw new ApplicationException( "Failed creating sample grabber" );
+                type = Type.GetTypeFromCLSID(Clsid.SampleGrabber);
+                if (type == null)
+                    throw new ApplicationException("Failed creating sample grabber");
 
                 // create sample grabber used for video capture
-                videoGrabberObject = Activator.CreateInstance( type );
-                var  videoSampleGrabber = (ISampleGrabber) videoGrabberObject;
-                var     videoGrabberBase = (IBaseFilter) videoGrabberObject;
+                videoGrabberObject = Activator.CreateInstance(type);
+                var videoSampleGrabber = (ISampleGrabber)videoGrabberObject;
+                var videoGrabberBase = (IBaseFilter)videoGrabberObject;
                 // create sample grabber used for snapshot capture
-                snapshotGrabberObject = Activator.CreateInstance( type );
-                var  snapshotSampleGrabber = (ISampleGrabber) snapshotGrabberObject;
-                var     snapshotGrabberBase = (IBaseFilter) snapshotGrabberObject;
+                snapshotGrabberObject = Activator.CreateInstance(type);
+                var snapshotSampleGrabber = (ISampleGrabber)snapshotGrabberObject;
+                var snapshotGrabberBase = (IBaseFilter)snapshotGrabberObject;
 
                 // add source and grabber filters to graph
-                graph.AddFilter( sourceBase, "source" );
-                graph.AddFilter( videoGrabberBase, "grabber_video" );
-                graph.AddFilter( snapshotGrabberBase, "grabber_snapshot" );
+                graph.AddFilter(sourceBase, "source");
+                graph.AddFilter(videoGrabberBase, "grabber_video");
+                graph.AddFilter(snapshotGrabberBase, "grabber_snapshot");
 
                 // set media type
-                var mediaType = new AMMediaType {MajorType = MediaType.Video, SubType = MediaSubType.RGB24};
+                var mediaType = new AMMediaType { MajorType = MediaType.Video, SubType = MediaSubType.RGB24 };
 
-                videoSampleGrabber.SetMediaType( mediaType );
-                snapshotSampleGrabber.SetMediaType( mediaType );
+                videoSampleGrabber.SetMediaType(mediaType);
+                snapshotSampleGrabber.SetMediaType(mediaType);
 
                 // get crossbar object to to allows configuring pins of capture card
-                captureGraph.FindInterface( FindDirection.UpstreamOnly, Guid.Empty, sourceBase, typeof( IAMCrossbar ).GUID, out crossbarObject );
-                if ( crossbarObject != null )
+                captureGraph.FindInterface(FindDirection.UpstreamOnly, Guid.Empty, sourceBase, typeof(IAMCrossbar).GUID, out crossbarObject);
+                if (crossbarObject != null)
                 {
-                    crossbar = (IAMCrossbar) crossbarObject;
+                    crossbar = (IAMCrossbar)crossbarObject;
                 }
-                _isCrossbarAvailable = ( crossbar != null );
-                _crossbarVideoInputs = ColletCrossbarVideoInputs( crossbar );
+                _isCrossbarAvailable = (crossbar != null);
+                _crossbarVideoInputs = ColletCrossbarVideoInputs(crossbar);
 
-                if ( videoControl != null )
+                if (videoControl != null)
                 {
                     // find Still Image output pin of the vedio device
-                    captureGraph.FindPin( _sourceObject, PinDirection.Output,
-                        PinCategory.StillImage, MediaType.Video, false, 0, out pinStillImage );
+                    captureGraph.FindPin(_sourceObject, PinDirection.Output,
+                        PinCategory.StillImage, MediaType.Video, false, 0, out pinStillImage);
                     // check if it support trigger mode
-                    if ( pinStillImage != null )
+                    if (pinStillImage != null)
                     {
                         VideoControlFlags caps;
-                        videoControl.GetCaps( pinStillImage, out caps );
-                        isSnapshotSupported = ( ( caps & VideoControlFlags.ExternalTriggerEnable ) != 0 );
+                        videoControl.GetCaps(pinStillImage, out caps);
+                        isSnapshotSupported = ((caps & VideoControlFlags.ExternalTriggerEnable) != 0);
                     }
                 }
 
                 // configure video sample grabber
-                videoSampleGrabber.SetBufferSamples( false );
-                videoSampleGrabber.SetOneShot( false );
-                videoSampleGrabber.SetCallback( videoGrabber, 1 );
+                videoSampleGrabber.SetBufferSamples(false);
+                videoSampleGrabber.SetOneShot(false);
+                videoSampleGrabber.SetCallback(videoGrabber, 1);
 
                 // configure snapshot sample grabber
-                snapshotSampleGrabber.SetBufferSamples( true );
-                snapshotSampleGrabber.SetOneShot( false );
-                snapshotSampleGrabber.SetCallback( snapshotGrabber, 1 );
+                snapshotSampleGrabber.SetBufferSamples(true);
+                snapshotSampleGrabber.SetOneShot(false);
+                snapshotSampleGrabber.SetCallback(snapshotGrabber, 1);
 
                 // configure pins
-                GetPinCapabilitiesAndConfigureSizeAndRate( captureGraph, sourceBase,
-                    PinCategory.Capture, _videoResolution, ref _videoCapabilities );
-                if ( isSnapshotSupported )
+                GetPinCapabilitiesAndConfigureSizeAndRate(captureGraph, sourceBase,
+                    PinCategory.Capture, _videoResolution, ref _videoCapabilities);
+                if (isSnapshotSupported)
                 {
-                    GetPinCapabilitiesAndConfigureSizeAndRate( captureGraph, sourceBase,
-                        PinCategory.StillImage, _snapshotResolution, ref _snapshotCapabilities );
+                    GetPinCapabilitiesAndConfigureSizeAndRate(captureGraph, sourceBase,
+                        PinCategory.StillImage, _snapshotResolution, ref _snapshotCapabilities);
                 }
                 else
                 {
@@ -1241,34 +1239,34 @@ namespace iSpyApplication.Sources.Video
                 }
 
                 // put video/snapshot capabilities into cache
-                lock ( CacheVideoCapabilities )
+                lock (CacheVideoCapabilities)
                 {
-                    if ( ( _videoCapabilities != null ) && ( !CacheVideoCapabilities.ContainsKey( _deviceMoniker ) ) )
+                    if ((_videoCapabilities != null) && (!CacheVideoCapabilities.ContainsKey(_deviceMoniker)))
                     {
-                        CacheVideoCapabilities.Add( _deviceMoniker, _videoCapabilities );
+                        CacheVideoCapabilities.Add(_deviceMoniker, _videoCapabilities);
                     }
                 }
-                lock ( CacheSnapshotCapabilities )
+                lock (CacheSnapshotCapabilities)
                 {
-                    if ( ( _snapshotCapabilities != null ) && ( !CacheSnapshotCapabilities.ContainsKey( _deviceMoniker ) ) )
+                    if ((_snapshotCapabilities != null) && (!CacheSnapshotCapabilities.ContainsKey(_deviceMoniker)))
                     {
-                        CacheSnapshotCapabilities.Add( _deviceMoniker, _snapshotCapabilities );
+                        CacheSnapshotCapabilities.Add(_deviceMoniker, _snapshotCapabilities);
                     }
                 }
 
-                if ( runGraph )
+                if (runGraph)
                 {
                     // render capture pin
-                    captureGraph.RenderStream( PinCategory.Capture, MediaType.Video, sourceBase, null, videoGrabberBase );
+                    captureGraph.RenderStream(PinCategory.Capture, MediaType.Video, sourceBase, null, videoGrabberBase);
 
-                    if ( videoSampleGrabber.GetConnectedMediaType( mediaType ) == 0 )
+                    if (videoSampleGrabber.GetConnectedMediaType(mediaType) == 0)
                     {
-                        var vih = (VideoInfoHeader) Marshal.PtrToStructure( mediaType.FormatPtr, typeof( VideoInfoHeader ) );
+                        var vih = (VideoInfoHeader)Marshal.PtrToStructure(mediaType.FormatPtr, typeof(VideoInfoHeader));
 
                         videoGrabber.Width = vih.BmiHeader.Width;
                         videoGrabber.Height = vih.BmiHeader.Height;
-                        
-                        mediaType.Dispose( );
+
+                        mediaType.Dispose();
                     }
                     else
                     {
@@ -1286,141 +1284,136 @@ namespace iSpyApplication.Sources.Video
 
                                 mediaType.Dispose();
                             }
-                        }    
+                        }
                     }
 
                     // get media control
-                    var   mediaControl = (IMediaControl) graphObject;
+                    var mediaControl = (IMediaControl)graphObject;
 
                     // get media events' interface
-                    var   mediaEvent = (IMediaEventEx) graphObject;
+                    var mediaEvent = (IMediaEventEx)graphObject;
 
                     // run
-                    mediaControl.Run( );
+                    mediaControl.Run();
 
-                    if ( ( isSnapshotSupported ) && ( _provideSnapshots ) )
+                    if ((isSnapshotSupported) && (_provideSnapshots))
                     {
                         _startTime = DateTime.Now;
-                        videoControl.SetMode( pinStillImage, VideoControlFlags.ExternalTriggerEnable );
+                        videoControl.SetMode(pinStillImage, VideoControlFlags.ExternalTriggerEnable);
                     }
 
                     do
                     {
-                        if ( mediaEvent != null )
+                        if (mediaEvent != null)
                         {
                             IntPtr p1;
                             IntPtr p2;
                             DsEvCode code;
-                            if ( mediaEvent.GetEvent( out code, out p1, out p2, 0 ) >= 0 )
+                            if (mediaEvent.GetEvent(out code, out p1, out p2, 0) >= 0)
                             {
-                                mediaEvent.FreeEventParams( code, p1, p2 );
+                                mediaEvent.FreeEventParams(code, p1, p2);
 
-                                if ( code == DsEvCode.DeviceLost )
+                                if (code == DsEvCode.DeviceLost)
                                 {
-                                    res = ReasonToFinishPlaying.DeviceLost;
+                                    _res = ReasonToFinishPlaying.DeviceLost;
                                     break;
                                 }
                             }
                         }
 
-                        if ( _needToSetVideoInput )
+                        if (_needToSetVideoInput)
                         {
                             _needToSetVideoInput = false;
                             // set/check current input type of a video card (frame grabber)
-                            if ( _isCrossbarAvailable.Value )
+                            if (_isCrossbarAvailable.Value)
                             {
-                                SetCurrentCrossbarInput( crossbar, _crossbarVideoInput );
-                                _crossbarVideoInput = GetCurrentCrossbarInput( crossbar );
+                                SetCurrentCrossbarInput(crossbar, _crossbarVideoInput);
+                                _crossbarVideoInput = GetCurrentCrossbarInput(crossbar);
                             }
                         }
 
-                        if ( _needToSimulateTrigger )
+                        if (_needToSimulateTrigger)
                         {
                             _needToSimulateTrigger = false;
 
-                            if ( ( isSnapshotSupported ) && ( _provideSnapshots ) )
+                            if ((isSnapshotSupported) && (_provideSnapshots))
                             {
-                                videoControl.SetMode( pinStillImage, VideoControlFlags.Trigger );
+                                videoControl.SetMode(pinStillImage, VideoControlFlags.Trigger);
                             }
                         }
 
-                        if ( _needToDisplayPropertyPage )
+                        if (_needToDisplayPropertyPage)
                         {
                             _needToDisplayPropertyPage = false;
-                            DisplayPropertyPage( _parentWindowForPropertyPage, _sourceObject );
+                            DisplayPropertyPage(_parentWindowForPropertyPage, _sourceObject);
 
-                            if ( crossbar != null )
+                            if (crossbar != null)
                             {
-                                _crossbarVideoInput = GetCurrentCrossbarInput( crossbar );
+                                _crossbarVideoInput = GetCurrentCrossbarInput(crossbar);
                             }
                         }
 
-                        if ( _needToDisplayCrossBarPropertyPage )
+                        if (_needToDisplayCrossBarPropertyPage)
                         {
                             _needToDisplayCrossBarPropertyPage = false;
 
-                            if ( crossbar != null )
+                            if (crossbar != null)
                             {
-                                DisplayPropertyPage( _parentWindowForPropertyPage, crossbar );
-                                _crossbarVideoInput = GetCurrentCrossbarInput( crossbar );
+                                DisplayPropertyPage(_parentWindowForPropertyPage, crossbar);
+                                _crossbarVideoInput = GetCurrentCrossbarInput(crossbar);
                             }
                         }
 
-                        
+                        Thread.Sleep(20);
                     }
-                    while ( !_stopEvent.WaitOne( 100, false ) );
+                    while (!_abort.WaitOne(20, false) && !MainForm.ShuttingDown);
 
-                    mediaControl.Stop( );
+                    mediaControl.Stop();
                 }
             }
-            catch ( Exception ex )
+            catch (Exception ex)
             {
-                Logger.LogException(ex,"Device");
+                Logger.LogException(ex, "Device");
                 // provide information to clients
-                res = ReasonToFinishPlaying.DeviceLost;
+                _res = ReasonToFinishPlaying.DeviceLost;
             }
             finally
             {
                 // release all objects
-                if ( graphObject != null )
+                if (graphObject != null)
                 {
-                    Marshal.FinalReleaseComObject( graphObject );
+                    Marshal.FinalReleaseComObject(graphObject);
                 }
-                if ( _sourceObject != null )
+                if (_sourceObject != null)
                 {
-                    Marshal.FinalReleaseComObject( _sourceObject );
+                    Marshal.FinalReleaseComObject(_sourceObject);
                     _sourceObject = null;
                 }
-                if ( videoGrabberObject != null )
+                if (videoGrabberObject != null)
                 {
-                    Marshal.FinalReleaseComObject( videoGrabberObject );
+                    Marshal.FinalReleaseComObject(videoGrabberObject);
                 }
-                if ( snapshotGrabberObject != null )
+                if (snapshotGrabberObject != null)
                 {
-                    Marshal.FinalReleaseComObject( snapshotGrabberObject );
+                    Marshal.FinalReleaseComObject(snapshotGrabberObject);
                 }
-                if ( captureGraphObject != null )
+                if (captureGraphObject != null)
                 {
-                    Marshal.FinalReleaseComObject( captureGraphObject );
+                    Marshal.FinalReleaseComObject(captureGraphObject);
                 }
-                if ( crossbarObject != null )
+                if (crossbarObject != null)
                 {
-                    Marshal.FinalReleaseComObject( crossbarObject );
-                }
-                if (_stopEvent != null)
-                {
-                    _stopEvent?.Close();
-                    _stopEvent = null;
+                    Marshal.FinalReleaseComObject(crossbarObject);
                 }
             }
 
-            PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(res));
+            PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
         }
 
         // Set resolution for the specified stream configuration
-        private static void SetResolution( IAMStreamConfig streamConfig, VideoCapabilities resolution )
+        private static void SetResolution(IAMStreamConfig streamConfig, VideoCapabilities resolution)
         {
-            if ( resolution == null )
+            if (resolution == null)
             {
                 return;
             }
@@ -1428,69 +1421,69 @@ namespace iSpyApplication.Sources.Video
             // iterate through device's capabilities to find mediaType for desired resolution
             int capabilitiesCount, capabilitySize;
             AMMediaType newMediaType = null;
-            var caps = new VideoStreamConfigCaps( );
+            var caps = new VideoStreamConfigCaps();
 
-            streamConfig.GetNumberOfCapabilities( out capabilitiesCount, out capabilitySize );
+            streamConfig.GetNumberOfCapabilities(out capabilitiesCount, out capabilitySize);
 
-            for ( int i = 0; i < capabilitiesCount; i++ )
+            for (int i = 0; i < capabilitiesCount; i++)
             {
                 try
                 {
-                    var vc = new VideoCapabilities( streamConfig, i );
+                    var vc = new VideoCapabilities(streamConfig, i);
 
-                    if ( resolution == vc )
+                    if (resolution == vc)
                     {
-                        if ( streamConfig.GetStreamCaps( i, out newMediaType, caps ) == 0 )
+                        if (streamConfig.GetStreamCaps(i, out newMediaType, caps) == 0)
                         {
                             break;
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     // ignored
-                    Logger.LogException(ex,"SetResolution");
+                    Logger.LogException(ex, "SetResolution");
                 }
             }
 
             // set the new format
-            if ( newMediaType != null )
+            if (newMediaType != null)
             {
-                streamConfig.SetFormat( newMediaType );
-                newMediaType.Dispose( );
+                streamConfig.SetFormat(newMediaType);
+                newMediaType.Dispose();
             }
         }
 
         // Configure specified pin and collect its capabilities if required
-        private void GetPinCapabilitiesAndConfigureSizeAndRate( ICaptureGraphBuilder2 graphBuilder, IBaseFilter baseFilter,
-            Guid pinCategory, VideoCapabilities resolutionToSet, ref VideoCapabilities[] capabilities )
+        private void GetPinCapabilitiesAndConfigureSizeAndRate(ICaptureGraphBuilder2 graphBuilder, IBaseFilter baseFilter,
+            Guid pinCategory, VideoCapabilities resolutionToSet, ref VideoCapabilities[] capabilities)
         {
             object streamConfigObject;
-            graphBuilder.FindInterface( pinCategory, MediaType.Video, baseFilter, typeof( IAMStreamConfig ).GUID, out streamConfigObject );
+            graphBuilder.FindInterface(pinCategory, MediaType.Video, baseFilter, typeof(IAMStreamConfig).GUID, out streamConfigObject);
 
-            if ( streamConfigObject != null )
+            if (streamConfigObject != null)
             {
                 IAMStreamConfig streamConfig = null;
 
                 try
                 {
-                    streamConfig = (IAMStreamConfig) streamConfigObject;
+                    streamConfig = (IAMStreamConfig)streamConfigObject;
                 }
-                catch ( InvalidCastException ex)
+                catch (InvalidCastException ex)
                 {
                     Logger.LogException(ex, "GetPinCapabilities");
                 }
 
-                if ( streamConfig != null )
+                if (streamConfig != null)
                 {
-                    if ( capabilities == null )
+                    if (capabilities == null)
                     {
                         try
                         {
                             // get all video capabilities
-                            capabilities = iSpyPRO.DirectShow.VideoCapabilities.FromStreamConfig( streamConfig );
+                            capabilities = iSpyPRO.DirectShow.VideoCapabilities.FromStreamConfig(streamConfig);
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             Logger.LogException(ex, "Device Caps");
 
@@ -1498,31 +1491,31 @@ namespace iSpyApplication.Sources.Video
                     }
 
                     // check if it is required to change capture settings
-                    if ( resolutionToSet != null )
+                    if (resolutionToSet != null)
                     {
-                        SetResolution( streamConfig, resolutionToSet );
+                        SetResolution(streamConfig, resolutionToSet);
                     }
                 }
             }
 
             // if failed resolving capabilities, then just create empty capabilities array,
             // so we don't try again
-            if ( capabilities == null )
+            if (capabilities == null)
             {
                 capabilities = new VideoCapabilities[0];
             }
         }
 
         // Display property page for the specified object
-        private void DisplayPropertyPage( IntPtr parentWindow, object sourceObject )
+        private void DisplayPropertyPage(IntPtr parentWindow, object sourceObject)
         {
             try
             {
                 // retrieve ISpecifyPropertyPages interface of the device
                 var pPropPages = sourceObject as ISpecifyPropertyPages;
-                if (pPropPages==null)
+                if (pPropPages == null)
                 {
-                     var e = sourceObject as IAMVfwCompressDialogs;
+                    var e = sourceObject as IAMVfwCompressDialogs;
                     if (e == null)
                     {
                         throw new NotSupportedException("The video source does not support the compressor dialog page.");
@@ -1533,16 +1526,16 @@ namespace iSpyApplication.Sources.Video
 
                 // get property pages from the property bag
                 CAUUID caGUID;
-                pPropPages.GetPages( out caGUID );
+                pPropPages.GetPages(out caGUID);
 
                 // get filter info
-                var filterInfo = new FilterInfo( _deviceMoniker );
+                var filterInfo = new FilterInfo(_deviceMoniker);
 
                 // create and display the OlePropertyFrame
                 NativeMethods.OleCreatePropertyFrame(parentWindow, 0, 0, filterInfo.Name, 1, ref sourceObject, caGUID.cElems, caGUID.pElems, 0, 0, IntPtr.Zero);
 
                 // release COM objects
-                Marshal.FreeCoTaskMem( caGUID.pElems );
+                Marshal.FreeCoTaskMem(caGUID.pElems);
             }
             catch
             {
@@ -1551,89 +1544,89 @@ namespace iSpyApplication.Sources.Video
         }
 
         // Collect all video inputs of the specified crossbar
-        private VideoInput[] ColletCrossbarVideoInputs( IAMCrossbar crossbar )
+        private VideoInput[] ColletCrossbarVideoInputs(IAMCrossbar crossbar)
         {
-            lock ( CacheCrossbarVideoInputs )
+            lock (CacheCrossbarVideoInputs)
             {
-                if ( CacheCrossbarVideoInputs.ContainsKey( _deviceMoniker ) )
+                if (CacheCrossbarVideoInputs.ContainsKey(_deviceMoniker))
                 {
                     return CacheCrossbarVideoInputs[_deviceMoniker];
                 }
 
-                var videoInputsList = new List<VideoInput>( );
+                var videoInputsList = new List<VideoInput>();
 
-                if ( crossbar != null )
+                if (crossbar != null)
                 {
                     int inPinsCount, outPinsCount;
 
                     // gen number of pins in the crossbar
-                    if ( crossbar.get_PinCounts( out outPinsCount, out inPinsCount ) == 0 )
+                    if (crossbar.get_PinCounts(out outPinsCount, out inPinsCount) == 0)
                     {
                         // collect all video inputs
-                        for ( int i = 0; i < inPinsCount; i++ )
+                        for (int i = 0; i < inPinsCount; i++)
                         {
                             int pinIndexRelated;
                             PhysicalConnectorType type;
 
-                            if ( crossbar.get_CrossbarPinInfo( true, i, out pinIndexRelated, out type ) != 0 )
+                            if (crossbar.get_CrossbarPinInfo(true, i, out pinIndexRelated, out type) != 0)
                                 continue;
 
-                            if ( type < PhysicalConnectorType.AudioTuner )
+                            if (type < PhysicalConnectorType.AudioTuner)
                             {
-                                videoInputsList.Add( new VideoInput( i, type ) );
+                                videoInputsList.Add(new VideoInput(i, type));
                             }
                         }
                     }
                 }
 
                 var videoInputs = new VideoInput[videoInputsList.Count];
-                videoInputsList.CopyTo( videoInputs );
+                videoInputsList.CopyTo(videoInputs);
 
-                CacheCrossbarVideoInputs.Add( _deviceMoniker, videoInputs );
+                CacheCrossbarVideoInputs.Add(_deviceMoniker, videoInputs);
 
                 return videoInputs;
             }
         }
 
         // Get type of input connected to video output of the crossbar
-        private VideoInput GetCurrentCrossbarInput( IAMCrossbar crossbar )
+        private VideoInput GetCurrentCrossbarInput(IAMCrossbar crossbar)
         {
             VideoInput videoInput = VideoInput.Default;
 
             int inPinsCount, outPinsCount;
 
             // gen number of pins in the crossbar
-            if ( crossbar.get_PinCounts( out outPinsCount, out inPinsCount ) == 0 )
+            if (crossbar.get_PinCounts(out outPinsCount, out inPinsCount) == 0)
             {
                 int videoOutputPinIndex = -1;
                 int pinIndexRelated;
 
                 // find index of the video output pin
-                for ( int i = 0; i < outPinsCount; i++ )
+                for (int i = 0; i < outPinsCount; i++)
                 {
                     PhysicalConnectorType type;
-                    if ( crossbar.get_CrossbarPinInfo( false, i, out pinIndexRelated, out type ) != 0 )
+                    if (crossbar.get_CrossbarPinInfo(false, i, out pinIndexRelated, out type) != 0)
                         continue;
 
-                    if ( type == PhysicalConnectorType.VideoDecoder )
+                    if (type == PhysicalConnectorType.VideoDecoder)
                     {
                         videoOutputPinIndex = i;
                         break;
                     }
                 }
 
-                if ( videoOutputPinIndex != -1 )
+                if (videoOutputPinIndex != -1)
                 {
                     int videoInputPinIndex;
 
                     // get index of the input pin connected to the output
-                    if ( crossbar.get_IsRoutedTo( videoOutputPinIndex, out videoInputPinIndex ) == 0 )
+                    if (crossbar.get_IsRoutedTo(videoOutputPinIndex, out videoInputPinIndex) == 0)
                     {
                         PhysicalConnectorType inputType;
 
-                        crossbar.get_CrossbarPinInfo( true, videoInputPinIndex, out pinIndexRelated, out inputType );
+                        crossbar.get_CrossbarPinInfo(true, videoInputPinIndex, out pinIndexRelated, out inputType);
 
-                        videoInput = new VideoInput( videoInputPinIndex, inputType );
+                        videoInput = new VideoInput(videoInputPinIndex, inputType);
                     }
                 }
             }
@@ -1642,14 +1635,14 @@ namespace iSpyApplication.Sources.Video
         }
 
         // Set type of input connected to video output of the crossbar
-        private void SetCurrentCrossbarInput( IAMCrossbar crossbar, VideoInput videoInput )
+        private void SetCurrentCrossbarInput(IAMCrossbar crossbar, VideoInput videoInput)
         {
-            if ( videoInput.Type != PhysicalConnectorType.Default )
+            if (videoInput.Type != PhysicalConnectorType.Default)
             {
                 int inPinsCount, outPinsCount;
 
                 // gen number of pins in the crossbar
-                if ( crossbar.get_PinCounts( out outPinsCount, out inPinsCount ) == 0 )
+                if (crossbar.get_PinCounts(out outPinsCount, out inPinsCount) == 0)
                 {
                     int videoOutputPinIndex = -1;
                     int videoInputPinIndex = -1;
@@ -1657,12 +1650,12 @@ namespace iSpyApplication.Sources.Video
                     PhysicalConnectorType type;
 
                     // find index of the video output pin
-                    for ( int i = 0; i < outPinsCount; i++ )
+                    for (int i = 0; i < outPinsCount; i++)
                     {
-                        if ( crossbar.get_CrossbarPinInfo( false, i, out pinIndexRelated, out type ) != 0 )
+                        if (crossbar.get_CrossbarPinInfo(false, i, out pinIndexRelated, out type) != 0)
                             continue;
 
-                        if ( type == PhysicalConnectorType.VideoDecoder )
+                        if (type == PhysicalConnectorType.VideoDecoder)
                         {
                             videoOutputPinIndex = i;
                             break;
@@ -1670,12 +1663,12 @@ namespace iSpyApplication.Sources.Video
                     }
 
                     // find index of the required input pin
-                    for ( int i = 0; i < inPinsCount; i++ )
+                    for (int i = 0; i < inPinsCount; i++)
                     {
-                        if ( crossbar.get_CrossbarPinInfo( true, i, out pinIndexRelated, out type ) != 0 )
+                        if (crossbar.get_CrossbarPinInfo(true, i, out pinIndexRelated, out type) != 0)
                             continue;
 
-                        if ( ( type == videoInput.Type ) && ( i == videoInput.Index ) )
+                        if ((type == videoInput.Type) && (i == videoInput.Index))
                         {
                             videoInputPinIndex = i;
                             break;
@@ -1683,10 +1676,10 @@ namespace iSpyApplication.Sources.Video
                     }
 
                     // try connecting pins
-                    if ( ( videoInputPinIndex != -1 ) && ( videoOutputPinIndex != -1 ) &&
-                         ( crossbar.CanRoute( videoOutputPinIndex, videoInputPinIndex ) == 0 ) )
+                    if ((videoInputPinIndex != -1) && (videoOutputPinIndex != -1) &&
+                         (crossbar.CanRoute(videoOutputPinIndex, videoInputPinIndex) == 0))
                     {
-                        crossbar.Route( videoOutputPinIndex, videoInputPinIndex );
+                        crossbar.Route(videoOutputPinIndex, videoInputPinIndex);
                     }
                 }
             }
@@ -1698,24 +1691,23 @@ namespace iSpyApplication.Sources.Video
         /// 
         /// <param name="bmp">New frame's image.</param>
         /// 
-        private void OnNewFrame( Bitmap bmp )
+        private void OnNewFrame(Bitmap bmp)
         {
             var nf = NewFrame;
-            var se = _stopEvent;
-            if (nf == null || se == null || (se.WaitOne(0, false)))
+            if (nf == null || _abort.WaitOne(0) || MainForm.ShuttingDown)
             {
                 bmp.Dispose();
                 return;
             }
 
             _framesReceived++;
-            _bytesReceived += bmp.Width * bmp.Height * ( Image.GetPixelFormatSize( bmp.PixelFormat ) >> 3 );
-           
+            _bytesReceived += bmp.Width * bmp.Height * (Image.GetPixelFormatSize(bmp.PixelFormat) >> 3);
+
             var dae = new NewFrameEventArgs(bmp);
             nf.Invoke(this, dae);
-            bmp.Dispose();       
-           
-            
+            bmp.Dispose();
+
+
         }
 
         /// <summary>
@@ -1724,14 +1716,15 @@ namespace iSpyApplication.Sources.Video
         /// 
         /// <param name="image">New snapshot's image.</param>
         /// 
-        private void OnSnapshotFrame( Bitmap image )
+        private void OnSnapshotFrame(Bitmap image)
         {
             TimeSpan timeSinceStarted = DateTime.Now - _startTime;
 
-            if ( timeSinceStarted.TotalSeconds >= 4 )
+            if (timeSinceStarted.TotalSeconds >= 4)
             {
-                if (SnapshotFrame != null  && _stopEvent!=null && ( !_stopEvent.WaitOne( 0, false ) ) )
-                    SnapshotFrame( this, new NewFrameEventArgs( image ) );
+                var sf = SnapshotFrame;
+                if (sf != null && !_abort.WaitOne(0) && !MainForm.ShuttingDown)
+                    sf(this, new NewFrameEventArgs(image));
             }
         }
 
@@ -1750,31 +1743,31 @@ namespace iSpyApplication.Sources.Video
             public int Height { private get; set; }
 
             // Constructor
-            public Grabber( VideoCaptureDevice parent, bool snapshotMode )
+            public Grabber(VideoCaptureDevice parent, bool snapshotMode)
             {
                 _parent = parent;
                 _snapshotMode = snapshotMode;
             }
 
             // Callback to receive samples
-            public int SampleCB( double sampleTime, IntPtr sample )
+            public int SampleCB(double sampleTime, IntPtr sample)
             {
                 return 0;
             }
 
             // Callback method that receives a pointer to the sample buffer
-            public int BufferCB( double sampleTime, IntPtr buffer, int bufferLen )
+            public int BufferCB(double sampleTime, IntPtr buffer, int bufferLen)
             {
-                if ( _parent.NewFrame != null )
+                if (_parent.NewFrame != null)
                 {
                     // create new image
-                    var image = new Bitmap(Width, Height, PixelFormat.Format24bppRgb );
+                    var image = new Bitmap(Width, Height, PixelFormat.Format24bppRgb);
 
                     // lock bitmap data
                     BitmapData imageData = image.LockBits(
-                        new Rectangle( 0, 0, Width, Height ),
+                        new Rectangle(0, 0, Width, Height),
                         ImageLockMode.ReadWrite,
-                        PixelFormat.Format24bppRgb );
+                        PixelFormat.Format24bppRgb);
 
                     // copy image data
                     int srcStride = imageData.Stride;
@@ -1782,10 +1775,10 @@ namespace iSpyApplication.Sources.Video
 
                     unsafe
                     {
-                        byte* dst = (byte*) imageData.Scan0.ToPointer( ) + dstStride * ( Height - 1 );
-                        var src = (byte*) buffer.ToPointer( );
+                        byte* dst = (byte*)imageData.Scan0.ToPointer() + dstStride * (Height - 1);
+                        var src = (byte*)buffer.ToPointer();
 
-                        for ( int y = 0; y < Height; y++ )
+                        for (int y = 0; y < Height; y++)
                         {
                             NativeMethods.memcpy(dst, src, srcStride);
                             dst -= dstStride;
@@ -1794,20 +1787,20 @@ namespace iSpyApplication.Sources.Video
                     }
 
                     // unlock bitmap data
-                    image.UnlockBits( imageData );
+                    image.UnlockBits(imageData);
 
                     // notify parent
-                    if ( _snapshotMode )
+                    if (_snapshotMode)
                     {
-                        _parent.OnSnapshotFrame( image );
+                        _parent.OnSnapshotFrame(image);
                     }
                     else
                     {
-                        _parent.OnNewFrame( image );
+                        _parent.OnNewFrame(image);
                     }
 
                     // release the image
-                    image.Dispose( );
+                    image.Dispose();
                 }
 
                 return 0;
@@ -1830,7 +1823,8 @@ namespace iSpyApplication.Sources.Video
 
             if (disposing)
             {
-                _stopEvent?.Close();
+                _abort.Close();
+                _abort.Dispose();
             }
 
             // Free any unmanaged objects here. 

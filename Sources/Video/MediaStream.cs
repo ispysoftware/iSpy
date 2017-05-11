@@ -29,20 +29,20 @@ namespace iSpyApplication.Sources.Video
 
         public int InterruptCb(void* ctx)
         {
-            if ((DateTime.UtcNow - _lastPacket).TotalMilliseconds > _timeout || _abort)
+            if ((DateTime.UtcNow - _lastPacket).TotalMilliseconds > _timeout || _stopReadingFrames)
             {
-                if (!_abort)
+                if (!_stopReadingFrames)
                 {
                     _res = ReasonToFinishPlaying.DeviceLost;
                 }
-                _abort = true;
+                _stopReadingFrames = true;
                 return 1;
             }
             return 0;
         }
 
         private DateTime _lastPacket;
-        private bool _abort;
+        private bool _stopReadingFrames;
         private Thread _thread;
         private DateTime _lastVideoFrame;
         private ReasonToFinishPlaying _res = ReasonToFinishPlaying.DeviceLost;
@@ -70,7 +70,7 @@ namespace iSpyApplication.Sources.Video
         private volatile bool _starting;
         private readonly bool _modeAudio;
 
-        public MediaStream(objectsCamera source): base(source)
+        public MediaStream(objectsCamera source) : base(source)
         {
             _source = source;
             _inputFormat = null;
@@ -126,11 +126,11 @@ namespace iSpyApplication.Sources.Video
         public void Start()
         {
             if (_starting || IsRunning) return;
-            _abort = false;
+            _stopReadingFrames = false;
             _res = ReasonToFinishPlaying.DeviceLost;
             _starting = true;
             Task.Factory.StartNew(DoStart);
-            
+
         }
 
         private void DoStart()
@@ -143,7 +143,7 @@ namespace iSpyApplication.Sources.Video
             if (_inputFormat == null)
             {
                 ffmpeg.av_dict_set(&options, "analyzeduration", _analyzeDuration.ToString(), 0);
-                
+
 
 
                 string prefix = vss.ToLower().Substring(0, vss.IndexOf(":", StringComparison.Ordinal));
@@ -219,7 +219,7 @@ namespace iSpyApplication.Sources.Video
             }
 
 
-            _abort = false;
+            _stopReadingFrames = false;
             try
             {
                 Program.FfmpegMutex.WaitOne();
@@ -270,14 +270,14 @@ namespace iSpyApplication.Sources.Video
         {
             if (!IsRunning) return;
             _res = ReasonToFinishPlaying.Restart;
-            _abort = true;
+            _stopReadingFrames = true;
         }
 
         public void Stop()
         {
             if (!IsRunning) return;
             _res = ReasonToFinishPlaying.StoppedByUser;
-            _abort = true;
+            _stopReadingFrames = true;
         }
 
         private void SetupFormat()
@@ -409,10 +409,10 @@ namespace iSpyApplication.Sources.Video
 
             bool audioInited = false;
             bool videoInited = false;
+            var packet = new AVPacket();
 
             do
             {
-                AVPacket packet = new AVPacket();
                 ffmpeg.av_init_packet(&packet);
 
                 AVFrame* frame = ffmpeg.av_frame_alloc();
@@ -420,7 +420,7 @@ namespace iSpyApplication.Sources.Video
 
                 if (ffmpeg.av_read_frame(_formatContext, &packet) < 0)
                 {
-                    _abort = true;
+                    _stopReadingFrames = true;
                     _res = ReasonToFinishPlaying.VideoSourceError;
                     break;
                 }
@@ -446,8 +446,8 @@ namespace iSpyApplication.Sources.Video
                     {
 
                         int s = 0;
-                        var buffer = new sbyte[_audioCodecContext->sample_rate*2];
-                        var tbuffer = new sbyte[_audioCodecContext->sample_rate*2];
+                        var buffer = new sbyte[_audioCodecContext->sample_rate * 2];
+                        var tbuffer = new sbyte[_audioCodecContext->sample_rate * 2];
                         bool b = false;
 
                         fixed (sbyte** outPtrs = new sbyte*[32])
@@ -473,7 +473,7 @@ namespace iSpyApplication.Sources.Video
                                         &frame->data0,
                                         frame->nb_samples);
 
-                                    var l = numSamplesOut*2*_audioCodecContext->channels;
+                                    var l = numSamplesOut * 2 * _audioCodecContext->channels;
                                     Buffer.BlockCopy(tbuffer, 0, buffer, s, l);
                                     s += l;
 
@@ -499,11 +499,11 @@ namespace iSpyApplication.Sources.Video
                             RecordingFormat = new WaveFormat(_audioCodecContext->sample_rate, 16,
                                 _audioCodecContext->channels);
                             waveProvider = new BufferedWaveProvider(RecordingFormat)
-                                            {
-                                                DiscardOnBufferOverflow = true,
-                                                BufferDuration =
+                            {
+                                DiscardOnBufferOverflow = true,
+                                BufferDuration =
                                                     TimeSpan.FromMilliseconds(500)
-                                            };
+                            };
                             sampleChannel = new SampleChannel(waveProvider);
 
                             sampleChannel.PreVolumeMeter += SampleChannelPreVolumeMeter;
@@ -584,7 +584,7 @@ namespace iSpyApplication.Sources.Video
                                 var mat = new Bitmap(_codecContext->width, _codecContext->height, linesize,
                                     PixelFormat.Format24bppRgb, imageBufferPtr))
                             {
-                                var nfe = new NewFrameEventArgs((Bitmap) mat.Clone());
+                                var nfe = new NewFrameEventArgs((Bitmap)mat.Clone());
                                 nf.Invoke(this, nfe);
                             }
 
@@ -598,17 +598,17 @@ namespace iSpyApplication.Sources.Video
                     if ((DateTime.UtcNow - _lastVideoFrame).TotalMilliseconds > _timeout)
                     {
                         _res = ReasonToFinishPlaying.DeviceLost;
-                        _abort = true;
+                        _stopReadingFrames = true;
                     }
                 }
 
                 ffmpeg.av_free_packet(&packet);
                 ffmpeg.av_frame_free(&frame);
-                Thread.SpinWait(20);
-            } while (!_abort && !MainForm.ShuttingDown);
+            } while (!_stopReadingFrames && !MainForm.ShuttingDown);
 
 
-            try {
+            try
+            {
                 Program.FfmpegMutex.WaitOne();
 
                 if (pConvertedFrame != null)
