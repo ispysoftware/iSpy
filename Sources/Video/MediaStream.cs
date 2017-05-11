@@ -137,7 +137,7 @@ namespace iSpyApplication.Sources.Video
         {
             var vss = Source;
             if (!_modeAudio)
-                vss = Tokenise();
+                vss = Tokenise(vss);
 
             AVDictionary* options = null;
             if (_inputFormat == null)

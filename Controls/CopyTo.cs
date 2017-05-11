@@ -187,7 +187,7 @@ namespace iSpyApplication.Controls
                     oc.detector.movementintervalnew = OC.detector.movementintervalnew;
                     oc.detector.nomovementintervalnew = OC.detector.nomovementintervalnew;
                     oc.detector.postprocessor = OC.detector.postprocessor;
-                    oc.detector.processeveryframe = OC.detector.processeveryframe;
+                    oc.detector.processframeinterval = OC.detector.processframeinterval;
                     oc.detector.type = OC.detector.type;
                     oc.detector.sensitivity = OC.detector.sensitivity;
                     oc.detector.postprocessor = OC.detector.postprocessor;

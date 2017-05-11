@@ -242,7 +242,7 @@ namespace iSpyApplication
 
             LoadAlertTypes();
 
-            ddlProcessFrames.SelectedItem = CameraControl.Camobject.detector.processeveryframe.ToString(CultureInfo.InvariantCulture);
+            numProcessInterval.Value = CameraControl.Camobject.detector.processframeinterval;
             txtCameraName.Text = CameraControl.Camobject.name;
 
             ranger1.Maximum = 100;
@@ -644,7 +644,6 @@ namespace iSpyApplication
             label58.Text = label99.Text = LocRm.GetString("Seconds");
             
             label60.Text = LocRm.GetString("Egimagesmycamimagejpg");
-            label64.Text = LocRm.GetString("Frames");
             label67.Text = LocRm.GetString("Images");
             label68.Text = LocRm.GetString("Interval");
             label69.Text = LocRm.GetString("Seconds");
@@ -998,7 +997,7 @@ namespace iSpyApplication
             CameraControl.Camobject.savelocal.enabled = chkLocalSaving.Checked;
 
 
-            CameraControl.Camobject.detector.processeveryframe = Convert.ToInt32(ddlProcessFrames.SelectedItem.ToString());
+            CameraControl.Camobject.detector.processframeinterval = (int)numProcessInterval.Value;
             CameraControl.Camobject.detector.motionzones = AreaControl.MotionZones;
             CameraControl.Camobject.detector.type = (string) _detectortypes[ddlMotionDetector.SelectedIndex];
             CameraControl.Camobject.detector.postprocessor = (string) _processortypes[ddlProcessor.SelectedIndex];
@@ -1437,10 +1436,6 @@ namespace iSpyApplication
             MainForm.OpenUrl( MainForm.Website+"/userguide-ftp.aspx");
         }
 
-        private void DdlProcessFramesSelectedIndexChanged(object sender, EventArgs e)
-        {
-            CameraControl.Camobject.detector.processeveryframe = Convert.ToInt32(ddlProcessFrames.SelectedItem);
-        }
 
         private void Login()
         {
@@ -2531,6 +2526,11 @@ namespace iSpyApplication
         {
             CameraControl.Camobject.settings.fillMode = chkFill.Checked ? 1 : 0;
             CameraControl.RC = Rectangle.Empty;
+        }
+
+        private void numProcessInterval_ValueChanged(object sender, EventArgs e)
+        {
+            CameraControl.Camobject.detector.processframeinterval = (int)numProcessInterval.Value;
         }
     }
 }

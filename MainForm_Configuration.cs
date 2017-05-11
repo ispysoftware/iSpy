@@ -2698,9 +2698,9 @@ namespace iSpyApplication
             oc.detector.recordondetect = Conf.DefaultRecordOnDetect;
             oc.detector.recordonalert = Conf.DefaultRecordOnAlert;
             oc.detector.keepobjectedges = false;
-            oc.detector.processeveryframe = 1;
             oc.detector.nomovementintervalnew = oc.detector.nomovementinterval = 30;
             oc.detector.movementintervalnew = oc.detector.movementinterval = 0;
+            oc.detector.processframeinterval = 200;
 
             oc.detector.calibrationdelay = 15;
             oc.detector.color = ColorTranslator.ToHtml(Conf.TrackingColor.ToColor());

@@ -364,6 +364,8 @@
     <Compile Include="AddRemoteCommand.Designer.cs">
       <DependentUpon>AddRemoteCommand.cs</DependentUpon>
     </Compile>
+    <Compile Include="Sources\Video\MediaStream.cs" />
+    <Compile Include="Sources\Video\VideoCaptureDevice.cs" />
     <Compile Include="Sources\Video\Tokeniser.cs" />
     <Compile Include="Cloud\CloudGateway.cs" />
     <Compile Include="Cloud\Dropbox.cs" />
@@ -814,9 +816,6 @@
     <Compile Include="Realtime\MediaWriter.cs" />
     <Compile Include="Sources\Audio\talk\TalkFoscam.cs" />
     <Compile Include="Sources\Video\VideoBase.cs" />
-    <Compile Include="..\..\..\diffmerge\old\MediaStream.cs">
-      <Link>Sources\Video\MediaStream.cs</Link>
-    </Compile>
     <Compile Include="VideoSource.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -968,9 +967,6 @@
     <Compile Include="Sources\Video\KinectNetworkStream.cs" />
     <Compile Include="Sources\Video\KinectStream.cs" />
     <Compile Include="Sources\Video\MJPEGStream.cs" />
-    <Compile Include="..\..\..\diffmerge\old\VideoCaptureDevice.cs">
-      <Link>Sources\Video\VideoCaptureDevice.cs</Link>
-    </Compile>
     <Compile Include="Sources\Video\VLCStream.cs" />
     <Compile Include="Sources\Video\Ximea\CameraParameter.cs" />
     <Compile Include="Sources\Video\Ximea\GpiMode.cs" />

@@ -48,7 +48,6 @@ namespace iSpyApplication.Controls
         private HSLFiltering _filter;
         private readonly object _sync = new object();
         private MotionDetector _motionDetector;
-        private int _processFrameCount;
         private DateTime _motionlastdetected = DateTime.MinValue;
         private DateTime _nextFrameTarget = DateTime.MinValue;
         private readonly FishEyeCorrect _feCorrect = new FishEyeCorrect();
@@ -878,15 +877,15 @@ namespace iSpyApplication.Controls
             }
         }
 
+        private DateTime _lastProcessed = DateTime.MinValue;
         [HandleProcessCorruptedStateExceptions] 
         private bool ApplyMotionDetector(UnmanagedImage lfu)
         {
             if (Alarm != null && lfu!=null)
             {
-                _processFrameCount++;
-                if (_processFrameCount >= CW.Camobject.detector.processeveryframe || CW.Calibrating)
+                if ((DateTime.UtcNow - _lastProcessed).TotalMilliseconds > CW.Camobject.detector.processframeinterval || CW.Calibrating)
                 {
-                    _processFrameCount = 0;
+                    _lastProcessed = DateTime.UtcNow;
                     
                     try
                     {
@@ -908,6 +907,10 @@ namespace iSpyApplication.Controls
                     }
                     else
                         MotionDetected = false;
+                }
+                else
+                {
+                    _motionDetector.ApplyOverlay(lfu);
                 }
             }
             else

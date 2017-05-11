@@ -43,12 +43,14 @@ namespace iSpyApplication.Controls
         private DateTime _recordingStartTime = DateTime.MinValue;
         private Point _mouseLoc;
         private readonly ManualResetEvent _stopWrite = new ManualResetEvent(false);
+        private readonly ManualResetEvent _writerStopped = new ManualResetEvent(false);
         private volatile float[] _levels;
         private readonly ToolTip _toolTipMic;
         private int _ttind = -1;
         private int _reconnectFailCount;
         private DateTime _errorTime = DateTime.MinValue;
         private DateTime _reconnectTime = DateTime.MinValue;
+        private bool _raiseStop;
 
         private Int64 _lastSoundDetected = Helper.Now.Ticks;
         private Int64 _lastAlerted = Helper.Now.Ticks;
@@ -1073,6 +1075,11 @@ namespace iSpyApplication.Controls
                     {
                         UpdateFloorplans(false);
                         FlashCounter = DateTime.MinValue;
+                        if (_raiseStop)
+                        {
+                            DoAlert("alertstopped");
+                            _raiseStop = false;
+                        }
                     }
 
                 }
@@ -1517,25 +1524,9 @@ namespace iSpyApplication.Controls
         {
             if (Recording)
             {
-                lock (_lockobject)
-                {
-                    _stopWrite.Set();
-                }
-                try
-                {
-                    if (_recordingThread != null && !_recordingThread.Join(TimeSpan.Zero))
-                    {
-                        if (!_recordingThread.Join(3000))
-                        {
-                            _stopWrite.Set();
-                        }
-                    }
-                }
-                catch
-                {
-                    // ignored
-                }
-                
+                _stopWrite.Set();
+                _writerStopped.WaitOne();
+
                 var cc = CameraControl;
                 if (cc!=null)
                     cc.AbortedAudio = true;
@@ -1583,7 +1574,7 @@ namespace iSpyApplication.Controls
             try
             {
                 _stopWrite.Reset();
-
+                _writerStopped.Reset();
                 if (!string.IsNullOrEmpty(Micobject.recorder.trigger))
                 {
                     string[] tid = Micobject.recorder.trigger.Split(',');
@@ -1643,7 +1634,9 @@ namespace iSpyApplication.Controls
                         try
                         {
                             string url = (X509.SslEnabled ? "https" : "http") + "://" + MainForm.IPAddress + "/";
-                            linktofile = Uri.EscapeDataString(url + "loadclip.mp3?oid=" + Micobject.id + "&ot=1&fn=" + AudioFileName + ".mp3&auth=" + MainForm.Identifier);
+                            linktofile =
+                                Uri.EscapeDataString(url + "loadclip.mp3?oid=" + Micobject.id + "&ot=1&fn=" +
+                                                     AudioFileName + ".mp3&auth=" + MainForm.Identifier);
                         }
                         catch (Exception ex)
                         {
@@ -1657,10 +1650,10 @@ namespace iSpyApplication.Controls
 
                         try
                         {
-                            while (!_stopWrite.WaitOne(5))
+                            while (!_stopWrite.WaitOne(0))
                             {
                                 Helper.FrameAction fa;
-                                while (Buffer.TryDequeue(out fa))
+                                if (Buffer.TryDequeue(out fa))
                                 {
                                     try
                                     {
@@ -1685,8 +1678,9 @@ namespace iSpyApplication.Controls
                                     {
                                         fa.Nullify();
                                     }
-
                                 }
+                                else
+                                    Thread.Yield();
                             }
 
 
@@ -1788,6 +1782,8 @@ namespace iSpyApplication.Controls
             {
                 Logger.LogException(ex);
             }
+
+            _writerStopped.Set();
         }
 
        
@@ -2749,6 +2745,7 @@ namespace iSpyApplication.Controls
                 Alerted = true;
                 UpdateFloorplans(true);
                 LastAlerted = Helper.Now;
+                _raiseStop = true;
                 RemoteCommand?.Invoke(this, new ThreadSafeCommand("bringtofrontmic," + Micobject.id));
                 if (Micobject.detector.recordonalert)
                 {

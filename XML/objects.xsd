@@ -268,7 +268,7 @@
                                                 <xs:attribute name="keepobjectedges" type="xs:boolean" use="required" />
                                                 <xs:attribute name="recordondetect" type="xs:boolean" use="required" />
                                                 <xs:attribute name="recordonalert" type="xs:boolean" use="required" />
-                                                <xs:attribute name="processeveryframe" type="xs:int" use="required" />
+                                                <xs:attribute name="processframeinterval" type="xs:int" default="200" />
                                                 <xs:attribute name="minwidth" type="xs:int" default="20"/>
                                                 <xs:attribute name="minheight" type="xs:int" default="20"/>
                                                 <xs:attribute name="highlight" type="xs:boolean" default="false"/>

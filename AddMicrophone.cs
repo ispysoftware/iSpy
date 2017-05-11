@@ -12,7 +12,7 @@ namespace iSpyApplication
 {
     public partial class AddMicrophone : Form
     {
-        private readonly object[] _actiontypes = { "Alert", "Connection Lost", "Reconnect", "ReconnectFailed" };
+        private readonly object[] _actiontypes = { "Alert", "AlertStopped", "Connection Lost", "Reconnect", "ReconnectFailed", "RecordingAlertStarted", "RecordingAlertStopped" };
         public VolumeLevel VolumeLevel;
         private bool _loaded;
         public bool IsNew;

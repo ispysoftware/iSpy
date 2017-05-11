@@ -328,12 +328,16 @@ namespace iSpyApplication.Vision
                 }
 
                 // call motion post processing
-                if ((_processor != null) && (_detector.MotionFrame != null))
-                {
-                    _processor.ProcessFrame(videoFrame, _detector.MotionFrame);
-                }
-
+                ApplyOverlay(videoFrame);
                 return motionLevel;                
+            }
+        }
+
+        public void ApplyOverlay(UnmanagedImage videoFrame)
+        {
+            if ((_processor != null) && (_detector?.MotionFrame != null))
+            {
+                _processor.ProcessFrame(videoFrame, _detector.MotionFrame);
             }
         }
 

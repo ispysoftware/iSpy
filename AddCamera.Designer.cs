@@ -107,7 +107,7 @@ namespace iSpyApplication
             this.button4 = new System.Windows.Forms.Button();
             this.label51 = new System.Windows.Forms.Label();
             this.flowLayoutPanel17 = new System.Windows.Forms.FlowLayoutPanel();
-            this.ddlProcessFrames = new System.Windows.Forms.ComboBox();
+            this.numProcessInterval = new System.Windows.Forms.NumericUpDown();
             this.label64 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -361,6 +361,7 @@ namespace iSpyApplication
             this.tableLayoutPanel5.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
             this.flowLayoutPanel17.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numProcessInterval)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numAutoOff)).BeginInit();
             this.tabPage2.SuspendLayout();
@@ -1286,7 +1287,7 @@ namespace iSpyApplication
             this.chkSuppressNoise.AutoSize = true;
             this.chkSuppressNoise.Checked = true;
             this.chkSuppressNoise.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSuppressNoise.Location = new System.Drawing.Point(422, 6);
+            this.chkSuppressNoise.Location = new System.Drawing.Point(430, 6);
             this.chkSuppressNoise.Margin = new System.Windows.Forms.Padding(6);
             this.chkSuppressNoise.Name = "chkSuppressNoise";
             this.chkSuppressNoise.Size = new System.Drawing.Size(94, 17);
@@ -1356,7 +1357,7 @@ namespace iSpyApplication
             this.flowLayoutPanel4.Location = new System.Drawing.Point(88, 114);
             this.flowLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            this.flowLayoutPanel4.Size = new System.Drawing.Size(537, 31);
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(545, 31);
             this.flowLayoutPanel4.TabIndex = 59;
             // 
             // button5
@@ -1401,52 +1402,44 @@ namespace iSpyApplication
             this.label51.Location = new System.Drawing.Point(335, 153);
             this.label51.Margin = new System.Windows.Forms.Padding(6, 8, 6, 0);
             this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(75, 13);
+            this.label51.Size = new System.Drawing.Size(83, 13);
             this.label51.TabIndex = 50;
-            this.label51.Text = "Process Every";
+            this.label51.Text = "Process Interval";
             // 
             // flowLayoutPanel17
             // 
-            this.flowLayoutPanel17.Controls.Add(this.ddlProcessFrames);
+            this.flowLayoutPanel17.Controls.Add(this.numProcessInterval);
             this.flowLayoutPanel17.Controls.Add(this.label64);
             this.flowLayoutPanel17.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel17.Location = new System.Drawing.Point(416, 145);
+            this.flowLayoutPanel17.Location = new System.Drawing.Point(424, 145);
             this.flowLayoutPanel17.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel17.Name = "flowLayoutPanel17";
             this.flowLayoutPanel17.Size = new System.Drawing.Size(209, 44);
             this.flowLayoutPanel17.TabIndex = 60;
             // 
-            // ddlProcessFrames
+            // numProcessInterval
             // 
-            this.ddlProcessFrames.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ddlProcessFrames.FormattingEnabled = true;
-            this.ddlProcessFrames.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10"});
-            this.ddlProcessFrames.Location = new System.Drawing.Point(6, 6);
-            this.ddlProcessFrames.Margin = new System.Windows.Forms.Padding(6);
-            this.ddlProcessFrames.Name = "ddlProcessFrames";
-            this.ddlProcessFrames.Size = new System.Drawing.Size(41, 21);
-            this.ddlProcessFrames.TabIndex = 49;
-            this.ddlProcessFrames.SelectedIndexChanged += new System.EventHandler(this.DdlProcessFramesSelectedIndexChanged);
+            this.numProcessInterval.Location = new System.Drawing.Point(6, 6);
+            this.numProcessInterval.Margin = new System.Windows.Forms.Padding(6);
+            this.numProcessInterval.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.numProcessInterval.Name = "numProcessInterval";
+            this.numProcessInterval.Size = new System.Drawing.Size(83, 20);
+            this.numProcessInterval.TabIndex = 55;
+            this.numProcessInterval.ValueChanged += new System.EventHandler(this.numProcessInterval_ValueChanged);
             // 
             // label64
             // 
             this.label64.AutoSize = true;
-            this.label64.Location = new System.Drawing.Point(59, 8);
+            this.label64.Location = new System.Drawing.Point(101, 8);
             this.label64.Margin = new System.Windows.Forms.Padding(6, 8, 6, 0);
             this.label64.Name = "label64";
-            this.label64.Size = new System.Drawing.Size(41, 13);
+            this.label64.Size = new System.Drawing.Size(20, 13);
             this.label64.TabIndex = 54;
-            this.label64.Text = "Frames";
+            this.label64.Text = "ms";
             // 
             // linkLabel1
             // 
@@ -4248,7 +4241,7 @@ namespace iSpyApplication
             this.ranger1.Location = new System.Drawing.Point(92, 37);
             this.ranger1.Margin = new System.Windows.Forms.Padding(4);
             this.ranger1.Name = "ranger1";
-            this.ranger1.Size = new System.Drawing.Size(529, 73);
+            this.ranger1.Size = new System.Drawing.Size(537, 73);
             this.ranger1.TabIndex = 61;
             this.ranger1.ValueMax = 100D;
             this.ranger1.ValueMin = 0D;
@@ -4343,6 +4336,7 @@ namespace iSpyApplication
             this.flowLayoutPanel4.PerformLayout();
             this.flowLayoutPanel17.ResumeLayout(false);
             this.flowLayoutPanel17.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numProcessInterval)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numAutoOff)).EndInit();
@@ -4591,7 +4585,6 @@ namespace iSpyApplication
         private System.Windows.Forms.RadioButton rdoContinuous;
         private System.Windows.Forms.Label label64;
         private System.Windows.Forms.Label label51;
-        private System.Windows.Forms.ComboBox ddlProcessFrames;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton rdoNoRecord;
         private System.Windows.Forms.RadioButton rdoRecordDetect;
@@ -4773,5 +4766,6 @@ namespace iSpyApplication
         private ScheduleEditor scheduleEditor1;
         private System.Windows.Forms.CheckBox chkFill;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel11;
+        private System.Windows.Forms.NumericUpDown numProcessInterval;
     }
 }

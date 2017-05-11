@@ -22,13 +22,11 @@ namespace iSpyApplication.Realtime
         private SwsContext* _swsContext;
         private SwrContext* _swrContext;
         private AVPixelFormat _avPixelFormat = AVPixelFormat.AV_PIX_FMT_YUV420P;
-        private const string Extension = ".mp4";
 
         private bool _isConstantFramerate;
         private int _width, _height, _framerate;//_bitRate
         private string movflags = "";//"faststart";
         private int _audioBufferSizeCurrent;
-        private long _lastAudioPts;
         private byte[] _audioBuffer = new byte[44100];
         public DateTime CreatedDate;
         public bool IsStreaming = false;

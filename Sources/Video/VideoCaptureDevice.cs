@@ -14,40 +14,6 @@ namespace iSpyApplication.Sources.Video
 {
     using FilterInfo = FilterInfo;
 
-    /// <summary>
-    /// Video source for local video capture device (for example USB webcam).
-    /// </summary>
-    /// 
-    /// <remarks><para>This video source class captures video data from local video capture device,
-    /// like USB web camera (or internal), frame grabber, capture board - anything which
-    /// supports <b>DirectShow</b> interface. For devices which has a shutter button or
-    /// support external software triggering, the class also allows to do snapshots. Both
-    /// video size and snapshot size can be configured.</para>
-    /// 
-    /// <para>Sample usage:</para>
-    /// <code>
-    /// // enumerate video devices
-    /// videoDevices = new FilterInfoCollection( FilterCategory.VideoInputDevice );
-    /// // create video source
-    /// VideoCaptureDevice videoSource = new VideoCaptureDevice( videoDevices[0].MonikerString );
-    /// // set NewFrame event handler
-    /// videoSource.NewFrame += new NewFrameEventHandler( video_NewFrame );
-    /// // start the video source
-    /// videoSource.Start( );
-    /// // ...
-    /// // signal to stop when you no longer need capturing
-    /// videoSource.SignalToStop( );
-    /// // ...
-    /// 
-    /// private void video_NewFrame( object sender, NewFrameEventArgs eventArgs )
-    /// {
-    ///     // get new frame
-    ///     Bitmap bitmap = eventArgs.Frame;
-    ///     // process the frame
-    /// }
-    /// </code>
-    /// </remarks>
-    /// 
     public class VideoCaptureDevice : IVideoSource, IDisposable
     {
         // moniker string of video capture device

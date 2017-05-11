@@ -2324,7 +2324,7 @@ public partial class objectsCameraDetector {
     
     private bool recordonalertField;
     
-    private int processeveryframeField;
+    private int processframeintervalField;
     
     private int minwidthField;
     
@@ -2345,6 +2345,7 @@ public partial class objectsCameraDetector {
         this.movementintervalnewField = -1D;
         this.maxsensitivityField = 100D;
         this.minsensitivityField = 20D;
+        this.processframeintervalField = 200;
         this.minwidthField = 20;
         this.minheightField = 20;
         this.highlightField = false;
@@ -2525,12 +2526,13 @@ public partial class objectsCameraDetector {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public int processeveryframe {
+    [System.ComponentModel.DefaultValueAttribute(200)]
+    public int processframeinterval {
         get {
-            return this.processeveryframeField;
+            return this.processframeintervalField;
         }
         set {
-            this.processeveryframeField = value;
+            this.processframeintervalField = value;
         }
     }
     

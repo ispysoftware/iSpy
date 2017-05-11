@@ -193,7 +193,7 @@
                 { "text": "Sensitivity", "value": [ ], "type": "Slider", "min": 1, "max": 100, "range": true, "bindto": "detector.minsensitivity,detector.maxsensitivity", "id": "arrSensitivity", "help": "This controls how much motion triggers the motion detector." },
                 { "text": "Gain", "value": 0, "type": "Decimal", "min": 1, "max": 100, "bindto": "detector.gain", "help": "Multiplier for the motion detector.", "id": "numGain" },
                 { "text": "Filter Noise", "value": "", "type": "Boolean", "bindto": "settings.suppressnoise", "live": true },
-                { "text": "Process Frame", "value": 0, "type": "Int32", "min": 1, "max": 200, "bindto": "detector.processeveryframe", "help": "1= process every frame, 2= process every other frame etc" },
+                { "text": "Process Interval", "value": 0, "type": "Int32", "min": 0, "max": 2000, "bindto": "detector.processframeinterval", "help": "ms" },
                 { "text": "Zones", "value": [ ZONES ], "type": "ZoneManager", "help": "Drag out zones to monitor. Live motion and trigger range is displayed at the bottom. Drag zones out to delete." }
             ]
         },
