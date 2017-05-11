@@ -4195,7 +4195,6 @@ namespace iSpyApplication.Controls
                     }
 
                     LastFrame = null;
-                    Camera = null; //setter calls dispose
                 }
                 Camobject.settings.active = false;
                 InactiveRecord = 0;
@@ -4228,6 +4227,7 @@ namespace iSpyApplication.Controls
             {
                 ErrorHandler?.Invoke(ex.Message);
             }
+            Camera = null;
             _disabling = false;
 
         }

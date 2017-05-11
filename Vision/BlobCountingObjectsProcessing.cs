@@ -112,7 +112,7 @@ namespace iSpyApplication.Vision
             get { return _blobCounter.MinWidth; }
             set
             {
-                //lock ( _blobCounter )
+                lock ( _blobCounter )
                 {
                     _blobCounter.MinWidth = value;
                 }
@@ -134,7 +134,7 @@ namespace iSpyApplication.Vision
             get { return _blobCounter.MinHeight; }
             set
             {
-                //lock ( _blobCounter )
+                lock ( _blobCounter )
                 {
                     _blobCounter.MinHeight = value;
                 }
@@ -152,7 +152,7 @@ namespace iSpyApplication.Vision
         {
             get
             {
-                //lock ( _blobCounter )
+                lock ( _blobCounter )
                 {
                     return _blobCounter.ObjectsCount;
                 }
@@ -170,7 +170,7 @@ namespace iSpyApplication.Vision
         {
             get
             {
-                //lock ( _blobCounter )
+                lock ( _blobCounter )
                 {
                     return _blobCounter.GetObjectsRectangles( );
                 }
@@ -272,7 +272,7 @@ namespace iSpyApplication.Vision
             if ( ( motionFrame.Width != width ) || ( motionFrame.Height != height ) )
                 return;
 
-            //lock ( _blobCounter )
+            lock ( _blobCounter )
             {
                 _blobCounter.ProcessImage( motionFrame );
             }

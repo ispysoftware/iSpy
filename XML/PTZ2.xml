@@ -7083,4 +7083,24 @@ in the camera's web interface-->
           <Command Name="SET Preset 4">/web/cgi-bin/hi3510/param.cgi?cmd=preset&amp;-act=set&amp;-status=1&amp;-number=3</Command>
         </ExtendedCommands>
       </Camera>
+      <Camera id="242">
+        <Makes>
+          <Make Name="SunEyes" Model="SP-P703WZ" />
+        </Makes>
+        <CommandURL>
+        </CommandURL>
+        <Commands>
+          <Left>/cgi-bin/hi3510/ptzleft.cgi</Left>
+          <Right>/cgi-bin/hi3510/ptzright.cgi</Right>
+          <Up>/cgi-bin/hi3510/ptzup.cgi</Up>
+          <Down>/cgi-bin/hi3510/ptzdown.cgi</Down>
+          <Stop>/cgi-bin/hi3510/ptzstop.cgi</Stop>
+          <ZoomIn>/cgi-bin/hi3510/ptzctrl.cgi?&amp;-act=zoomadd</ZoomIn>
+          <ZoomOut>/cgi-bin/hi3510/ptzctrl.cgi?&amp;-act=zoomsub</ZoomOut>
+        </Commands>
+        <ExtendedCommands>
+          <Command Name="FocusIn">/cgi-bin/hi3510/ptzctrl.cgi?&amp;-act=focusadd</Command>
+          <Command Name="FocusOut">/cgi-bin/hi3510/ptzctrl.cgi?&amp;-act=focussub</Command>
+        </ExtendedCommands>
+      </Camera>
 </PTZSettings2>

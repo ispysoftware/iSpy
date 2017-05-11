@@ -2738,20 +2738,14 @@ namespace iSpyApplication
         {
             try
             {
-                Process.Start(url);
+                var p = new Process {StartInfo = {FileName = DefaultBrowser, Arguments = "\""+url+"\""}};
+                p.Start();
             }
-            catch (Exception)
+            catch (Exception ex2)
             {
-                try
-                {
-                    var p = new Process {StartInfo = {FileName = DefaultBrowser, Arguments = url}};
-                    p.Start();
-                }
-                catch (Exception ex2)
-                {
-                    Logger.LogException(ex2);
-                }
+                Logger.LogException(ex2);
             }
+           
         }
 
         private void ActivateToolStripMenuItemClick(object sender, EventArgs e)

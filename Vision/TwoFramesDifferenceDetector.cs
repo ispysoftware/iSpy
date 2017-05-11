@@ -69,7 +69,8 @@ namespace iSpyApplication.Vision
 
         // threshold values
         private int _differenceLevel = 16;
-        private UInt64 _differenceThresholMask = 0xF0F0F0F0F0F0F0F0;
+        private ulong _differenceThresholMask = 0xF0F0F0F0F0F0F0F0;
+        private readonly object _sync = new object();
 
         /// <summary>
         /// Difference threshold value, [1, 255].
@@ -124,7 +125,7 @@ namespace iSpyApplication.Vision
         {
             get
             {
-                //lock ( _sync )
+                lock ( _sync )
                 {
                     return (float)_pixelsChanged / (_width * _height);
                 }
@@ -147,7 +148,7 @@ namespace iSpyApplication.Vision
         {
             get
             {
-                //lock ( _sync )
+                lock ( _sync )
                 {
                     return _motionFrame;
                 }
@@ -172,7 +173,7 @@ namespace iSpyApplication.Vision
             get { return _suppressNoise; }
             set
             {
-                //lock ( _sync )
+                lock ( _sync )
                 {
                     _suppressNoise = value;
 
@@ -223,7 +224,7 @@ namespace iSpyApplication.Vision
         /// 
         public unsafe void ProcessFrame(UnmanagedImage videoFrame)
         {
-            //lock ( _sync )
+            lock ( _sync )
             {
                 // check previous frame
                 if (_previousFrame == null)
@@ -334,7 +335,7 @@ namespace iSpyApplication.Vision
         /// 
         public void Reset()
         {
-            //lock ( _sync )
+            lock ( _sync )
             {
                 if (_previousFrame != null)
                 {

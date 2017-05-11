@@ -2167,6 +2167,7 @@ namespace iSpyApplication
             var ac = new AddCamera { CameraControl = cw, MainClass = this };
             ac.ShowDialog(owner ?? this);
             ac.Dispose();
+            SetNewStartPosition();
         }
 
         internal void EditObject(ISpyControl ctrl, IWin32Window owner = null)

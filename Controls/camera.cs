@@ -1093,7 +1093,7 @@ namespace iSpyApplication.Controls
             
             _disposing = true;
             ClearMotionZones();
-            lock (_sync)
+            //lock (_sync)
             {
                 Alarm = null;
                 NewFrame = null;
