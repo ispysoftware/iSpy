@@ -3057,6 +3057,8 @@ namespace iSpyApplication.Controls
                         url = url.ReplaceFirst(uri.Scheme, "http");
                         url = url.ReplaceFirst(":" + uri.Port, ":80");
                     }
+                    url = url.Replace(uri.UserInfo+"@", "");
+
                     MainForm.OpenUrl(url);
                 }
                 catch (Exception ex)
@@ -4352,6 +4354,7 @@ namespace iSpyApplication.Controls
                         di = 0;
                     }
                     Camobject.settings.videosourcestring = urls[di].URI.Uri;
+                    Camobject.settings.videosourcestring = Camobject.settings.videosourcestring.Replace("://", "://" + Camobject.settings.login + ":" + Camobject.settings.password + "@");
                     oDev.SelectProfile(di);
                     _onvifDevice = oDev;
                 }

@@ -17,7 +17,12 @@ namespace iSpyApplication.Onvif
         private static readonly List<DiscoveryClient> DiscoveryClients = new List<DiscoveryClient>();
         //public static event EventHandler DiscoveryComplete;
         public static List<string> DiscoveredDevices = new List<string>();
-        private static readonly List<XmlQualifiedName> CtNs = new List<XmlQualifiedName> { new XmlQualifiedName("NetworkVideoTransmitter", @"http://www.onvif.org/ver10/network/wsdl"), new XmlQualifiedName("Device", @"http://www.onvif.org/ver10/device/wsdl") };
+        private static readonly List<XmlQualifiedName> CtNs = new List<XmlQualifiedName>
+                                                              {
+                                                                  new XmlQualifiedName("NetworkVideoTransmitter", @"http://www.onvif.org/ver10/network/wsdl"),
+                                                                  new XmlQualifiedName("NetworksVideoTransmitter", @"http://www.onvif.org/ver10/network/wsdl"),
+                                                                  new XmlQualifiedName("Device", @"http://www.onvif.org/ver10/device/wsdl")
+                                                              };
 
         public static void FindDevices()
         {

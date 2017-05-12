@@ -800,10 +800,11 @@ namespace iSpyApplication
                     }
 
                     url = cfg.URI.Uri;
+
                     CameraLogin = onvifWizard1.txtOnvifUsername.Text;
                     CameraPassword = onvifWizard1.txtOnvifPassword.Text;
 
-                    VideoSourceString = url;
+                    VideoSourceString = url.Replace("://","://"+CameraLogin+":"+CameraPassword+"@");
                     CameraControl.Camobject.settings.analyseduration = (int)numAnalyseDuration.Value;
                     CameraControl.Camobject.settings.onvifident = onvifWizard1.ddlDeviceURL.Text + "|" + onvifWizard1.lbOnvifURLs.SelectedIndex;
                     CameraControl.Camobject.ptz = -5;//onvif

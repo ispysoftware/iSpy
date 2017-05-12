@@ -50,6 +50,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.lblStep = new System.Windows.Forms.Label();
             this.btnFind = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.pnlStep2.SuspendLayout();
@@ -137,23 +138,25 @@
             this.pnlStep1.ColumnCount = 2;
             this.pnlStep1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this.pnlStep1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.pnlStep1.Controls.Add(this.ddlConnectWith, 1, 4);
-            this.pnlStep1.Controls.Add(this.lblConnectWith, 0, 4);
+            this.pnlStep1.Controls.Add(this.ddlConnectWith, 1, 5);
+            this.pnlStep1.Controls.Add(this.lblConnectWith, 0, 5);
             this.pnlStep1.Controls.Add(this.lblPassword, 0, 1);
             this.pnlStep1.Controls.Add(this.lblUsername, 0, 0);
             this.pnlStep1.Controls.Add(this.lblDeviceURL, 0, 2);
-            this.pnlStep1.Controls.Add(this.lblTransport, 0, 3);
+            this.pnlStep1.Controls.Add(this.lblTransport, 0, 4);
             this.pnlStep1.Controls.Add(this.txtOnvifUsername, 1, 0);
             this.pnlStep1.Controls.Add(this.txtOnvifPassword, 1, 1);
-            this.pnlStep1.Controls.Add(this.ddlTransport, 1, 3);
-            this.pnlStep1.Controls.Add(this.btnConnect, 1, 5);
+            this.pnlStep1.Controls.Add(this.ddlTransport, 1, 4);
+            this.pnlStep1.Controls.Add(this.btnConnect, 1, 6);
             this.pnlStep1.Controls.Add(this.ddlDeviceURL, 1, 2);
+            this.pnlStep1.Controls.Add(this.label1, 1, 3);
             this.pnlStep1.Location = new System.Drawing.Point(29, 12);
             this.pnlStep1.Name = "pnlStep1";
-            this.pnlStep1.RowCount = 6;
+            this.pnlStep1.RowCount = 7;
             this.pnlStep1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.pnlStep1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.pnlStep1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.pnlStep1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.pnlStep1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.pnlStep1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.pnlStep1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.pnlStep1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
@@ -262,7 +265,7 @@
             this.ddlDeviceURL.FormattingEnabled = true;
             this.ddlDeviceURL.Location = new System.Drawing.Point(153, 65);
             this.ddlDeviceURL.Name = "ddlDeviceURL";
-            this.ddlDeviceURL.Size = new System.Drawing.Size(173, 94);
+            this.ddlDeviceURL.Size = new System.Drawing.Size(173, 74);
             this.ddlDeviceURL.TabIndex = 45;
             // 
             // panel2
@@ -296,6 +299,15 @@
             this.btnFind.UseVisualStyleBackColor = true;
             this.btnFind.Visible = false;
             this.btnFind.Click += new System.EventHandler(this.btnFind_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(153, 142);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(168, 20);
+            this.label1.TabIndex = 46;
+            this.label1.Text = "http://ipaddress/onvif/device_service";
             // 
             // ONVIFWizard
             // 
@@ -342,5 +354,6 @@
         public System.Windows.Forms.ComboBox ddlTransport;
         public System.Windows.Forms.ListBox lbOnvifURLs;
         public System.Windows.Forms.ComboBox ddlDeviceURL;
+        private System.Windows.Forms.Label label1;
     }
 }
