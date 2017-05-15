@@ -627,8 +627,8 @@ namespace iSpyApplication.Realtime
                         }
 
                         _audioFrame->nb_samples = dstNbSamples;
-
-                        _audioFrame->pts = pts;
+                        if (_videoCodecContext->codec_id == AVCodecID.AV_CODEC_ID_H264)
+                            _audioFrame->pts = pts;
 
                         //if (_lastAudioPts > pts)
                         //{
