@@ -12,8 +12,9 @@ namespace iSpyApplication.Onvif
 {
     public static class Discovery
     {
+        public static EventHandler DeviceFoundEventHandler;
         private static ServiceHost _host;
-        private static AnnouncementService _announcementSrv;
+        private static AnnouncementService _announcementSrv = null;
         private static readonly List<DiscoveryClient> DiscoveryClients = new List<DiscoveryClient>();
         //public static event EventHandler DiscoveryComplete;
         public static List<string> DiscoveredDevices = new List<string>();
@@ -28,6 +29,7 @@ namespace iSpyApplication.Onvif
         {
             try
             {
+                NetworkChange.NetworkAddressChanged -= NetworkChangeNetworkAddressChanged;
                 NetworkChange.NetworkAddressChanged += NetworkChangeNetworkAddressChanged;
 
                 StartService();
@@ -48,17 +50,21 @@ namespace iSpyApplication.Onvif
 
         private static void StartService()
         {
-            _announcementSrv = new AnnouncementService();
-            var epAnnouncement = new UdpAnnouncementEndpoint(DiscoveryVersion.WSDiscoveryApril2005);
-            ((CustomBinding)epAnnouncement.Binding).Elements.Insert(0, new MulticastCapabilitiesBindingElement(true));
+            if (_announcementSrv == null)
+            {
+                _announcementSrv = new AnnouncementService();
+                var epAnnouncement = new UdpAnnouncementEndpoint(DiscoveryVersion.WSDiscoveryApril2005);
+                ((CustomBinding) epAnnouncement.Binding).Elements.Insert(0,
+                    new MulticastCapabilitiesBindingElement(true));
 
-            _announcementSrv.OnlineAnnouncementReceived += Announcement_srv_OnlineAnnouncementReceived;
-            _announcementSrv.OfflineAnnouncementReceived += AnnouncementSrvOfflineAnnouncementReceived;
+                _announcementSrv.OnlineAnnouncementReceived += Announcement_srv_OnlineAnnouncementReceived;
+                _announcementSrv.OfflineAnnouncementReceived += AnnouncementSrvOfflineAnnouncementReceived;
 
-            _host = new ServiceHost(_announcementSrv);
-            _host.AddServiceEndpoint(epAnnouncement);
+                _host = new ServiceHost(_announcementSrv);
+                _host.AddServiceEndpoint(epAnnouncement);
 
-            _host.Open();
+                _host.Open();
+            }
         }
 
         private static void DiscoverAdapters()
@@ -68,6 +74,10 @@ namespace iSpyApplication.Onvif
 
             lock (Lock)
             {
+                foreach (var dc in DiscoveryClients)
+                {
+                    dc.Close();
+                }
                 DiscoveryClients.Clear();
             }
             
@@ -129,6 +139,7 @@ namespace iSpyApplication.Onvif
                     DiscoveredDevices.Add(uri);
                     Logger.LogMessage("Added device: "+uri);
                 }
+            DeviceFoundEventHandler?.Invoke(null, EventArgs.Empty);
         }
 
         private static void RemoveDevice(string uri)
@@ -140,34 +151,7 @@ namespace iSpyApplication.Onvif
             }
         }
 
-        public static bool DiscoveryFinished
-        {
-            get { return DiscoveryClients.Count == 0; }
-        }
-
         private static readonly object Lock = new object();
-        //private static void DiscoveryClientFindCompleted(object sender, FindCompletedEventArgs e)
-        //{
-        //    lock (_lock)
-        //    {
-        //        var c = (DiscoveryClient)sender;
-        //        var dc = DiscoveryClients;
-        //        try
-        //        {
-        //            if (dc.Contains(c))
-        //                dc.Remove(c);
-        //        }
-        //        catch (Exception)
-        //        {
-
-        //        }
-        //        if (dc.Count == 0)
-        //        {
-        //            Logger.LogMessage("Discovery completed");
-        //            DiscoveryComplete?.Invoke(null, EventArgs.Empty);
-        //        }
-        //    }
-        //}
 
         private static void DiscoveryClientFindProgressChanged(object sender, FindProgressChangedEventArgs args)
         {
@@ -233,7 +217,7 @@ namespace iSpyApplication.Onvif
 
             FindCriteria findCriteria = new FindCriteria
             {
-                Duration = TimeSpan.FromMinutes(5),
+                Duration = TimeSpan.MaxValue,
                 MaxResults = int.MaxValue
             };
 

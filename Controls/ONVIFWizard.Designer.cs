@@ -47,10 +47,9 @@
             this.ddlTransport = new System.Windows.Forms.ComboBox();
             this.btnConnect = new System.Windows.Forms.Button();
             this.ddlDeviceURL = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.lblStep = new System.Windows.Forms.Label();
-            this.btnFind = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.pnlStep2.SuspendLayout();
@@ -268,10 +267,18 @@
             this.ddlDeviceURL.Size = new System.Drawing.Size(173, 74);
             this.ddlDeviceURL.TabIndex = 45;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(153, 142);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(168, 20);
+            this.label1.TabIndex = 46;
+            this.label1.Text = "http://ipaddress/onvif/device_service";
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.lblStep);
-            this.panel2.Controls.Add(this.btnFind);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
@@ -287,27 +294,6 @@
             this.lblStep.Size = new System.Drawing.Size(38, 13);
             this.lblStep.TabIndex = 0;
             this.lblStep.Text = "Step 1";
-            // 
-            // btnFind
-            // 
-            this.btnFind.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnFind.Location = new System.Drawing.Point(654, 0);
-            this.btnFind.Name = "btnFind";
-            this.btnFind.Size = new System.Drawing.Size(57, 22);
-            this.btnFind.TabIndex = 42;
-            this.btnFind.Text = "Find";
-            this.btnFind.UseVisualStyleBackColor = true;
-            this.btnFind.Visible = false;
-            this.btnFind.Click += new System.EventHandler(this.btnFind_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(153, 142);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(168, 20);
-            this.label1.TabIndex = 46;
-            this.label1.Text = "http://ipaddress/onvif/device_service";
             // 
             // ONVIFWizard
             // 
@@ -346,7 +332,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Button btnBack;
         private System.Windows.Forms.Label lblURL;
-        private System.Windows.Forms.Button btnFind;
         private System.Windows.Forms.Panel panel3;
         public System.Windows.Forms.ComboBox ddlConnectWith;
         public System.Windows.Forms.TextBox txtOnvifUsername;

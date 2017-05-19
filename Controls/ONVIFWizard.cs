@@ -15,7 +15,6 @@ namespace iSpyApplication.Controls
         {
             InitializeComponent();
 
-            btnFind.Text = LocRm.GetString("json.discover");
             lblUsername.Text = LocRm.GetString("USername");
             lblPassword.Text = LocRm.GetString("Password");
             lblDeviceURL.Text = LocRm.GetString("NetworkAddress");
@@ -63,14 +62,6 @@ namespace iSpyApplication.Controls
             ddlConnectWith.SelectedIndex = 0;
             BindDevices();
 
-            //Discovery.DiscoveryComplete += Discovery_DiscoveryComplete;
-
-            if (!Discovery.DiscoveryFinished)
-            {
-                btnFind.Enabled = false;
-                btnFind.Text = "...";
-            }
-
             if (CameraControl != null)
             {
                 txtOnvifUsername.Text = CameraControl.Camobject.settings.login;
@@ -104,7 +95,7 @@ namespace iSpyApplication.Controls
 
         public void Deinit()
         {
-            //Discovery.DiscoveryComplete -= Discovery_DiscoveryComplete;
+
         }
 
         private void BindDevices()
@@ -118,15 +109,6 @@ namespace iSpyApplication.Controls
                 ddlDeviceURL.SelectedIndex = 0;
         }
 
-        private void btnFind_Click(object sender, EventArgs e)
-        {
-            if (Discovery.DiscoveryFinished)
-            {
-                Discovery.FindDevices();
-                SetPanel(pnlStep1);
-                btnFind.Text = "...";
-            }
-        }
 
         private void button1_Click(object sender, EventArgs e)
         {
