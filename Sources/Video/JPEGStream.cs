@@ -3,17 +3,18 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Threading;
+using iSpyApplication.Controls;
 using iSpyApplication.Utilities;
 
 namespace iSpyApplication.Sources.Video
 {
-    public class JpegStream : VideoBase, IVideoSource, IDisposable
+    public class JpegStream : VideoBase, IVideoSource
     {
         // buffer size used to download JPEG image
         private const int BufferSize = 1024*1024;
         // size of portion to read at once
         private const int ReadSize = 1024;
-        private readonly int _frameInterval, _requestTimeout;
+        private ManualResetEvent _abort;
 
         /// <summary>
         ///     Login value.
@@ -21,17 +22,16 @@ namespace iSpyApplication.Sources.Video
         /// <remarks>Login required to access video source.</remarks>
         private readonly string _login, _password, _cookies, _httpUserAgent, _headers;
 
-        private readonly bool _useHttp10;
-        // received byte count
-        private long _bytesReceived;
+        private readonly int _requestTimeout;
 
-        private bool _disposed;
-        // login and password for HTTP authentication
-        // proxy information
-        // received frames count
-        private int _framesReceived;
         // URL for JPEG files
         private readonly objectsCamera _source;
+
+        private readonly bool _useHttp10;
+
+        private bool _disposed;
+
+        private ReasonToFinishPlaying _res = ReasonToFinishPlaying.DeviceLost;
         private Thread _thread;
 
 
@@ -39,25 +39,24 @@ namespace iSpyApplication.Sources.Video
         ///     Initializes a new instance of the <see cref="JpegStream" /> class.
         /// </summary>
         /// <param name="source">URL, which provides JPEG files.</param>
-        public JpegStream(objectsCamera source) : base(source)
+        public JpegStream(CameraWindow source) : base(source)
         {
-            _source = source;
-            var ckies = source.settings.cookies ?? "";
-            ckies = ckies.Replace("[USERNAME]", source.settings.login);
-            ckies = ckies.Replace("[PASSWORD]", source.settings.password);
-            ckies = ckies.Replace("[CHANNEL]", source.settings.ptzchannel);
+            _source = source.Camobject;
+            var ckies = _source.settings.cookies ?? "";
+            ckies = ckies.Replace("[USERNAME]", _source.settings.login);
+            ckies = ckies.Replace("[PASSWORD]", _source.settings.password);
+            ckies = ckies.Replace("[CHANNEL]", _source.settings.ptzchannel);
 
-            var hdrs = source.settings.headers ?? "";
-            hdrs = hdrs.Replace("[USERNAME]", source.settings.login);
-            hdrs = hdrs.Replace("[PASSWORD]", source.settings.password);
-            hdrs = hdrs.Replace("[CHANNEL]", source.settings.ptzchannel);
+            var hdrs = _source.settings.headers ?? "";
+            hdrs = hdrs.Replace("[USERNAME]", _source.settings.login);
+            hdrs = hdrs.Replace("[PASSWORD]", _source.settings.password);
+            hdrs = hdrs.Replace("[CHANNEL]", _source.settings.ptzchannel);
 
-            _login = source.settings.login;
-            _password = source.settings.password;
-            _requestTimeout = source.settings.timeout;
-            _useHttp10 = source.settings.usehttp10;
-            _httpUserAgent = source.settings.useragent;
-            _frameInterval = source.settings.frameinterval;
+            _login = _source.settings.login;
+            _password = _source.settings.password;
+            _requestTimeout = _source.settings.timeout;
+            _useHttp10 = _source.settings.usehttp10;
+            _httpUserAgent = _source.settings.useragent;
             _cookies = ckies;
             _headers = hdrs;
         }
@@ -88,7 +87,6 @@ namespace iSpyApplication.Sources.Video
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -123,40 +121,6 @@ namespace iSpyApplication.Sources.Video
         {
             get { return _source.settings.videosourcestring; }
             set { _source.settings.videosourcestring = value; }
-        }
-
-        /// <summary>
-        ///     Received frames count.
-        /// </summary>
-        /// <remarks>
-        ///     Number of frames the video source provided from the moment of the last
-        ///     access to the property.
-        /// </remarks>
-        public int FramesReceived
-        {
-            get
-            {
-                var frames = _framesReceived;
-                _framesReceived = 0;
-                return frames;
-            }
-        }
-
-        /// <summary>
-        ///     Received bytes count.
-        /// </summary>
-        /// <remarks>
-        ///     Number of bytes the video source provided from the moment of the last
-        ///     access to the property.
-        /// </remarks>
-        public long BytesReceived
-        {
-            get
-            {
-                var bytes = _bytesReceived;
-                _bytesReceived = 0;
-                return bytes;
-            }
         }
 
         /// <summary>
@@ -198,11 +162,6 @@ namespace iSpyApplication.Sources.Video
                 if (string.IsNullOrEmpty(_source.settings.videosourcestring))
                     throw new ArgumentException("Video source is not specified.");
 
-                _framesReceived = 0;
-                _bytesReceived = 0;
-
-                // create events
-                _abort.Reset();
                 _res = ReasonToFinishPlaying.DeviceLost;
 
                 // create and start new thread
@@ -211,23 +170,20 @@ namespace iSpyApplication.Sources.Video
             }
         }
 
-        private ReasonToFinishPlaying _res = ReasonToFinishPlaying.DeviceLost;
-        private ManualResetEvent _abort = new ManualResetEvent(false);
-
         public void Restart()
         {
             if (!IsRunning) return;
             _res = ReasonToFinishPlaying.Restart;
-            _abort.Set();
+            _abort?.Set();
         }
-        
+
 
         public void Stop()
         {
             if (IsRunning)
             {
                 _res = ReasonToFinishPlaying.StoppedByUser;
-                _abort.Set();
+                _abort?.Set();
             }
             else
             {
@@ -236,17 +192,10 @@ namespace iSpyApplication.Sources.Video
             }
         }
 
-        /// <summary>
-        ///     Free resource.
-        /// </summary>
-        private void Free()
-        {
-            _thread = null;
-        }
-
         // Worker thread
         private void WorkerThread()
         {
+            _abort = new ManualResetEvent(false);
             // buffer to read stream
             var buffer = new byte[BufferSize];
             // HTTP web request
@@ -259,7 +208,7 @@ namespace iSpyApplication.Sources.Video
             var rand = new Random((int) DateTime.UtcNow.Ticks);
             // download start time and duration
             var err = 0;
-            ConnectionFactory connectionFactory = new ConnectionFactory();
+            var connectionFactory = new ConnectionFactory();
             while (!_abort.WaitOne(0) && !MainForm.ShuttingDown)
             {
                 var total = 0;
@@ -275,18 +224,14 @@ namespace iSpyApplication.Sources.Video
                         "GET", "", "", _useHttp10, out request);
 
                     // get response stream
-                    try
-                    {
-                        stream = response.GetResponseStream();
-                    }
-                    catch (NullReferenceException)
-                    {
+                    if (response == null)
                         throw new Exception("Connection failed");
-                    }
+
+                    stream = response.GetResponseStream();
                     stream.ReadTimeout = _requestTimeout;
 
                     // loop
-                    while (!_abort.WaitOne(20))
+                    while (!_abort.WaitOne(0))
                     {
                         // check total read
                         if (total > BufferSize - ReadSize)
@@ -300,37 +245,32 @@ namespace iSpyApplication.Sources.Video
                             break;
 
                         total += read;
-
-                        // increment received bytes counter
-                        _bytesReceived += read;
                     }
 
-                    
-                    // increment frames counter
-                    _framesReceived++;
-
                     // provide new image to clients
-                    if (NewFrame != null)
+                    if (NewFrame != null && EmitFrame)
                     {
-                        using (var bitmap = (Bitmap) Image.FromStream(new MemoryStream(buffer, 0, total)))
+                        using (var ms = new MemoryStream(buffer, 0, total))
                         {
-                            // notify client
-                            NewFrame(this, new NewFrameEventArgs(bitmap));
-                            // release the image
+                            using (var bitmap = (Bitmap) Image.FromStream(ms))
+                            {
+                                NewFrame(this, new NewFrameEventArgs(bitmap));
+                            }
                         }
                     }
 
 
                     // wait for a while ?
-                    if (_frameInterval > 0)
+                    if (FrameInterval > 0)
                     {
                         // get download duration
                         var span = DateTime.UtcNow.Subtract(start);
                         // milliseconds to sleep
-                        var msec = _frameInterval - (int) span.TotalMilliseconds;
-
-                        if ((msec > 0) || _abort.WaitOne(0))
-                            break;
+                        var msec = FrameInterval - (int) span.TotalMilliseconds;
+                        if (msec > 0)
+                        {
+                            _abort.WaitOne(msec);
+                        }
                     }
                     err = 0;
                 }
@@ -340,7 +280,6 @@ namespace iSpyApplication.Sources.Video
                 }
                 catch (Exception ex)
                 {
-                    // provide information to clients
                     Logger.LogException(ex, "JPEG");
                     err++;
                     if (err > 3)
@@ -348,12 +287,7 @@ namespace iSpyApplication.Sources.Video
                         _res = ReasonToFinishPlaying.DeviceLost;
                         break;
                     }
-                    //if ( VideoSourceError != null )
-                    //{
-                    //    VideoSourceError( this, new VideoSourceErrorEventArgs( exception.Message ) );
-                    //}
-                    // wait for a while before the next try
-                    Thread.Sleep(250);
+                    _abort.WaitOne(250);
                 }
                 finally
                 {
@@ -365,7 +299,7 @@ namespace iSpyApplication.Sources.Video
             }
 
             PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
-            Free();
+            _abort.Close();
         }
 
         // Protected implementation of Dispose pattern. 
@@ -376,6 +310,10 @@ namespace iSpyApplication.Sources.Video
 
             // Free any unmanaged objects here. 
             //
+            if (disposing)
+            {
+                
+            }
             _disposed = true;
         }
     }

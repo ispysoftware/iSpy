@@ -93,7 +93,7 @@ namespace iSpyApplication
         public static int ThrottleFramerate = 40;
         public static float CpuUsage, CpuTotal;
         public static int RecordingThreads;
-        public static List<String> Plugins = new List<String>();
+        public static List<string> Plugins = new List<string>();
         public static bool NeedsResourceUpdate;
         private static readonly List<FilePreview> Masterfilelist = new List<FilePreview>();
 

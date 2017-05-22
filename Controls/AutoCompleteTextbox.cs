@@ -449,7 +449,6 @@ namespace iSpyApplication.Controls
             ParentForm.ResizeBegin -= StartResize;
             ParentForm.ResizeEnd -= EndResize;
             base.Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         #endregion Other

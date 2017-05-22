@@ -691,6 +691,7 @@ public partial class objectsCameraSettings {
     private string uniqueIDField;
     
     public objectsCameraSettings() {
+        this.frameintervalField = 0;
         this.timestampfontsizeField = 10;
         this.timestampoffsetField = ((decimal)(0m));
         this.timestampforecolorField = "";

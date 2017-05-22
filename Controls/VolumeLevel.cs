@@ -1802,7 +1802,10 @@ namespace iSpyApplication.Controls
             }
             _toolTipMic.RemoveAll();
             _toolTipMic.Dispose();
+            _writerStopped.Close();
+            _stopWrite.Close();
             _vline.Dispose();
+            ClearBuffer();
             base.Dispose(disposing);
         }
 

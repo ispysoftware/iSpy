@@ -814,6 +814,7 @@
   <Camera id="25">
     <Makes>
       <Make Name="INSTAR" Model="IN-301x" />
+      <Make Name="ROCAM" Model="NC300" />
     </Makes>
     <CommandURL>/decoder_control.cgi</CommandURL>
     <Commands>

@@ -11,7 +11,7 @@ namespace iSpyApplication.Sources.Audio.streams
     public class MP3Stream : IAudioSource, IDisposable
     {
         private string _source;
-        private ManualResetEvent _abort = new ManualResetEvent(false);
+        private ManualResetEvent _abort;
         private ReasonToFinishPlaying _res = ReasonToFinishPlaying.DeviceLost;
         private bool _listening;
 
@@ -168,7 +168,6 @@ namespace iSpyApplication.Sources.Audio.streams
                     throw new ArgumentException("Audio source is not specified.");
 
                 _res = ReasonToFinishPlaying.DeviceLost;
-                _abort.Reset();
                 _thread = new Thread(StreamMP3)
                 {
                     Name = "MP3 Audio Receiver (" + _source + ")"
@@ -182,6 +181,7 @@ namespace iSpyApplication.Sources.Audio.streams
 
         private void StreamMP3()
         {
+            _abort = new ManualResetEvent(false);
             HttpWebRequest request = null;
             
             try
@@ -280,6 +280,7 @@ namespace iSpyApplication.Sources.Audio.streams
             catch { }
             request = null;
             AudioFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
+            _abort.Close();
         }
 
         void SampleChannelPreVolumeMeter(object sender, StreamVolumeEventArgs e)
@@ -292,7 +293,7 @@ namespace iSpyApplication.Sources.Audio.streams
             if (IsRunning)
             {
                 _res = ReasonToFinishPlaying.StoppedByUser;
-                _abort.Set();
+                _abort?.Set();
             }
             else
             {
@@ -305,7 +306,7 @@ namespace iSpyApplication.Sources.Audio.streams
         {
             if (!IsRunning) return;
             _res = ReasonToFinishPlaying.Restart;
-            _abort.Set();
+            _abort?.Set();
         }
 
 
@@ -314,7 +315,6 @@ namespace iSpyApplication.Sources.Audio.streams
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         // Protected implementation of Dispose pattern. 
@@ -325,8 +325,7 @@ namespace iSpyApplication.Sources.Audio.streams
 
             if (disposing)
             {
-                _abort.Close();
-                _abort.Dispose();
+
             }
 
             // Free any unmanaged objects here. 

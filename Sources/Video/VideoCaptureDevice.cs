@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using iSpyApplication.Controls;
 using iSpyApplication.Utilities;
 using iSpyPRO.DirectShow;
 using iSpyPRO.DirectShow.Internals;
@@ -47,14 +49,10 @@ namespace iSpyApplication.Sources.Video
     /// </code>
     /// </remarks>
     /// 
-    public class VideoCaptureDevice : IVideoSource, IDisposable
+    public class VideoCaptureDevice : VideoBase, IVideoSource
     {
         // moniker string of video capture device
         private string _deviceMoniker;
-        // received frames count
-        private int _framesReceived;
-        // recieved byte count
-        private long _bytesReceived;
 
         // video and snapshot resolutions to set
         private VideoCapabilities _videoResolution;
@@ -62,7 +60,7 @@ namespace iSpyApplication.Sources.Video
 
         // provide snapshots or not
         private bool _provideSnapshots;
-        private ManualResetEvent _abort = new ManualResetEvent(false);
+        private ManualResetEvent _abort;
         private ReasonToFinishPlaying _res = ReasonToFinishPlaying.DeviceLost;
 
         private Thread _thread;
@@ -262,42 +260,6 @@ namespace iSpyApplication.Sources.Video
         }
 
         /// <summary>
-        /// Received frames count.
-        /// </summary>
-        /// 
-        /// <remarks>Number of frames the video source provided from the moment of the last
-        /// access to the property.
-        /// </remarks>
-        /// 
-        public int FramesReceived
-        {
-            get
-            {
-                int frames = _framesReceived;
-                _framesReceived = 0;
-                return frames;
-            }
-        }
-
-        /// <summary>
-        /// Received bytes count.
-        /// </summary>
-        /// 
-        /// <remarks>Number of bytes the video source provided from the moment of the last
-        /// access to the property.
-        /// </remarks>
-        /// 
-        public long BytesReceived
-        {
-            get
-            {
-                long bytes = _bytesReceived;
-                _bytesReceived = 0;
-                return bytes;
-            }
-        }
-
-        /// <summary>
         /// State of the video source.
         /// </summary>
         /// 
@@ -489,21 +451,91 @@ namespace iSpyApplication.Sources.Video
         /// 
         public object SourceObject => _sourceObject;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VideoCaptureDevice"/> class.
-        /// </summary>
-        /// 
-        public VideoCaptureDevice() { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VideoCaptureDevice"/> class.
-        /// </summary>
-        /// 
-        /// <param name="deviceMoniker">Moniker string of video capture device.</param>
-        /// 
-        public VideoCaptureDevice(string deviceMoniker)
+        public VideoCaptureDevice(string source) : base(null)
         {
-            _deviceMoniker = deviceMoniker;
+            _deviceMoniker = source;
+        }
+
+        public VideoCaptureDevice(CameraWindow source): base(source)
+        {
+            var camobject = source.Camobject;
+            _deviceMoniker = camobject.settings.videosourcestring;
+            string[] wh = camobject.resolution.Split('x');
+            var sz = new Size(Convert.ToInt32(wh[0]), Convert.ToInt32(wh[1]));
+
+
+            string precfg = source.Nv("video");
+            bool found = false;
+
+            if (source.Nv("capturemode") != "snapshots")
+            {
+                VideoCapabilities[] videoCapabilities = VideoCapabilities;
+                ProvideSnapshots = false;
+                foreach (VideoCapabilities capabilty in videoCapabilities)
+                {
+
+                    string item = string.Format(VideoSource.VideoFormatString, capabilty.FrameSize.Width,
+                        Math.Abs(capabilty.FrameSize.Height), capabilty.AverageFrameRate, capabilty.BitCount);
+                    if (precfg == item)
+                    {
+                        VideoResolution = capabilty;
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                precfg = source.Nv("snapshots");
+                ProvideSnapshots = true;
+                VideoCapabilities[] videoCapabilities = SnapshotCapabilities;
+                foreach (VideoCapabilities capabilty in videoCapabilities)
+                {
+
+                    string item = string.Format(VideoSource.SnapshotFormatString, capabilty.FrameSize.Width,
+                        Math.Abs(capabilty.FrameSize.Height), capabilty.AverageFrameRate, capabilty.BitCount);
+                    if (precfg == item)
+                    {
+                        VideoResolution = capabilty;
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            if (!found)
+            {
+                var vc = VideoCapabilities.Where(p => p.FrameSize == sz).ToList();
+                if (vc.Count > 0)
+                {
+                    var vc2 = vc.FirstOrDefault(p => p.AverageFrameRate == camobject.settings.framerate) ??
+                                vc.FirstOrDefault();
+                    VideoResolution = vc2;
+                    found = true;
+                }
+                if (!found)
+                {
+                    //first available
+                    var vcf = VideoCapabilities.FirstOrDefault();
+                    if (vcf != null)
+                        VideoResolution = vcf;
+                    //else
+                    //{
+                    //    dont do this, not having an entry is ok for some video providers
+                    //    throw new Exception("Unable to find a video format for the capture device");
+                    //}
+                }
+            }
+
+            if (camobject.settings.crossbarindex != -1 && CheckIfCrossbarAvailable())
+            {
+                var cbi =
+                    AvailableCrossbarVideoInputs.FirstOrDefault(
+                        p => p.Index == camobject.settings.crossbarindex);
+                if (cbi != null)
+                {
+                    CrossbarVideoInput = cbi;
+                }
+            }
         }
 
         /// <summary>
@@ -521,14 +553,11 @@ namespace iSpyApplication.Sources.Video
                 // check source
                 if (string.IsNullOrEmpty(_deviceMoniker))
                     throw new ArgumentException("Video source is not specified.");
-
-                _framesReceived = 0;
-                _bytesReceived = 0;
+                
                 _isCrossbarAvailable = null;
                 _needToSetVideoInput = true;
 
                 // create events
-                _abort.Reset();
                 _res = ReasonToFinishPlaying.DeviceLost;
 
                 _thread = new Thread(WorkerThread) { Name = _deviceMoniker, IsBackground = true };
@@ -543,7 +572,7 @@ namespace iSpyApplication.Sources.Video
             if (IsRunning)
             {
                 _res = ReasonToFinishPlaying.StoppedByUser;
-                _abort.Set();
+                _abort?.Set();
             }
             else
             {
@@ -556,7 +585,7 @@ namespace iSpyApplication.Sources.Video
         {
             if (!IsRunning) return;
             _res = ReasonToFinishPlaying.Restart;
-            _abort.Set();
+            _abort?.Set();
         }
 
         /// <summary>
@@ -1125,6 +1154,7 @@ namespace iSpyApplication.Sources.Video
             IAMVideoControl videoControl = null;
             IPin pinStillImage = null;
             IAMCrossbar crossbar = null;
+            _abort = new ManualResetEvent(false);
 
             try
             {
@@ -1363,10 +1393,8 @@ namespace iSpyApplication.Sources.Video
                                 _crossbarVideoInput = GetCurrentCrossbarInput(crossbar);
                             }
                         }
-
-                        Thread.Sleep(20);
                     }
-                    while (!_abort.WaitOne(20, false) && !MainForm.ShuttingDown);
+                    while (!_abort.WaitOne(0, false) && !MainForm.ShuttingDown);
 
                     mediaControl.Stop();
                 }
@@ -1408,6 +1436,7 @@ namespace iSpyApplication.Sources.Video
             }
 
             PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
+            _abort.Close();
         }
 
         // Set resolution for the specified stream configuration
@@ -1699,10 +1728,7 @@ namespace iSpyApplication.Sources.Video
                 bmp.Dispose();
                 return;
             }
-
-            _framesReceived++;
-            _bytesReceived += bmp.Width * bmp.Height * (Image.GetPixelFormatSize(bmp.PixelFormat) >> 3);
-
+            
             var dae = new NewFrameEventArgs(bmp);
             nf.Invoke(this, dae);
             bmp.Dispose();
@@ -1758,49 +1784,50 @@ namespace iSpyApplication.Sources.Video
             // Callback method that receives a pointer to the sample buffer
             public int BufferCB(double sampleTime, IntPtr buffer, int bufferLen)
             {
-                if (_parent.NewFrame != null)
+                if (_parent.NewFrame != null && _parent.EmitFrame)
                 {
                     // create new image
-                    var image = new Bitmap(Width, Height, PixelFormat.Format24bppRgb);
-
-                    // lock bitmap data
-                    BitmapData imageData = image.LockBits(
-                        new Rectangle(0, 0, Width, Height),
-                        ImageLockMode.ReadWrite,
-                        PixelFormat.Format24bppRgb);
-
-                    // copy image data
-                    int srcStride = imageData.Stride;
-                    int dstStride = imageData.Stride;
-
-                    unsafe
+                    using (var image = new Bitmap(Width, Height, PixelFormat.Format24bppRgb))
                     {
-                        byte* dst = (byte*)imageData.Scan0.ToPointer() + dstStride * (Height - 1);
-                        var src = (byte*)buffer.ToPointer();
 
-                        for (int y = 0; y < Height; y++)
+                        // lock bitmap data
+                        BitmapData imageData = image.LockBits(
+                            new Rectangle(0, 0, Width, Height),
+                            ImageLockMode.ReadWrite,
+                            PixelFormat.Format24bppRgb);
+
+                        // copy image data
+                        int srcStride = imageData.Stride;
+                        int dstStride = imageData.Stride;
+
+                        unsafe
                         {
-                            NativeMethods.memcpy(dst, src, srcStride);
-                            dst -= dstStride;
-                            src += srcStride;
+                            byte* dst = (byte*) imageData.Scan0.ToPointer() + dstStride*(Height - 1);
+                            var src = (byte*) buffer.ToPointer();
+
+                            for (int y = 0; y < Height; y++)
+                            {
+                                NativeMethods.memcpy(dst, src, srcStride);
+                                dst -= dstStride;
+                                src += srcStride;
+                            }
                         }
-                    }
 
-                    // unlock bitmap data
-                    image.UnlockBits(imageData);
+                        // unlock bitmap data
+                        image.UnlockBits(imageData);
 
-                    // notify parent
-                    if (_snapshotMode)
-                    {
-                        _parent.OnSnapshotFrame(image);
-                    }
-                    else
-                    {
-                        _parent.OnNewFrame(image);
-                    }
+                        // notify parent
+                        if (_snapshotMode)
+                        {
+                            _parent.OnSnapshotFrame(image);
+                        }
+                        else
+                        {
+                            _parent.OnNewFrame(image);
+                        }
 
-                    // release the image
-                    image.Dispose();
+                        // release the image
+                    }
                 }
 
                 return 0;
@@ -1812,7 +1839,6 @@ namespace iSpyApplication.Sources.Video
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         // Protected implementation of Dispose pattern. 
@@ -1823,8 +1849,6 @@ namespace iSpyApplication.Sources.Video
 
             if (disposing)
             {
-                _abort.Close();
-                _abort.Dispose();
             }
 
             // Free any unmanaged objects here. 

@@ -202,7 +202,6 @@ namespace iSpyApplication
                 string[] wh= CameraControl.Camobject.resolution.Split('x');
                 CaptureSize = new Size(Convert.ToInt32(wh[0]), Convert.ToInt32(wh[1]));
             }
-            txtFrameInterval.Text = txtFrameInterval2.Text = CameraControl.Camobject.settings.frameinterval.ToString(CultureInfo.InvariantCulture);
             
             txtVLCArgs.Text = CameraControl.Camobject.settings.vlcargs.Replace("\r\n","\n").Replace("\n\n","\n").Replace("\n", Environment.NewLine);
 
@@ -217,7 +216,6 @@ namespace iSpyApplication
             {
                 case 0:
                     cmbJPEGURL.Text = VideoSourceString;
-                    txtFrameInterval.Text = CameraControl.Camobject.settings.frameinterval.ToString(CultureInfo.InvariantCulture);
                     break;
                 case 1:
                     cmbMJPEGURL.Text = VideoSourceString;
@@ -481,16 +479,12 @@ namespace iSpyApplication
             button1.Text = LocRm.GetString("Ok");
             button2.Text = LocRm.GetString("Cancel");
             label1.Text = LocRm.GetString("JpegUrl");
-            label10.Text = LocRm.GetString("milliseconds");
             label11.Text = LocRm.GetString("Screen");
-            label12.Text = LocRm.GetString("milliseconds");
-            label13.Text = LocRm.GetString("FrameInterval");
             label15.Text = LocRm.GetString("Username");
             label17.Text = LocRm.GetString("Password");
             label2.Text = LocRm.GetString("MjpegUrl");
             label5.Text = label15.Text = LocRm.GetString("Username");
             label6.Text = label17.Text = LocRm.GetString("Password");
-            label9.Text = LocRm.GetString("FrameInterval");
             linkLabel1.Text = LocRm.GetString("HelpMeFindTheRightUrl");
             linkLabel2.Text = LocRm.GetString("HelpMeFindTheRightUrl");
             tabPage1.Text = LocRm.GetString("JpegUrl");
@@ -604,12 +598,6 @@ namespace iSpyApplication
             switch (SourceIndex)
             {
                 case 0:
-                    int frameinterval;
-                    if (!Int32.TryParse(txtFrameInterval.Text, out frameinterval))
-                    {
-                        MessageBox.Show(LocRm.GetString("Validate_FrameInterval"));
-                        return;
-                    }
                     url = cmbJPEGURL.Text.Trim();
                     if (string.IsNullOrEmpty(url))
                     {
@@ -617,7 +605,6 @@ namespace iSpyApplication
                         return;
                     }
                     VideoSourceString = url;
-                    CameraControl.Camobject.settings.frameinterval = frameinterval;
                     SetPTZPort();
                     break;
                 case 1:
@@ -694,12 +681,7 @@ namespace iSpyApplication
                     VideoSourceString = _videoDeviceMoniker;
                     break;
                 case 4:
-                    int frameinterval2;
-                    if (!Int32.TryParse(txtFrameInterval2.Text, out frameinterval2))
-                    {
-                        MessageBox.Show(LocRm.GetString("Validate_FrameInterval"));
-                        return;
-                    }
+                    
                     if (ddlScreen.SelectedIndex < 1)
                     {
                         MessageBox.Show(LocRm.GetString("Validate_SelectCamera"), LocRm.GetString("Note"));
@@ -707,7 +689,6 @@ namespace iSpyApplication
                     }
                     VideoSourceString = (ddlScreen.SelectedIndex - 1).ToString(CultureInfo.InvariantCulture);
                     FriendlyName = ddlScreen.SelectedItem.ToString();
-                    CameraControl.Camobject.settings.frameinterval = frameinterval2;
                     CameraControl.Camobject.settings.desktopmouse = chkMousePointer.Checked;
                 break;
                 case 5:
@@ -1115,14 +1096,14 @@ namespace iSpyApplication
                 // exposure
                 numXimeaExposure.Minimum = (decimal)CameraControl.XimeaSource.GetParamFloat(CameraParameter.ExposureMin) / 1000;
                 numXimeaExposure.Maximum = (decimal)CameraControl.XimeaSource.GetParamFloat(CameraParameter.ExposureMax) / 1000;
-                numXimeaExposure.Value = new Decimal(CameraControl.XimeaSource.GetParamFloat(CameraParameter.Exposure)) / 1000;
+                numXimeaExposure.Value = new decimal(CameraControl.XimeaSource.GetParamFloat(CameraParameter.Exposure)) / 1000;
                 if (numXimeaExposure.Value == 0)
                     numXimeaExposure.Value = 100;
 
                 // gain
-                numXimeaGain.Minimum = new Decimal(CameraControl.XimeaSource.GetParamFloat(CameraParameter.GainMin));
-                numXimeaGain.Maximum = new Decimal(CameraControl.XimeaSource.GetParamFloat(CameraParameter.GainMax));
-                numXimeaGain.Value = new Decimal(CameraControl.XimeaSource.GetParamFloat(CameraParameter.Gain));
+                numXimeaGain.Minimum = new decimal(CameraControl.XimeaSource.GetParamFloat(CameraParameter.GainMin));
+                numXimeaGain.Maximum = new decimal(CameraControl.XimeaSource.GetParamFloat(CameraParameter.GainMax));
+                numXimeaGain.Value = new decimal(CameraControl.XimeaSource.GetParamFloat(CameraParameter.Gain));
 
                 int maxDwnsmpl = CameraControl.XimeaSource.GetParamInt(CameraParameter.DownsamplingMax);
 
@@ -1663,7 +1644,7 @@ namespace iSpyApplication
                 }
                 CameraControl.Camobject.settings.videosourcestring = source;
 
-                vfr = new MediaStream(CameraControl.Camobject);
+                vfr = new MediaStream(CameraControl);
                 vfr.NewFrame += Vfr_NewFrame;
                 vfr.ErrorHandler += Vfr_ErrorHandler;
                 vfr.PlayingFinished += Vfr_PlayingFinished;

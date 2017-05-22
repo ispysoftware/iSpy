@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using AForge.Imaging.Filters;
+using iSpyApplication.Controls;
 using iSpyApplication.Kinect;
 using iSpyApplication.Sources.Audio;
 using iSpyApplication.Utilities;
@@ -16,7 +17,7 @@ using NAudio.Wave.SampleProviders;
 
 namespace iSpyApplication.Sources.Video
 {
-    public class KinectStream : IVideoSource, IAudioSource, ISupportsAudio, IDisposable
+    public class KinectStream : VideoBase, IVideoSource, IAudioSource, ISupportsAudio
     {
         private readonly Pen _inferredBonePen = new Pen(Brushes.Gray, 1);
         private readonly Pen _trackedBonePen = new Pen(Brushes.Green, 2);
@@ -29,15 +30,10 @@ namespace iSpyApplication.Sources.Video
         private readonly bool _skeleton, _tripwires;
         private DateTime _lastWarnedTripWire = DateTime.MinValue;
         //private readonly bool _bound;
-        private DateTime _lastFrameTimeStamp = DateTime.UtcNow;
-        public int StreamMode = 0;//color
+        public int StreamMode;//color
         private ReasonToFinishPlaying _res;
-        private ManualResetEvent _abort = new ManualResetEvent(false);
+        private ManualResetEvent _abort;
 
-        private const double MaxInterval = 1000d/15;
-        
-        private long _bytesReceived;
-        private int _framesReceived;
         private string _uniqueKinectId;
         ////Depth Stuff
         private short[] _depthPixels;
@@ -115,18 +111,12 @@ namespace iSpyApplication.Sources.Video
 
         #endregion
 
-
-        public KinectStream()
+        public KinectStream(CameraWindow source): base(source)
         {
-            
-        }
-
-        public KinectStream(string uniqueKinectId, bool skeleton, bool tripwires)
-        {
-            _uniqueKinectId = uniqueKinectId;
-            _skeleton = skeleton;
-            _tripwires = tripwires;
-
+            _tripwires = Convert.ToBoolean(source.Nv(source.Camobject.settings.namevaluesettings, "TripWires"));
+            _uniqueKinectId = source.Nv(source.Camobject.settings.namevaluesettings, "UniqueKinectId");
+            _skeleton = Convert.ToBoolean(source.Nv(source.Camobject.settings.namevaluesettings, "KinectSkeleton"));
+            StreamMode = Convert.ToInt32(source.Nv(source.Camobject.settings.namevaluesettings, "StreamMode"));
         }
 
         public int Tilt
@@ -152,33 +142,10 @@ namespace iSpyApplication.Sources.Video
 
         public event PlayingFinishedEventHandler PlayingFinished;
 
-
-        public long BytesReceived
-        {
-            get
-            {
-                long bytes = _bytesReceived;
-                _bytesReceived = 0;
-                return bytes;
-            }
-        }
-
-
         public virtual string Source
         {
             get { return _uniqueKinectId; }
             set { _uniqueKinectId = value; }
-        }
-
-
-        public int FramesReceived
-        {
-            get
-            {
-                int frames = _framesReceived;
-                _framesReceived = 0;
-                return frames;
-            }
         }
 
 
@@ -269,7 +236,6 @@ namespace iSpyApplication.Sources.Video
                     HasAudioStream = null;
                 }
 
-                _abort.Reset();
                 _res = ReasonToFinishPlaying.DeviceLost;
 
                 // create and start new thread
@@ -292,7 +258,8 @@ namespace iSpyApplication.Sources.Video
 
         private void AudioThread()
         {
-            while (!_abort.WaitOne(20) && !MainForm.ShuttingDown)
+            _abort = new ManualResetEvent(false);
+            while (!_abort.WaitOne(0) && !MainForm.ShuttingDown)
             {
                 int dataLength = _audioStream.Read(_audioBuffer, 0, _audioBuffer.Length);
                 if (DataAvailable != null)
@@ -343,6 +310,7 @@ namespace iSpyApplication.Sources.Video
             Listening = false;
 
             PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
+            _abort.Close();
         }
 
         void SensorDepthFrameReady(object sender, DepthImageFrameReadyEventArgs e)
@@ -352,10 +320,8 @@ namespace iSpyApplication.Sources.Video
             {
                 if (depthFrame != null)
                 {
-                    if ((DateTime.UtcNow - _lastFrameTimeStamp).TotalMilliseconds >= MaxInterval)
+                    if (EmitFrame)
                     {
-                        _lastFrameTimeStamp = DateTime.UtcNow;
-
                         // Copy the pixel data from the image to a temporary array
                         depthFrame.CopyPixelDataTo(_depthPixels);
 
@@ -445,10 +411,8 @@ namespace iSpyApplication.Sources.Video
 
         void SensorColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
         {
-            if ((DateTime.UtcNow - _lastFrameTimeStamp).TotalMilliseconds >= MaxInterval)
+            if (EmitFrame)
             {
-                _lastFrameTimeStamp = DateTime.UtcNow;
-
                 using (ColorImageFrame imageFrame = e.OpenColorImageFrame())
                 {
                     if (imageFrame != null)
@@ -636,7 +600,7 @@ namespace iSpyApplication.Sources.Video
             if (IsRunning)
             {
                 _res = ReasonToFinishPlaying.StoppedByUser;
-                _abort.Set();
+                _abort?.Set();
             }
             else
             {
@@ -652,7 +616,7 @@ namespace iSpyApplication.Sources.Video
                 return;
 
             _res = ReasonToFinishPlaying.Restart;
-            _abort.Set();
+            _abort?.Set();
 
         }
 
@@ -782,7 +746,6 @@ namespace iSpyApplication.Sources.Video
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         // Protected implementation of Dispose pattern. 
@@ -793,8 +756,6 @@ namespace iSpyApplication.Sources.Video
 
             if (disposing)
             {
-                _abort.Close();
-                _abort.Dispose();
                 _inferredBonePen.Dispose();
                 _trackedBonePen.Dispose();
                 _trackedJointBrush.Dispose();

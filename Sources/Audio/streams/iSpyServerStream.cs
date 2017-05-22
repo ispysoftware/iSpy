@@ -13,7 +13,7 @@ namespace iSpyApplication.Sources.Audio.streams
         private string _source;
         private float _gain;
         private bool _listening;
-        private ManualResetEvent _abort = new ManualResetEvent(false);
+        private ManualResetEvent _abort;
         private ReasonToFinishPlaying _res = ReasonToFinishPlaying.DeviceLost;
 
         private Thread _thread;
@@ -191,7 +191,6 @@ namespace iSpyApplication.Sources.Audio.streams
                 _sampleChannel = new SampleChannel(_waveProvider);
                 _sampleChannel.PreVolumeMeter += SampleChannelPreVolumeMeter;
 
-                _abort.Reset();
                 _thread = new Thread(SpyServerListener)
                           {
                               Name = "iSpyServer Audio Receiver (" + _source + ")"
@@ -208,6 +207,7 @@ namespace iSpyApplication.Sources.Audio.streams
 
         private void SpyServerListener()
         {
+            _abort = new ManualResetEvent(false);
             var data = new byte[3200];
             try
             {
@@ -221,7 +221,7 @@ namespace iSpyApplication.Sources.Audio.streams
                         throw new Exception("Stream is null");
                     
                     stream.ReadTimeout = 5000;
-                    while (!_abort.WaitOne(20) && !MainForm.ShuttingDown)
+                    while (!_abort.WaitOne(0) && !MainForm.ShuttingDown)
                     {
                         var da = DataAvailable;
                         if (da != null)
@@ -275,6 +275,7 @@ namespace iSpyApplication.Sources.Audio.streams
             if (WaveOutProvider?.BufferedBytes > 0) WaveOutProvider?.ClearBuffer();
 
             AudioFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
+            _abort.Close();
         }
 
         public void Stop()
@@ -282,7 +283,7 @@ namespace iSpyApplication.Sources.Audio.streams
             if (IsRunning)
             {
                 _res = ReasonToFinishPlaying.StoppedByUser;
-                _abort.Set();
+                _abort?.Set();
             }
             else
             {
@@ -295,7 +296,7 @@ namespace iSpyApplication.Sources.Audio.streams
         {
             if (!IsRunning) return;
             _res = ReasonToFinishPlaying.Restart;
-            _abort.Set();
+            _abort?.Set();
         }
 
 
@@ -306,7 +307,6 @@ namespace iSpyApplication.Sources.Audio.streams
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         // Protected implementation of Dispose pattern. 
@@ -317,8 +317,7 @@ namespace iSpyApplication.Sources.Audio.streams
 
             if (disposing)
             {
-                _abort.Close();
-                _abort.Dispose();
+                
             }
 
             // Free any unmanaged objects here. 

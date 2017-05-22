@@ -1,4 +1,6 @@
-﻿namespace iSpyApplication.Sources.Video
+﻿using System;
+
+namespace iSpyApplication.Sources.Video
 {
 
     /// <summary>
@@ -7,7 +9,7 @@
     /// 
     /// <remarks>The interface describes common methods for different type of video sources.</remarks>
     /// 
-    public interface IVideoSource
+    public interface IVideoSource:IDisposable
     {
         /// <summary>
         /// New frame event.
@@ -42,25 +44,7 @@
         /// 
         string Source { get; }
 
-        /// <summary>
-        /// Received frames count.
-        /// </summary>
-        /// 
-        /// <remarks>Number of frames the video source provided from the moment of the last
-        /// access to the property.
-        /// </remarks>
-        /// 
-        int FramesReceived { get; }
-
-        /// <summary>
-        /// Received bytes count.
-        /// </summary>
-        /// 
-        /// <remarks>Number of bytes the video source provided from the moment of the last
-        /// access to the property.
-        /// </remarks>
-        /// 
-        long BytesReceived { get; }
+        int FrameInterval { get; }
 
         /// <summary>
         /// State of the video source.

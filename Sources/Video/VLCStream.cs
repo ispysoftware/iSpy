@@ -10,6 +10,7 @@ using Declarations;
 using Declarations.Events;
 using Declarations.Media;
 using Declarations.Players;
+using iSpyApplication.Controls;
 using iSpyApplication.Sources.Audio;
 using iSpyApplication.Utilities;
 using Implementation;
@@ -19,17 +20,16 @@ using File = System.IO.File;
 
 namespace iSpyApplication.Sources.Video
 {
-    public class VlcStream : VideoBase, IVideoSource, IAudioSource, ISupportsAudio, IDisposable
+    public class VlcStream : VideoBase, IVideoSource, IAudioSource, ISupportsAudio
     {
         public int FormatWidth = 320, FormatHeight = 240;
         private readonly string[] _arguments;
-        private int _framesReceived;
 
         IMediaPlayerFactory _mFactory;
         IMedia _mMedia;
         IVideoPlayer _mPlayer;
 
-        private ManualResetEvent _abort = new ManualResetEvent(false);
+        private ManualResetEvent _abort;
         private ReasonToFinishPlaying _res = ReasonToFinishPlaying.DeviceLost;
 
         #region Audio
@@ -79,11 +79,12 @@ namespace iSpyApplication.Sources.Video
         /// 
         /// <param name="source">URL, which provides VLCstream.</param>
         /// <param name="arguments"></param>
-        public VlcStream(objectsCamera source, string[] arguments):base(source)
+        public VlcStream(CameraWindow source):base(source)
         {
-            _source = source;
-            _arguments = arguments;
-            TimeOut = source.settings.timeout;
+            _source = source.Camobject;
+            _arguments = _source.settings.vlcargs.Split(Environment.NewLine.ToCharArray(),
+                StringSplitOptions.RemoveEmptyEntries);
+            TimeOut = _source.settings.timeout;
         }
 
         /// <summary>
@@ -142,42 +143,6 @@ namespace iSpyApplication.Sources.Video
         }
 
         /// <summary>
-        /// Received bytes count.
-        /// </summary>
-        /// 
-        /// <remarks>Number of bytes the video source provided from the moment of the last
-        /// access to the property.
-        /// </remarks>
-        /// 
-        public long BytesReceived
-        {
-            get
-            {
-                const long bytes = 0;
-                //bytesReceived = 0;
-                return bytes;
-            }
-        }
-
-        /// <summary>
-        /// Received frames count.
-        /// </summary>
-        /// 
-        /// <remarks>Number of frames the video source provided from the moment of the last
-        /// access to the property.
-        /// </remarks>
-        /// 
-        public int FramesReceived
-        {
-            get
-            {
-                int frames = _framesReceived;
-                _framesReceived = 0;
-                return frames;
-            }
-        }
-
-        /// <summary>
         /// State of the video source.
         /// </summary>
         /// 
@@ -221,8 +186,6 @@ namespace iSpyApplication.Sources.Video
 
             if (IsRunning) return;
 
-            // create events
-            _abort.Reset();
             _res = ReasonToFinishPlaying.DeviceLost;
 
             // create and start new thread
@@ -326,7 +289,6 @@ namespace iSpyApplication.Sources.Video
 
             _mPlayer.Delay = 0;
 
-            _framesReceived = 0;
             Duration = Time = 0;
             LastFrame = DateTime.MinValue;
 
@@ -346,10 +308,10 @@ namespace iSpyApplication.Sources.Video
 
             _videoQueue = new ConcurrentQueue<Bitmap>();
             _audioQueue = new ConcurrentQueue<byte[]>();
-            _abort.Reset();
+
             
             _mPlayer.Play();
-
+            _abort = new ManualResetEvent(false);
             EventManager();
 
             if (Seekable)
@@ -364,6 +326,7 @@ namespace iSpyApplication.Sources.Video
             }
 
             DisposePlayer();
+            _abort.Close();
         }
 
         void DisposePlayer()
@@ -418,7 +381,7 @@ namespace iSpyApplication.Sources.Video
                 case MediaState.Ended:
                 case MediaState.Stopped:
                 case MediaState.Error:
-                    _abort.Set();
+                    _abort?.Set();
                     break;
             }
 
@@ -432,7 +395,7 @@ namespace iSpyApplication.Sources.Video
             if (LastFrame > DateTime.MinValue && (Helper.Now - LastFrame).TotalMilliseconds > TimeOut)
             {
                 _res = ReasonToFinishPlaying.DeviceLost;
-                _abort.Set();
+                _abort?.Set();
             }
         }
 
@@ -445,7 +408,7 @@ namespace iSpyApplication.Sources.Video
             if (IsRunning)
             {
                 _res = ReasonToFinishPlaying.StoppedByUser;
-                _abort.Set();
+                _abort?.Set();
             }
             else
             {
@@ -458,7 +421,7 @@ namespace iSpyApplication.Sources.Video
         {
             if (!IsRunning) return;
             _res = ReasonToFinishPlaying.Restart;
-            _abort.Set();
+            _abort?.Set();
         }
 
 
@@ -614,12 +577,11 @@ namespace iSpyApplication.Sources.Video
         private void FrameCallback(Bitmap frame)
         {
             var nf = NewFrame;
-            if (nf== null || _abort.WaitOne(0))
+            if (nf== null || _abort.WaitOne(0) || !EmitFrame)
             {
                 frame.Dispose();
                 return;
             }
-            _framesReceived++;
 
             _videoQueue.Enqueue(frame);            
         }
@@ -642,8 +604,7 @@ namespace iSpyApplication.Sources.Video
         private void EventManager()
         {
             Bitmap frame;
-
-            while (!_abort.WaitOne(20) && !MainForm.ShuttingDown)
+            while (!_abort.WaitOne(0) && !MainForm.ShuttingDown)
             {
                 try
                 {
@@ -693,8 +654,6 @@ namespace iSpyApplication.Sources.Video
             {
                 // ignored
             }
-
-            
         }
 
 
@@ -703,7 +662,6 @@ namespace iSpyApplication.Sources.Video
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         // Protected implementation of Dispose pattern. 
@@ -716,8 +674,6 @@ namespace iSpyApplication.Sources.Video
             {
                 try
                 {
-                    _abort.Close();
-                    _abort.Dispose();
                     _mFactory?.Dispose();
                 }
                 catch

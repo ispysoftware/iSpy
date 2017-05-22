@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading;
+using iSpyApplication.Controls;
 using iSpyApplication.Utilities;
 
 namespace iSpyApplication.Sources.Video
@@ -44,7 +45,7 @@ namespace iSpyApplication.Sources.Video
     /// &lt;/configuration&gt;
     /// </code>
     /// </remarks>
-    public class MJPEGStream : VideoBase, IVideoSource, IDisposable
+    public class MJPEGStream : VideoBase, IVideoSource
     {
         // if we should use basic authentication when connecting to the video source
 
@@ -52,66 +53,63 @@ namespace iSpyApplication.Sources.Video
         private const int BufSize = 1024*1024;
         // size of portion to read at once
         private const int ReadSize = 1024;
+        private ManualResetEvent _abort;
+        private readonly string _cookies;
+
+        private readonly string _decodeKey;
 
         private readonly string _headers;
+        private readonly string _httpUserAgent;
+
+        private readonly string _login;
+        private readonly string _password;
         // use separate HTTP connection group or use default
         // timeout value for web request
         private readonly int _requestTimeout;
         // URL for MJPEG stream
         private readonly objectsCamera _source;
+        private readonly bool _useHttp10;
         // received byte count
         private long _bytesReceived;
-        private readonly string _cookies;
-
-        private readonly string _decodeKey;
 
         private bool _disposed;
-        
+
         // login and password for HTTP authentication
         // proxy information
         // received frames count
         private int _framesReceived;
-
-
-        private readonly string _httpUserAgent;
-
-        private readonly string _login;
-        private readonly string _password;
-        private ManualResetEvent _abort = new ManualResetEvent(false);
         private ReasonToFinishPlaying _res = ReasonToFinishPlaying.DeviceLost;
 
         private Thread _thread;
-        private readonly bool _useHttp10;
 
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="MJPEGStream" /> class.
         /// </summary>
         /// <param name="source">URL, which provides MJPEG stream.</param>
-        public MJPEGStream(objectsCamera source) : base(source)
+        public MJPEGStream(CameraWindow source) : base(source)
         {
-            _source = source;
+            _source = source.Camobject;
 
-            var ckies = source.settings.cookies ?? "";
-            ckies = ckies.Replace("[USERNAME]", source.settings.login);
-            ckies = ckies.Replace("[PASSWORD]", source.settings.password);
-            ckies = ckies.Replace("[CHANNEL]", source.settings.ptzchannel);
+            var ckies = _source.settings.cookies ?? "";
+            ckies = ckies.Replace("[USERNAME]", _source.settings.login);
+            ckies = ckies.Replace("[PASSWORD]", _source.settings.password);
+            ckies = ckies.Replace("[CHANNEL]", _source.settings.ptzchannel);
 
-            var hdrs = source.settings.headers ?? "";
-            hdrs = hdrs.Replace("[USERNAME]", source.settings.login);
-            hdrs = hdrs.Replace("[PASSWORD]", source.settings.password);
-            hdrs = hdrs.Replace("[CHANNEL]", source.settings.ptzchannel);
+            var hdrs = _source.settings.headers ?? "";
+            hdrs = hdrs.Replace("[USERNAME]", _source.settings.login);
+            hdrs = hdrs.Replace("[PASSWORD]", _source.settings.password);
+            hdrs = hdrs.Replace("[CHANNEL]", _source.settings.ptzchannel);
 
 
-            _login = source.settings.login;
-            _password = source.settings.password;
-            _requestTimeout = source.settings.timeout;
-            _httpUserAgent = source.settings.useragent;
-            _decodeKey = source.decodekey;
-            _useHttp10 = source.settings.usehttp10;
+            _login = _source.settings.login;
+            _password = _source.settings.password;
+            _requestTimeout = _source.settings.timeout;
+            _httpUserAgent = _source.settings.useragent;
+            _decodeKey = _source.decodekey;
+            _useHttp10 = _source.settings.usehttp10;
             _cookies = ckies;
             _headers = hdrs;
-            
         }
 
         /// <summary>
@@ -130,11 +128,11 @@ namespace iSpyApplication.Sources.Video
         /// </remarks>
         public IWebProxy Proxy { get; set; }
 
+
         // Public implementation of Dispose pattern callable by consumers. 
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -167,10 +165,7 @@ namespace iSpyApplication.Sources.Video
         public string Source
         {
             get { return _source.settings.videosourcestring; }
-            set
-            {
-                _source.settings.videosourcestring = value;
-            }
+            set { _source.settings.videosourcestring = value; }
         }
 
         /// <summary>
@@ -250,7 +245,6 @@ namespace iSpyApplication.Sources.Video
                 _bytesReceived = 0;
 
                 // create events
-                _abort.Reset();
                 _res = ReasonToFinishPlaying.DeviceLost;
 
                 // create and start new thread
@@ -259,26 +253,12 @@ namespace iSpyApplication.Sources.Video
             }
         }
 
-        /// <summary>
-        ///     Stop video source.
-        /// </summary>
-        /// <remarks>
-        ///     <para>Stops video source aborting its thread.</para>
-        ///     <para>
-        ///         <note>
-        ///             Since the method aborts background thread, its usage is highly not preferred
-        ///             and should be done only if there are no other options. The correct way of stopping camera
-        ///             is <see cref="SignalToStop">signaling it stop</see> and then
-        ///             <see cref="WaitForStop">waiting</see> for background thread's completion.
-        ///         </note>
-        ///     </para>
-        /// </remarks>
         public void Stop()
         {
             if (IsRunning)
             {
                 _res = ReasonToFinishPlaying.StoppedByUser;
-                _abort.Set();
+                _abort?.Set();
             }
             else
             {
@@ -292,7 +272,7 @@ namespace iSpyApplication.Sources.Video
             if (!IsRunning)
                 return;
             _res = ReasonToFinishPlaying.Restart;
-            _abort.Set();
+            _abort?.Set();
         }
 
 
@@ -303,11 +283,11 @@ namespace iSpyApplication.Sources.Video
             var buffer = new byte[BufSize];
             // JPEG magic number
             var jpegMagic = new byte[] {0xFF, 0xD8, 0xFF};
-
+            _abort = new ManualResetEvent(false);
 
             var encoding = new ASCIIEncoding();
 
-            while (!_abort.WaitOne(20) && !MainForm.ShuttingDown)
+            while (!_abort.WaitOne(0) && !MainForm.ShuttingDown)
             {
                 // HTTP web request
                 HttpWebRequest request = null;
@@ -324,7 +304,7 @@ namespace iSpyApplication.Sources.Video
                 int todo = 0, total = 0, pos = 0, align = 1;
                 var start = 0;
 
-                ConnectionFactory connectionFactory = new ConnectionFactory();
+                var connectionFactory = new ConnectionFactory();
                 // align
                 //  1 = searching for image start
                 //  2 = searching for image end
@@ -338,7 +318,7 @@ namespace iSpyApplication.Sources.Video
                     response = connectionFactory.GetResponse(vss, _cookies, _headers, _httpUserAgent, _login, _password,
                         "GET", "", "", _useHttp10, out request);
                     if (response == null)
-                        throw new Exception("Stream could not connect");
+                        throw new Exception("Connection failed");
                     // check content type
                     var contentType = response.ContentType;
                     var contentTypeArray = contentType.Split('/');
@@ -477,50 +457,53 @@ namespace iSpyApplication.Sources.Video
                                 // image at stop
                                 if (nf != null)
                                 {
-                                    if (decode)
+                                    if (EmitFrame)
                                     {
-                                        var marker = Encoding.ASCII.GetBytes(_decodeKey);
-
-                                        using (
-                                            var ms = new MemoryStream(buffer, start + jpegMagic.Length,
-                                                jpegMagic.Length + marker.Length))
+                                        if (decode)
                                         {
-                                            var key = new byte[marker.Length];
-                                            ms.Read(key, 0, marker.Length);
+                                            var marker = Encoding.ASCII.GetBytes(_decodeKey);
 
-                                            if (!ByteArrayUtils.UnsafeCompare(marker, key))
+                                            using (
+                                                var ms = new MemoryStream(buffer, start + jpegMagic.Length,
+                                                    jpegMagic.Length + marker.Length))
                                             {
-                                                throw new Exception(
-                                                    "Image Decode Failed - Check the decode key matches the encode key on ispy server");
+                                                var key = new byte[marker.Length];
+                                                ms.Read(key, 0, marker.Length);
+
+                                                if (!ByteArrayUtils.UnsafeCompare(marker, key))
+                                                {
+                                                    throw new Exception(
+                                                        "Image Decode Failed - Check the decode key matches the encode key on ispy server");
+                                                }
+                                            }
+
+
+                                            using (
+                                                var ms = new MemoryStream(buffer, start + marker.Length,
+                                                    stop - start - marker.Length))
+                                            {
+                                                ms.Seek(0, SeekOrigin.Begin);
+                                                ms.WriteByte(jpegMagic[0]);
+                                                ms.WriteByte(jpegMagic[1]);
+                                                ms.WriteByte(jpegMagic[2]);
+                                                ms.Seek(0, SeekOrigin.Begin);
+
+                                                using (var bmp = (Bitmap) Image.FromStream(ms))
+                                                {
+                                                    var da = new NewFrameEventArgs(bmp);
+                                                    nf.Invoke(this, da);
+                                                }
                                             }
                                         }
-
-
-                                        using (
-                                            var ms = new MemoryStream(buffer, start + marker.Length,
-                                                stop - start - marker.Length))
+                                        else
                                         {
-                                            ms.Seek(0, SeekOrigin.Begin);
-                                            ms.WriteByte(jpegMagic[0]);
-                                            ms.WriteByte(jpegMagic[1]);
-                                            ms.WriteByte(jpegMagic[2]);
-                                            ms.Seek(0, SeekOrigin.Begin);
-
-                                            using (var bmp = (Bitmap) Image.FromStream(ms))
+                                            using (var ms = new MemoryStream(buffer, start, stop - start))
                                             {
-                                                var da = new NewFrameEventArgs(bmp);
-                                                nf.Invoke(this, da);
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        using (var ms = new MemoryStream(buffer, start, stop - start))
-                                        {
-                                            using (var bmp = (Bitmap) Image.FromStream(ms))
-                                            {
-                                                var da = new NewFrameEventArgs(bmp);
-                                                nf.Invoke(this, da);
+                                                using (var bmp = (Bitmap) Image.FromStream(ms))
+                                                {
+                                                    var da = new NewFrameEventArgs(bmp);
+                                                    nf.Invoke(this, da);
+                                                }
                                             }
                                         }
                                     }
@@ -556,7 +539,7 @@ namespace iSpyApplication.Sources.Video
                 {
                     // do nothing for Application Exception, which we raised on our own
                     // wait for a while before the next try
-                    Thread.Sleep(250);
+                    _abort.WaitOne(250);
                 }
                 catch (ThreadAbortException)
                 {
@@ -582,6 +565,7 @@ namespace iSpyApplication.Sources.Video
             }
 
             PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
+            _abort.Close();
         }
 
         // Protected implementation of Dispose pattern. 
@@ -592,8 +576,7 @@ namespace iSpyApplication.Sources.Video
 
             if (disposing)
             {
-                _abort.Close();
-                _abort.Dispose();
+                
             }
 
             // Free any unmanaged objects here. 

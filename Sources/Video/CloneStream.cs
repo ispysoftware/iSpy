@@ -6,9 +6,8 @@ namespace iSpyApplication.Sources.Video
 {
     public class CloneStream : IVideoSource, IAudioSource
     {
-        private long _bytesReceived;
-        private int _framesReceived;
         private readonly IVideoSource _source;
+        private bool _disposed;
 
         public CloneStream()
         {
@@ -29,18 +28,6 @@ namespace iSpyApplication.Sources.Video
 
         public event PlayingFinishedEventHandler PlayingFinished;
 
-
-        public long BytesReceived
-        {
-            get
-            {
-                long bytes = _bytesReceived;
-                _bytesReceived = 0;
-                return bytes;
-            }
-        }
-
-
         public event DataAvailableEventHandler DataAvailable;
         public event LevelChangedEventHandler LevelChanged;
         public event AudioFinishedEventHandler AudioFinished;
@@ -51,17 +38,6 @@ namespace iSpyApplication.Sources.Video
         public BufferedWaveProvider WaveOutProvider { get; set; }
 
         public bool Listening { get; set; }
-
-
-        public int FramesReceived
-        {
-            get
-            {
-                int frames = _framesReceived;
-                _framesReceived = 0;
-                return frames;
-            }
-        }
 
 
         public bool IsRunning => (_source != null && _source.IsRunning);
@@ -96,5 +72,26 @@ namespace iSpyApplication.Sources.Video
         }
 
         #endregion
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        // Protected implementation of Dispose pattern. 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            if (disposing)
+            {
+                
+            }
+
+            // Free any unmanaged objects here. 
+            //
+            _disposed = true;
+        }
     }
 }

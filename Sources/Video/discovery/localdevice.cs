@@ -115,7 +115,6 @@ namespace iSpyApplication.Sources.Video.discovery
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         // Protected implementation of Dispose pattern. 

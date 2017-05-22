@@ -10,7 +10,6 @@
         ],
         "live": true
     },
-    { "text": "Frame Interval", "value": 0, "type": "Int32", "min": 0, "max": 6000000, "bindto": "settings.frameinterval" },
     {
         "text": "Capture Mouse",
         "value": "",

@@ -54,7 +54,7 @@
                                                     <xs:element name="active" type="xs:boolean" />
                                                     <xs:element name="notifyondisconnect" type="xs:boolean" />
                                                     <xs:element name="emailondisconnect" type="xs:string"/>
-                                                    <xs:element name="frameinterval" type="xs:int"/>
+                                                    <xs:element name="frameinterval" type="xs:int" default="0"/>
                                                     <xs:element name="framerate" type="xs:int"/>
                                                     <xs:element name="smsnumber" type="xs:string"/>
                                                     <xs:element name="emailaddress" type="xs:string"/>

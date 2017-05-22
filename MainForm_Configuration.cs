@@ -2647,10 +2647,8 @@ namespace iSpyApplication
             oc.settings.login = "";
             oc.settings.password = "";
             oc.settings.useragent = "Mozilla/5.0";
-            oc.settings.frameinterval = 10;
             oc.settings.sourceindex = videoSourceIndex;
             oc.settings.micpair = -1;
-            oc.settings.frameinterval = 200;
             oc.settings.maxframerate = 10;
             oc.settings.maxframeraterecord = 10;
             oc.settings.ptzautotrack = false;

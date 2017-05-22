@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using FFmpeg.AutoGen;
+using iSpyApplication.Controls;
 using iSpyApplication.Sources.Audio;
 using iSpyApplication.Utilities;
 using NAudio.Wave;
@@ -20,6 +21,7 @@ namespace iSpyApplication.Sources.Video
         private AVStream* _videoStream, _audioStream;
         private SwrContext* _swrContext;
         public event Delegates.ErrorHandler ErrorHandler;
+        private bool _disposed;
 
         private IntPtr _interruptCallbackAddress;
         private AvInterruptCb _interruptCallback;
@@ -40,7 +42,6 @@ namespace iSpyApplication.Sources.Video
             }
             return 0;
         }
-
         private DateTime _lastPacket;
         private bool _stopReadingFrames;
         private Thread _thread;
@@ -50,7 +51,7 @@ namespace iSpyApplication.Sources.Video
         private readonly string _cookies = "";
         private readonly string _userAgent = "";
         private readonly string _headers = "";
-        private readonly string RTSPmode = "tcp";
+        private readonly string _rtsPmode = "tcp";
         private readonly string _options = "";
         private readonly objectsCamera _source;
         private readonly objectsMicrophone _audiosource;
@@ -64,24 +65,24 @@ namespace iSpyApplication.Sources.Video
 
         private readonly AVInputFormat* _inputFormat;
 
-        private readonly int _timeout = 5000;
-        private readonly int _analyzeDuration = 2000;
+        private readonly int _timeout;
+        private readonly int _analyzeDuration;
 
         private volatile bool _starting;
         private readonly bool _modeAudio;
 
-        public MediaStream(objectsCamera source) : base(source)
+        public MediaStream(CameraWindow source) : base(source)
         {
-            _source = source;
+            _source = source.Camobject;
             _inputFormat = null;
             _modeAudio = false;
 
-            _cookies = source.settings.cookies;
-            _analyzeDuration = source.settings.analyseduration;
-            _timeout = source.settings.timeout;
-            _userAgent = source.settings.useragent;
-            _headers = source.settings.headers;
-            RTSPmode = Helper.RTSPMode(source.settings.rtspmode);
+            _cookies = _source.settings.cookies;
+            _analyzeDuration = _source.settings.analyseduration;
+            _timeout = _source.settings.timeout;
+            _userAgent = _source.settings.useragent;
+            _headers = _source.settings.headers;
+            _rtsPmode = Helper.RTSPMode(_source.settings.rtspmode);
 
         }
 
@@ -95,15 +96,15 @@ namespace iSpyApplication.Sources.Video
             _options = source.settings.ffmpeg;
         }
 
-        public MediaStream(string format, objectsCamera source) : base(source)
-        {
-            _source = source;
-            _inputFormat = ffmpeg.av_find_input_format(format);
-            if (_inputFormat == null)
-            {
-                throw new Exception("Can not find input format " + format);
-            }
-        }
+        //public MediaStream(string format, objectsCamera source) : base(source)
+        //{
+        //    _source = source;
+        //    _inputFormat = ffmpeg.av_find_input_format(format);
+        //    if (_inputFormat == null)
+        //    {
+        //        throw new Exception("Can not find input format " + format);
+        //    }
+        //}
 
         public string Source
         {
@@ -187,7 +188,7 @@ namespace iSpyApplication.Sources.Video
                         break;
                 }
 
-                ffmpeg.av_dict_set(&options, "rtsp_transport", RTSPmode, 0);
+                ffmpeg.av_dict_set(&options, "rtsp_transport", _rtsPmode, 0);
             }
 
             ffmpeg.av_dict_set(&options, "rtbufsize", "10000000", 0);
@@ -542,7 +543,7 @@ namespace iSpyApplication.Sources.Video
                         break;
                     }
 
-                    if (frameFinished == 1)
+                    if (frameFinished == 1 && EmitFrame)
                     {
                         if (!videoInited)
                         {
@@ -560,6 +561,7 @@ namespace iSpyApplication.Sources.Video
                                 _codecContext->pix_fmt, _codecContext->width, _codecContext->height,
                                 AVPixelFormat.AV_PIX_FMT_BGR24, ffmpeg.SWS_FAST_BILINEAR, null, null, null);
                         }
+
                         var src = &frame->data0;
                         var dst = &pConvertedFrame->data0;
                         var srcStride = frame->linesize;
@@ -580,11 +582,12 @@ namespace iSpyApplication.Sources.Video
                                 break;
                             }
 
+                            
                             using (
                                 var mat = new Bitmap(_codecContext->width, _codecContext->height, linesize,
                                     PixelFormat.Format24bppRgb, imageBufferPtr))
                             {
-                                var nfe = new NewFrameEventArgs((Bitmap)mat.Clone());
+                                var nfe = new NewFrameEventArgs((Bitmap) mat.Clone());
                                 nf.Invoke(this, nfe);
                             }
 
@@ -725,9 +728,6 @@ namespace iSpyApplication.Sources.Video
 
         }
 
-        public int FramesReceived { get; }
-        public long BytesReceived { get; }
-
         public bool IsRunning
         {
             get
@@ -750,6 +750,28 @@ namespace iSpyApplication.Sources.Video
         void SampleChannelPreVolumeMeter(object sender, StreamVolumeEventArgs e)
         {
             LevelChanged?.Invoke(this, new LevelChangedEventArgs(e.MaxSampleValues));
+        }
+
+        // Public implementation of Dispose pattern callable by consumers. 
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        // Protected implementation of Dispose pattern. 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            if (disposing)
+            {
+                
+            }
+
+            // Free any unmanaged objects here. 
+            //
+            _disposed = true;
         }
     }
 }

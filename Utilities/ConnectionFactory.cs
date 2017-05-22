@@ -158,15 +158,18 @@ namespace iSpyApplication.Utilities
             }
             catch (WebException ex)
             {
-                // Try to fix a 401 exception by adding a Authorization header
-                if (ex.Response == null || ((HttpWebResponse)ex.Response).StatusCode != HttpStatusCode.Unauthorized)
-                    return null;
                 response?.Close();
+                // Try to fix a 401 exception by adding a Authorization header
+                if (ex.Response == null || ((HttpWebResponse) ex.Response).StatusCode != HttpStatusCode.Unauthorized)
+                {
+                    return null;
+                }
                 response = TryDigestRequest(co, ex);
             }
             catch (Exception ex)
             {
                 Logger.LogException(ex, "Connection Factory");
+                response?.Close();
                 response = null;
             }
 
@@ -235,7 +238,7 @@ namespace iSpyApplication.Utilities
 
         private HttpWebResponse TryDigestRequest(ConnectionOptions co, WebException ex)
         {
-            HttpWebResponse response;
+            HttpWebResponse response = null;
             try
             {
                 var wwwAuthenticateHeader = ex.Response.Headers["WWW-Authenticate"];
@@ -269,12 +272,14 @@ namespace iSpyApplication.Utilities
             catch (ApplicationException)
             {
                 //headers missing for digest
+                response?.Close();
                 response = null;
                 co.ExecuteCallback(false);
             }
             catch (Exception ex2)
             {
                 Logger.LogException(ex2, "Digest");
+                response?.Close();
                 response = null;
                 co.ExecuteCallback(false);
             }

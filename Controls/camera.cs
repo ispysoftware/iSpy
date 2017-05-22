@@ -49,7 +49,6 @@ namespace iSpyApplication.Controls
         private readonly object _sync = new object();
         private MotionDetector _motionDetector;
         private DateTime _motionlastdetected = DateTime.MinValue;
-        private DateTime _nextFrameTarget = DateTime.MinValue;
         private readonly FishEyeCorrect _feCorrect = new FishEyeCorrect();
 
         // alarm level
@@ -338,12 +337,6 @@ namespace iSpyApplication.Controls
             set { _alarmLevelMax = value; }
         }
 
-        // FramesReceived property
-        public int FramesReceived => VideoSource?.FramesReceived ?? 0;
-
-        // BytesReceived property
-        public long BytesReceived => VideoSource?.BytesReceived ?? 0;
-
         // motionDetector property
         public MotionDetector MotionDetector
         {
@@ -419,23 +412,6 @@ namespace iSpyApplication.Controls
         }
 
 
-        private double Mininterval => 1000d/MaxFramerate;
-
-        private double MaxFramerate
-        {
-            get
-            {
-                var ret = CW.Camobject.settings.maxframerate;
-                if (CW.Recording && CW.Camobject.recorder.profile < 3) //use variable rate for mp4 only
-                    ret = CW.Camobject.settings.maxframeraterecord;
-
-
-                if (MainForm.ThrottleFramerate < ret)
-                    ret = MainForm.ThrottleFramerate;
-                return ret;
-            }
-        }
-
         internal RotateFlipType RotateFlipType = RotateFlipType.RotateNoneFlipNone;
         
         public void DisconnectNewFrameEvent()
@@ -501,10 +477,6 @@ namespace iSpyApplication.Controls
             
             if (_lastframeEvent > DateTime.MinValue)
             {
-                if ((Helper.Now<_nextFrameTarget))
-                {
-                    return;
-                }
                 CalculateFramerates();
             }
             
@@ -967,17 +939,7 @@ namespace iSpyApplication.Controls
 
         private void CalculateFramerates()
         {
-            double dMin = Mininterval;
-            _nextFrameTarget = _nextFrameTarget.AddMilliseconds(dMin);
-            var d = Helper.Now;
-            if (_nextFrameTarget < d)
-            {
-                var t = Math.Min(dMin, (d - _nextFrameTarget).TotalMilliseconds);
-                _nextFrameTarget = d.AddMilliseconds(t);
-            }
-
-
-            TimeSpan tsFr = d - _lastframeEvent;
+            TimeSpan tsFr = Helper.Now - _lastframeEvent;
             _framerates.Enqueue(1000d/tsFr.TotalMilliseconds);
             if (_framerates.Count >= 30)
                 _framerates.Dequeue();
@@ -1083,49 +1045,48 @@ namespace iSpyApplication.Controls
             set { _backBrush = value; }
         }
 
-        private bool _disposing;
-
+        private bool _disposed;
+        // Public implementation of Dispose pattern callable by consumers. 
         public void Dispose()
         {
-            if (_disposing)
+            Dispose(true);
+        }
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
                 return;
 
+
             
-            _disposing = true;
             ClearMotionZones();
-            //lock (_sync)
-            {
-                Alarm = null;
-                NewFrame = null;
-                PlayingFinished = null;
-                Plugin = null;
+            Alarm = null;
+            NewFrame = null;
+            PlayingFinished = null;
+            Plugin = null;
 
-                ForeBrush.Dispose();
-                BackBrush.Dispose();
-                DrawFont.Dispose();
-                _framerates?.Clear();
-
-                if (Mask != null)
-                {
-                    Mask.Dispose();
-                    Mask = null;
-                }
+            ForeBrush?.Dispose();
+            BackBrush?.Dispose();
+            DrawFont?.Dispose();
+            _framerates?.Clear();
                 
-                VideoSource = null;
-            }
+            Mask?.Dispose();
+            Mask = null;
+                
+            VideoSource?.Dispose();
+            VideoSource = null;
 
-            if (MotionDetector != null)
+            
+            try
             {
-                try
-                {
-                    MotionDetector.Reset();
-                }
-                catch (Exception ex)
-                {
-                    ErrorHandler?.Invoke(ex.Message);
-                }
-                MotionDetector = null;
+                MotionDetector?.Reset();
             }
+            catch (Exception ex)
+            {
+                ErrorHandler?.Invoke(ex.Message);
+            }
+            MotionDetector = null;
+
+            _disposed = true;
         }
 
         void VideoSourcePlayingFinished(object sender, PlayingFinishedEventArgs e)

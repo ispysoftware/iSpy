@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.Threading;
+using iSpyApplication.Controls;
 using iSpyApplication.Utilities;
 
 namespace iSpyApplication.Sources.Video.Ximea
@@ -42,22 +43,15 @@ namespace iSpyApplication.Sources.Video.Ximea
     /// 
     /// <seealso cref="XimeaCamera"/>
     /// 
-    public class XimeaVideoSource : IVideoSource, IDisposable
+    public class XimeaVideoSource : VideoBase, IVideoSource
     {
         // XIMEA camera to capture images from
         private readonly XimeaCamera _camera = new XimeaCamera( );
 
         // camera ID
         private readonly int _deviceID;
-        // received frames count
-        private int _framesReceived;
-        // recieved byte count
-        private long _bytesReceived;
-        // frame interval in milliseconds
-        private int _frameInterval = 200;
-
         private Thread _thread;
-        private volatile bool _abort;
+        private ManualResetEvent _abort = new ManualResetEvent(false);
         private ReasonToFinishPlaying _res = ReasonToFinishPlaying.DeviceLost;
 
         // dummy object to lock for synchronization
@@ -123,70 +117,15 @@ namespace iSpyApplication.Sources.Video.Ximea
             }
         }
 
-        /// <summary>
-        /// Received bytes count.
-        /// </summary>
-        /// 
-        /// <remarks>Number of bytes the video source provided from the moment of the last
-        /// access to the property.
-        /// </remarks>
-        /// 
-        public long BytesReceived
+       
+        public XimeaVideoSource(CameraWindow source):base(source)
         {
-            get
-            {
-                long bytes = _bytesReceived;
-                _bytesReceived = 0;
-                return bytes;
-            }
+            _deviceID = Convert.ToInt32(source.Nv(source.Camobject.settings.namevaluesettings, "device"));
         }
 
-        /// <summary>
-        /// Received frames count.
-        /// </summary>
-        /// 
-        /// <remarks>Number of frames the video source provided from the moment of the last
-        /// access to the property.
-        /// </remarks>
-        /// 
-        public int FramesReceived
+        public XimeaVideoSource(int deviceid) : base(null)
         {
-            get
-            {
-                int frames = _framesReceived;
-                _framesReceived = 0;
-                return frames;
-            }
-        }
-
-        /// <summary>
-        /// Time interval between frames.
-        /// </summary>
-        /// 
-        /// <remarks><para>The property sets the interval in milliseconds between getting new frames from the camera.
-        /// If the property is set to 100, then the desired frame rate should be about 10 frames per second.</para>
-        /// 
-        /// <para><note>Setting this property to 0 leads to no delay between video frames - frames
-        /// are read as fast as possible.</note></para>
-        /// 
-        /// <para>Default value is set to <b>200</b>.</para>
-        /// </remarks>
-        /// 
-        public int FrameInterval
-        {
-            get { return _frameInterval; }
-            set { _frameInterval = value; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XimeaVideoSource"/> class.
-        /// </summary>
-        /// 
-        /// <param name="deviceID">XIMEA camera ID (index) to connect to.</param>
-        /// 
-        public XimeaVideoSource( int deviceID )
-        {
-            _deviceID = deviceID;
+            _deviceID = deviceid;
         }
 
         /// <summary>
@@ -216,11 +155,8 @@ namespace iSpyApplication.Sources.Video.Ximea
                     // prepare the camera
                     _camera.Open( _deviceID );
 
-                    _framesReceived = 0;
-                    _bytesReceived = 0;
-
                     // create events
-                    _abort = false;
+                    _abort.Reset();
                     _res = ReasonToFinishPlaying.DeviceLost;
 
                     // create and start new thread
@@ -267,7 +203,7 @@ namespace iSpyApplication.Sources.Video.Ximea
             if (!IsRunning)
                 return;
             _res = ReasonToFinishPlaying.StoppedByUser;
-            _abort = true;
+            _abort.Set();
         }
 
         public void Restart()
@@ -275,7 +211,7 @@ namespace iSpyApplication.Sources.Video.Ximea
             if (!IsRunning)
                 return;
             _res = ReasonToFinishPlaying.Restart;
-            _abort = true;
+            _abort.Set();
         }
 
         /// <summary>
@@ -367,33 +303,31 @@ namespace iSpyApplication.Sources.Video.Ximea
                 _camera.StartAcquisition( );
 
                 // while there is no request for stop
-                while ( !_abort && !MainForm.ShuttingDown )
+                while ( !_abort.WaitOne(0) && !MainForm.ShuttingDown )
                 {
                     // start time
                     DateTime start = DateTime.Now;
 
                     // get next frame
-                    Bitmap bitmap = _camera.GetImage( 15000, false );
-
-                    _framesReceived++;
-                    _bytesReceived += bitmap.Width * bitmap.Height * ( Image.GetPixelFormatSize( bitmap.PixelFormat ) >> 3 );
-
-                    NewFrame?.Invoke( this, new NewFrameEventArgs( bitmap ) );
-
-                    // free image
-                    bitmap.Dispose( );
+                    if (EmitFrame)
+                    {
+                        using (var bitmap = _camera.GetImage(15000, false))
+                        {
+                            NewFrame?.Invoke(this, new NewFrameEventArgs(bitmap));
+                        }
+                    }
 
                     // wait for a while ?
-                    if ( _frameInterval > 0 )
+                    if (FrameInterval > 0)
                     {
-                        // get frame duration
-                        TimeSpan span = DateTime.Now.Subtract( start );
-
-                        // miliseconds to sleep
-                        int msec = _frameInterval - (int) span.TotalMilliseconds;
-
-                        if ( ( msec > 0 ) || _abort)
-                            break;
+                        // get download duration
+                        var span = DateTime.UtcNow.Subtract(start);
+                        // milliseconds to sleep
+                        var msec = FrameInterval - (int)span.TotalMilliseconds;
+                        if (msec > 0)
+                        {
+                            _abort.WaitOne(msec);
+                        }
                     }
                 }
             }
@@ -421,7 +355,6 @@ namespace iSpyApplication.Sources.Video.Ximea
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         // Protected implementation of Dispose pattern. 
@@ -432,6 +365,7 @@ namespace iSpyApplication.Sources.Video.Ximea
 
             if (disposing)
             {
+                _abort.Close();
             }
 
             // Free any unmanaged objects here. 

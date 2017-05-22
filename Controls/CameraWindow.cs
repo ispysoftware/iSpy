@@ -1423,8 +1423,11 @@ namespace iSpyApplication.Controls
 
             _toolTipCam.RemoveAll();
             _toolTipCam.Dispose();
+            _writerStopped.Close();
+            _camera?.Dispose();
             _timeLapseWriter = null;
             _writer = null;
+            ClearBuffer();
             base.Dispose(disposing);
         }
 
@@ -4397,151 +4400,45 @@ namespace iSpyApplication.Controls
                 switch (Camobject.settings.sourceindex)
                 {
                     case 0:
-                        var jpegSource = new JpegStream(Camobject);
+                        var jpegSource = new JpegStream(this);
                         OpenVideoSource(jpegSource, true);
                         break;
                     case 1:
-                        var mjpegSource = new MJPEGStream(Camobject);
+                        var mjpegSource = new MJPEGStream(this);
                         OpenVideoSource(mjpegSource, true);
                         break;
                     case 2:
-                        var ffmpegSource = new MediaStream(Camobject);
+                        var ffmpegSource = new MediaStream(this);
                         OpenVideoSource(ffmpegSource, true);
                         break;
-                    case 3:
-                        string moniker = Camobject.settings.videosourcestring;
-                        
-                        var videoSource = new VideoCaptureDevice(moniker);
-                        string[] wh = Camobject.resolution.Split('x');
-                        var sz = new Size(Convert.ToInt32(wh[0]), Convert.ToInt32(wh[1]));
-
-                        
-                        string precfg = Nv("video");
-                        bool found = false;
-
-                        if (Nv("capturemode") != "snapshots")
-                        {
-                            VideoCapabilities[] videoCapabilities = videoSource.VideoCapabilities;
-                            videoSource.ProvideSnapshots = false;
-                            foreach (VideoCapabilities capabilty in videoCapabilities)
-                            {
-
-                                string item = string.Format(VideoSource.VideoFormatString, capabilty.FrameSize.Width,
-                                    Math.Abs(capabilty.FrameSize.Height), capabilty.AverageFrameRate, capabilty.BitCount);
-                                if (precfg == item)
-                                {
-                                    videoSource.VideoResolution = capabilty;
-                                    found = true;
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            precfg = Nv("snapshots");
-                            videoSource.ProvideSnapshots = true;
-                            VideoCapabilities[] videoCapabilities = videoSource.SnapshotCapabilities;
-                            foreach (VideoCapabilities capabilty in videoCapabilities)
-                            {
-
-                                string item = string.Format(VideoSource.SnapshotFormatString, capabilty.FrameSize.Width,
-                                    Math.Abs(capabilty.FrameSize.Height), capabilty.AverageFrameRate, capabilty.BitCount);
-                                if (precfg == item)
-                                {
-                                    videoSource.VideoResolution = capabilty;
-                                    found = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (!found)
-                        {
-                            var vc = videoSource.VideoCapabilities.Where(p => p.FrameSize == sz).ToList();
-                            if (vc.Count > 0)
-                            {
-                                var vc2 = vc.FirstOrDefault(p => p.AverageFrameRate == Camobject.settings.framerate) ??
-                                            vc.FirstOrDefault();
-                                videoSource.VideoResolution = vc2;
-                                found = true;
-                            }
-                            if (!found)
-                            {
-                                //first available
-                                var vcf = videoSource.VideoCapabilities.FirstOrDefault();
-                                if (vcf != null)
-                                    videoSource.VideoResolution = vcf;
-                                //else
-                                //{
-                                //    dont do this, not having an entry is ok for some video providers
-                                //    throw new Exception("Unable to find a video format for the capture device");
-                                //}
-                            }
-                        }
-
-                        if (Camobject.settings.crossbarindex != -1 && videoSource.CheckIfCrossbarAvailable())
-                        {
-                            var cbi =
-                                videoSource.AvailableCrossbarVideoInputs.FirstOrDefault(
-                                    p => p.Index == Camobject.settings.crossbarindex);
-                            if (cbi != null)
-                            {
-                                videoSource.CrossbarVideoInput = cbi;
-                            }
-                        }
-
+                    case 3:                       
+                        var videoSource = new VideoCaptureDevice(this);
                         OpenVideoSource(videoSource, true);
-
-
                         break;
                     case 4:
-                        Rectangle area = Rectangle.Empty;
-                        if (!string.IsNullOrEmpty(Camobject.settings.desktoparea))
-                        {
-                            var i = Array.ConvertAll(Camobject.settings.desktoparea.Split(','), int.Parse);
-                            area = new Rectangle(i[0], i[1], i[2], i[3]);
-                        }
-                        var desktopSource = new DesktopStream(Convert.ToInt32(Camobject.settings.videosourcestring),
-                            area) {MousePointer = Camobject.settings.desktopmouse};
-                        if (Camobject.settings.frameinterval != 0)
-                            desktopSource.FrameInterval = Camobject.settings.frameinterval;
+                        var desktopSource = new DesktopStream(this);
                         OpenVideoSource(desktopSource, true);
-
                         break;
                     case 5:
-                        List<string> inargs = Camobject.settings.vlcargs.Split(Environment.NewLine.ToCharArray(),
-                            StringSplitOptions.RemoveEmptyEntries).ToList();
-                        var vlcSource = new VlcStream(Camobject, inargs.ToArray());
+                        var vlcSource = new VlcStream(this);
                         OpenVideoSource(vlcSource, true);
                         break;
                     case 6:
                         if (XimeaSource == null || !XimeaSource.IsRunning)
                             XimeaSource =
-                                new XimeaVideoSource(Convert.ToInt32(Nv(Camobject.settings.namevaluesettings, "device")));
+                                new XimeaVideoSource(this);
                         OpenVideoSource(XimeaSource, true);
                         break;
                     case 7:
-                        var tw = false;
-                        try
-                        {
-                            if (!string.IsNullOrEmpty(Nv(Camobject.settings.namevaluesettings, "TripWires")))
-                                tw = Convert.ToBoolean(Nv(Camobject.settings.namevaluesettings, "TripWires"));
-                            var ks = new KinectStream(Nv(Camobject.settings.namevaluesettings, "UniqueKinectId"),
-                                Convert.ToBoolean(Nv(Camobject.settings.namevaluesettings, "KinectSkeleton")), tw);
-                            if (Nv(Camobject.settings.namevaluesettings, "StreamMode") != "")
-                                ks.StreamMode = Convert.ToInt32(Nv(Camobject.settings.namevaluesettings, "StreamMode"));
-                            OpenVideoSource(ks, true);
-                        }
-                        catch (Exception ex)
-                        {
-                            ErrorHandler?.Invoke(ex.Message);
-                        }
+                        var ks = new KinectStream(this);                            
+                        OpenVideoSource(ks, true);                        
                         break;
                     case 8:
                         switch (Nv(Camobject.settings.namevaluesettings, "custom"))
                         {
                             case "Network Kinect":
                                 // open the network kinect video stream
-                                OpenVideoSource(new KinectNetworkStream(Camobject), true);
+                                OpenVideoSource(new KinectNetworkStream(this), true);
                                 break;
                             default:
                                 lock (_lockobject)
@@ -4702,8 +4599,6 @@ namespace iSpyApplication.Controls
                             Convert.ToInt32(Nv(Camobject.settings.namevaluesettings, "width")));
                         XimeaSource.SetParam(CameraParameter.Height,
                             Convert.ToInt32(Nv(Camobject.settings.namevaluesettings, "height")));
-                        XimeaSource.FrameInterval =
-                            (int) (1000.0f/XimeaSource.GetParamFloat(CameraParameter.FramerateMax));
                     }
                     Camera.UpdateResources();
                 }
@@ -5110,6 +5005,8 @@ namespace iSpyApplication.Controls
             {
                 audiostream.HasAudioStream += VideoSourceHasAudioStream;
             }
+
+            Camera?.Dispose();
 
             Camera = new Camera(source);
             Camera.NewFrame -= CameraNewFrame;
