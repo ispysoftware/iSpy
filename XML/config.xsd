@@ -159,6 +159,17 @@
             <xsd:attribute name="KeepDays" type="xsd:int" default="7" />
           </xsd:complexType>
         </xsd:element>
+        <xsd:element name="Cloud">
+          <xsd:complexType>
+            <xsd:attribute name="DropBox" type="xs:string" default=""/>
+            <xsd:attribute name="Drive" type="xs:string" default=""/>
+            <xsd:attribute name="YouTube" type="xs:string" default=""/>
+            <xsd:attribute name="Flickr" type="xs:string" default=""/>
+            <xsd:attribute name="OneDrive" type="xs:string" default=""/>
+            <xsd:attribute name="Box" type="xs:string" default=""/>
+            <xsd:attribute name="Twitter" type="xs:string" default=""/>
+          </xsd:complexType>
+        </xsd:element>
         <xs:element name="FTPServers">
           <xs:complexType>
             <xs:sequence>

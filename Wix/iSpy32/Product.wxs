@@ -132,8 +132,8 @@
       <Component Id="Component4" Guid="{067D3A42-18C9-45BE-B211-ADD4A4D3B753}">
         <File Id="AForge.Math.dll" Source="$(var.OutputDir)\AForge.Math.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Id="Component14" Guid="{F9E67635-6FC1-47F5-BE05-E31E0D625D75}">
-        <File Id="DropNet.dll" Source="$(var.OutputDir)\DropNet.dll" KeyPath="yes" Checksum="yes" />
+      <Component Id="Component14_1" Guid="{e2272e9d-5559-474f-a9f4-92c7f06107be}">
+        <File Id="FlickrNet.dll" Source="$(var.OutputDir)\FlickrNet.dll" KeyPath="yes" Checksum="yes" />
       </Component>
       <Component Id="Component20" Guid="{4DAFEDE5-43EB-4B6C-8BDA-2BF292436EF3}">
         <File Id="Google.Apis.Auth.dll" Source="$(var.OutputDir)\Google.Apis.Auth.dll" KeyPath="yes" Checksum="yes" />
@@ -147,8 +147,8 @@
       <Component Id="Component29" Guid="{1E1FFBAB-39B3-4EE1-A2F2-9C125AC4CBFE}">
         <File Id="Google.Apis.dll" Source="$(var.OutputDir)\Google.Apis.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Id="Component30" Guid="{78E03150-3F42-4E1D-94F5-B8852CD08C32}">
-        <File Id="Google.Apis.Drive.v2.dll" Source="$(var.OutputDir)\Google.Apis.Drive.v2.dll" KeyPath="yes" Checksum="yes" />
+      <Component Id="Component30" Guid="{1eb942b0-65a4-4430-94e3-037f07a593d9}">
+        <File Id="Google.Apis.Drive.v3.dll" Source="$(var.OutputDir)\Google.Apis.Drive.v3.dll" KeyPath="yes" Checksum="yes" />
       </Component>
       <Component Id="Component34" Guid="{370712A3-70B1-4214-B2BB-DA47F43EC5E0}">
         <File Id="Google.Apis.PlatformServices.dll" Source="$(var.OutputDir)\Google.Apis.PlatformServices.dll" KeyPath="yes" Checksum="yes" />

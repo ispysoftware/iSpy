@@ -221,7 +221,7 @@ namespace iSpyApplication.Onvif
                     PasswordDigestBehavior digest = new PasswordDigestBehavior(Username, Password, diff);
                     Client.Endpoint.Behaviors.Add(digest);
 
-                    var caps = Client.GetCapabilities(new[] { CapabilityCategory.PTZ, CapabilityCategory.Media, CapabilityCategory.Device });
+                    var caps = Client.GetCapabilities(new[] { CapabilityCategory.All});
                     _mediaClient = new MediaClient(binder, new EndpointAddress(GetEndPointUri(serviceAddress.Uri, caps.Media.XAddr, caps)));
                     PTZClient = new PTZClient(binder, new EndpointAddress(GetEndPointUri(serviceAddress.Uri, caps.PTZ.XAddr, caps)));
 

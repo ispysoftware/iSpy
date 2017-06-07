@@ -336,9 +336,12 @@
                     "type": "Select",
                     "bindto": "settings.cloudprovider.provider",
                     "options": [
-                        { "text": "None", "value": "None" },
-                        { "text": "Google Drive", "value": "Google Drive", "noTranslate": true  },
-                        { "text": "Dropbox", "value": "Dropbox", "noTranslate": true  }
+                        { "text": "None", "value": "" },
+                        { "text": "Box", "value": "Box", "noTranslate": true  },
+                        { "text": "Drive", "value": "Drive", "noTranslate": true  },
+                        { "text": "Dropbox", "value": "Dropbox", "noTranslate": true  },
+                        { "text": "Flickr", "value": "Flickr", "noTranslate": true  },
+                        { "text": "OneDrive", "value": "OneDrive", "noTranslate": true  }
                     ],
                     "help": "See Server Settings to enable cloud services"
                 },

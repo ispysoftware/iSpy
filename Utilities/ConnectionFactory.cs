@@ -82,7 +82,7 @@ namespace iSpyApplication.Utilities
                 source = source,
                 userAgent = "",
                 username = username,
-                useSeparateConnectionGroup = false,
+                useSeparateConnectionGroup = true,
                 useHttp10 = false,
                 data = data
 
@@ -105,7 +105,7 @@ namespace iSpyApplication.Utilities
                 source = source,
                 userAgent = userAgent,
                 username = username,
-                useSeparateConnectionGroup = false,
+                useSeparateConnectionGroup = true,
                 useHttp10 = useHttp10,
                 data = enc.GetBytes(data)
             };
@@ -355,7 +355,7 @@ namespace iSpyApplication.Utilities
                 request.Credentials = new NetworkCredential(co.username, co.password);
             // set connection group name
             if (co.useSeparateConnectionGroup)
-                request.ConnectionGroupName = request.GetHashCode().ToString(CultureInfo.InvariantCulture);
+                request.ConnectionGroupName = Guid.NewGuid().ToString();
             // force basic authentication through extra headers if required
 
             var authInfo = "";

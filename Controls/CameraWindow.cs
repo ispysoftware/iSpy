@@ -4982,8 +4982,11 @@ namespace iSpyApplication.Controls
             var vlcStream = source as VlcStream;
             if (vlcStream != null)
             {
-                vlcStream.FormatWidth = Camobject.settings.desktopresizewidth;
-                vlcStream.FormatHeight = Camobject.settings.desktopresizeheight;
+                if (Camobject.settings.vlcWidth == -1)
+                {
+                    Camobject.settings.vlcWidth = 640;
+                    Camobject.settings.vlcHeight = 480;
+                }
             }
 
             var kinectStream = source as KinectStream;

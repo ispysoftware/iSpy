@@ -43,6 +43,9 @@ namespace iSpyApplication
         private static List<objectsCommand> _remotecommands;
         private static List<objectsCamera> _cameras;
 
+        public static string GoogleClientId = "648753488389.apps.googleusercontent.com";
+        public static string GoogleClientSecret = "Guvru7Ug8DrGcOupqEs6fTB1";
+
         public static void ReloadColors()
         {
             _backColor =
@@ -316,6 +319,16 @@ namespace iSpyApplication
                                         FileSize = _conf.LogFileSizeKB,
                                         KeepDays = 7
                                     };
+                }
+
+                if (_conf.Cloud == null)
+                {
+                    //upgrade cloud stuff
+                    _conf.Cloud = new configurationCloud();
+                    if (!string.IsNullOrEmpty(_conf.GoogleDriveConfig))
+                    {
+                        _conf.Cloud.Drive = "{\"access_token\": \"\",\"token_type\": \"Bearer\",\"expires_in\": 3600,\"refresh_token\": \""+_conf.GoogleDriveConfig+"\"}";
+                    }
                 }
 
                 if (!string.IsNullOrEmpty(_conf.WSPassword) && _conf.WSPasswordEncrypted)
@@ -741,13 +754,6 @@ namespace iSpyApplication
             if (addSchedule)
                 c.schedule = new objectsSchedule {entries = new objectsScheduleEntry[] {}};
 
-
-
-            if (c.cameras.Select(oc => oc.settings.desktopresizewidth).Any(rw => rw == 0))
-            {
-                throw new Exception("err_old_config");
-            }
-
             if (c.microphones==null)
                 c.microphones = new objectsMicrophone[] {};
             if (c.floorplans == null)
@@ -1024,6 +1030,12 @@ namespace iSpyApplication
                 if (cam.ftp.quality == 0)
                     cam.ftp.quality = 75;
 
+                if (cam.settings.resizeWidth == -1)
+                {
+                    cam.settings.resizeWidth = cam.settings.desktopresizewidth;
+                    cam.settings.resizeHeight = cam.settings.desktopresizeheight;
+                }
+
                 if (cam.ftp.countermax == 0)
                     cam.ftp.countermax = 20;
 
@@ -1145,6 +1157,9 @@ namespace iSpyApplication
                 {
                     cam.settings.pip = new objectsCameraSettingsPip {enabled = false, config = ""};
                 }
+
+                if (cam.settings.cloudprovider.provider.ToLower() == "google drive")
+                    cam.settings.cloudprovider.provider = "drive";
             }
             int micid = 0;
             foreach (objectsMicrophone mic in c.microphones)
@@ -2687,8 +2702,12 @@ namespace iSpyApplication
 
             oc.alertevents = new objectsCameraAlertevents { entries = new objectsCameraAlerteventsEntry[] { } };
 
-            oc.settings.desktopresizeheight = 480;
+            oc.settings.desktopresizeheight = 480; //old
             oc.settings.desktopresizewidth = 640;
+
+            oc.settings.resizeHeight = 0; //auto
+            oc.settings.resizeWidth = 640;
+
             oc.settings.resize = true;
             oc.settings.directoryIndex = Conf.MediaDirectories.First().ID;
 
@@ -3369,8 +3388,8 @@ namespace iSpyApplication
         private CameraWindow AddCameraExternal(int sourceIndex, string url, int width, int height, string name)
         {
             CameraWindow cw = NewCameraWindow(sourceIndex);
-            cw.Camobject.settings.desktopresizewidth = width;
-            cw.Camobject.settings.desktopresizeheight = height;
+            cw.Camobject.settings.resizeWidth = width;
+            cw.Camobject.settings.resizeHeight = height;
             cw.Camobject.settings.resize = true;
             cw.Camobject.name = name;
             cw.Camobject.settings.directoryIndex = Conf.MediaDirectories.First().ID;

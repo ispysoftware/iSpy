@@ -31,7 +31,7 @@ namespace iSpyApplication.Server
         private List<NetworkDevice> _scanResults = new List<NetworkDevice>();
         private List<ConnectionOption> _devicescanResults = new List<ConnectionOption>();
 
-        private void LoadJson(string sPhysicalFilePath, string sBuffer, string sHttpVersion, HttpRequest req)
+        private void LoadJson(string sPhysicalFilePath, string sRequest, string sBuffer, string sHttpVersion, HttpRequest req)
         {
             var cmd = GetVar(sPhysicalFilePath, "cmd");
 
@@ -330,7 +330,7 @@ namespace iSpyApplication.Server
                         if (_deviceScanner != null)
                         {
                             _deviceScanner.QuitScanner();
-                            break;
+                            _deviceScanner = null;
                         }
                         Uri uri;
                         if (!Uri.TryCreate(GetVar(sPhysicalFilePath, "url"), UriKind.Absolute, out uri))
@@ -439,31 +439,81 @@ namespace iSpyApplication.Server
                             error = LocRm.GetString("NotSubscribed", lc);
                         }
                         else
-                        { 
-                            switch (provider)
+                        {
+                            string code = GetVar(sRequest, "code");
+                            switch (provider.ToLower())
                             {
-                                case "dropbox":
-                                    url = Dropbox.GetAuthoriseURL(out error);
+                                case "box":
+                                    if (Box.Authorise(code))
+                                    {
+                                        message = LocRm.GetString("Authorised", lc);
+                                    }
+                                    else
+                                        message = LocRm.GetString("Failed", lc);
+                                    break;
+                                case "onedrive":
+                                    if (OneDrive.Authorise(code))
+                                    {
+                                        message = LocRm.GetString("Authorised", lc);
+                                    }
+                                    else
+                                        message = LocRm.GetString("Failed", lc);
                                     break;
                                 case "drive":
-                                    if (Drive.Authorise())
+                                    {
+                                        if (Drive.Authorise(code))
+                                        {
+                                            message = LocRm.GetString("Authorised", lc);
+                                        }
+                                        else
+                                            message = LocRm.GetString("Failed", lc);
+                                    }
+                                    break;
+                                case "flickr":
+                                    if (Flickr.Authorise(code))
                                     {
                                         message = LocRm.GetString("Authorised", lc);
                                     }
                                     else
-                                        error = "Failed";
+                                        message = LocRm.GetString("Failed", lc);
+                                    break;
+                                case "dropbox":
+                                    if (Dropbox.Authorise(code))
+                                    {
+                                        message = LocRm.GetString("Authorised", lc);
+                                    }
+                                    else
+                                        message = LocRm.GetString("Failed", lc);
                                     break;
                                 case "youtube":
-                                    if (YouTubeUploader.Authorise())
                                     {
-                                        message = LocRm.GetString("Authorised", lc);
+                                        if (YouTubeUploader.Authorise(code))
+                                        {
+                                            message = LocRm.GetString("Authorised", lc);
+                                        }
+                                        else
+                                            message = LocRm.GetString("Failed", lc);
                                     }
-                                    else
-                                        error = LocRm.GetString("Failed", lc);
                                     break;
-
                             }
                         }
+
+                        resp = string.Format(t, provider, url, message, error);
+                    }
+                    break;
+                case "getauthoriseurl":
+                    {
+                        string provider = GetVar(sPhysicalFilePath, "provider");
+                        t = "{{\"provider\":\"{0}\",\"url\":\"{1}\",\"message\":\"{2}\",\"error\":\"{3}\"}}";
+                        string url = "", message = "", error = "";
+                        
+                        switch (provider.ToLower())
+                        {
+                            case "flickr":
+                                url = Flickr.GetAuthoriseURL(out error);
+                                break;
+                        }
+                        
 
                         resp = string.Format(t, provider, url, message, error);
                     }

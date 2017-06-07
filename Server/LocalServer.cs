@@ -758,7 +758,7 @@ namespace iSpyApplication.Server
                     ParseRequest(ServerRoot, sBuffer, out sRequest, out sRequestedFile,
                         out sErrorMessage,
                         out sLocalDir, out sDirName, out sPhysicalFilePath, out sHttpVersion,
-                        out sFileName, out sMimeType, out bServe, out errMessage, req);
+                        out sFileName, out sMimeType, out bServe, out errMessage,req);
                 }
                 catch (Exception ex)
                 {
@@ -845,7 +845,7 @@ namespace iSpyApplication.Server
                             SendAudioFeed(Enums.AudioStreamMode.MP3, sBuffer, sPhysicalFilePath, req);
                             return;
                         case "loadobject.json":
-                            LoadJson(sPhysicalFilePath, sBuffer, sHttpVersion, req);
+                            LoadJson(sPhysicalFilePath, sRequest, sBuffer, sHttpVersion, req);
                             break;
                         case "saveobject.json":
                             SaveJson(sPhysicalFilePath, sHttpVersion, sBuffer, req);
@@ -1202,7 +1202,7 @@ namespace iSpyApplication.Server
                 sRequest = sRequest.Replace("Audio/", "Audio|");
             }
             
-            iStartPos = sRequest.LastIndexOf("/", StringComparison.Ordinal) + 1;
+            iStartPos = sRequest.IndexOf("/", StringComparison.Ordinal) + 1;
 
             sRequestedFile = sRequest.Substring(iStartPos);
 

@@ -76,7 +76,18 @@ namespace iSpyApplication.Onvif
             {
                 foreach (var dc in DiscoveryClients)
                 {
-                    dc.Close();
+                    try
+                    {
+                        dc.InnerChannel.Close(TimeSpan.FromSeconds(2));
+                    }
+                    catch (TimeoutException)
+                    {
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogException(ex, "Discovery");
+                    }
                 }
                 DiscoveryClients.Clear();
             }

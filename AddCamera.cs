@@ -452,7 +452,7 @@ namespace iSpyApplication
             ddlCloudProviders.SelectedIndex = 0;
             foreach (var o in ddlCloudProviders.Items)
             {
-                if (o.ToString() == CameraControl.Camobject.settings.cloudprovider.provider)
+                if (o.ToString().ToLower() == CameraControl.Camobject.settings.cloudprovider.provider.ToLower())
                 {
                     ddlCloudProviders.SelectedItem = o;
                     break;
@@ -2430,21 +2430,8 @@ namespace iSpyApplication
 
         private void btnAuthorise_Click(object sender, EventArgs e)
         {
-            switch (ddlCloudProviders.SelectedItem.ToString())
-            {
-                case "Google Drive":
-                    if (Cloud.Drive.Authorise())
-                        MessageBox.Show(this, "OK");
-                    else
-                        MessageBox.Show(this, LocRm.GetString("Failed"));
-                    return;
-                case "Dropbox":
-                    if (Cloud.Dropbox.Authorise())
-                        MessageBox.Show(this, "OK");
-                    else
-                        MessageBox.Show(this, LocRm.GetString("Failed"));
-                    return;
-            }
+            Authorise(ddlCloudProviders.SelectedItem.ToString().ToLower());
+            
         }
 
         private void ddlCloudProviders_SelectedIndexChanged(object sender, EventArgs e)
@@ -2495,12 +2482,78 @@ namespace iSpyApplication
 
         private void btnAuthoriseYouTube_Click(object sender, EventArgs e)
         {
-            if (YouTubeUploader.Authorise())
+            Authorise("youtube");
+            
+        }
+
+        private void Authorise(string provider)
+        {
+            string url = "";
+            var rurl = "https://www.ispyconnect.com";
+            switch (provider)
             {
-                MessageBox.Show(this, LocRm.GetString("OK"));
+                case "drive":
+                    url =("https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/drive&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&client_id=648753488389.apps.googleusercontent.com&access_type=offline");
+                    break;
+                case "youtube":
+                    url =("https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/youtube.upload&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&client_id=648753488389.apps.googleusercontent.com&access_type=offline");
+                    break;
+                case "dropbox":
+                    url =("https://www.dropbox.com/oauth2/authorize?client_id=6k40bpqlz573mqt&redirect_uri=" + rurl + "/responsecode.aspx&response_type=code");
+                    break;
+                case "onedrive":
+                    url = ("https://login.live.com/oauth20_authorize.srf?client_id=000000004C193719&scope=wl.offline_access wl.skydrive_update&response_type=code&redirect_uri=" + rurl + "/responsecode.aspx");
+                    break;
+                case "box":
+                    url = ("https://account.box.com/api/oauth2/authorize?client_id=0uvr6c6kvl60p7725i62v9ua4k6bclpj&box_login=&response_type=code&redirect_uri=" + rurl + "/responsecode.aspx&state=" + new Random().NextDouble());
+                    break;
+                case "flickr":
+                    var err = "";
+                    url = Flickr.GetAuthoriseURL(out err);
+                    if (err != "")
+                    {
+                        MessageBox.Show(err);
+                        return;
+                    }
+                    break;
             }
-            else
-                MessageBox.Show(this, LocRm.GetString("Failed"));
+
+
+            using (var auth = new Authorizer())
+            {
+                auth.URL = url;
+                auth.ShowDialog(this);
+
+                if (!string.IsNullOrEmpty(auth.AuthCode))
+                {
+                    bool b = false;
+                    switch (provider)
+                    {
+                        case "drive":
+                            b = Drive.Authorise(auth.AuthCode);
+                            break;
+                        case "youtube":
+                            b = YouTubeUploader.Authorise(auth.AuthCode);
+                            break;
+                        case "dropbox":
+                            b = Dropbox.Authorise(auth.AuthCode);
+                            break;
+                        case "onedrive":
+                            b = OneDrive.Authorise(auth.AuthCode);
+                            break;
+                        case "flickr":
+                            b = Flickr.Authorise(auth.AuthCode);
+                            break;
+                        case "box":
+                            b = Box.Authorise(auth.AuthCode);
+                            break;
+                    }
+                    if (b && provider!="youtube")
+                        CameraControl.Camobject.settings.cloudprovider.provider = ddlCloudProviders.SelectedItem.ToString().ToLower();
+
+                    MessageBox.Show(this, b ? LocRm.GetString("OK") : LocRm.GetString("Failed"));
+                }
+            }
         }
 
         private void flowLayoutPanel11_Paint(object sender, PaintEventArgs e)

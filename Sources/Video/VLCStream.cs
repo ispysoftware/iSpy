@@ -22,7 +22,6 @@ namespace iSpyApplication.Sources.Video
 {
     public class VlcStream : VideoBase, IVideoSource, IAudioSource, ISupportsAudio
     {
-        public int FormatWidth = 320, FormatHeight = 240;
         private readonly string[] _arguments;
 
         IMediaPlayerFactory _mFactory;
@@ -49,13 +48,7 @@ namespace iSpyApplication.Sources.Video
 
         #endregion
 
-        private long _lastFrame = DateTime.MinValue.Ticks;
-
-        public DateTime LastFrame
-        {
-            get { return new DateTime(_lastFrame); }
-            set { Interlocked.Exchange(ref _lastFrame, value.Ticks); }
-        }
+        public DateTime LastFrame { get; set; } = DateTime.MinValue;
 
         public int TimeOut = 8000;
 
@@ -283,7 +276,7 @@ namespace iSpyApplication.Sources.Video
             GC.KeepAlive(_mPlayer);
 
             _needsSetup = true;
-            _mPlayer.CustomRenderer.SetFormat(new BitmapFormat(FormatWidth, FormatHeight, ChromaType.RV24));
+            _mPlayer.CustomRenderer.SetFormat(new BitmapFormat(_source.settings.vlcWidth, _source.settings.vlcHeight, ChromaType.RV24));
             _mPlayer.Open(_mMedia);
             _mMedia.Parse(true);
 
@@ -438,7 +431,14 @@ namespace iSpyApplication.Sources.Video
         void EventsTimeChanged(object sender, MediaPlayerTimeChanged e)
         {
             Time = e.NewTime;
+            if (LastFrame == DateTime.MinValue)
+            {
+                var sz = _mPlayer.GetVideoSize(0);
+                _source.settings.vlcWidth = sz.Width;
+                _source.settings.vlcHeight = sz.Height;
+            }
             LastFrame = Helper.Now;
+            
         }
 
         #region Audio Stuff

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using iSpyApplication.Utilities;
 
 namespace iSpyApplication.Cloud
 {
@@ -15,41 +16,54 @@ namespace iSpyApplication.Cloud
         public static string Upload(int otid, int oid, string srcPath, out bool success)
         {
             success = false;
-            if (!MainForm.Conf.Subscribed)
-                return LocRm.GetString("NotSubscribed");
 
-            string dstPath = "";
-            string provider = "";
-            switch (otid)
+            //if (!Statics.Subscribed)
+            //    return "NotSubscribed";
+
+            try
             {
-                case 1:
-                    break;
-                case 2:
-                    var co = MainForm.Cameras.FirstOrDefault(p => p.id == oid);
-                    if (co == null)
-                        return "object not found";
-                    provider = co.settings.cloudprovider.provider;
-                    dstPath = co.settings.cloudprovider.path;
-                    dstPath = dstPath.Replace("[DIR]", co.directory);
-                    dstPath = dstPath.Replace("[NAME]", co.name);
-                    dstPath = dstPath.Replace("[DATE]", DateTime.Now.ToString("yyyy-MM-dd"));
-                    if (srcPath.EndsWith(".jpg"))
-                        dstPath = dstPath.Replace("[MEDIATYPE]", "images");
-                    else
-                        dstPath = dstPath.Replace("[MEDIATYPE]", "video");
-                    break;
+                string dstPath = "";
+                string provider = "";
+                switch (otid)
+                {
+                    case 1:
+                        break;
+                    case 2:
+                        var co = MainForm.Cameras.FirstOrDefault(p => p.id == oid);
+                        if (co == null)
+                            return "object not found";
+                        provider = co.settings.cloudprovider.provider;
+                        dstPath = co.settings.cloudprovider.path;
+                        dstPath = dstPath.Replace("[DIR]", co.directory);
+                        dstPath = dstPath.Replace("[NAME]", co.name);
+                        dstPath = dstPath.Replace("[DATE]", DateTime.Now.ToString("yyyy-MM-dd"));
+                        dstPath = dstPath.Replace("[MEDIATYPE]", srcPath.EndsWith(".jpg") ? "images" : "video");
+                        break;
+                }
+
+                dstPath = dstPath.Replace("/", "\\");
+
+                switch (provider.ToLowerInvariant())
+                {
+                    case "drive":
+                        return Drive.Upload(srcPath, dstPath, out success);
+                    case "dropbox":
+                        return Dropbox.Upload(srcPath, dstPath, out success);
+                    case "flickr":
+                        return Flickr.Upload(srcPath, dstPath, out success);
+                    case "onedrive":
+                        return OneDrive.Upload(srcPath, dstPath, out success);
+                    case "box":
+                        return Box.Upload(srcPath, dstPath, out success);
+                }
+
+                throw new Exception("Cloud provider not configured");
             }
-
-            dstPath = dstPath.Replace("/", @"\");
-
-            switch (provider)
+            catch (Exception ex)
             {
-                case "Google Drive":
-                    return Drive.Upload(srcPath, dstPath, out success);
-                case "Dropbox":
-                    return Dropbox.Upload(srcPath, dstPath, out success);
+                Logger.LogException(ex);
+                return "";
             }
-            return LocRm.GetString("NotConfigured");
         }
     }
 }

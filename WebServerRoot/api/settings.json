@@ -60,10 +60,13 @@
             "tabActive": false,
             "displayType": "Form",
             "items": [
-                { "text": "DropBox", "type": "Button", "value": "Authorise", "action": "authorise", "parameter": "dropbox" },
-                { "text": "YouTube", "type": "Button", "value": "Authorise", "action": "authorise", "parameter": "youtube", "help": "Authorisation will only work from the same PC that iSpy is running on" },
-                { "text": "Google Drive", "type": "Button", "value": "Authorise", "action": "authorise", "parameter": "drive", "help": "Authorisation Will only work from the same PC that iSpy is running on" },
-                { "text": "Twitter", "type": "Link", "value": "Authorise", "url": "/monitor/twitter_auth.aspx", "help": "Global for this account" }
+                { "text": "Box", "type": "Button", "value": "Authorise", "action": "authorise", "parameter": "box", "noTranslate": true },  
+                { "text": "DropBox", "type": "Button", "value": "Authorise", "action": "authorise", "parameter": "dropbox", "noTranslate": true },
+                { "text": "Flickr", "type": "Button", "value": "Authorise", "action": "authorise", "parameter": "flickr", "noTranslate": true },
+                { "text": "Drive", "type": "Button", "value": "Authorise", "action": "authorise", "parameter": "drive", "noTranslate": true },
+                { "text": "OneDrive", "type": "Button", "value": "Authorise", "action": "authorise", "parameter": "onedrive", "noTranslate": true },
+                { "text": "Twitter", "type": "Link", "value": "Authorise", "url": "/monitor/twitter_auth.aspx", "noTranslate": true },
+                { "text": "YouTube", "type": "Button", "value": "Authorise", "action": "authorise", "parameter": "youtube", "noTranslate": true }
             ]
         },
         {

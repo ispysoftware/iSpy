@@ -697,8 +697,13 @@ namespace iSpyApplication
                         MessageBox.Show(LocRm.GetString("DownloadVLC"), LocRm.GetString("Note"));
                         return;
                     }
+                    if (!_vlcStreamSizeSet)
+                    {
+                        CameraControl.Camobject.settings.vlcWidth = 640;
+                        CameraControl.Camobject.settings.vlcHeight = 480;
+                    }
                     url = cmbVLCURL.Text.Trim();
-                    if (url == String.Empty)
+                    if (url == string.Empty)
                     {
                         MessageBox.Show(LocRm.GetString("Validate_SelectCamera"), LocRm.GetString("Note"));
                         return;
@@ -1000,9 +1005,12 @@ namespace iSpyApplication
 
         private void SetVideoSize(Size size)
         {
-            CameraControl.Camobject.settings.desktopresizewidth = size.Width;
-            CameraControl.Camobject.settings.desktopresizeheight = size.Height;
+            CameraControl.Camobject.settings.vlcWidth = size.Width;
+            CameraControl.Camobject.settings.vlcHeight = size.Height;
+            _vlcStreamSizeSet = true;
         }
+
+        private bool _vlcStreamSizeSet = false;
 
         private void StopPlayer()
         {

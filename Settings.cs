@@ -31,7 +31,7 @@ namespace iSpyApplication
         };
         public static readonly object[] CloudProviders = 
             {
-                "Google Drive","Dropbox"
+                "Drive","Dropbox","Flickr","OneDrive","Box"
             };
 
         public static readonly object[] Priorities =

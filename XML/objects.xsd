@@ -178,6 +178,10 @@
                                                 <xs:attribute name="FishEyeScale" type="xs:double" default="0.9"/>
                                                 <xs:attribute name="FishEyeFocalLengthPX" type="xs:int" default="700"/>
                                                 <xs:attribute name="uniqueID" type="xs:string" default=""/>
+                                                <xs:attribute name="resizeWidth" type="xs:int" default="-1"/>
+                                                <xs:attribute name="resizeHeight" type="xs:int" default="-1"/>
+                                                <xs:attribute name="vlcWidth" type="xs:int" default="-1"/>
+                                                <xs:attribute name="vlcHeight" type="xs:int" default="-1"/>
                                             </xs:complexType>
                                         </xs:element>
                                         <xs:element name="ftp">

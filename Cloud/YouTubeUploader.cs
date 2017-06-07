@@ -2,58 +2,50 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Threading;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Auth.OAuth2.Flows;
 using Google.Apis.Auth.OAuth2.Responses;
 using Google.Apis.Services;
 using Google.Apis.Upload;
-using Google.Apis.Util.Store;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 using iSpyApplication.Utilities;
+using Newtonsoft.Json;
 
 namespace iSpyApplication.Cloud
 {
     internal static class YouTubeUploader
     {
-        private static readonly object Lock = new object();
-        private static List<UserState> _upload = new List<UserState>();
-        private static List<UserState> UploadList
-        {
-            get
-            {
-                return _upload;
-            }
-            set
-            {
-                lock (Lock)
-                {
-                    _upload = value;
-                }
-            }
-        } 
+        private static List<UserState> UploadList { get; set; } = new List<UserState>();
 
         private static volatile bool _uploading;
-        private static readonly List<String> Uploaded = new List<string>();
+        private static readonly List<string> Uploaded = new List<string>();
 
         public static bool Authorised => Service != null;
 
         public static string Upload(int objectId, string filename, out bool success)
         {
             success = false;
-            if (!MainForm.Conf.Subscribed)
-                return LocRm.GetString("NotSubscribed");
+            //if (!Statics.Subscribed)
+            //    return "NotSubscribed";
+
+            if (!Authorised)
+            {
+                return "CloudAddSettings";
+            }
 
             if (UploadList.SingleOrDefault(p => p.Filename == filename) != null)
-                return LocRm.GetString("FileInQueue");
+                return "FileInQueue";
 
             if (UploadList.Count >= CloudGateway.MaxUploadQueue)
-                return LocRm.GetString("UploadQueueFull");
+                return "UploadQueueFull";
 
             if (Uploaded.FirstOrDefault(p=>p==filename)!=null)
             {
-                return LocRm.GetString("AlreadyUploaded");
+                return "AlreadyUploaded";
             }
             
             var us = new UserState(objectId, filename);
@@ -65,82 +57,93 @@ namespace iSpyApplication.Cloud
                 ThreadPool.QueueUserWorkItem(Upload, null);
             }
             success = true;
-            return LocRm.GetString("AddedToQueue");
+            return "AddedToQueue";
         }
 
-        private static CancellationTokenSource _tCancel;
+        private static DateTime _expires = DateTime.UtcNow;
         private static YouTubeService _service;
         public static YouTubeService Service
         {
             get
             {
-                if (_service != null)
+                if (_service != null && _expires < DateTime.UtcNow)
                 {
                     return _service;
                 }
-                if (!string.IsNullOrEmpty(MainForm.Conf.YouTubeToken))
+				if (!string.IsNullOrEmpty(MainForm.Conf.Cloud.YouTube))
                 {
-                    var token = new TokenResponse { RefreshToken = MainForm.Conf.YouTubeToken };
+                    dynamic d = JsonConvert.DeserializeObject(MainForm.Conf.Cloud.YouTube);
+                    var rt = d.refresh_token.ToString();
+                    int expSec = Convert.ToInt32(d.expires_in);
+                    _expires = DateTime.UtcNow.AddSeconds(expSec);
 
-                    var credential = new UserCredential(new GoogleAuthorizationCodeFlow(
-                        new GoogleAuthorizationCodeFlow.Initializer
-                        {
-                            ClientSecrets = new ClientSecrets
-                            {
-                                ClientId = "648753488389.apps.googleusercontent.com",
-                                ClientSecret = "Guvru7Ug8DrGcOupqEs6fTB1"
-                            },
-                        }), "user", token);
+                    var token = new TokenResponse { RefreshToken = rt };
+                    var secrets = new ClientSecrets
+                    {
+                        ClientId = MainForm.GoogleClientId,
+                        ClientSecret = MainForm.GoogleClientSecret
+                    };
 
-                    _service = new YouTubeService(new BaseClientService.Initializer
+                    var ini = new GoogleAuthorizationCodeFlow.Initializer { ClientSecrets = secrets };
+
+                    var flow = new GoogleAuthorizationCodeFlow(ini);
+                    var credential = new UserCredential(flow, "user", token);
+                    var bi = new BaseClientService.Initializer
                     {
                         HttpClientInitializer = credential,
                         ApplicationName = "iSpy",
-                    });
+                    };
+                    _service = new YouTubeService(bi);
                     return _service;
                 }
                 return null;
             }
         }
 
-        public static bool Authorise()
+        public static bool Authorise(string code)
         {
             _service?.Dispose();
             _service = null;
 
             try
             {
-                _tCancel?.Cancel(true);
+                var request =
+                    (HttpWebRequest)
+                        WebRequest.Create("https://www.googleapis.com/oauth2/v4/token");
 
-                _tCancel = new CancellationTokenSource();
+                var postData = "code=" + code + "&client_id=" + MainForm.GoogleClientId +
+                               "&client_secret=" + MainForm.GoogleClientSecret +
+                               "&redirect_uri=urn:ietf:wg:oauth:2.0:oob&grant_type=authorization_code";
+                var dp = Encoding.ASCII.GetBytes(postData);
 
-                var t = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    new ClientSecrets
-                    {
-                        ClientId = "648753488389.apps.googleusercontent.com",
-                        ClientSecret = "Guvru7Ug8DrGcOupqEs6fTB1"
-                    },
-                    new[] {YouTubeService.Scope.YoutubeUpload},
-                    "user", _tCancel.Token, new FileDataStore("YouTube.Auth.Store")).Result;
+                request.Method = "POST";
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.ContentLength = postData.Length;
 
-                if (t?.Token?.RefreshToken != null)
+                using (var stream = request.GetRequestStream())
                 {
-
-                    MainForm.Conf.YouTubeToken = t.Token.RefreshToken;
-                    _service = new YouTubeService(new BaseClientService.Initializer
-                    {
-                        HttpClientInitializer = t,
-                        ApplicationName = "iSpy",
-                    });
+                    stream.Write(dp, 0, postData.Length);
                 }
+
+                var response = (HttpWebResponse)request.GetResponse();
+                Stream s = response.GetResponseStream();
+                if (s == null)
+                    throw new Exception("null response stream");
+                var responseString = new StreamReader(s).ReadToEnd();
+
+                dynamic d = JsonConvert.DeserializeObject(responseString);
+
+                string at = d.access_token.ToString();//test it is authorised
+
+                MainForm.Conf.Cloud.YouTube = responseString;
+                return true;
             }
             catch (Exception ex)
             {
                 Logger.LogException(ex);
+                MainForm.Conf.Cloud.YouTube = "";
                 return false;
-
             }
-            return true;
         }
 
         private static void Upload(object state)
@@ -166,65 +169,60 @@ namespace iSpyApplication.Cloud
                 return;
             }
 
+            var s = Service;
 
-            if (Service == null)
-            {
-                if (!Authorise())
-                {
-                    _uploading = false;
-                    return;
-                }
-            }
-            if (Service != null)
-            {
-                if (us.CameraData == null)
-                    return;
-                var video = new Video
-                    {
-                        Snippet =
-                            new VideoSnippet
-                            {
-                                Title = "iSpy: " + us.CameraData.name,
-                                Description =
-                                    MainForm.Website + ": free open source surveillance software: " +
-                                    us.CameraData.description,
-                                Tags = us.CameraData.settings.youtube.tags.Split(','),
-                                CategoryId = "22"
-                            },
-                        Status =
-                            new VideoStatus
-                            {
-                                PrivacyStatus =
-                                    us.CameraData.settings.youtube.@public
-                                        ? "public"
-                                        : "private"
-                            }
-                    };
-
-                try
-                {
-                    using (var fileStream = new FileStream(us.Filename, FileMode.Open))
-                    {
-
-                        var videosInsertRequest = Service.Videos.Insert(video, "snippet,status", fileStream, "video/*");
-                        videosInsertRequest.ProgressChanged += VideosInsertRequestProgressChanged;
-                        videosInsertRequest.ResponseReceived += VideosInsertRequestResponseReceived;
-                        _uploaded = false;
-                        videosInsertRequest.Upload();
-                        if (_uploaded)
-                            Uploaded.Add(us.Filename);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogException(ex);
-                }
-                Upload(null);
-            }
-            else
+            if (s == null)
             {
                 _uploading = false;
+                return;
             }
+
+            if (us.CameraData == null)
+                return;
+
+            var video = new Video
+                {
+                    Snippet =
+                        new VideoSnippet
+                        {
+                            Title = "iSpy: " + us.CameraData.name,
+                            Description =
+								"iSpy surveillance software: " +
+                                us.CameraData.description,
+                            Tags = us.CameraData.settings.youtube.tags.Split(','),
+                            CategoryId = "22"
+                        },
+                    Status =
+                        new VideoStatus
+                        {
+                            PrivacyStatus =
+                                us.CameraData.settings.youtube.@public
+                                    ? "public"
+                                    : "private"
+                        }
+                };
+
+            try
+            {
+                using (var fileStream = new FileStream(us.Filename, FileMode.Open))
+                {
+
+                    var videosInsertRequest = s.Videos.Insert(video, "snippet,status", fileStream, "video/*");
+                    videosInsertRequest.ProgressChanged += VideosInsertRequestProgressChanged;
+                    videosInsertRequest.ResponseReceived += VideosInsertRequestResponseReceived;
+                    _uploaded = false;
+                    videosInsertRequest.Upload();
+                    if (_uploaded)
+                    {
+                        Uploaded.Add(us.Filename);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex,"YouTube");
+            }
+            Upload(null);
 
         }
 
@@ -246,8 +244,7 @@ namespace iSpyApplication.Cloud
 
         static void VideosInsertRequestResponseReceived(Video video)
         {
-            string msg = "YouTube video uploaded: <a href=\"http://www.youtube.com/watch?v=" + video.Id + "\">" +
-                                video.Id + "</a>";
+            string msg = "YouTube video uploaded: "+video.Id;
             msg += " ("+video.Status.PrivacyStatus+")";
             Logger.LogMessage(msg);
             _uploaded = true;
@@ -271,7 +268,7 @@ namespace iSpyApplication.Cloud
 
             internal objectsCamera CameraData
             {
-                get { return MainForm.Cameras.SingleOrDefault(p => p.id == _objectid); }
+				get { return MainForm.Cameras.SingleOrDefault(p => p.id == _objectid); }
             }
 
             internal long CurrentPosition { get; set; }

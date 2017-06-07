@@ -2,103 +2,95 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.ServiceModel.Configuration;
+using System.Net;
+using System.Text;
 using System.Threading;
-using DropNet;
 using iSpyApplication.Utilities;
+using Newtonsoft.Json;
 
 namespace iSpyApplication.Cloud
 {
     public static class Dropbox
     {
-        private const bool Sandbox = true;
+        private const string ApiKey = "6k40bpqlz573mqt";
+        private const string Secret= "mx5bth2wj95mkd2";
+        private static string _accessToken="";
 
-        private static DropNetClient _service;
+        //private static DropNetClient _service;
         private static volatile bool _uploading;
 
-        private static List<UploadEntry> _upload = new List<UploadEntry>();
-        private static readonly object Lock = new object();
-        private static bool _gottoken;
+        private static List<UploadEntry> UploadList { get; set; } = new List<UploadEntry>();
 
-        private static List<UploadEntry> UploadList
+        private static readonly DateTime Expires = DateTime.UtcNow;
+
+        public static string AccessToken
         {
             get
             {
-                return _upload;
-            }
-            set
-            {
-                lock (Lock)
+                if (_accessToken != "" && Expires < DateTime.UtcNow)
                 {
-                    _upload = value;
+                    return _accessToken;
                 }
-            }
-        }
-
-        public static string GetAuthoriseURL(out string err)
-        {
-            err = "";
-            try
-            {
-                MainForm.Conf.DropBoxConfig = "";
-
-                _service = null;
-                Service.GetToken();
-                _gottoken = false;
-                return Service.BuildAuthorizeUrl();
-            }
-            catch (Exception ex)
-            {
-                err = ex.Message;
-                Logger.LogException(ex, "DropBox");
+                if (!string.IsNullOrEmpty(MainForm.Conf.Cloud.DropBox))
+                {
+                    dynamic d = JsonConvert.DeserializeObject(MainForm.Conf.Cloud.DropBox);
+                    //dropbox doesn't seem to use refresh_token
+                    _accessToken = d.access_token.ToString();
+                    return _accessToken;
+                }
                 return "";
             }
         }
-        public static DropNetClient Service
-        {
-            get
-            {
-                if (_service != null)
-                {
-                    return _service;
-                }
-                if (string.IsNullOrEmpty(MainForm.Conf.DropBoxConfig))
-                    _service = new DropNetClient("6k40bpqlz573mqt", "mx5bth2wj95mkd2");
-                else
-                {
-                    string[] cfg = MainForm.Conf.DropBoxConfig.Split('|');
-                    if (cfg.Length == 2)
-                    {
-                        _service = new DropNetClient("6k40bpqlz573mqt", "mx5bth2wj95mkd2", cfg[0], cfg[1])
-                                   {
-                                       UseSandbox = Sandbox
-                                   };
-                        _gottoken = true;
-                    }
-                }
-                return _service;
-            }
-        }
 
-        public static bool Authorise()
+
+        public static bool Authorise(string code)
         {
+
             try
             {
-                string err;
-                var url = GetAuthoriseURL(out err);
-                if (err != "")
-                    throw new Exception(err);
-                MainForm.OpenUrl(url);
-                
-                _gottoken = false;
+                var request =
+                    (HttpWebRequest)
+                        WebRequest.Create("https://api.dropboxapi.com/oauth2/token");
+
+                var postData = "client_id=" + ApiKey + "&client_secret=" +
+                               Secret + "&code=" + code + "&grant_type=authorization_code&redirect_uri=https://www.ispyconnect.com/responsecode.aspx";
+
+                var dp = Encoding.ASCII.GetBytes(postData);
+
+                request.Method = "POST";
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.ContentLength = postData.Length;
+
+                using (var stream = request.GetRequestStream())
+                {
+                    stream.Write(dp, 0, postData.Length);
+                }
+
+                var response = (HttpWebResponse)request.GetResponse();
+                Stream s = response.GetResponseStream();
+                if (s == null)
+                    throw new Exception("null response stream");
+                var responseString = new StreamReader(s).ReadToEnd();
+
+                dynamic d2 = JsonConvert.DeserializeObject(responseString);
+
+                _accessToken = d2.access_token.ToString();
+
+                MainForm.Conf.Cloud.DropBox = responseString;
+                return true;
+            }
+            catch (WebException ex)
+            {
+                var resp = new StreamReader(ex.Response.GetResponseStream()).ReadToEnd();
+                Logger.LogError("Dropbox: "+resp);
             }
             catch (Exception ex)
             {
                 Logger.LogException(ex);
-                return false;
+                MainForm.Conf.Cloud.DropBox = "";
+                
             }
-            return true;
-
+            return false;
         }
 
         private class UploadEntry
@@ -109,47 +101,25 @@ namespace iSpyApplication.Cloud
 
         public static bool Authorised
         {
-            get
-            {
-                if (Service == null)
-                    return false;
-
-                if (_gottoken)
-                    return true;
-
-                try
-                {
-                    var accessToken = Service.GetAccessToken();
-                    MainForm.Conf.DropBoxConfig = accessToken.Token + "|" + accessToken.Secret;
-                    _gottoken = true;
-                    string[] cfg = MainForm.Conf.DropBoxConfig.Split('|');
-                    _service = new DropNetClient("6k40bpqlz573mqt", "mx5bth2wj95mkd2", cfg[0], cfg[1])
-                    {
-                        UseSandbox = Sandbox
-                    };
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogException(ex);
-                }
-                return false;
-            }
+            get { return AccessToken != ""; }
         }
 
         public static string Upload(string filename, string path, out bool success)
         {
             success = false;
+            //if (!Statics.Subscribed)
+            //    return "NotSubscribed";
+
             if (!Authorised)
             {
-                Logger.LogMessage("Authorise dropbox in settings");
-                return LocRm.GetString("CloudAddSettings");
+                return "CloudAddSettings";
             }
             if (UploadList.SingleOrDefault(p => p.SourceFilename == filename) != null)
-                return LocRm.GetString("FileInQueue");
+                return "FileInQueue";
 
             if (UploadList.Count >= CloudGateway.MaxUploadQueue)
-                return LocRm.GetString("UploadQueueFull");
+                return "UploadQueueFull";
+
 
             UploadList.Add(new UploadEntry { DestinationPath = path, SourceFilename = filename });
             if (!_uploading)
@@ -158,7 +128,7 @@ namespace iSpyApplication.Cloud
                 ThreadPool.QueueUserWorkItem(Upload, null);
             }
             success = true;
-            return LocRm.GetString("AddedToQueue");
+            return "AddedToQueue";
 
         }
 
@@ -185,50 +155,72 @@ namespace iSpyApplication.Cloud
                 return;
             }
             
-            if (Service == null)
+            if (AccessToken == "")
             {
-                if (!Authorise())
-                {
-                    _uploading = false;
-                    return;
-                }
-            }
-            if (Service != null)
-            {
-
-                FileInfo fi;
-                byte[] byteArray;
-                try
-                {
-                    fi = new FileInfo(entry.SourceFilename);
-                    byteArray = File.ReadAllBytes(fi.FullName);
-                }
-                catch
-                {
-                    //file doesn't exist
-                    Upload(null);
-                    return;
-                }
-
-                using (var stream = new MemoryStream(byteArray))
-                {
-                    try
-                    {
-                        string p = "/" + entry.DestinationPath.Replace("\\", "/").Trim('/') + "/";
-                        var r = Service.UploadFile(p, fi.Name, stream);
-                        Logger.LogMessage("Uploaded to dropbox: /iSpy" + r.Path);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.LogException(ex);
-                    }
-                }
-                Upload(null);
-            }
-            else
                 _uploading = false;
+                return;                
+            }
 
+            FileInfo fi;
+            byte[] byteArray;
+            try
+            {
+                fi = new FileInfo(entry.SourceFilename);
+                byteArray = File.ReadAllBytes(fi.FullName);
+            }
+            catch (Exception ex)
+            {
+                //file doesn't exist
+                Logger.LogException(ex);
+                return;
+            }
 
+            try
+            {
+                var path = entry.DestinationPath.Replace(@"\", "/");
+                var url = $"https://content.dropboxapi.com/2/files/upload";
+                var request =
+                    (HttpWebRequest)
+                        WebRequest.Create(url);
+
+                request.Headers.Add("Authorization", "Bearer " + AccessToken);
+                request.Headers.Add("Dropbox-API-Arg",
+                    "{\"path\": \"/" + path + fi.Name +
+                    "\",\"mode\": \"add\",\"autorename\": false,\"mute\": false}");
+
+                request.Method = "POST";
+                request.ContentType = "application/octet-stream";
+                request.ContentLength = byteArray.Length;
+
+                using (var stream = request.GetRequestStream())
+                {
+                    stream.Write(byteArray, 0, byteArray.Length);
+                }
+
+                var response = (HttpWebResponse) request.GetResponse();
+                var s = response.GetResponseStream();
+                if (s == null)
+                    throw new Exception("null response stream");
+                var responseString = new StreamReader(s).ReadToEnd();
+
+                dynamic d = JsonConvert.DeserializeObject(responseString);
+                Logger.LogMessage("File uploaded to dropbox: " + d.path_lower);
+            }
+            catch (WebException wex)
+            {
+                var s = wex.Response.GetResponseStream();
+                if (s != null)
+                {
+                    var resp = new StreamReader(s).ReadToEnd();
+                    Logger.LogError("Dropbox: " + resp);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex,"Dropbox");
+            }
+
+            Upload(null);
         }
 
     }

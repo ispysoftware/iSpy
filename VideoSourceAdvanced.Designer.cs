@@ -147,11 +147,6 @@
             0,
             0,
             0});
-            this.txtResizeWidth.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
             this.txtResizeWidth.Name = "txtResizeWidth";
             this.txtResizeWidth.Size = new System.Drawing.Size(48, 20);
             this.txtResizeWidth.TabIndex = 55;
@@ -181,11 +176,6 @@
             this.txtResizeHeight.Location = new System.Drawing.Point(75, 3);
             this.txtResizeHeight.Maximum = new decimal(new int[] {
             10000,
-            0,
-            0,
-            0});
-            this.txtResizeHeight.Minimum = new decimal(new int[] {
-            60,
             0,
             0,
             0});

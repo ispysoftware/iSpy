@@ -690,6 +690,14 @@ public partial class objectsCameraSettings {
     
     private string uniqueIDField;
     
+    private int resizeWidthField;
+    
+    private int resizeHeightField;
+    
+    private int vlcWidthField;
+    
+    private int vlcHeightField;
+    
     public objectsCameraSettings() {
         this.frameintervalField = 0;
         this.timestampfontsizeField = 10;
@@ -737,6 +745,10 @@ public partial class objectsCameraSettings {
         this.fishEyeScaleField = 0.9D;
         this.fishEyeFocalLengthPXField = 700;
         this.uniqueIDField = "";
+        this.resizeWidthField = -1;
+        this.resizeHeightField = -1;
+        this.vlcWidthField = -1;
+        this.vlcHeightField = -1;
     }
     
     /// <remarks/>
@@ -1624,6 +1636,54 @@ public partial class objectsCameraSettings {
         }
         set {
             this.uniqueIDField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute(-1)]
+    public int resizeWidth {
+        get {
+            return this.resizeWidthField;
+        }
+        set {
+            this.resizeWidthField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute(-1)]
+    public int resizeHeight {
+        get {
+            return this.resizeHeightField;
+        }
+        set {
+            this.resizeHeightField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute(-1)]
+    public int vlcWidth {
+        get {
+            return this.vlcWidthField;
+        }
+        set {
+            this.vlcWidthField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute(-1)]
+    public int vlcHeight {
+        get {
+            return this.vlcHeightField;
+        }
+        set {
+            this.vlcHeightField = value;
         }
     }
 }

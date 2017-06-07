@@ -230,6 +230,8 @@ namespace iSpyApplication.Sources.Video
                     stream = response.GetResponseStream();
                     stream.ReadTimeout = _requestTimeout;
 
+
+                    bool frameComplete=false;
                     // loop
                     while (!_abort.WaitOne(0))
                     {
@@ -242,13 +244,16 @@ namespace iSpyApplication.Sources.Video
                         // read next portion from stream
                         int read;
                         if ((read = stream.Read(buffer, total, ReadSize)) == 0)
+                        {
+                            frameComplete = true;
                             break;
+                        }
 
                         total += read;
                     }
 
                     // provide new image to clients
-                    if (NewFrame != null && EmitFrame)
+                    if (frameComplete && NewFrame != null && EmitFrame)
                     {
                         using (var ms = new MemoryStream(buffer, 0, total))
                         {

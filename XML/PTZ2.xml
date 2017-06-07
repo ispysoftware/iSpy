@@ -7104,4 +7104,24 @@ in the camera's web interface-->
           <Command Name="FocusOut">/cgi-bin/hi3510/ptzctrl.cgi?&amp;-act=focussub</Command>
         </ExtendedCommands>
       </Camera>
-</PTZSettings2>
+  <Camera id="243">
+    <Makes>
+      <Make Name="LevelOne" Model="FCS-4101" />
+    </Makes>
+    <CommandURL>/cgi-bin/</CommandURL>
+    <Commands>
+      <Center>camctrl.cgi?move=3</Center>
+      <Left>camctrl.cgi?move=2</Left>
+      <LeftUp>camctrl.cgi?move=9</LeftUp>
+      <LeftDown>camctrl.cgi?move=11</LeftDown>
+      <RightUp>camctrl.cgi?move=10</RightUp>
+      <RightDown>camctrl.cgi?move=12</RightDown>
+      <Right>camctrl.cgi?move=4</Right>
+      <Up>camctrl.cgi?move=1</Up>
+      <Down>camctrl.cgi?move=5</Down>
+    </Commands>
+    <ExtendedCommands>
+
+    </ExtendedCommands>
+  </Camera>
+  </PTZSettings2>

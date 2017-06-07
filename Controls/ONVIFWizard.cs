@@ -29,7 +29,7 @@ namespace iSpyApplication.Controls
 
         private void button2_Click(object sender, EventArgs e)
         {
-            
+            SetPanel(pnlStep1);
         }
 
         private void SetPanel(Panel p)

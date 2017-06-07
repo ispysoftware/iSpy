@@ -15,8 +15,8 @@ namespace iSpyApplication
         private void VideoSourceAdvanced_Load(object sender, EventArgs e)
         {
             txtUserAgent.Text = Camobject.settings.useragent;
-            txtResizeWidth.Value = Camobject.settings.desktopresizewidth;
-            txtResizeHeight.Value = Camobject.settings.desktopresizeheight;
+            txtResizeWidth.Value = Camobject.settings.resizeWidth;
+            txtResizeHeight.Value = Camobject.settings.resizeHeight;
             chkNoResize.Checked = !Camobject.settings.resize;
             chkHttp10.Checked = Camobject.settings.usehttp10;
             chkFBA.Checked = Camobject.settings.forcebasic;
@@ -79,13 +79,13 @@ namespace iSpyApplication
             int w = Convert.ToInt32(txtResizeWidth.Value);
             if (w % 2 != 0)
                 w++;
-            Camobject.settings.desktopresizewidth = w;
+            Camobject.settings.resizeWidth = w;
 
             int h = Convert.ToInt32(txtResizeHeight.Value);
             if (h % 2 != 0)
                 h++;
 
-            Camobject.settings.desktopresizeheight = h;
+            Camobject.settings.resizeHeight = h;
             Camobject.settings.resize = !chkNoResize.Checked;
 
             Camobject.settings.usehttp10 = chkHttp10.Checked;

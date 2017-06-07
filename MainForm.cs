@@ -46,7 +46,7 @@ namespace iSpyApplication
         public const string VLCx64 = "http://download.videolan.org/pub/videolan/vlc/last/win64/";
 
         public const string Website = "http://www.ispyconnect.com";
-        public const string ContentSource = Website;//"http://localhost:81/";
+        public const string ContentSource = Website;
         public static bool NeedsSync;
         private static DateTime _needsMediaRefresh = DateTime.MinValue;
         //private static Player _player = null;
@@ -99,8 +99,8 @@ namespace iSpyApplication
 
         public static EncoderParameters EncoderParams;
         public static bool ShuttingDown = false;
-        public static string Webserver = "http://www.ispyconnect.com";
-        public static string WebserverSecure = "https://www.ispyconnect.com";
+        public static string Webserver = Website;
+        public static string WebserverSecure = Website.Replace("http:", "https:");
 
 
         public static Rectangle RPower = new Rectangle(94, 3, 16, 16);
@@ -136,7 +136,7 @@ namespace iSpyApplication
         public static Rectangle RFolderOff = new Rectangle(473, 83, 16, 16);
 
         private static List<string> _tags;
-        private static bool CustomWebserver = false;
+        private static bool CustomWebserver;
         public static List<string> Tags
         {
             get

@@ -457,7 +457,7 @@ namespace iSpyApplication
                 }
             }
             if (msg != "")
-                MessageBox.Show(this, msg);
+                MessageBox.Show(this, LocRm.GetString(msg));
             
         }
 
@@ -484,7 +484,7 @@ namespace iSpyApplication
                 }
             }
             if (msg != "")
-                MessageBox.Show(this, msg);
+                MessageBox.Show(this, LocRm.GetString(msg));
         }
 
 
