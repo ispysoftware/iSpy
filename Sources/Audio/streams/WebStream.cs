@@ -16,6 +16,7 @@ namespace iSpyApplication.Sources.Audio.streams
         private ReasonToFinishPlaying _res = ReasonToFinishPlaying.DeviceLost;
 
         private Thread _thread;
+        public bool IsAudio => true;
 
         private BufferedWaveProvider _waveProvider;
         private SampleChannel _sampleChannel;

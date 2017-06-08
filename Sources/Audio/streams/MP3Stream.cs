@@ -16,6 +16,7 @@ namespace iSpyApplication.Sources.Audio.streams
         private bool _listening;
 
         private Thread _thread;
+        public bool IsAudio => true;
         public WaveFormat RecordingFormat { get; private set; }
         public BufferedWaveProvider WaveOutProvider { get; set; }
         private SampleChannel _sampleChannel;

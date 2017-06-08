@@ -62,7 +62,7 @@ namespace iSpyApplication.Realtime
         private bool _opened;
         private int _frameNumber;
         private double _maxLevel = -1;
-        private bool _isVideo;
+        private readonly bool _isAudio;
 
         public int Timeout = 5000;
 
@@ -101,6 +101,7 @@ namespace iSpyApplication.Realtime
         public MediaWriter(string fileName, AVCodecID audioCodec)
         {
             Open(fileName, -1,-1,AVCodecID.AV_CODEC_ID_NONE, 0, audioCodec);
+            _isAudio = true;
         }
 
         public MediaWriter(string fileName, int width, int height, AVCodecID videoCodec)
@@ -118,6 +119,7 @@ namespace iSpyApplication.Realtime
             CreatedDate = DateTime.UtcNow;
             Filename = fileName;
             _abort = false;
+            _ignoreAudio = false;
 
             if (videoCodec != AVCodecID.AV_CODEC_ID_NONE)
             {
@@ -128,11 +130,7 @@ namespace iSpyApplication.Realtime
                     throw new ArgumentException("Video file resolution must be a multiple of two.");
                 }
             }
-            else
-            {
-                _isVideo = false;
-            }
-
+            
             int i;
             _lastPacket = DateTime.UtcNow;
             var outputFormat = ffmpeg.av_guess_format(null, fileName, null);
@@ -361,7 +359,7 @@ namespace iSpyApplication.Realtime
             }
             AddAudioSamples(soundBuffer, soundBufferSize, msOffset);
 
-            if (!_isVideo)
+            if (_isAudio)
             {
                 _alertData.Append(string.Format(CultureInfo.InvariantCulture, "{0:0.000},", Math.Min(level, 100)));
                 if (level>MaxAlarm)
@@ -469,7 +467,8 @@ namespace iSpyApplication.Realtime
             }
             ffmpeg.av_free_packet(&packet);
 
-            _alertData.Append(string.Format(CultureInfo.InvariantCulture, "{0:0.000},", Math.Min(level,100)));
+            if (!_isAudio)
+                _alertData.Append(string.Format(CultureInfo.InvariantCulture, "{0:0.000},", Math.Min(level,100)));
 
             if (level > _maxLevel)
             {
@@ -574,9 +573,10 @@ namespace iSpyApplication.Realtime
             }
         }
 
+        private bool _ignoreAudio;
         private void AddAudioSamples(byte[] soundBuffer, int soundBufferSize, long msOffset)
         {
-            if (_audioStream==null || _audioCodecContext==null || soundBufferSize <= 0)
+            if (_audioStream==null || _audioCodecContext==null || soundBufferSize <= 0 || _ignoreAudio)
                 return;
 
             int size = ffmpeg.av_samples_get_buffer_size(null, _audioCodecContext->channels,
@@ -593,95 +593,112 @@ namespace iSpyApplication.Realtime
             _audioBufferSizeCurrent += soundBufferSize;
 
             int remaining = _audioBufferSizeCurrent, cursor = 0;
-
-            fixed (byte* p = _audioBuffer)
+            try
             {
-                sbyte* inPointerLocal = (sbyte*)p;
-                var pts = msOffset;
-                while (remaining >= size)
+                fixed (byte* p = _audioBuffer)
                 {
-                    ffmpeg.av_init_packet(&packet);
-                    int ret;
-                    sbyte[] convOut = new sbyte[10000];
-                    
-                    fixed (sbyte* convOutPointer = convOut)
+                    sbyte* inPointerLocal = (sbyte*) p;
+                    var pts = msOffset;
+                    while (remaining >= size)
                     {
-                        sbyte* convOutPointerLocal = convOutPointer;
-                        int dstNbSamples =
-                            (int)
-                                ffmpeg.av_rescale_rnd(
-                                    ffmpeg.swr_get_delay(_swrContext, _audioCodecContext->sample_rate) +
-                                    _audioFrame->nb_samples, _audioCodecContext->sample_rate,
-                                    _audioCodecContext->sample_rate,
-                                    AVRounding.AV_ROUND_UP);
+                        ffmpeg.av_init_packet(&packet);
+                        int ret;
+                        sbyte[] convOut = new sbyte[10000];
 
-                        ret = ffmpeg.swr_convert(_swrContext,
-                            &convOutPointerLocal,
-                            dstNbSamples,
-                            &inPointerLocal,
-                            _audioFrame->nb_samples);
+                        fixed (sbyte* convOutPointer = convOut)
+                        {
+                            sbyte* convOutPointerLocal = convOutPointer;
+                            int dstNbSamples =
+                                (int)
+                                    ffmpeg.av_rescale_rnd(
+                                        ffmpeg.swr_get_delay(_swrContext, _audioCodecContext->sample_rate) +
+                                        _audioFrame->nb_samples, _audioCodecContext->sample_rate,
+                                        _audioCodecContext->sample_rate,
+                                        AVRounding.AV_ROUND_UP);
+
+                            ret = ffmpeg.swr_convert(_swrContext,
+                                &convOutPointerLocal,
+                                dstNbSamples,
+                                &inPointerLocal,
+                                _audioFrame->nb_samples);
+
+                            if (ret < 0)
+                            {
+                                throw new Exception("Error while converting audio format (" + ret + ")");
+                            }
+
+                            _audioFrame->nb_samples = dstNbSamples;
+                            if (_videoCodecContext != null && _videoCodecContext->codec_id == AVCodecID.AV_CODEC_ID_H264)
+                                _audioFrame->pts = pts;
+
+                            //if (_lastAudioPts > pts)
+                            //{
+                            //    _audioFrame->pts = _lastAudioPts+1;
+                            //}
+                            //_lastAudioPts = _audioFrame->pts;
+
+                            var dstSamplesSize = ffmpeg.av_samples_get_buffer_size(null, _audioCodecContext->channels,
+                                _audioFrame->nb_samples,
+                                _audioCodecContext->sample_fmt, 0);
+
+                            ret = ffmpeg.avcodec_fill_audio_frame(_audioFrame, _audioCodecContext->channels,
+                                _audioCodecContext->sample_fmt, convOutPointer, dstSamplesSize, 0);
+                            inPointerLocal += size;
+                        }
 
                         if (ret < 0)
                         {
-                            throw new Exception("Error while converting audio format (" + ret + ")");
+                            ffmpeg.av_free_packet(&packet);
+                            throw new Exception("error filling audio");
                         }
 
-                        _audioFrame->nb_samples = dstNbSamples;
-                        if (_videoCodecContext!=null && _videoCodecContext->codec_id == AVCodecID.AV_CODEC_ID_H264)
-                            _audioFrame->pts = pts;
+                        int gotPacket;
 
-                        //if (_lastAudioPts > pts)
-                        //{
-                        //    _audioFrame->pts = _lastAudioPts+1;
-                        //}
-                        //_lastAudioPts = _audioFrame->pts;
-
-                        var dstSamplesSize = ffmpeg.av_samples_get_buffer_size(null, _audioCodecContext->channels,
-                            _audioFrame->nb_samples,
-                            _audioCodecContext->sample_fmt, 0);
-
-                        ret = ffmpeg.avcodec_fill_audio_frame(_audioFrame, _audioCodecContext->channels,
-                            _audioCodecContext->sample_fmt, convOutPointer, dstSamplesSize, 0);
-                        inPointerLocal += size;
-                    }
-
-                    if (ret < 0)
-                    {
-                        ffmpeg.av_free_packet(&packet);
-                        throw new Exception("error filling audio");
-                    }
-
-                    int gotPacket;
-
-                    ret = ffmpeg.avcodec_encode_audio2(_audioCodecContext, &packet, _audioFrame, &gotPacket);
-                    pts++;
-                    if (ret < 0)
-                    {
-                        ffmpeg.av_free_packet(&packet);
-                        throw new Exception("Error while encoding audio frame (" + ret + ")");
-                    }
-
-                    if (gotPacket > 0 && packet.size > 0)
-                    {
-                        if ((ulong) packet.pts != ffmpeg.AV_NOPTS_VALUE)
-                            packet.pts = ffmpeg.av_rescale_q(packet.pts, _audioCodecContext->time_base, _audioStream->time_base);
-                        if ((ulong) packet.dts != ffmpeg.AV_NOPTS_VALUE)
-                            packet.dts = ffmpeg.av_rescale_q(packet.dts, _audioCodecContext->time_base, _audioStream->time_base);
-
-                        packet.stream_index = _audioStream->index;
-                        packet.flags |= ffmpeg.AV_PKT_FLAG_KEY;
-                        _lastPacket = DateTime.UtcNow;
-                        
-                        if (ffmpeg.av_interleaved_write_frame(_formatContext, &packet) != 0)
+                        ret = ffmpeg.avcodec_encode_audio2(_audioCodecContext, &packet, _audioFrame, &gotPacket);
+                        pts++;
+                        if (ret < 0)
                         {
                             ffmpeg.av_free_packet(&packet);
-                            throw new Exception("unable to write audio frame.");
+                            throw new Exception("Error while encoding audio frame (" + ret + ")");
                         }
-                        ffmpeg.av_free_packet(&packet);
-                    }
 
-                    cursor += size;
-                    remaining -= size;
+                        if (gotPacket > 0 && packet.size > 0)
+                        {
+                            if ((ulong) packet.pts != ffmpeg.AV_NOPTS_VALUE)
+                                packet.pts = ffmpeg.av_rescale_q(packet.pts, _audioCodecContext->time_base,
+                                    _audioStream->time_base);
+                            if ((ulong) packet.dts != ffmpeg.AV_NOPTS_VALUE)
+                                packet.dts = ffmpeg.av_rescale_q(packet.dts, _audioCodecContext->time_base,
+                                    _audioStream->time_base);
+
+                            packet.stream_index = _audioStream->index;
+                            packet.flags |= ffmpeg.AV_PKT_FLAG_KEY;
+                            _lastPacket = DateTime.UtcNow;
+
+                            ret = ffmpeg.av_interleaved_write_frame(_formatContext, &packet);
+                            if (ret != 0)
+                            {
+                                ffmpeg.av_free_packet(&packet);
+                                throw new Exception("Error while writing audio (" + ret + ")");
+                            }
+                            ffmpeg.av_free_packet(&packet);
+                        }
+
+                        cursor += size;
+                        remaining -= size;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (!_isAudio)
+                {
+                    _ignoreAudio = true;
+                    Logger.LogError(ex.Message + " - will be skipped for this recording");
+                }
+                else
+                {
+                    throw;
                 }
             }
 
@@ -692,7 +709,7 @@ namespace iSpyApplication.Realtime
 
         void OpenVideo( )
         {
-            _isVideo = true;
+
             _maxLevel = -1;
             
             

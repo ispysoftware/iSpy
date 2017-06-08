@@ -11,6 +11,7 @@ namespace iSpyApplication.Sources.Audio
     /// 
     public interface IAudioSource
     {
+       // bool IsAudio { get; }
         /// <summary>
         /// New Packet event.
         /// </summary>

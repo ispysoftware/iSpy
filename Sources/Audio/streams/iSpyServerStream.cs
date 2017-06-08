@@ -20,6 +20,7 @@ namespace iSpyApplication.Sources.Audio.streams
 
         private BufferedWaveProvider _waveProvider;
         private SampleChannel _sampleChannel;
+        public bool IsAudio => true;
 
         public BufferedWaveProvider WaveOutProvider { get; set; }
 

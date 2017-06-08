@@ -24,6 +24,8 @@ namespace iSpyApplication.Sources.Video
         public event Delegates.ErrorHandler ErrorHandler;
         private bool _disposed;
 
+        public bool IsAudio => _modeAudio;
+
         private IntPtr _interruptCallbackAddress;
         private AvInterruptCb _interruptCallback;
 
@@ -308,8 +310,7 @@ namespace iSpyApplication.Sources.Video
 
             if (_videoStream != null)
             {
-                _codecContext->flags2 |= ffmpeg.CODEC_FLAG2_FAST | ffmpeg.CODEC_FLAG2_CHUNKS |
-                                         ffmpeg.CODEC_FLAG_LOW_DELAY;
+                _codecContext->flags2 |= ffmpeg.CODEC_FLAG2_FAST | ffmpeg.CODEC_FLAG_LOW_DELAY;
 
                 var codec = ffmpeg.avcodec_find_decoder(_codecContext->codec_id);
                 if (codec == null)
