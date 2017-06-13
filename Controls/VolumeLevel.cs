@@ -2204,18 +2204,19 @@ namespace iSpyApplication.Controls
             if (Levels == null)
                 return;
 
-            int totBytes;
             byte[] bResampled = new byte[22050];
-            using (var ws = new TalkHelperStream(e.RawData, e.BytesRecorded, AudioSource.RecordingFormat))
-            {
-                using (var helpStm = new WaveFormatConversionStream(AudioStreamFormat, ws))
-                {
-                    totBytes = helpStm.Read(bResampled, 0, 22050);
-                }
-            }
-
+            
             try
             {
+                int totBytes;
+                using (var ws = new TalkHelperStream(e.RawData, e.BytesRecorded, AudioSource.RecordingFormat))
+                {
+                    using (var helpStm = new WaveFormatConversionStream(AudioStreamFormat, ws))
+                    {
+                        totBytes = helpStm.Read(bResampled, 0, 22050);
+                    }
+                }
+
                 lock (_lockobject)
                 {                   
                     Helper.FrameAction fa;

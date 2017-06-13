@@ -245,13 +245,13 @@
       <HintPath>$(SolutionDir)packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NAudio">
-      <HintPath>packages\NAudio.1.8.0\lib\net35\NAudio.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="NAudio, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLLS\NAudio.dll</HintPath>
     </Reference>
-    <Reference Include="NAudio.Lame">
-      <HintPath>packages\NAudio.Lame.1.0.4\lib\net20\NAudio.Lame.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="NAudio.Lame, Version=1.0.3.3048, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLLS\NAudio.Lame.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -1429,6 +1429,8 @@
     <Content Include="DLLS\Interop.NetFwTypeLib.dll" />
     <Content Include="DLLS\Interop.NETWORKLIST.dll" />
     <Content Include="DLLS\Microsoft.Kinect.dll" />
+    <Content Include="DLLS\NAudio.dll" />
+    <Content Include="DLLS\NAudio.Lame.dll" />
     <Content Include="DLLS\NSpeex.dll" />
     <Content Include="DLLS\nVLC.Declarations.dll" />
     <Content Include="DLLS\nVLC.Implementation.dll" />
@@ -1455,6 +1457,7 @@
     <Content Include="DLLS\x86\avformat-57.dll" />
     <Content Include="DLLS\x86\avutil-55.dll" />
     <Content Include="DLLS\x86\ffmpeg.exe" />
+    <Content Include="DLLS\x86\libmp3lame.32.dll" />
     <Content Include="DLLS\x86\msvcp120.dll" />
     <Content Include="DLLS\x86\msvcr120.dll" />
     <Content Include="DLLS\x86\postproc-54.dll" />
@@ -1478,12 +1481,6 @@
     <None Include="Resources\cam_removed.png" />
     <None Include="Resources\checkbox_off.png" />
     <None Include="Resources\onvif.png" />
-    <Content Include="libmp3lame.32.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="libmp3lame.64.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Masks\demo_mask.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
