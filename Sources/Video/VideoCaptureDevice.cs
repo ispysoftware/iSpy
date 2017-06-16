@@ -1394,7 +1394,7 @@ namespace iSpyApplication.Sources.Video
                             }
                         }
                     }
-                    while (!_abort.WaitOne(0, false) && !MainForm.ShuttingDown);
+                    while (!_abort.WaitOne(20, false) && !MainForm.ShuttingDown);
 
                     mediaControl.Stop();
                 }
