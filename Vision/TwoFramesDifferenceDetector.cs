@@ -258,37 +258,22 @@ namespace iSpyApplication.Vision
                 // convert current image to grayscale
                 Tools.ConvertToGrayscale(videoFrame, _motionFrame);
 
-                UInt64* prevFrame = (UInt64*)_previousFrame.ImageData.ToPointer();
-                UInt64* currFrame = (UInt64*)_motionFrame.ImageData.ToPointer();
+                // pointers to previous and current frames
+                byte* prevFrame = (byte*)_previousFrame.ImageData.ToPointer();
+                byte* currFrame = (byte*)_motionFrame.ImageData.ToPointer();
                 // difference value
 
                 // 1 - get difference between frames
                 // 2 - threshold the difference
                 // 3 - copy current frame to previous frame
-                for (int i = 0; i < _frameSize / sizeof(UInt64); i++, prevFrame++, currFrame++)
+                for (int i = 0; i < _frameSize; i++, prevFrame++, currFrame++)
                 {
                     // difference
-                    var diff = (*currFrame ^ *prevFrame) & _differenceThresholMask;
+                    var diff = *currFrame - *prevFrame;
                     // copy current frame to previous
                     *prevFrame = *currFrame;
                     // treshold
-                    *currFrame = 0;
-                    if ((diff & 0xFF00000000000000) != 0) // take care of the 1st byte
-                        *currFrame |= 0xFF00000000000000;
-                    if ((diff & 0x00FF000000000000) != 0) // take care of the 2nd byte
-                        *currFrame |= 0x00FF000000000000;
-                    if ((diff & 0x0000FF0000000000) != 0) // take care of the 3rd byte
-                        *currFrame |= 0x0000FF0000000000;
-                    if ((diff & 0x000000FF00000000) != 0) // take care of the 4th byte
-                        *currFrame |= 0x000000FF00000000;
-                    if ((diff & 0x00000000FF000000) != 0) // take care of the 5th byte
-                        *currFrame |= 0x00000000FF000000;
-                    if ((diff & 0x0000000000FF0000) != 0) // take care of the 6th byte
-                        *currFrame |= 0x0000000000FF0000;
-                    if ((diff & 0x000000000000FF00) != 0) // take care of the 7th byte
-                        *currFrame |= 0x000000000000FF00;
-                    if ((diff & 0x00000000000000FF) != 0) // take care of the 8th byte
-                        *currFrame |= 0x00000000000000FF;
+                    *currFrame = ((diff >= _differenceLevel) || (diff <= -_differenceLevel)) ? (byte)255 : (byte)0;
                 }
 
                 if (_suppressNoise)
