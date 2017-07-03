@@ -155,35 +155,47 @@ namespace iSpyApplication
             UISync.Execute(() => rtbOutput.Text += NL);
             UISync.Execute(() => rtbOutput.Text += "Checking your firewall... ");
             Application.DoEvents();
-            var fw = new FireWall();
-            fw.Initialize();
-
-            bool bOn;
-            var r = fw.IsWindowsFirewallOn(out bOn);
-
-            if (r == FireWall.FwErrorCode.FwNoerror)
+            try
             {
-                if (bOn)
+                var fw = new FireWall();
+                fw.Initialize();
+
+                bool bOn;
+                var r = fw.IsWindowsFirewallOn(out bOn);
+
+                if (r == FireWall.FwErrorCode.FwNoerror)
                 {
-                    string strApplication = Application.StartupPath + "\\iSpy.exe";
-                    bool bEnabled = false;
-                    fw.IsAppEnabled(strApplication, ref bEnabled);
-                    if (!bEnabled)
+                    if (bOn)
                     {
-                        UISync.Execute(() => rtbOutput.Text += "iSpy is *NOT ENABLED* - add ispy.exe to the windows firewall allowed list");}
+                        string strApplication = Application.StartupPath + "\\iSpy.exe";
+                        bool bEnabled = false;
+                        fw.IsAppEnabled(strApplication, ref bEnabled);
+                        if (!bEnabled)
+                        {
+                            UISync.Execute(
+                                () =>
+                                    rtbOutput.Text +=
+                                        "iSpy is *NOT ENABLED* - add ispy.exe to the windows firewall allowed list");
+                        }
+                        else
+                        {
+                            UISync.Execute(() => rtbOutput.Text += "iSpy is enabled");
+                        }
+                    }
                     else
                     {
-                        UISync.Execute(() => rtbOutput.Text += "iSpy is enabled");
+                        UISync.Execute(() => rtbOutput.Text += "Firewall is off");
                     }
                 }
                 else
                 {
-                    UISync.Execute(() => rtbOutput.Text += "Firewall is off");
+                    UISync.Execute(() => rtbOutput.Text += "Firewall error: " + r);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                UISync.Execute(() => rtbOutput.Text += "Firewall error: " + r);
+                UISync.Execute(() => rtbOutput.Text += "Firewall error: " + ex.Message);
+                UISync.Execute(() => rtbOutput.Text += NL + LocRm.GetString("AddFirewallExceptionManually"));
             }
             UISync.Execute(() => rtbOutput.Text += NL);
 

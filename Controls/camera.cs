@@ -379,7 +379,8 @@ namespace iSpyApplication.Controls
         }
 
         public event NewFrameEventHandler NewFrame;
-        public event EventHandler Alarm;
+        public event EventHandler Detect;
+        public event EventHandler Alert;
         public event PlayingFinishedEventHandler PlayingFinished;
 
         // Constructor
@@ -533,7 +534,7 @@ namespace iSpyApplication.Controls
                         ApplyMask(bmOrig);
                     }
 
-                    if (CW.Camobject.alerts.active && Plugin != null && Alarm!=null)
+                    if (CW.Camobject.alerts.active && Plugin != null && Detect != null)
                     {
                         bmOrig = RunPlugin(bmOrig);
                     }
@@ -853,7 +854,7 @@ namespace iSpyApplication.Controls
         [HandleProcessCorruptedStateExceptions] 
         private bool ApplyMotionDetector(UnmanagedImage lfu)
         {
-            if (Alarm != null && lfu!=null)
+            if (Detect != null && lfu!=null)
             {
                 if ((DateTime.UtcNow - _lastProcessed).TotalMilliseconds > CW.Camobject.detector.processframeinterval || CW.Calibrating)
                 {
@@ -895,7 +896,7 @@ namespace iSpyApplication.Controls
             MotionDetected = true;
             _motionlastdetected = Helper.Now;
             _motionRecentlyDetected = true;
-            var al = Alarm;
+            var al = Detect;
             al?.BeginInvoke(sender, new EventArgs(),null,null);
         }
 
@@ -1033,9 +1034,9 @@ namespace iSpyApplication.Controls
                 }
 
                 //check the plugin alert flag and alarm if it is set
-                var pluginAlert = (String) o.GetField("Alert").GetValue(Plugin);
+                var pluginAlert = (string) o.GetField("Alert").GetValue(Plugin);
                 if (pluginAlert != "")
-                    Alarm?.Invoke(pluginAlert, EventArgs.Empty);
+                    Alert?.Invoke(pluginAlert, EventArgs.Empty);
                 
                 //reset the plugin alert flag if it supports that
                 if (o.GetMethod("ResetAlert") != null)
@@ -1097,7 +1098,7 @@ namespace iSpyApplication.Controls
 
             
             ClearMotionZones();
-            Alarm = null;
+            Detect = null;
             NewFrame = null;
             PlayingFinished = null;
             Plugin = null;

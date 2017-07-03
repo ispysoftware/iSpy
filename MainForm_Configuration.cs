@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -1835,6 +1836,7 @@ namespace iSpyApplication
                                         i--;
                                         if (size < targetSize)
                                             break;
+                                        Thread.Sleep(5);
                                     }
                                 }
                             }
@@ -1856,6 +1858,7 @@ namespace iSpyApplication
                                     fileschanged = true;
                                     lFi.Remove(fi);
                                     i--;
+                                    Thread.Sleep(5);
                                 }
                             }
                         }
@@ -1913,6 +1916,7 @@ namespace iSpyApplication
                                         size -= fi.Length;
                                         fileschanged = true;
                                         lFi.Remove(fi);
+                                        Thread.Sleep(5);
                                         i--;
                                     }
                                 }
@@ -1934,6 +1938,7 @@ namespace iSpyApplication
                                     }
                                     fileschanged = true;
                                     lFi.Remove(fi);
+                                    Thread.Sleep(5);
                                     i--;
                                 }
                             }
@@ -2015,6 +2020,7 @@ namespace iSpyApplication
                                 {
                                     break;
                                 }
+                                Thread.Sleep(5);
                             }
                         }
                     }

@@ -65,15 +65,14 @@ namespace iSpyApplication.Controls
         private DateTime _reconnectTime = DateTime.MinValue;
         private bool _firstFrame = true;
         private Thread _recordingThread;
-        private int _calibrateTarget;
         private Camera _camera;
         private DateTime _lastFrameUploaded = Helper.Now;
         private DateTime _lastFrameSaved = Helper.Now;
         private DateTime _dtPTZLastCheck = DateTime.Now;
         private long _lastRun = Helper.Now.Ticks;
 
-        private Int64 _lastMovementDetected = DateTime.MinValue.Ticks;
-        private Int64 _lastAlerted = DateTime.MinValue.Ticks;
+        private long _lastMovementDetected = DateTime.MinValue.Ticks;
+        private long _lastAlerted = DateTime.MinValue.Ticks;
 
         public DateTime LastMovementDetected
         {
@@ -172,29 +171,31 @@ namespace iSpyApplication.Controls
         public XimeaVideoSource XimeaSource;
         public bool Alerted;
         public double MovementCount;
-        public double CalibrateCount;
+        public DateTime CalibrateTarget;
         private DateTime _lastReconnect = DateTime.MinValue;
         public Rectangle RestoreRect = Rectangle.Empty;
         
 
-        private bool _calibrating;
         public bool Calibrating
         {
-            get { return _calibrating; }
+            get
+            {
+                return DateTime.UtcNow < CalibrateTarget;
+            }
             set
             {
-                _calibrating = value;
                 if (value)
                 {
-                    CalibrateCount = 0;
-                    _calibrateTarget = Camobject.detector.calibrationdelay;
+                    CalibrateTarget = DateTime.UtcNow.AddSeconds(Camobject.detector.calibrationdelay);
                 }
+                else
+                    CalibrateTarget = DateTime.MinValue;
             }
         }
         public Graphics CurrentFrame;
         public PTZController PTZ;
         public DateTime FlashCounter = DateTime.MinValue;
-        public double InactiveRecord;
+        public DateTime LastActivity = DateTime.MinValue;
         public bool IsEdit;
         public volatile bool MovementDetected;
         public bool PTZNavigate;
@@ -1476,14 +1477,14 @@ namespace iSpyApplication.Controls
                     if (MovementDetected)
                     {
                         _autoofftimer = 0;
-                        InactiveRecord = 0;
+                        LastActivity = DateTime.UtcNow;
                         if (Camobject.alerts.mode != "nomovement" &&
                             (Camobject.detector.recordondetect || Camobject.detector.recordonalert))
                         {
                             var vc = VolumeControl;
                             if (vc != null)
                             {
-                                vc.InactiveRecord = 0;
+                                vc.LastActivity = DateTime.UtcNow;
                             }
                         }
                     }
@@ -1532,10 +1533,8 @@ namespace iSpyApplication.Controls
                                 CheckPTZSchedule();
                         }
 
-                        if (Recording && !MovementDetected && !ForcedRecording)
-                        {
-                            InactiveRecord += _tickThrottle;
-                        }
+                        if (MovementDetected)
+                            LastActivity = DateTime.UtcNow;
 
                         if (Camera != null && GotImage)
                         {
@@ -1598,7 +1597,7 @@ namespace iSpyApplication.Controls
                 var dur = (DateTime.UtcNow - _recordingStartTime).TotalSeconds;
 
                 if (dur > Camobject.recorder.maxrecordtime || 
-                    ((!MovementDetected && InactiveRecord > Camobject.recorder.inactiverecord) && !ForcedRecording && dur > Camobject.recorder.minrecordtime))
+                    (!MovementDetected && (DateTime.UtcNow - LastActivity).TotalSeconds > Camobject.recorder.inactiverecord && !ForcedRecording && dur > Camobject.recorder.minrecordtime))
                     StopSaving();
             }
             
@@ -1758,9 +1757,8 @@ namespace iSpyApplication.Controls
                 {
                     LastAutoTrackSent = DateTime.MinValue;
                     Calibrating = true;
-                    _calibrateTarget = Camobject.settings.ptztimetohome;
-                    if (string.IsNullOrEmpty(Camobject.settings.ptzautohomecommand) ||
-                        Camobject.settings.ptzautohomecommand == "Center")
+                    CalibrateTarget = DateTime.UtcNow.AddSeconds(Camobject.settings.ptztimetohome);
+                    if (string.IsNullOrEmpty(Camobject.settings.ptzautohomecommand) || Camobject.settings.ptzautohomecommand == "Center")
                         PTZ.SendPTZCommand(Enums.PtzCommand.Center);
                     else
                     {
@@ -1958,13 +1956,6 @@ namespace iSpyApplication.Controls
                             }
                         }
                     }
-                }
-
-                CalibrateCount += since;
-                if (CalibrateCount > _calibrateTarget)
-                {
-                    Calibrating = false;
-                    CalibrateCount = 0;
                 }
             }
             LastMovementDetected = Helper.Now;
@@ -2595,9 +2586,9 @@ namespace iSpyApplication.Controls
                         {
                             if (Calibrating)
                             {
-                                int remaining = _calibrateTarget - Convert.ToInt32(CalibrateCount);
-                                if (remaining < 0) remaining = 0;
-
+                                int remaining = Math.Max(0,
+                                    Convert.ToInt32((CalibrateTarget - DateTime.UtcNow).TotalSeconds));
+                                
                                 txt += ": " + LocRm.GetString("Calibrating") + " (" + remaining + ")";
                             }
                             else
@@ -3440,15 +3431,12 @@ namespace iSpyApplication.Controls
             fa.Nullify();
         }
 
-        public void Alarm(object sender, EventArgs e)
+        
+        //Motion Detection
+        public void Detect(object sender, EventArgs e)
         {
-            double d = 0.3;
-            if (Camera.Framerate > 3) //prevent division by zero
-                d = 1d/Camera.Framerate;
-
-            LastMovementDetected = Helper.Now.AddSeconds(d);
-
-
+            LastActivity = DateTime.UtcNow;
+            
             if (!Calibrating)
             {
                 if (Camobject.detector.recordondetect)
@@ -3467,7 +3455,7 @@ namespace iSpyApplication.Controls
                     {
                         if ((Helper.Now - _lastFrameUploaded).TotalSeconds > Camobject.ftp.minimumdelay)
                         {
-                            FtpFrame(); 
+                            FtpFrame();
 
                         }
                     }
@@ -3482,16 +3470,14 @@ namespace iSpyApplication.Controls
                         }
                     }
                 }
-
                 
+
             }
 
             if (sender is Camera)
             {
-                FlashCounter = Helper.Now.AddSeconds(10);
-                MovementDetected = true;
-                
-                if (Camera?.Plugin != null)
+                FlashCounter = Helper.Now.AddSeconds(10);                
+                if (Camera?.Plugin != null && !Calibrating)
                 {
                     var o = Camera.Plugin.GetType();
                     var m = o.GetMethod("MotionDetect");
@@ -3503,9 +3489,13 @@ namespace iSpyApplication.Controls
                 }
                 return;
             }
+        }
 
+        public void Alert(object sender, EventArgs e)
+        {
+            LastActivity = DateTime.UtcNow;
             var c = sender as CameraWindow;
-            if (c!=null) //triggered from another camera
+            if (c != null) //triggered from another camera
             {
                 FlashCounter = Helper.Now.AddSeconds(10);
                 DoAlert("alert");
@@ -3519,7 +3509,7 @@ namespace iSpyApplication.Controls
                 return;
             }
 
-            if (sender is String || sender is IVideoSource)
+            if (sender is string || sender is IVideoSource)
             {
                 if (Camobject.alerts.active && Camera != null)
                 {
@@ -3533,7 +3523,7 @@ namespace iSpyApplication.Controls
                         if (sender is KinectStream)
                             msg = "Trip Wire";
                     }
-                    DoAlert("alert", msg);                 
+                    DoAlert("alert", msg);
                 }
             }
         }
@@ -3898,13 +3888,13 @@ namespace iSpyApplication.Controls
                                     case "1":
                                         VolumeLevel vl =
                                             MainForm.InstanceReference.GetVolumeLevel(Convert.ToInt32(tid[1]));
-                                        vl?.Alarm(this, EventArgs.Empty);
+                                        vl?.Alert(this, EventArgs.Empty);
                                         break;
                                     case "2":
                                         CameraWindow cw =
                                             MainForm.InstanceReference.GetCameraWindow(Convert.ToInt32(tid[1]));
                                         if (cw != null && cw!=this) //prevent recursion
-                                            cw.Alarm(this, EventArgs.Empty);
+                                            cw.Alert(this, EventArgs.Empty);
                                         break;
                                 }
                         }
@@ -4118,7 +4108,8 @@ namespace iSpyApplication.Controls
                     Calibrating = false;
 
                     Camera.NewFrame -= CameraNewFrame;
-                    Camera.Alarm -= Alarm;
+                    Camera.Detect -= Detect;
+                    Camera.Alert -= Alert;
                     Camera.PlayingFinished -= VideoDeviceVideoFinished;
                     Camera.ErrorHandler -= CameraWindow_ErrorHandler;
 
@@ -4139,7 +4130,7 @@ namespace iSpyApplication.Controls
                         var source = Camera.VideoSource as KinectStream;
                         if (source != null)
                         {
-                            source.TripWire -= Alarm;
+                            source.TripWire -= Alert;
                         }
 
                         var source1 = Camera.VideoSource as KinectNetworkStream;
@@ -4199,7 +4190,7 @@ namespace iSpyApplication.Controls
                     LastFrame = null;
                 }
                 Camobject.settings.active = false;
-                InactiveRecord = 0;
+                LastActivity = DateTime.MinValue;
                 _timeLapseTotal = _timeLapseFrameCount = 0;
                 ForcedRecording = false;
 
@@ -4604,7 +4595,7 @@ namespace iSpyApplication.Controls
                 UpdateFloorplans(false);
 
                 _timeLapseTotal = _timeLapseFrameCount = 0;
-                InactiveRecord = 0;
+                LastActivity = DateTime.MinValue;
                 MovementDetected = false;
 
                 Alerted = false;
@@ -4840,12 +4831,14 @@ namespace iSpyApplication.Controls
 
                 Camera.NewFrame -= CameraNewFrame;
                 Camera.PlayingFinished -= VideoDeviceVideoFinished;
-                Camera.Alarm -= Alarm;
+                Camera.Alert -= Alert;
+                Camera.Detect -= Detect;
                 Camera.ErrorHandler -= CameraWindow_ErrorHandler;
                     
                 Camera.NewFrame += CameraNewFrame;
                 Camera.PlayingFinished += VideoDeviceVideoFinished;
-                Camera.Alarm += Alarm;
+                Camera.Alert += Alert;
+                Camera.Detect += Detect;
                 Camera.ErrorHandler += CameraWindow_ErrorHandler;
               
                 Calibrating = true;
@@ -4903,7 +4896,8 @@ namespace iSpyApplication.Controls
                     Camera.PlayingFinished -= VideoDeviceVideoFinished;
                 }
                 Camera.NewFrame -= CameraNewFrame;
-                Camera.Alarm -= Alarm;
+                Camera.Alert -= Alert;
+                Camera.Detect -= Detect;
             }
         }
 
@@ -4954,10 +4948,12 @@ namespace iSpyApplication.Controls
                 }
 
                 Camera.NewFrame -= CameraNewFrame;
-                Camera.Alarm -= Alarm;
+                Camera.Alert -= Alert;
+                Camera.Detect -= Detect;
 
                 Camera.NewFrame += CameraNewFrame;
-                Camera.Alarm += Alarm;
+                Camera.Alert += Alert;
+                Camera.Detect += Detect;
 
                 if (Camobject.settings.calibrateonreconnect)
                 {
@@ -4990,7 +4986,7 @@ namespace iSpyApplication.Controls
             if (kinectStream != null)
             {
                 kinectStream.InitTripWires(Camobject.alerts.pluginconfig);
-                kinectStream.TripWire += Alarm;
+                kinectStream.TripWire += Alert;
             }
 
             var kinectNetworkStream = source as KinectNetworkStream;
@@ -5011,13 +5007,15 @@ namespace iSpyApplication.Controls
             Camera = new Camera(source);
             Camera.NewFrame -= CameraNewFrame;
             Camera.PlayingFinished -= VideoDeviceVideoFinished;
-            Camera.Alarm -= Alarm;
+            Camera.Alert -= Alert;
+            Camera.Detect -= Detect;
             Camera.ErrorHandler -= CameraWindow_ErrorHandler;
 
 
             Camera.NewFrame += CameraNewFrame;
             Camera.PlayingFinished += VideoDeviceVideoFinished;
-            Camera.Alarm += Alarm;
+            Camera.Alert += Alert;
+            Camera.Detect += Detect;
             Camera.ErrorHandler += CameraWindow_ErrorHandler;
 
             Camera.PiPConfig = Camobject.settings.pip.config;
@@ -5145,7 +5143,7 @@ namespace iSpyApplication.Controls
                         switch (action)
                         {
                             case "alarm":
-                                Alarm(description, EventArgs.Empty);
+                                Alert(description, EventArgs.Empty);
                                 break;
                             case "flash":
                                 FlashCounter = Helper.Now.AddSeconds(10);

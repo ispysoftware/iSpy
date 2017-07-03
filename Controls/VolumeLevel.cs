@@ -153,7 +153,7 @@ namespace iSpyApplication.Controls
         public Rectangle RestoreRect = Rectangle.Empty;
         public DateTime FlashCounter = DateTime.MinValue;
         public bool ForcedRecording { get; set; }
-        public double InactiveRecord;
+        public DateTime LastActivity = DateTime.MinValue;
         public bool IsEdit;
         //public bool NoSource;
         public bool ResizeParent;
@@ -1059,13 +1059,13 @@ namespace iSpyApplication.Controls
                     double iFc = (FlashCounter - Helper.Now).TotalSeconds;
                     if (SoundDetected)
                     {
-                        InactiveRecord = 0;
+                        LastActivity = DateTime.UtcNow;
                         if (Micobject.alerts.mode != "nosound" &&
                             (Micobject.detector.recordondetect || Micobject.detector.recordonalert))
                         {
                             var cc = CameraControl;
                             if (cc != null)
-                                cc.InactiveRecord = 0;
+                                cc.LastActivity = DateTime.UtcNow;
                         }
                     }
                     if (iFc < 9)
@@ -1093,12 +1093,6 @@ namespace iSpyApplication.Controls
                     CheckReconnectInterval();
 
                     CheckDisconnect();
-
-                    if (Recording && !SoundDetected && !ForcedRecording)
-                    {
-                        InactiveRecord += _tickThrottle;
-                    }
-                
 
                     if (_levels!=null)
                     {
@@ -1318,7 +1312,7 @@ namespace iSpyApplication.Controls
             {
                 var dur = (DateTime.UtcNow - _recordingStartTime).TotalSeconds;
                 if (dur > Micobject.recorder.maxrecordtime || 
-                    ((!SoundDetected && InactiveRecord > Micobject.recorder.inactiverecord) && !ForcedRecording  && dur > Micobject.recorder.minrecordtime))
+                    ((!SoundDetected && (DateTime.UtcNow - LastActivity).TotalSeconds > Micobject.recorder.inactiverecord) && !ForcedRecording  && dur > Micobject.recorder.minrecordtime))
                     StopSaving();
             }
             
@@ -2192,9 +2186,9 @@ namespace iSpyApplication.Controls
         {
             SoundDetected = true;
             _soundRecentlyDetected = true;
-            InactiveRecord = 0;
+            LastActivity = DateTime.UtcNow;
             FlashCounter = Helper.Now.AddSeconds(10);
-            Alarm(sender, EventArgs.Empty);
+            Detect(sender, EventArgs.Empty);
         }
 
         public static WaveFormat AudioStreamFormat = new WaveFormat(22050, 16, 1);
@@ -2505,11 +2499,11 @@ namespace iSpyApplication.Controls
                                 case "1":
                                     VolumeLevel vl = MainForm.InstanceReference.GetVolumeLevel(Convert.ToInt32(tid[1]));
                                     if (vl != null && vl != this) //prevent recursion
-                                        vl.Alarm(this, EventArgs.Empty);
+                                        vl.Alert(this, EventArgs.Empty);
                                     break;
                                 case "2":
                                     CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(Convert.ToInt32(tid[1]));
-                                    cw?.Alarm(this, EventArgs.Empty);
+                                    cw?.Alert(this, EventArgs.Empty);
                                     break;
                             }
                             
@@ -2698,7 +2692,7 @@ namespace iSpyApplication.Controls
             }
         }
 
-        public void Alarm(object sender, EventArgs e)
+        public void Detect(object sender, EventArgs e)
         {
             LastSoundDetected = Helper.Now.AddSeconds(0.3d);
 
@@ -2712,7 +2706,11 @@ namespace iSpyApplication.Controls
                 SoundDetected = true;
                 return;
             }
+            
+        }
 
+        public void Alert(object sender, EventArgs e)
+        {
             if (sender is LocalServer || sender is VolumeLevel || sender is CameraWindow)
             {
                 FlashCounter = Helper.Now.AddSeconds(10);

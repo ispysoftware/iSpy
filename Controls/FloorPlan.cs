@@ -66,7 +66,11 @@ namespace iSpyApplication.Controls
             }
         }
 
-        public void Alarm(object sender, EventArgs e)
+        public void Alert(object sender, EventArgs e)
+        {
+
+        }
+        public void Detect(object sender, EventArgs e)
         {
 
         }

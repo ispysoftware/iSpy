@@ -1369,7 +1369,7 @@ namespace iSpyApplication.Server
                         var vl = MainForm.InstanceReference.GetVolumeLevel(oid);
                         if (vl != null)
                         {
-                            vl.Alarm(this, EventArgs.Empty);
+                            vl.Alert(this, EventArgs.Empty);
                             resp = "OK";
                         }
                         else
@@ -1381,7 +1381,7 @@ namespace iSpyApplication.Server
                         var cw = MainForm.InstanceReference.GetCameraWindow(oid);
                         if (cw != null)
                         {
-                            cw.Alarm(this, EventArgs.Empty);
+                            cw.Alert(this, EventArgs.Empty);
                             resp = "OK";
                         }
                         else
@@ -1613,7 +1613,7 @@ namespace iSpyApplication.Server
                     resp = "OK";
                     break;
                 case "triggeralarm":
-                    io?.Alarm(this,EventArgs.Empty);
+                    io?.Alert(this,EventArgs.Empty);
 
                     resp = "OK";
                     break;

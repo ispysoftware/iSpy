@@ -27,8 +27,9 @@ namespace iSpyApplication.Controls
         void Talk(IWin32Window f = null);
         void Listen();
         string SaveFrame(Bitmap bmp = null);
+        void Alert(object sender, EventArgs e);
+        void Detect(object sender, EventArgs e);
 
-        void Alarm(object sender, EventArgs e);
         void Apply();
         void ReloadSchedule();
 
