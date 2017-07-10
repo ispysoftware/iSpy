@@ -1733,6 +1733,7 @@ namespace iSpyApplication
             this.rdoTrigger.TabStop = true;
             this.rdoTrigger.Text = "External Trigger";
             this.rdoTrigger.UseVisualStyleBackColor = true;
+            this.rdoTrigger.CheckedChanged += new System.EventHandler(this.rdoTrigger_CheckedChanged);
             // 
             // label15
             // 

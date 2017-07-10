@@ -148,9 +148,9 @@ namespace iSpyApplication.Utilities
                     {
                         string logTemplate = "<html><head><title>iSpy v" + Application.ProductVersion + " Log File</title><style type=\"text/css\">body,td,th,div {font-family:Verdana;font-size:10px}</style></head><body><h1>" + MainForm.Conf.ServerName + ": Log Start (v" + Application.
                                                                                                           ProductVersion + " Platform: " + Program.Platform + "): " + _logStartDateTime + "</h1><p><table cellpadding=\"2px\"><!--CONTENT--></table></p></body></html>";
-                        string fc = logTemplate.Replace("<!--CONTENT-->", _logFile.ToString());
-                        File.WriteAllText(Program.AppDataPath + @"log_" + NextLog + ".htm", fc);
                         _lastlog = _logFile.ToString();
+                        string fc = logTemplate.Replace("<!--CONTENT-->", _lastlog);
+                        File.WriteAllText(Program.AppDataPath + @"log_" + NextLog + ".htm", fc);
                     }
                 }
                 catch (Exception)

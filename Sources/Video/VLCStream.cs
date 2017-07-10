@@ -268,15 +268,24 @@ namespace iSpyApplication.Sources.Video
             _mPlayer.CustomAudioRenderer.SetCallbacks(ac);
             _mPlayer.CustomAudioRenderer.SetExceptionHandler(Handler);
 
+            
+            _mPlayer.CustomRenderer.SetCallback(FrameCallback);
+            _mPlayer.CustomRenderer.SetExceptionHandler(Handler);
+            
             if (!_modeAudio)
+                _mPlayer.CustomRenderer.SetFormat(new BitmapFormat(_source.settings.vlcWidth, _source.settings.vlcHeight, ChromaType.RV24));
+            else
             {
-                _mPlayer.CustomRenderer.SetCallback(FrameCallback);
-                _mPlayer.CustomRenderer.SetExceptionHandler(Handler);
+                _mPlayer.CustomRenderer.SetFormat(new BitmapFormat(320,240, ChromaType.RV24));
             }
+
             GC.KeepAlive(_mPlayer);
 
             _needsSetup = true;
-            _mPlayer.CustomRenderer.SetFormat(new BitmapFormat(_source.settings.vlcWidth, _source.settings.vlcHeight, ChromaType.RV24));
+
+            
+            
+
             _mPlayer.Open(_mMedia);
             _mMedia.Parse(true);
 
@@ -302,9 +311,9 @@ namespace iSpyApplication.Sources.Video
             _videoQueue = new ConcurrentQueue<Bitmap>();
             _audioQueue = new ConcurrentQueue<byte[]>();
 
-            
-            _mPlayer.Play();
             _abort = new ManualResetEvent(false);
+            _mPlayer.Play();
+            
             EventManager();
 
             if (Seekable)
@@ -431,7 +440,7 @@ namespace iSpyApplication.Sources.Video
         void EventsTimeChanged(object sender, MediaPlayerTimeChanged e)
         {
             Time = e.NewTime;
-            if (LastFrame == DateTime.MinValue)
+            if (LastFrame == DateTime.MinValue && !_modeAudio)
             {
                 var sz = _mPlayer.GetVideoSize(0);
                 _source.settings.vlcWidth = sz.Width;
@@ -577,7 +586,7 @@ namespace iSpyApplication.Sources.Video
         private void FrameCallback(Bitmap frame)
         {
             var nf = NewFrame;
-            if (nf== null || _abort.WaitOne(0) || !EmitFrame)
+            if (nf== null || _abort.WaitOne(0) || !EmitFrame || _modeAudio)
             {
                 frame.Dispose();
                 return;

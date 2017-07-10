@@ -189,10 +189,10 @@
       <Component Id="Component56" Guid="{0B72D32E-14DE-4997-BABE-C06DDD3407DA}">
         <File Id="Microsoft.Threading.Tasks.Extensions.dll" Source="$(var.OutputDir)\Microsoft.Threading.Tasks.Extensions.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Id="Component59" Guid="{B43A858D-68F7-4ECA-88A4-2E371DB8892E}">
+      <Component Id="Component59" Guid="{B8E8912B-B759-44F6-8D73-441087AC7165}">
         <File Id="NAudio.dll" Source="$(var.OutputDir)\NAudio.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Id="Component60" Guid="{EF69316C-64BB-416A-99B6-F6DA7158CE83}">
+      <Component Id="Component60" Guid="{E279DD43-8691-44AC-8816-3292989D4D9B}">
         <File Id="NAudio.Lame.dll" Source="$(var.OutputDir)\NAudio.Lame.dll" KeyPath="yes" Checksum="yes" />
       </Component>
       <Component Id="Component62" Guid="{B3FEB8A2-CFDD-4728-B926-28B9B8391E43}">

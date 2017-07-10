@@ -2007,7 +2007,7 @@ namespace iSpyApplication
 
         private void rdoContinuous_CheckedChanged(object sender, EventArgs e)
         {
-
+            CameraControl.Camobject.alerts.processmode = "continuous";
         }
 
         private void ddlCopyFrom_SelectedIndexChanged(object sender, EventArgs e)
@@ -2284,7 +2284,7 @@ namespace iSpyApplication
 
         private void rdoMotion_CheckedChanged(object sender, EventArgs e)
         {
-
+            CameraControl.Camobject.alerts.processmode = "motion";
         }
 
         private void actionEditor1_Load(object sender, EventArgs e)
@@ -2584,6 +2584,11 @@ namespace iSpyApplication
         private void numProcessInterval_ValueChanged(object sender, EventArgs e)
         {
             CameraControl.Camobject.detector.processframeinterval = (int)numProcessInterval.Value;
+        }
+
+        private void rdoTrigger_CheckedChanged(object sender, EventArgs e)
+        {
+            CameraControl.Camobject.alerts.processmode = "trigger";
         }
     }
 }

@@ -2998,14 +2998,13 @@ namespace iSpyApplication.Controls
         {
             get
             {
-                try
+                var dir = MainForm.Conf.MediaDirectories.FirstOrDefault(p => p.ID == Camobject.settings.directoryIndex);
+                if (dir == null)
                 {
-                    return MainForm.Conf.MediaDirectories[Camobject.settings.directoryIndex];
+                    dir = MainForm.Conf.MediaDirectories.First();
+                    Camobject.settings.directoryIndex = dir.ID;
                 }
-                catch
-                {
-                    return MainForm.Conf.MediaDirectories[0];
-                }
+                return dir;
             }
         }
 

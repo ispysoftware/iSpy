@@ -1532,14 +1532,13 @@ namespace iSpyApplication.Controls
         {
             get
             {
-                try
+                var dir = MainForm.Conf.MediaDirectories.FirstOrDefault(p => p.ID == Micobject.settings.directoryIndex);
+                if (dir == null)
                 {
-                    return MainForm.Conf.MediaDirectories[Micobject.settings.directoryIndex];
+                    dir = MainForm.Conf.MediaDirectories.First();
+                    Micobject.settings.directoryIndex = dir.ID;
                 }
-                catch
-                {
-                    return MainForm.Conf.MediaDirectories[0];
-                }
+                return dir;
             }
         }
 
