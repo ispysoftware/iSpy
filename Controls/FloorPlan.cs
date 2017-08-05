@@ -466,7 +466,12 @@ namespace iSpyApplication.Controls
 
         public bool Highlighted { get; set; }
 
-        public void GetFiles()
+        public void LoadFileList()
+        {
+            //no files
+        }
+
+        public void SaveFileList()
         {
             //no files
         }

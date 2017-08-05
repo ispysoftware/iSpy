@@ -167,7 +167,7 @@ namespace iSpyApplication.Controls
         public List<HttpRequest> OutSockets = new List<HttpRequest>();
 
         private Thread _tFiles;
-        public void GetFiles()
+        public void LoadFileList()
         {
             try
             {

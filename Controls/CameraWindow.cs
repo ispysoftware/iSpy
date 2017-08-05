@@ -643,7 +643,7 @@ namespace iSpyApplication.Controls
         }
 
         private Thread _tFiles;
-        public void GetFiles()
+        public void LoadFileList()
         {
             try
             {

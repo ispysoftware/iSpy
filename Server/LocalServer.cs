@@ -1347,18 +1347,34 @@ namespace iSpyApplication.Server
                     {
                         if (io != null)
                         {
-                            io.GetFiles();
+                            io.LoadFileList();
                         }
                         else
                         {
                             foreach (var c in MainForm.InstanceReference.ControlList)
                             {
-                                c.GetFiles();
+                                c.LoadFileList();
                             }
                         }
                         resp = "OK";
                     }
-                   break;
+                    break;
+                case "savedatafile":
+                    {
+                        if (io != null)
+                        {
+                            io.SaveFileList();
+                        }
+                        else
+                        {
+                            foreach (var c in MainForm.InstanceReference.ControlList)
+                            {
+                                c.SaveFileList();
+                            }
+                        }
+                        resp = "OK";
+                    }
+                    break;
                 case "record":
                     if (otid == 1)
                     {

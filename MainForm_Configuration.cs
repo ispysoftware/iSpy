@@ -2152,7 +2152,7 @@ namespace iSpyApplication
             {
                 Logger.LogException(ex);
             }
-            micControl.GetFiles();
+            micControl.LoadFileList();
         }
 
         internal void DisplayFloorPlan(objectsFloorplan ofp)
@@ -3920,7 +3920,7 @@ namespace iSpyApplication
             }
             if (enableOnDisplay)
                 cameraControl.Enable();
-            cameraControl.GetFiles();
+            cameraControl.LoadFileList();
         }
 
         private void DoInvoke(string methodName)
