@@ -36,6 +36,7 @@ namespace iSpyApplication.Controls
         int Order { get; set; }
 
         bool Highlighted { get; set; }
+        void GetFiles();
 
         Color BorderColor { get; }
 

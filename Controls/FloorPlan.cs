@@ -466,6 +466,11 @@ namespace iSpyApplication.Controls
 
         public bool Highlighted { get; set; }
 
+        public void GetFiles()
+        {
+            //no files
+        }
+
         public Color BorderColor
         {
             get

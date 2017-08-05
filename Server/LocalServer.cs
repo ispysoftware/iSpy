@@ -1343,6 +1343,22 @@ namespace iSpyApplication.Server
                     resp = "OK";
                 }
                     break;
+                case "reloaddatafile":
+                    {
+                        if (io != null)
+                        {
+                            io.GetFiles();
+                        }
+                        else
+                        {
+                            foreach (var c in MainForm.InstanceReference.ControlList)
+                            {
+                                c.GetFiles();
+                            }
+                        }
+                        resp = "OK";
+                    }
+                   break;
                 case "record":
                     if (otid == 1)
                     {
