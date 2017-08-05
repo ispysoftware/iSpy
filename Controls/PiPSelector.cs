@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -275,7 +276,7 @@ namespace iSpyApplication.Controls
         {
             get
             {
-                string r = _configs.Aggregate("", (current, rect) => current + (rect.CameraID + "," + rect.Rect.Left + "," + rect.Rect.Top + "," + rect.Rect.Width + "," + rect.Rect.Height + "|"));
+                string r = _configs.Aggregate("", (current, rect) => current + (rect.CameraID.ToString(CultureInfo.InvariantCulture) + "," + rect.Rect.Left.ToString(CultureInfo.InvariantCulture) + "," + rect.Rect.Top.ToString(CultureInfo.InvariantCulture) + "," + rect.Rect.Width.ToString(CultureInfo.InvariantCulture) + "," + rect.Rect.Height.ToString(CultureInfo.InvariantCulture) + "|"));
                 return r.Trim('|');
             }
             set

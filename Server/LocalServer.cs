@@ -1335,7 +1335,13 @@ namespace iSpyApplication.Server
                     }
                     else
                         resp = "stopped,Control not found,OK";
-                    
+
+                    break;
+                case "saveobjects":
+                {
+                    MainForm.InstanceReference.SaveObjectList(false);
+                    resp = "OK";
+                }
                     break;
                 case "record":
                     if (otid == 1)
