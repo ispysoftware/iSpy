@@ -113,8 +113,10 @@ namespace iSpyApplication.Onvif
             var p = Profiles;
             if (p != null && profileIndex < p.Length)
             {
-                Profile = Profiles[profileIndex];
-                Endpoint = MediaEndpoints[profileIndex];
+                if (Profiles.Length > profileIndex)
+                    Profile = Profiles[profileIndex];
+                if (MediaEndpoints.Length > profileIndex)
+                    Endpoint = MediaEndpoints[profileIndex];
             }
                 
         }

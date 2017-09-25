@@ -823,8 +823,30 @@ namespace iSpyApplication.Realtime
                 case AVCodecID.AV_CODEC_ID_H264:
                     ffmpeg.av_opt_set(_videoCodecContext->priv_data, "profile", "main", 0);
                     ffmpeg.av_opt_set(_videoCodecContext->priv_data, "preset", "slow", 0);
-                    _videoCodecContext->qmin = 16;
-                    _videoCodecContext->qmax = 26;
+                    //_videoCodecContext->qmin = 16;
+                    //_videoCodecContext->qmax = 26;
+
+                    _videoCodecContext->coder_type = ffmpeg.FF_CODER_TYPE_AC;
+                    _videoCodecContext->flags |= ffmpeg.CODEC_FLAG_LOOP_FILTER;
+                    _videoCodecContext->scenechange_threshold = 40;
+                    _videoCodecContext->gop_size = 40;
+                    _videoCodecContext->max_b_frames = 0;
+                    _videoCodecContext->max_qdiff = 4;
+                    _videoCodecContext->me_method = 7;
+                    _videoCodecContext->me_range = 16;
+                    _videoCodecContext->me_cmp |= 1;
+                    _videoCodecContext->me_subpel_quality = 6;
+                    _videoCodecContext->qmin = 10;
+                    _videoCodecContext->qmax = 51;
+                    _videoCodecContext->qcompress = 0.6f;
+                    _videoCodecContext->keyint_min = 2;
+                    _videoCodecContext->trellis = 0;
+                    _videoCodecContext->level = 13;
+                    _videoCodecContext->refs = 1;
+                    ffmpeg.av_opt_set(_videoCodecContext->priv_data, "tune", "zerolatency", 0);
+
+
+
                     break;
                 case AVCodecID.AV_CODEC_ID_HEVC:
                     ffmpeg.av_opt_set(_videoCodecContext->priv_data, "x265-params", "qp=20", 0);

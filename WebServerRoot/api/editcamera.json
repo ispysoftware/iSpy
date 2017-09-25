@@ -239,7 +239,6 @@
                     "options": [ ]
                 },
                 { "text": "Pelco", "value": "...", "type": "Button", "action": "editpelco" },
-                { "text": "URL", "value": "", "type": "String", "id": "txtPTZURL", "bindto": "settings.ptzurlbase" },
                 { "text": "Channel", "value": "", "type": "String", "bindto": "settings.ptzchannel" },
                 { "text": "Username", "value": "", "type": "String", "bindto": "settings.ptzusername" },
                 { "text": "Password", "value": "", "type": "Password", "bindto": "settings.ptzpassword" },

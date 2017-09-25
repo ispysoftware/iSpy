@@ -12,7 +12,7 @@ namespace iSpyApplication.Sources.Audio.streams
         private Stream _stream;
         private float _gain;
         private bool _listening;
-        private ManualResetEvent _abort;
+        private ManualResetEvent _abort = new ManualResetEvent(false);
         private ReasonToFinishPlaying _res = ReasonToFinishPlaying.DeviceLost;
 
         private Thread _thread;
@@ -206,7 +206,7 @@ namespace iSpyApplication.Sources.Audio.streams
 
         private void DirectStreamListener()
         {
-            _abort = new ManualResetEvent(false);
+            _abort.Reset();
             try
             {
                 var data = new byte[PacketSize];
@@ -240,6 +240,9 @@ namespace iSpyApplication.Sources.Audio.streams
                             {
                                 break;
                             }
+
+                            if (_abort.WaitOne(Interval, false))
+                                break;
                         }
 
                         
@@ -308,6 +311,7 @@ namespace iSpyApplication.Sources.Audio.streams
 
             if (disposing)
             {
+                _abort?.Close();
             }
 
             // Free any unmanaged objects here. 

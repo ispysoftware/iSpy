@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace iSpyApplication.Server
 {
@@ -9,6 +7,8 @@ namespace iSpyApplication.Server
     {
         private readonly Uri _url, _audioUrl;
         private readonly int _videoSourceTypeID, _audioSourceTypeID;
+        private string _overrideURL;
+        public int MediaIndex;
         internal ManufacturersManufacturerUrl MmUrl;
 
         internal int VideoSourceTypeID => _videoSourceTypeID;
@@ -28,8 +28,6 @@ namespace iSpyApplication.Server
             }
         }
 
-        public string URL => _url.ToString();
-
         internal string AudioURL
         {
             get
@@ -39,6 +37,7 @@ namespace iSpyApplication.Server
                 return _audioUrl.ToString();
             }
         }
+        public string URL => _url?.ToString() ?? _overrideURL;
 
         public string Status => "OK";
 
@@ -49,6 +48,17 @@ namespace iSpyApplication.Server
             _videoSourceTypeID = videoSourceTypeID;
             _audioSourceTypeID = audioSourceTypeID;
             MmUrl = mmUrl;
+            _overrideURL = "";
+        }
+
+        public ConnectionOption(string url, Uri audioUrl, int videoSourceTypeID, int audioSourceTypeID, ManufacturersManufacturerUrl mmUrl)
+        {
+            _url = null;
+            _audioUrl = audioUrl;
+            _videoSourceTypeID = videoSourceTypeID;
+            _audioSourceTypeID = audioSourceTypeID;
+            MmUrl = mmUrl;
+            _overrideURL = url;
         }
 
     }

@@ -156,10 +156,7 @@ namespace iSpyApplication.Sources.Video
                     case "http":
                     case "mmsh":
                     case "mms":
-                        ffmpeg.av_dict_set(&options, "timeout", _timeout.ToString(CultureInfo.InvariantCulture), 0);
-                        ffmpeg.av_dict_set(&options, "stimeout", (_timeout * 1000).ToString(CultureInfo.InvariantCulture), 0);
-
-                        if (_cookies != "")
+                       if (_cookies != "")
                         {
                             ffmpeg.av_dict_set(&options, "cookies", _cookies, 0);
                         }
@@ -179,11 +176,10 @@ namespace iSpyApplication.Sources.Video
                     case "sdp":
                     case "mmst":
                     case "ftp":
-                        ffmpeg.av_dict_set(&options, "timeout", _timeout.ToString(CultureInfo.InvariantCulture), 0);
+                        
                         break;
                     case "rtsp":
                     case "rtmp":
-                        ffmpeg.av_dict_set(&options, "stimeout", (_timeout * 1000).ToString(CultureInfo.InvariantCulture), 0);
                         if (_userAgent != "")
                         {
                             ffmpeg.av_dict_set(&options, "user-agent", _userAgent, 0);

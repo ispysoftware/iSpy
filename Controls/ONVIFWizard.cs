@@ -112,11 +112,17 @@ namespace iSpyApplication.Controls
 
         private void button1_Click(object sender, EventArgs e)
         {
+            GoStep1();
+        }
+
+        public void GoStep1()
+        {
             lbOnvifURLs.Items.Clear();
             Uri uri;
             if (!Uri.TryCreate(ddlDeviceURL.Text, UriKind.Absolute, out uri))
             {
                 MessageBox.Show("Invalid Address");
+                return;
             }
             var url = uri.ToString();
             var paq = uri.PathAndQuery;
@@ -124,7 +130,7 @@ namespace iSpyApplication.Controls
             {
                 url += "onvif/device_service";
             }
-            
+
 
             var dev = url;
             var urls = new List<object>();

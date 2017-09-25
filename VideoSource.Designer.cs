@@ -698,7 +698,7 @@ namespace iSpyApplication
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(6);
-            this.tabPage6.Size = new System.Drawing.Size(725, 288);
+            this.tabPage6.Size = new System.Drawing.Size(192, 74);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "VLC (H264)";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -710,7 +710,7 @@ namespace iSpyApplication
             this.flowLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowLayoutPanel12.Location = new System.Drawing.Point(6, 233);
             this.flowLayoutPanel12.Name = "flowLayoutPanel12";
-            this.flowLayoutPanel12.Size = new System.Drawing.Size(713, 25);
+            this.flowLayoutPanel12.Size = new System.Drawing.Size(163, 25);
             this.flowLayoutPanel12.TabIndex = 59;
             // 
             // label40
@@ -740,7 +740,7 @@ namespace iSpyApplication
             this.pnlVLC.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlVLC.Location = new System.Drawing.Point(6, 6);
             this.pnlVLC.Name = "pnlVLC";
-            this.pnlVLC.Size = new System.Drawing.Size(713, 227);
+            this.pnlVLC.Size = new System.Drawing.Size(163, 227);
             this.pnlVLC.TabIndex = 56;
             this.pnlVLC.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlVLC_Paint);
             // 
@@ -766,7 +766,7 @@ namespace iSpyApplication
             this.tlpVLC.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 90F));
             this.tlpVLC.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tlpVLC.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tlpVLC.Size = new System.Drawing.Size(713, 227);
+            this.tlpVLC.Size = new System.Drawing.Size(163, 227);
             this.tlpVLC.TabIndex = 58;
             // 
             // label21
@@ -1543,7 +1543,7 @@ namespace iSpyApplication
             this.tabPage10.Controls.Add(this.splitter1);
             this.tabPage10.Location = new System.Drawing.Point(4, 22);
             this.tabPage10.Name = "tabPage10";
-            this.tabPage10.Size = new System.Drawing.Size(192, 74);
+            this.tabPage10.Size = new System.Drawing.Size(725, 288);
             this.tabPage10.TabIndex = 9;
             this.tabPage10.Text = "ONVIF";
             this.tabPage10.UseVisualStyleBackColor = true;
@@ -1553,14 +1553,14 @@ namespace iSpyApplication
             this.onvifWizard1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.onvifWizard1.Location = new System.Drawing.Point(3, 0);
             this.onvifWizard1.Name = "onvifWizard1";
-            this.onvifWizard1.Size = new System.Drawing.Size(189, 74);
+            this.onvifWizard1.Size = new System.Drawing.Size(722, 288);
             this.onvifWizard1.TabIndex = 59;
             // 
             // splitter1
             // 
             this.splitter1.Location = new System.Drawing.Point(0, 0);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(3, 74);
+            this.splitter1.Size = new System.Drawing.Size(3, 288);
             this.splitter1.TabIndex = 58;
             this.splitter1.TabStop = false;
             // 

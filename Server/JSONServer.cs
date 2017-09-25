@@ -2089,6 +2089,10 @@ namespace iSpyApplication.Server
                                 PopulateObject(d, c);
                                 apply = true;
                                 var newdir = c.directory;
+                                if (c.ptz > -1)
+                                {
+                                    c.settings.ptzurlbase = MainForm.PTZs.Single(p => p.id == c.ptz).CommandURL;
+                                }
                                 if (olddir.ToLowerInvariant() != newdir.ToLowerInvariant())
                                 {
                                     if (!Helper.IsAlphaNumeric(newdir))

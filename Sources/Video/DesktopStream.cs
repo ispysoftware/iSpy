@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using iSpyApplication.Controls;
@@ -105,14 +106,25 @@ namespace iSpyApplication.Sources.Video
         }
 
         #endregion
+        [DllImport("User32.dll")]
+        private static extern IntPtr MonitorFromPoint([In]System.Drawing.Point pt, [In]uint dwFlags);
 
-        
+        [DllImport("Shcore.dll")]
+        private static extern IntPtr GetDpiForMonitor([In]IntPtr hmonitor, [In]DpiType dpiType, [Out]out uint dpiX, [Out]out uint dpiY);
+        public enum DpiType
+        {
+            Effective = 0,
+            Angular = 1,
+            Raw = 2,
+        }
+
         private Rectangle _screenSize = Rectangle.Empty;
-
+        
         // Worker thread
         private void WorkerThread()
         {
             _abort = new ManualResetEvent(false);
+            double multiX = 0, multiY=0;
             while (!_abort.WaitOne(0) && !MainForm.ShuttingDown)
             {
                 try
@@ -123,8 +135,7 @@ namespace iSpyApplication.Sources.Video
                     // provide new image to clients
                     if (nf != null && EmitFrame)
                     {
-
-                        Screen s = Screen.AllScreens[_screenindex];
+                        Screen s = Screen.AllScreens[_screenindex];                        
                         if (_screenSize == Rectangle.Empty)
                         {
                             if (_area != Rectangle.Empty)
@@ -161,9 +172,21 @@ namespace iSpyApplication.Sources.Video
 
                                 if (MousePointer)
                                 {
+                                    //if (multiX < 0.01)
+                                    //{
+                                    //    uint dpiX = 0, dpiY = 0;
+                                    //    var p = new Point(s.Bounds.Left + 1, s.Bounds.Top + 1);
+                                    //    var mon = MonitorFromPoint(p, 2);
+                                    //    GetDpiForMonitor(mon, DpiType.Effective, out dpiX, out dpiY);
+                                    //    multiX = Convert.ToDouble(dpiX) /96d;
+                                    //    multiY = Convert.ToDouble(dpiY) /96d;
+                                    //}
+                                    multiX = 1; multiY = 1;
+                                    var mx=Convert.ToInt32(Cursor.Position.X * multiX - s.Bounds.X - _screenSize.X);
+                                    var my=Convert.ToInt32(Cursor.Position.Y * multiY - s.Bounds.Y - _screenSize.Y);
                                     var cursorBounds = new Rectangle(
-                                        Cursor.Position.X - s.Bounds.X - _screenSize.X,
-                                        Cursor.Position.Y - s.Bounds.Y - _screenSize.Y, Cursors.Default.Size.Width,
+                                        mx, my,
+                                        Cursors.Default.Size.Width,
                                         Cursors.Default.Size.Height);
                                     Cursors.Default.Draw(g, cursorBounds);
                                 }

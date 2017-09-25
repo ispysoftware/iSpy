@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using iSpyApplication.Controls;
+using iSpyApplication.Onvif;
 using iSpyApplication.Server;
 using iSpyApplication.Utilities;
 
@@ -368,7 +369,7 @@ namespace iSpyApplication
                         request.Referer = "";
                         request.Timeout = 3000;
                         request.UserAgent = "Mozilla/5.0";
-                        request.AllowAutoRedirect = false;
+                        request.AllowAutoRedirect = true;
 
                         HttpWebResponse response = null;
 
@@ -386,7 +387,7 @@ namespace iSpyApplication
                         }
                         if (response != null)
                         {
-                            Logger.LogMessage("Web response from " + ipaddress + ":" + iport + " " +
+                            Logger.LogMessage("Web response from " + ipaddress + ":" + response.ResponseUri.Port + " " +
                                                       response.StatusCode);
                             if (response.Headers != null)
                             {
@@ -400,7 +401,7 @@ namespace iSpyApplication
                                 {
                                     DataRow dr = _dt.NewRow();
                                     dr[0] = ipaddress;
-                                    dr[1] = iport;
+                                    dr[1] = response.ResponseUri.Port;
                                     dr[2] = hostname;
                                     dr[3] = webserver;
                                     _dt.Rows.Add(dr);
@@ -703,7 +704,41 @@ namespace iSpyApplication
 
         private void ListCameras(IEnumerable<ManufacturersManufacturer> m, string login, string password)
         {
-            foreach(var s in m)
+
+            int i = 0;
+            try
+            {
+                string addr = txtIPAddress.Text.Trim();
+                var nPort = (int)numPort.Value;
+                var uri = new Uri("http://" + addr + ":" + nPort);
+
+                var onvifurl = uri + "onvif/device_service";
+                var dev = new ONVIFDevice(onvifurl, Username, Password);
+                if (dev.Profiles != null)
+                {
+                    foreach (var p in dev.Profiles)
+                    {
+                        var b = p?.VideoSourceConfiguration?.Bounds;
+                        if (b != null && b.width > 0)
+                        {
+                            dev.SelectProfile(i);
+                            var co = new ConnectionOption(onvifurl, null, 9, -1, null)
+                            {
+                                MediaIndex = i
+                            };
+                            AddONVIF(onvifurl,co);
+                        }
+                        i++;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+            }
+
+
+            foreach (var s in m)
             {
                 
                 var cand = s.url.ToList();
@@ -724,6 +759,15 @@ namespace iSpyApplication
                 if (_quiturlscanner)
                     break;
             }
+        }
+
+        private void AddONVIF(string addr, ConnectionOption co)
+        {
+            string st = "ONVIF: "+addr;
+            
+            var rb = new RadioButton { Text = st, AutoSize = true, Tag = co };
+            UISync.Execute(() => pnlOptions.Controls.Add(rb));
+
         }
 
         private void AddCamera(string addr, ManufacturersManufacturer m,  ManufacturersManufacturerUrl u)
@@ -907,6 +951,7 @@ namespace iSpyApplication
 
                 string make = txtMake.Text;
                 string model = txtModel.Text;
+                FinalUrl = "";
                 
                 if (MainForm.IPLISTED)
                 {
@@ -926,89 +971,105 @@ namespace iSpyApplication
                     {
                         if (((RadioButton)pnlOptions.Controls[j]).Checked)
                         {
-                            s = (ManufacturersManufacturerUrl) (pnlOptions.Controls[j]).Tag;
+                            var o = (pnlOptions.Controls[j]).Tag;
+                            if (o is ManufacturersManufacturerUrl)
+                            {
+                                s = o as ManufacturersManufacturerUrl;
+
+                                FinalUrl = GetAddr(s).ToString();
+
+                                string source = s.Source;
+                                if (source == "VLC" && !_vlc)
+                                    source = "FFMPEG";
+
+                                switch (source)
+                                {
+                                    case "JPEG":
+                                        VideoSourceType = 0;
+                                        break;
+                                    case "MJPEG":
+                                        VideoSourceType = 1;
+                                        break;
+                                    case "FFMPEG":
+                                        VideoSourceType = 2;
+                                        break;
+                                    case "VLC":
+                                        VideoSourceType = 5;
+                                        break;
+                                }
+                                AudioSourceType = -1;
+                                if (!string.IsNullOrEmpty(s.AudioSource))
+                                {
+                                    switch (s.AudioSource.ToUpper())
+                                    {
+                                        case "FFMPEG":
+                                            AudioSourceType = 3;
+                                            break;
+                                        case "VLC":
+                                            AudioSourceType = 2;
+                                            if (!_vlc)
+                                                AudioSourceType = 3;
+                                            break;
+                                        case "WAVSTREAM":
+                                            AudioSourceType = 6;
+                                            break;
+                                    }
+                                    AudioUrl = GetAddr(s, true).ToString();
+                                }
+
+                                Ptzid = -1;
+
+                                if (!s.@fixed)
+                                {
+                                    string modellc = model.ToLower();
+                                    string n = make.ToLower();
+                                    bool quit = false;
+                                    foreach (var ptz in MainForm.PTZs)
+                                    {
+                                        int k = 0;
+                                        foreach (var m in ptz.Makes)
+                                        {
+                                            if (m.Name.ToLower() == n)
+                                            {
+                                                Ptzid = ptz.id;
+                                                Ptzentryid = k;
+                                                string mdl = m.Model.ToLower();
+                                                if (mdl == modellc || s.version.ToLower() == mdl)
+                                                {
+                                                    Ptzid = ptz.id;
+                                                    Ptzentryid = j;
+                                                    quit = true;
+                                                    break;
+                                                }
+                                            }
+                                            k++;
+                                        }
+                                        if (quit)
+                                            break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (o is ConnectionOption)
+                                {
+                                    //onvif
+                                    var co = o as ConnectionOption;
+                                    VideoSourceType = 9;
+                                    FinalUrl = co.URL;
+                                }
+                            }
                             break;
                         }
                     }
                 }
-                if (s == null)
+
+                if (string.IsNullOrEmpty( FinalUrl))
                 {
                     MessageBox.Show(this, LocRm.GetString("SelectURL"));
                     return;
                 }
 
-                FinalUrl = GetAddr(s).ToString();
-
-                string source = s.Source;
-                if (source == "VLC" && !_vlc)
-                    source = "FFMPEG";
-
-                switch (source)
-                {
-                    case "JPEG":
-                        VideoSourceType = 0;
-                        break;
-                    case "MJPEG":
-                        VideoSourceType = 1;
-                        break;
-                    case "FFMPEG":
-                        VideoSourceType = 2;
-                        break;
-                    case "VLC":
-                        VideoSourceType = 5;
-                        break;
-                }
-                AudioSourceType = -1;
-                if (!string.IsNullOrEmpty(s.AudioSource))
-                {
-                    switch (s.AudioSource.ToUpper())
-                    {
-                        case "FFMPEG":
-                            AudioSourceType = 3;
-                            break;
-                        case "VLC":
-                            AudioSourceType = 2;
-                            if (!_vlc)
-                                AudioSourceType = 3;
-                            break;
-                        case "WAVSTREAM":
-                            AudioSourceType = 6;
-                            break;
-                    }
-                    AudioUrl = GetAddr(s, true).ToString();
-                }
-
-                Ptzid = -1;
-
-                if (!s.@fixed)
-                {
-                    string modellc = model.ToLower();
-                    string n = make.ToLower();
-                    bool quit = false;
-                    foreach(var ptz in MainForm.PTZs)
-                    {
-                        int j = 0;
-                        foreach(var m in ptz.Makes)
-                        {
-                            if (m.Name.ToLower() == n)
-                            {
-                                Ptzid = ptz.id;
-                                Ptzentryid = j;
-                                string mdl = m.Model.ToLower();
-                                if (mdl == modellc || s.version.ToLower() == mdl)
-                                {
-                                    Ptzid = ptz.id;
-                                    Ptzentryid = j;
-                                    quit = true;
-                                    break;
-                                }
-                            }
-                            j++;
-                        }
-                        if (quit)
-                            break;
-                    }
-                }
 
                 MainForm.IPUN = txtUsername.Text;
                 MainForm.IPPASS = txtPassword.Text;
@@ -1019,26 +1080,28 @@ namespace iSpyApplication
                 MainForm.IPPORT = (int)numPort.Value;
                 MainForm.IPCHANNEL = txtChannel.Text.Trim();
 
-                AudioModel = s.AudioModel;
 
                 LastConfig.PromptSave = !MainForm.IPLISTED && MainForm.IPMODEL.Trim() != "";
                 
                 LastConfig.Iptype = MainForm.IPTYPE;
                 LastConfig.Ipmodel = MainForm.IPMODEL;
-                LastConfig.Prefix = s.prefix;
-                LastConfig.Source = s.Source;
-                LastConfig.URL = s.url;
-                LastConfig.Cookies = s.cookies;
-                LastConfig.Flags = s.flags;
+                if (s != null)
+                {
+                    AudioModel = s.AudioModel;
+                    LastConfig.Prefix = s.prefix;
+                    LastConfig.Source = s.Source;
+                    LastConfig.URL = s.url;
+                    LastConfig.Cookies = s.cookies;
+                    LastConfig.Flags = s.flags;
 
-                tokenPath = s.tokenPath;
-                tokenPost = s.tokenPost;
-                tokenPort = s.tokenPort;
+                    tokenPath = s.tokenPath;
+                    tokenPost = s.tokenPost;
+                    tokenPort = s.tokenPort;
 
 
-                if (!string.IsNullOrEmpty(s.port))
-                    LastConfig.Port = Convert.ToInt32(s.port);
-
+                    if (!string.IsNullOrEmpty(s.port))
+                        LastConfig.Port = Convert.ToInt32(s.port);
+                }
                 if (_dt != null)
                     MainForm.IPTABLE = _dt.Copy();
                 DialogResult = DialogResult.OK;

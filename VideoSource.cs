@@ -806,16 +806,6 @@ namespace iSpyApplication
                     else
                         SourceIndex = 2;
 
-                    //add to find camera so can prompt to save it
-                    //var u = new Uri(url);
-                    //FindCameras.LastConfig.Prefix = u.Scheme + "://";
-                    //FindCameras.LastConfig.Source = "FFMPEG";
-                    //FindCameras.LastConfig.URL = u.AbsolutePath;
-                    //FindCameras.LastConfig.Cookies = "";
-                    //FindCameras.LastConfig.Flags = "";
-                    //FindCameras.LastConfig.Port = u.Port;
-                    //FindCameras.LastConfig.Ipmodel = "";
-                    //FindCameras.LastConfig.PromptSave = true;
                     break;
                 case 10:
                     if (ddlCloneCamera.SelectedIndex>-1)
@@ -1293,6 +1283,13 @@ namespace iSpyApplication
                     case 5:
                         cmbVLCURL.Text = fc.FinalUrl;
                         break;
+                    case 9:
+                        onvifWizard1.txtOnvifUsername.Text = fc.Username;
+                        onvifWizard1.txtOnvifPassword.Text = fc.Password;
+                        onvifWizard1.ddlDeviceURL.Text = fc.FinalUrl;
+                        onvifWizard1.GoStep1();
+                        return;
+
                 }
 
                 if (!string.IsNullOrEmpty(fc.Flags))
