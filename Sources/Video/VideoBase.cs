@@ -53,12 +53,12 @@ namespace iSpyApplication.Sources.Video
                 if (_cw == null)
                     return 200;
 
-                int r = _cw.Camobject.settings.maxframerate;
+                decimal r = _cw.Camobject.settings.maxframerate;
                 if (_cw.Recording)
                     r = _cw.Camobject.settings.maxframeraterecord;
 
-                r = Math.Max(1,Math.Min(r, MainForm.ThrottleFramerate));
-                return 1000/r;
+                r = Math.Max(0.01m,Math.Min(r, MainForm.ThrottleFramerate));
+                return Convert.ToInt32(1000m/r);
 
             }
         }

@@ -1000,7 +1000,7 @@ namespace iSpyApplication
             1,
             0,
             0,
-            0});
+            131072});
             this.numMaxFR.Name = "numMaxFR";
             this.numMaxFR.Size = new System.Drawing.Size(52, 20);
             this.numMaxFR.TabIndex = 74;
@@ -1030,7 +1030,7 @@ namespace iSpyApplication
             1,
             0,
             0,
-            0});
+            131072});
             this.numMaxFRRecording.Name = "numMaxFRRecording";
             this.numMaxFRRecording.Size = new System.Drawing.Size(70, 20);
             this.numMaxFRRecording.TabIndex = 76;

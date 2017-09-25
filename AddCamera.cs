@@ -1195,7 +1195,7 @@ namespace iSpyApplication
 
             CameraControl.Camobject.settings.youtube.@public = chkPublic.Checked;
             CameraControl.Camobject.settings.youtube.tags = txtTags.Text;
-            CameraControl.Camobject.settings.maxframeraterecord = (int)numMaxFRRecording.Value;
+            CameraControl.Camobject.settings.maxframeraterecord = numMaxFRRecording.Value;
 
             CameraControl.Camobject.settings.accessgroups = txtAccessGroups.Text;
             CameraControl.Camobject.detector.recordonalert = rdoRecordAlert.Checked;
@@ -1859,7 +1859,7 @@ namespace iSpyApplication
 
         private void numMaxFR_ValueChanged(object sender, EventArgs e)
         {
-            CameraControl.Camobject.settings.maxframerate = (int)numMaxFR.Value;
+            CameraControl.Camobject.settings.maxframerate = numMaxFR.Value;
         }
 
         private void button4_Click(object sender, EventArgs e)
