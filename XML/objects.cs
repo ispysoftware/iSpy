@@ -620,9 +620,9 @@ public partial class objectsCameraSettings {
     
     private string ptzpelcoconfigField;
     
-    private int maxframerateField;
+    private decimal maxframerateField;
     
-    private int maxframeraterecordField;
+    private decimal maxframeraterecordField;
     
     private int reconnectintervalField;
     
@@ -719,8 +719,8 @@ public partial class objectsCameraSettings {
         this.ptztimetohomeField = 60;
         this.ptzautotrackmodeField = 0;
         this.ptzpelcoconfigField = "";
-        this.maxframerateField = 10;
-        this.maxframeraterecordField = 10;
+        this.maxframerateField = ((decimal)(10m));
+        this.maxframeraterecordField = ((decimal)(10m));
         this.reconnectintervalField = 0;
         this.namevaluesettingsField = "";
         this.accessgroupsField = "";
@@ -1272,7 +1272,7 @@ public partial class objectsCameraSettings {
     }
     
     /// <remarks/>
-    public int maxframerate {
+    public decimal maxframerate {
         get {
             return this.maxframerateField;
         }
@@ -1282,7 +1282,7 @@ public partial class objectsCameraSettings {
     }
     
     /// <remarks/>
-    public int maxframeraterecord {
+    public decimal maxframeraterecord {
         get {
             return this.maxframeraterecordField;
         }

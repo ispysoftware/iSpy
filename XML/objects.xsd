@@ -101,8 +101,8 @@
                                                     <xs:element name="ptztimetohome" type="xs:int" default="60"/>
                                                     <xs:element name="ptzautotrackmode" type="xs:int" default="0"/>
                                                     <xs:element name="ptzpelcoconfig" type="xs:string" default=""/>
-                                                    <xs:element name="maxframerate" type="xs:int" default="10"/>
-                                                    <xs:element name="maxframeraterecord" type="xs:int" default="10"/>
+                                                    <xs:element name="maxframerate" type="xs:decimal" default="10"/>
+                                                    <xs:element name="maxframeraterecord" type="xs:decimal" default="10"/>
                                                     <xs:element name="reconnectinterval" type="xs:int" default="0"/>
                                                     <xs:element name="namevaluesettings" type="xs:string" default=""/>
                                                     <xs:element name="accessgroups" type="xs:string" default=""/>
