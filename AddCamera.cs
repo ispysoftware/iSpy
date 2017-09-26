@@ -823,8 +823,6 @@ namespace iSpyApplication
                     if (CameraControl.Camobject.ptz == e.Id && CameraControl.Camobject.ptzentryindex==e.Index)
                     {
                         ddlPTZ.SelectedIndex = ddlPTZ.Items.Count-1;
-                        if (CameraControl.Camobject.settings.ptzurlbase == "")
-                            CameraControl.Camobject.settings.ptzurlbase = MainForm.PTZs.Single(p=>p.id==e.Id).CommandURL;
                     }
                 }
                 if (ddlPTZ.SelectedIndex == -1)
@@ -1515,7 +1513,6 @@ namespace iSpyApplication
                 }
                 if (_loaded)
                 {
-                    CameraControl.Camobject.settings.ptzurlbase = ptz.CommandURL;
                     if (ptz.portSpecified)
                         CameraControl.Camobject.settings.ptzport = ptz.port;
                 }

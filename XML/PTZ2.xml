@@ -535,7 +535,7 @@
     <Makes>
       <Make Name="Digicom" Model="400w" />
     </Makes>
-    <CommandURL>/admin/ptctl.cgi?move=</CommandURL>
+    <CommandURL>/admin/ptctl.cgi</CommandURL>
     <Commands>
       <Center>move=h</Center>
       <Left>move=left</Left>

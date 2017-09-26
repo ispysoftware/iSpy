@@ -208,7 +208,6 @@ namespace iSpyApplication.Server
                                     cw.Camobject.settings.ptzchannel = channel.ToString(CultureInfo.InvariantCulture);
                                     cw.Camobject.settings.ptzusername = username;
                                     cw.Camobject.settings.ptzpassword = password;
-                                    cw.Camobject.settings.ptzurlbase = MainForm.PTZs.Single(p => p.id == ptzid).CommandURL;
                                 }
 
                                 if (!string.IsNullOrEmpty(mmurl.AudioModel))
@@ -2089,10 +2088,6 @@ namespace iSpyApplication.Server
                                 PopulateObject(d, c);
                                 apply = true;
                                 var newdir = c.directory;
-                                if (c.ptz > -1)
-                                {
-                                    c.settings.ptzurlbase = MainForm.PTZs.Single(p => p.id == c.ptz).CommandURL;
-                                }
                                 if (olddir.ToLowerInvariant() != newdir.ToLowerInvariant())
                                 {
                                     if (!Helper.IsAlphaNumeric(newdir))

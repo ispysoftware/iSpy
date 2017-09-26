@@ -1314,7 +1314,6 @@ namespace iSpyApplication
 
                     CameraControl.Camobject.settings.ptzusername = fc.Username;
                     CameraControl.Camobject.settings.ptzpassword = fc.Password;
-                    CameraControl.Camobject.settings.ptzurlbase = MainForm.PTZs.Single(p => p.id == fc.Ptzid).CommandURL;
                 }
                 
 

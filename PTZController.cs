@@ -1328,18 +1328,20 @@ namespace iSpyApplication
             UriBuilder uri;
             string urltemp = _cameraControl.Camobject.settings.videosourcestring;
 
-            bool absURL = false;
-            if (_cameraControl.Camobject.settings.ptzurlbase.StartsWith("http", true, CultureInfo.InvariantCulture))
+            string ub = _cameraControl.Camobject.settings.ptzurlbase;
+
+            if (ub != null && ub.StartsWith("http", true, CultureInfo.InvariantCulture))
             {
-                urltemp = _cameraControl.Camobject.settings.ptzurlbase;
-                absURL = true;
+                urltemp = ub.Trim();
             }
 
+            bool absURL = false;
             if (cmd.StartsWith("http", true, CultureInfo.InvariantCulture))
             {
                 urltemp = cmd;
                 absURL = true;
             }
+
 
             try
             {
@@ -1364,9 +1366,7 @@ namespace iSpyApplication
 
             if (!absURL)
             {
-                //uri is currently video source uri\
-                //ptzurlbase is defaulted to commandurl
-                string pandq = _cameraControl.Camobject.settings.ptzurlbase.Trim();
+                string pandq = ptz.CommandURL;
                 if (cmd.StartsWith("/") || string.IsNullOrEmpty(pandq))
                     pandq = cmd;
                 else
