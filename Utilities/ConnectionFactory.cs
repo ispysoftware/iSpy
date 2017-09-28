@@ -121,8 +121,8 @@ namespace iSpyApplication.Utilities
 
         private static DigestConfig GetDigest(string host)
         {
-            
-            Digests.RemoveAll(p => p.Created > DateTime.UtcNow.AddHours(-1));
+            // Remove any digests more than an hour old
+            Digests.RemoveAll(p => p.Created < DateTime.UtcNow.AddHours(-1));
             return Digests.FirstOrDefault(p => p.Host == host);
             
         }
