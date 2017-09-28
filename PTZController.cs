@@ -1409,8 +1409,8 @@ namespace iSpyApplication
                 }
             }
 
-            uri.UserName = un;
-            uri.Password = pwd;
+            uri.UserName = "[USERNAME]";
+            uri.Password = "[PASSWORD]";
 
 
             if (!string.IsNullOrEmpty(ptz.AppendAuth))
