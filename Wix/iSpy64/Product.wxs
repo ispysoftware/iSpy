@@ -246,7 +246,7 @@
         <File Id="Zlib.Portable.dll" Source="$(var.OutputDir)\Zlib.Portable.dll" KeyPath="yes" Checksum="yes" />
       </Component>
       <Component Win64="yes" Id="Monitor" Guid="{DCD36025-048D-4144-9A62-3A03413CF758}">
-        <File Id="ispymonitor" Source="D:\Projects\iSpy\iSpyMonitor\bin\Release\iSpyMonitor.exe" KeyPath="yes" Checksum="yes" />
+        <File Id="ispymonitor" Source="D:\Projects\iSpy\Supporting\iSpyMonitor.exe" KeyPath="yes" Checksum="yes" />
       </Component>
     </ComponentGroup>
     <ComponentGroup Id="FFMPEG" Directory="INSTALLFOLDER">
@@ -300,7 +300,7 @@
     </ComponentGroup>
     <ComponentGroup Id="ispyserver" Directory="iSpyServer">
       <Component Win64="yes" Id="iSpyServer" Guid="{CF42C96F-478F-4DEB-BF0B-D456CA88A742}">
-        <File Id="ispyserver" Source="D:\Projects\iSpy\iSpyServerSetup\Release\iSpyServerSetup.msi" KeyPath="yes" Checksum="yes" />
+        <File Id="ispyserver" Source="D:\Projects\iSpy\Supporting\iSpyServerSetup.msi" KeyPath="yes" Checksum="yes" />
       </Component>
     </ComponentGroup>
     <ComponentGroup Id="backgrounds" Directory="Backgrounds">
