@@ -8,7 +8,7 @@ using iSpyApplication.Utilities;
 
 namespace iSpyApplication.Sources.Video
 {
-    public class JpegStream : VideoBase, IVideoSource
+    internal class JpegStream : VideoBase, IVideoSource
     {
         // buffer size used to download JPEG image
         private const int BufferSize = 1024*1024;

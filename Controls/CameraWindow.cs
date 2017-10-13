@@ -168,7 +168,7 @@ namespace iSpyApplication.Controls
         }
         public bool ForcedRecording { get; set; }
         public bool NeedMotionZones = true;
-        public XimeaVideoSource XimeaSource;
+        internal XimeaVideoSource XimeaSource;
         public bool Alerted;
         public double MovementCount;
         public DateTime CalibrateTarget;
@@ -3141,7 +3141,7 @@ namespace iSpyApplication.Controls
                         string videopath = folder + VideoFileName + CodecExtension;
                         bool error = false;
                         double maxAlarm = 0;
-                        long lastvideopts = -1, lastaudiopts = -1;
+                        long lastvideopts = -1;
                         DateTime recordingStart = Helper.Now;
                         try
                         {
@@ -3189,8 +3189,7 @@ namespace iSpyApplication.Controls
                                         first = false;
                                     }
 
-                                    WriteFrame(fa, recordingStart, ref lastvideopts, ref maxAlarm, ref peakFrame,
-                                        ref lastaudiopts);
+                                    WriteFrame(fa, recordingStart, ref lastvideopts, ref maxAlarm, ref peakFrame);
                                 }
 
                                 if (bAudio)
@@ -3203,8 +3202,7 @@ namespace iSpyApplication.Controls
                                             first = false;
                                         }
 
-                                        WriteFrame(fa, recordingStart, ref lastvideopts, ref maxAlarm, ref peakFrame,
-                                            ref lastaudiopts);
+                                        WriteFrame(fa, recordingStart, ref lastvideopts, ref maxAlarm, ref peakFrame);
                                     }
                                 }
                             }
@@ -3389,7 +3387,7 @@ namespace iSpyApplication.Controls
 
         [HandleProcessCorruptedStateExceptions]
         private void WriteFrame(Helper.FrameAction fa, DateTime recordingStart, ref long lastvideopts, ref double maxAlarm,
-            ref Helper.FrameAction? peakFrame, ref long lastaudiopts)
+            ref Helper.FrameAction? peakFrame)
         {
             switch (fa.FrameType)
             {
@@ -3419,10 +3417,7 @@ namespace iSpyApplication.Controls
                     break;
                 case Enums.FrameType.Audio:
                 {
-                    var pts = (long) (fa.TimeStamp - recordingStart).TotalMilliseconds;
-
-                    _writer.WriteAudio(fa.Content, fa.DataLength, 0, pts);
-                    lastaudiopts = pts;
+                    _writer.WriteAudio(fa.Content, fa.DataLength, 0);
                 }
 
                     break;

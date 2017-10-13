@@ -49,7 +49,7 @@ namespace iSpyApplication.Sources.Video
     /// </code>
     /// </remarks>
     /// 
-    public class VideoCaptureDevice : VideoBase, IVideoSource
+    internal class VideoCaptureDevice : VideoBase, IVideoSource
     {
         // moniker string of video capture device
         private string _deviceMoniker;

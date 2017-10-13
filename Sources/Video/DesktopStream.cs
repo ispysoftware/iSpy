@@ -12,7 +12,7 @@ using Cursors = System.Windows.Forms.Cursors;
 
 namespace iSpyApplication.Sources.Video
 {
-    public class DesktopStream : VideoBase, IVideoSource
+    internal class DesktopStream : VideoBase, IVideoSource
     {
         private int _screenindex;
         private readonly Rectangle _area;

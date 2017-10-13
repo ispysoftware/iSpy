@@ -75,7 +75,7 @@ namespace iSpyApplication
         /// the dialog using "OK" button. If user canceled the dialog, the property is
         /// set to <see langword="null"/>.</para></remarks>
         /// 
-        public VideoCaptureDevice VideoDevice => _videoCaptureDevice;
+        internal VideoCaptureDevice VideoDevice => _videoCaptureDevice;
 
         private string _videoDeviceMoniker = string.Empty;
         private Size _captureSize = new Size(0, 0);

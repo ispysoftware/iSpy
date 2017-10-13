@@ -24,7 +24,7 @@ namespace iSpyApplication.Sources.Video
     /// Camera - Plugin
     /// Camera - RunPlugin
     /// </remarks>
-    public class KinectNetworkStream : VideoBase, IVideoSource, IAudioSource, ISupportsAudio
+    internal class KinectNetworkStream : VideoBase, IVideoSource, IAudioSource, ISupportsAudio
     {
         private readonly objectsCamera _source;
         private string _login;

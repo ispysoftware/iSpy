@@ -373,6 +373,7 @@
     <Compile Include="Controls\Authorizer.Designer.cs">
       <DependentUpon>Authorizer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Sources\Video\FFmpegBase.cs" />
     <Compile Include="Sources\Video\MediaStream.cs" />
     <Compile Include="Sources\Video\VideoCaptureDevice.cs" />
     <Compile Include="Sources\Video\Tokeniser.cs" />

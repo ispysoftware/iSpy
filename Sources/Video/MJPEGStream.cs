@@ -45,7 +45,7 @@ namespace iSpyApplication.Sources.Video
     /// &lt;/configuration&gt;
     /// </code>
     /// </remarks>
-    public class MJPEGStream : VideoBase, IVideoSource
+    internal class MJPEGStream : VideoBase, IVideoSource
     {
         // if we should use basic authentication when connecting to the video source
 

@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <PackageId>FFmpeg.AutoGen</PackageId>
+    <Version>3.3.3.6</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Ruslan Balanukhin</Authors>
+    <Company>Rational Core</Company>
+    <Product>FFmpeg.AutoGen</Product>
+    <Description>FFmpeg auto generated unsafe bindings for C#/.NET and Mono.</Description>
+    <Copyright>Copyright © Ruslan Balanukhin 2015 All rights reserved.</Copyright>
+    <PackageLicenseUrl>https://github.com/Ruslan-B/FFmpeg.AutoGen/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Ruslan-B/FFmpeg.AutoGen</PackageProjectUrl>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
+    <FileVersion>$(Version)</FileVersion>
+    <PackageTags>ffmpeg</PackageTags>
+    <AssemblyName>FFmpeg.AutoGen</AssemblyName>
+    <RootNamespace>FFmpeg.AutoGen</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <NoWarn>1701;1702;1705;169;108;1591;1573;1591</NoWarn>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
+</Project>

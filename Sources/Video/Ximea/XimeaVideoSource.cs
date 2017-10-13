@@ -43,7 +43,7 @@ namespace iSpyApplication.Sources.Video.Ximea
     /// 
     /// <seealso cref="XimeaCamera"/>
     /// 
-    public class XimeaVideoSource : VideoBase, IVideoSource
+    internal class XimeaVideoSource : VideoBase, IVideoSource
     {
         // XIMEA camera to capture images from
         private readonly XimeaCamera _camera = new XimeaCamera( );

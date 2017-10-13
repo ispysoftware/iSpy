@@ -17,7 +17,7 @@ using NAudio.Wave.SampleProviders;
 
 namespace iSpyApplication.Sources.Video
 {
-    public class KinectStream : VideoBase, IVideoSource, IAudioSource, ISupportsAudio
+    internal class KinectStream : VideoBase, IVideoSource, IAudioSource, ISupportsAudio
     {
         private readonly Pen _inferredBonePen = new Pen(Brushes.Gray, 1);
         private readonly Pen _trackedBonePen = new Pen(Brushes.Green, 2);

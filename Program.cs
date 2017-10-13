@@ -398,4 +398,38 @@ internal static class Program
             }
         }
     }
+
+    public static class MutexHelper
+    {
+        private static bool _enableMutex = false;
+        private static Mutex _mutex;
+
+        private static Mutex FfmpegMutex
+        {
+            get
+            {
+                if (_mutex != null)
+                    return _mutex;
+                _mutex = new Mutex();
+                return _mutex;
+            }
+        }
+        public static void Wait()
+        {
+            if (_enableMutex)
+                FfmpegMutex.WaitOne();
+        }
+
+        public static void Release()
+        {
+            if (_enableMutex)
+                FfmpegMutex.ReleaseMutex();
+        }
+
+        public static void Close()
+        {
+            if (_enableMutex)
+                FfmpegMutex.Close();
+        }
+    }
 }

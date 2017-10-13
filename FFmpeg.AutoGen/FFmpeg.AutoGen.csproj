@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FFmpeg.AutoGen</RootNamespace>
     <AssemblyName>FFmpeg.AutoGen</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -81,15 +81,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConstCharPtrMarshaler.cs" />
-    <Compile Include="FFmpeg.avcodec.g.cs" />
-    <Compile Include="FFmpeg.avdevice.g.cs" />
-    <Compile Include="FFmpeg.avfilter.g.cs" />
-    <Compile Include="FFmpeg.avformat.g.cs" />
-    <Compile Include="FFmpeg.avutil.g.cs" />
-    <Compile Include="FFmpeg.postprocess.g.cs" />
-    <Compile Include="FFmpeg.swresample.g.cs" />
-    <Compile Include="FFmpeg.swscale.g.cs" />
-    <Compile Include="Unresolved.cs" />
+    <Compile Include="FFmpeg.arrays.g.cs" />
+    <Compile Include="FFmpeg.cs" />
+    <Compile Include="FFmpeg.delegates.g.cs" />
+    <Compile Include="FFmpeg.enums.g.cs" />
+    <Compile Include="FFmpeg.functions.g.cs" />
+    <Compile Include="FFmpeg.macros.g.cs" />
+    <Compile Include="FFmpeg.structs.g.cs" />
+    <Compile Include="FFmpeg.structs.incomplete.g.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

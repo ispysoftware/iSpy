@@ -1657,8 +1657,7 @@ namespace iSpyApplication.Controls
 
                                         if (fa.FrameType == Enums.FrameType.Audio)
                                         {
-                                            var pts = (long) (fa.TimeStamp - recordingStart).TotalMilliseconds;
-                                            _writer.WriteAudio(fa.Content, fa.DataLength, 0, pts);
+                                            _writer.WriteAudio(fa.Content, fa.DataLength, 0);
                                             float d = (float) fa.Level;
                                             _soundData.Append(string.Format(CultureInfo.InvariantCulture,
                                                 "{0:0.000}", d));

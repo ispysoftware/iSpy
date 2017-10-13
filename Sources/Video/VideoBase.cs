@@ -3,7 +3,7 @@ using iSpyApplication.Controls;
 
 namespace iSpyApplication.Sources.Video
 {
-    public class VideoBase
+    internal class VideoBase: FFmpegBase
     {
         private readonly CameraWindow _cw;
         public string Tokenise(string sourcestring)
@@ -24,7 +24,7 @@ namespace iSpyApplication.Sources.Video
             return sourcestring;
         }
 
-        public VideoBase(CameraWindow cw)
+        public VideoBase(CameraWindow cw):base("FFMPEG")
         {
             _cw = cw;
         }
