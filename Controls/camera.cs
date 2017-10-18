@@ -472,6 +472,10 @@ namespace iSpyApplication.Controls
         {
             var nf = NewFrame;
             var f = e.Frame;
+            if (f == null)
+            {
+                nf?.Invoke(this, e);
+            }
             if (nf==null || f==null)
                 return;
     

@@ -20,11 +20,10 @@ namespace iSpyApplication.Realtime
 
         public delegate int InterruptCallback();
 
-        private const int Iframeinterval = 1000;
+        private const int Iframeinterval = 3000;
 
         private static readonly bool Hwnvidia = true;
         private static bool _hwqsv = true;
-        private readonly StringBuilder _alertData = new StringBuilder();
         private readonly byte[] _convOut = new byte[44100];
         private readonly AutoResetEvent _frameWritten = new AutoResetEvent(false);
         private readonly bool _isAudio;
@@ -57,8 +56,6 @@ namespace iSpyApplication.Realtime
         private double _maxLevel = -1;
         private bool _opened;
         private SwsContext* _pConvertContext;
-        private DateTime _recordingEndTime;
-        private DateTime _recordingStartTime;
         private SwrContext* _swrContext;
         private AVCodec* _videoCodec;
         private AVCodecContext* _videoCodecContext;
@@ -71,8 +68,6 @@ namespace iSpyApplication.Realtime
         public int InSampleRate = 22050;
         public bool IsFile = true;
         public bool IsTimelapse;
-        public double MaxAlarm;
-        public Bitmap MaxFrame;
         private readonly string movflags = ""; //"faststart";
         public int OutChannels = 1;
         public int OutSampleRate = 22050;
@@ -80,31 +75,21 @@ namespace iSpyApplication.Realtime
 
         public int Timeout = 5000;
 
-        public MediaWriter(string fileName, AVCodecID audioCodec) : base("Writer")
+        public MediaWriter(string fileName, AVCodecID audioCodec, DateTime created) : base("Writer")
         {
-            Open(fileName, -1, -1, AVCodecID.AV_CODEC_ID_NONE, 0, audioCodec);
+            Open(fileName, -1, -1, AVCodecID.AV_CODEC_ID_NONE, 0, audioCodec, created);
             _isAudio = true;
         }
 
-        public MediaWriter(string fileName, int width, int height, AVCodecID videoCodec) : base("Writer")
+        public MediaWriter(string fileName, int width, int height, AVCodecID videoCodec, DateTime created) : base("Writer")
         {
-            Open(fileName, width, height, videoCodec, 0, AVCodecID.AV_CODEC_ID_NONE);
+            Open(fileName, width, height, videoCodec, 0, AVCodecID.AV_CODEC_ID_NONE, created);
         }
 
         public MediaWriter(string fileName, int width, int height, AVCodecID videoCodec, int framerate,
-            AVCodecID audioCodec) : base("Writer")
+            AVCodecID audioCodec, DateTime created) : base("Writer")
         {
-            Open(fileName, width, height, videoCodec, framerate, audioCodec);
-        }
-
-        public string AlertData
-        {
-            get { return Helper.GetLevelDataPoints(_alertData); }
-        }
-
-        public int Duration
-        {
-            get { return (int) (_recordingEndTime - _recordingStartTime).TotalSeconds; }
+            Open(fileName, width, height, videoCodec, framerate, audioCodec, created);
         }
 
         public bool Closed => !_opened;
@@ -134,10 +119,9 @@ namespace iSpyApplication.Realtime
             return 0;
         }
 
-        private void Open(string fileName, int width, int height, AVCodecID videoCodec, int framerate,
-            AVCodecID audioCodec)
+        private void Open(string fileName, int width, int height, AVCodecID videoCodec, int framerate,AVCodecID audioCodec, DateTime created)
         {
-            CreatedDate = DateTime.UtcNow;
+            CreatedDate = created;
             Filename = fileName;
             _abort = false;
             _ignoreAudio = false;
@@ -237,7 +221,7 @@ namespace iSpyApplication.Realtime
             ffmpeg.av_dict_free(&opts);
 
             _frameNumber = 0;
-            _recordingStartTime = _keyframeInterval = DateTime.UtcNow;
+            _keyframeInterval = DateTime.UtcNow;
             _opened = true;
         }
 
@@ -258,7 +242,6 @@ namespace iSpyApplication.Realtime
             _frameWritten.Reset();
             _frameWritten.WaitOne(200);
             Program.MutexHelper.Wait();
-            _recordingEndTime = DateTime.UtcNow;
             if (_formatContext != null)
             {
                 if (IsFile)
@@ -374,29 +357,25 @@ namespace iSpyApplication.Realtime
             _recordingClosed.Set();
         }
 
-        public void WriteAudio(byte[] soundBuffer, int soundBufferSize, int level)
+        public void WriteAudio(byte[] soundBuffer, int soundBufferSize, int level, DateTime timestamp)
         {
             if (!_opened)
             {
                 throw new Exception("An audio file was not opened yet.");
             }
-            AddAudioSamples(soundBuffer, soundBufferSize);
+            AddAudioSamples(soundBuffer, soundBufferSize, timestamp);
 
             if (_isAudio)
             {
-                _alertData.Append(string.Format(CultureInfo.InvariantCulture, "{0:0.000},", Math.Min(level, 100)));
-                if (level > MaxAlarm)
-                    MaxAlarm = level;
                 _frameWritten.Set();
             }
         }
 
-        public void WriteFrame(Bitmap frame, long msOffset)
+        public void WriteFrame(Bitmap frame)
         {
-            WriteFrame(frame, 0, msOffset);
+            WriteFrame(frame, DateTime.MinValue);
         }
-
-        public void WriteFrame(Bitmap frame, int level, long msOffset)
+        public void WriteFrame(Bitmap frame, DateTime timestamp)
         {
             if (!_opened)
             {
@@ -444,14 +423,14 @@ namespace iSpyApplication.Realtime
 
             if (!_isConstantFramerate)
             {
-                var pts = msOffset;
+                var pts = (long)(timestamp - CreatedDate).TotalMilliseconds;
                 _videoFrame->pts = pts;
             }
             else
             {
                 _videoFrame->pts = _frameNumber;
+                _frameNumber++;
             }
-            _frameNumber++;
 
 
             var packet = new AVPacket();
@@ -488,18 +467,6 @@ namespace iSpyApplication.Realtime
             }
 
             ffmpeg.av_packet_unref(&packet);
-
-            if (!_isAudio)
-                _alertData.Append(string.Format(CultureInfo.InvariantCulture, "{0:0.000},", Math.Min(level, 100)));
-
-            if (level > _maxLevel)
-            {
-                MaxAlarm = level;
-                MaxFrame?.Dispose();
-                MaxFrame = (Bitmap) frame.Clone();
-                _maxLevel = level;
-            }
-
             _frameWritten.Set();
         }
 
@@ -568,7 +535,7 @@ namespace iSpyApplication.Realtime
             }
         }
 
-        private void AddAudioSamples(byte[] soundBuffer, int soundBufferSize)
+        private void AddAudioSamples(byte[] soundBuffer, int soundBufferSize, DateTime timestamp)
         {
             if (_audioStream == null || _audioCodecContext == null || soundBufferSize <= 0 || _ignoreAudio)
                 return;
@@ -589,7 +556,7 @@ namespace iSpyApplication.Realtime
             fixed (byte* p = _audioBuffer)
             {
                 var inPointerLocal = p;
-                var pts = (long) (DateTime.UtcNow - _recordingStartTime).TotalMilliseconds;
+                var pts = (long) (timestamp - CreatedDate).TotalMilliseconds;
                 while (remaining >= srcSize)
                 {
                     ffmpeg.av_init_packet(&packet);

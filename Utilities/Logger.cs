@@ -95,6 +95,7 @@ namespace iSpyApplication.Utilities
             {
                 _logFile.Append("<tr><td style=\"color:red\" valign=\"top\">Error</td><td valign=\"top\">" +
                                DateTime.Now.ToLongTimeString() + "</td><td valign=\"top\">" + message + ", " + message2 + "</td></tr>");
+                Console.WriteLine(message + ", " + message2);
             }
             catch
             {

@@ -31,7 +31,7 @@ namespace iSpyApplication.Sources.Audio
     /// <param name="e">Reason of finishing Audio playing.</param>
     /// 
     public delegate void AudioFinishedEventHandler(object sender, PlayingFinishedEventArgs e);
-
+    public delegate void TimeUpdateEventHandler(object sender, TimeUpdateEventArgs e);
     /// <summary>
     /// Delegate for notifying about audio stream
     /// </summary>
@@ -40,6 +40,26 @@ namespace iSpyApplication.Sources.Audio
     /// <param name="e"></param>
     public delegate void HasAudioStreamEventHandler(object sender, EventArgs e);
 
+
+    public class TimeUpdateEventArgs : EventArgs
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TimeUpdateEventArgs"/> class.
+        /// </summary>
+        /// 
+        /// <param name="reason">Reason</param>
+        /// 
+        public TimeUpdateEventArgs(long time)
+        {
+            Time = time;
+        }
+
+        /// <summary>
+        /// Audio source error description.
+        /// </summary>
+        /// 
+        public long Time { get; }
+    }
     /// <summary>
     /// Arguments for new frame event from Audio source.
     /// </summary>

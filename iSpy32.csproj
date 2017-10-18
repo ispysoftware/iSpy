@@ -184,6 +184,10 @@
       <HintPath>packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FFmpeg.AutoGen, Version=3.3.3.9, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\FFmpeg.AutoGen.3.3.3.9\lib\net45\FFmpeg.AutoGen.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="FlickrNet, Version=3.24.0.0, Culture=neutral, PublicKeyToken=2491df59efa5d132, processorArchitecture=MSIL">
       <HintPath>packages\FlickrNet.3.24.0\lib\net20\FlickrNet.dll</HintPath>
       <Private>True</Private>
@@ -372,6 +376,12 @@
     </Compile>
     <Compile Include="Controls\Authorizer.Designer.cs">
       <DependentUpon>Authorizer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PlayerVLC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PlayerVLC.Designer.cs">
+      <DependentUpon>PlayerVLC.cs</DependentUpon>
     </Compile>
     <Compile Include="Sources\Video\FFmpegBase.cs" />
     <Compile Include="Sources\Video\MediaStream.cs" />
@@ -877,12 +887,6 @@
     </Compile>
     <Compile Include="Pelco\PelcoConfig.Designer.cs">
       <DependentUpon>PelcoConfig.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PlayerVLC.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PlayerVLC.Designer.cs">
-      <DependentUpon>PlayerVLC.cs</DependentUpon>
     </Compile>
     <Compile Include="Prompt.cs">
       <SubType>Form</SubType>
@@ -2329,12 +2333,6 @@
     <WCFMetadataStorage Include="Service References\DeviceClient\" />
     <WCFMetadataStorage Include="Service References\DeviceMedia\" />
     <WCFMetadataStorage Include="Service References\DevicePTZ\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="FFmpeg.AutoGen\FFmpeg.AutoGen.csproj">
-      <Project>{a536b02a-b0b1-4753-8328-17369ef09976}</Project>
-      <Name>FFmpeg.AutoGen</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

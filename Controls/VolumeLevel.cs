@@ -1620,9 +1620,13 @@ namespace iSpyApplication.Controls
                             Directory.CreateDirectory(folder);
                         filename = folder + AudioFileName;
 
-
-
-                        _writer = new MediaWriter(filename + ".mp3", AVCodecID.AV_CODEC_ID_MP3);
+                        Helper.FrameAction fa;
+                        DateTime recordingStart = DateTime.UtcNow;
+                        if (Buffer.TryPeek(out fa))
+                        {
+                            recordingStart = fa.TimeStamp;
+                        }
+                        _writer = new MediaWriter(filename + ".mp3", AVCodecID.AV_CODEC_ID_MP3, recordingStart);
 
                         try
                         {
@@ -1639,25 +1643,19 @@ namespace iSpyApplication.Controls
 
 
                         double maxlevel = 0;
-                        DateTime recordingStart = DateTime.MinValue;
 
                         try
                         {
                             while (!_stopWrite.WaitOne(0))
                             {
-                                Helper.FrameAction fa;
+                                
                                 if (Buffer.TryDequeue(out fa))
                                 {
                                     try
                                     {
-                                        if (recordingStart == DateTime.MinValue)
-                                        {
-                                            recordingStart = fa.TimeStamp;
-                                        }
-
                                         if (fa.FrameType == Enums.FrameType.Audio)
                                         {
-                                            _writer.WriteAudio(fa.Content, fa.DataLength, 0);
+                                            _writer.WriteAudio(fa.Content, fa.DataLength, 0, fa.TimeStamp);
                                             float d = (float) fa.Level;
                                             _soundData.Append(string.Format(CultureInfo.InvariantCulture,
                                                 "{0:0.000}", d));
@@ -2081,7 +2079,7 @@ namespace iSpyApplication.Controls
                     {
                         l[i] = 0.0f;
                     }
-                    AudioDeviceLevelChanged(this, new LevelChangedEventArgs(l));
+                    Levels = l;
 
                     if (!AudioSource.IsRunning && !IsClone && !IsSourceCamera)
                     {
@@ -2166,11 +2164,13 @@ namespace iSpyApplication.Controls
         public void AudioDeviceLevelChanged(object sender, LevelChangedEventArgs eventArgs)
         {
             var f = eventArgs.MaxSamples.Max();
-
             if (Math.Abs(f) < float.Epsilon)
+            {
                 return;
+            }
+
             Levels = eventArgs.MaxSamples;
-            
+
             f = f*100;
             f = f*Micobject.detector.gain;
 

@@ -197,6 +197,10 @@
       <HintPath>packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FFmpeg.AutoGen, Version=3.3.3.9, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\FFmpeg.AutoGen.3.3.3.9\lib\net45\FFmpeg.AutoGen.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="FlickrNet, Version=3.24.0.0, Culture=neutral, PublicKeyToken=2491df59efa5d132, processorArchitecture=MSIL">
       <HintPath>packages\FlickrNet.3.24.0\lib\net20\FlickrNet.dll</HintPath>
       <Private>True</Private>
@@ -2170,12 +2174,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="FFmpeg.AutoGen\FFmpeg.AutoGen.csproj">
-      <Project>{a536b02a-b0b1-4753-8328-17369ef09976}</Project>
-      <Name>FFmpeg.AutoGen</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

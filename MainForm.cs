@@ -4757,11 +4757,11 @@ namespace iSpyApplication
             this._pnlContent = new System.Windows.Forms.Panel();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.flowPreview = new iSpyApplication.Controls.MediaPanel();
+            this.mediaPanelControl1 = new iSpyApplication.Controls.MediaPanelControl();
             this.flCommands = new System.Windows.Forms.FlowLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this._pnlCameras = new iSpyApplication.Controls.LayoutPanel();
-            this.mediaPanelControl1 = new iSpyApplication.Controls.MediaPanelControl();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.ctxtPlayer = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.iSpyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -6291,8 +6291,8 @@ namespace iSpyApplication
             this.tsslPRO.IsLink = true;
             this.tsslPRO.LinkColor = System.Drawing.Color.Blue;
             this.tsslPRO.Name = "tsslPRO";
-            this.tsslPRO.Size = new System.Drawing.Size(76, 25);
-            this.tsslPRO.Text = "Get iSpy PRO";
+            this.tsslPRO.Size = new System.Drawing.Size(58, 25);
+            this.tsslPRO.Text = "Try Agent";
             this.tsslPRO.VisitedLinkColor = System.Drawing.Color.Blue;
             this.tsslPRO.Click += new System.EventHandler(this.tsslPRO_Click);
             // 
@@ -6343,6 +6343,18 @@ namespace iSpyApplication
             this.flowPreview.MouseDown += new System.Windows.Forms.MouseEventHandler(this.flowPreview_MouseDown);
             this.flowPreview.MouseEnter += new System.EventHandler(this.flowPreview_MouseEnter);
             this.flowPreview.MouseLeave += new System.EventHandler(this.flowPreview_MouseLeave);
+            // 
+            // mediaPanelControl1
+            // 
+            this.mediaPanelControl1.AutoSize = true;
+            this.mediaPanelControl1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.mediaPanelControl1.Location = new System.Drawing.Point(0, 0);
+            this.mediaPanelControl1.Margin = new System.Windows.Forms.Padding(0);
+            this.mediaPanelControl1.Name = "mediaPanelControl1";
+            this.mediaPanelControl1.Padding = new System.Windows.Forms.Padding(0, 0, 0, 2);
+            this.mediaPanelControl1.Size = new System.Drawing.Size(630, 32);
+            this.mediaPanelControl1.TabIndex = 21;
+            this.mediaPanelControl1.Load += new System.EventHandler(this.mediaPanelControl1_Load);
             // 
             // flCommands
             // 
@@ -6403,18 +6415,6 @@ namespace iSpyApplication
             this._pnlCameras.Scroll += new System.Windows.Forms.ScrollEventHandler(this._pnlCameras_Scroll);
             this._pnlCameras.MouseDown += new System.Windows.Forms.MouseEventHandler(this._pnlCameras_MouseDown);
             this._pnlCameras.Resize += new System.EventHandler(this._pnlCameras_Resize);
-            // 
-            // mediaPanelControl1
-            // 
-            this.mediaPanelControl1.AutoSize = true;
-            this.mediaPanelControl1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.mediaPanelControl1.Location = new System.Drawing.Point(0, 0);
-            this.mediaPanelControl1.Margin = new System.Windows.Forms.Padding(0);
-            this.mediaPanelControl1.Name = "mediaPanelControl1";
-            this.mediaPanelControl1.Padding = new System.Windows.Forms.Padding(0, 0, 0, 2);
-            this.mediaPanelControl1.Size = new System.Drawing.Size(630, 32);
-            this.mediaPanelControl1.TabIndex = 21;
-            this.mediaPanelControl1.Load += new System.EventHandler(this.mediaPanelControl1_Load);
             // 
             // ctxtPlayer
             // 
@@ -6898,7 +6898,7 @@ namespace iSpyApplication
 
         private void tsslPRO_Click(object sender, EventArgs e)
         {
-            OpenUrl(Website + "/downloadpro.aspx");
+            OpenUrl(Website + "/download-agent.aspx");
         }
 
         private void ctxtMnu_Opening(object sender, CancelEventArgs e)

@@ -494,7 +494,7 @@ namespace iSpyApplication.Sources.Video
                 _lastPacket = DateTime.UtcNow;
 
                 int ret;
-                if (_audioStream != null && packet.stream_index == _audioStream->index)
+                if (_audioStream != null && packet.stream_index == _audioStream->index && _audioCodecContext!=null)
                 {
                     if (HasAudioStream != null)
                     {
@@ -614,7 +614,7 @@ namespace iSpyApplication.Sources.Video
                                 var mat = new Bitmap(_codecContext->width, _codecContext->height, dstLinesize[0],
                                     PixelFormat.Format24bppRgb, pConvertedFrameBuffer))
                             {
-                                var nfe = new NewFrameEventArgs((Bitmap) mat.Clone());
+                                var nfe = new NewFrameEventArgs(mat);
                                 nf.Invoke(this, nfe);
                             }
 
@@ -635,6 +635,7 @@ namespace iSpyApplication.Sources.Video
                 ffmpeg.av_packet_unref(&packet);
             } while (!_abort && !MainForm.ShuttingDown);
 
+            NewFrame?.Invoke(this, new NewFrameEventArgs(null));
 
             try
             {
@@ -726,6 +727,7 @@ namespace iSpyApplication.Sources.Video
 
             PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
             AudioFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
+
         }
 
         private void SampleChannelPreVolumeMeter(object sender, StreamVolumeEventArgs e)

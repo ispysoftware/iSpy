@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -8,9 +9,11 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 using iSpyApplication.Controls;
 using iSpyApplication.Utilities;
+using NAudio.Dsp;
 
 namespace iSpyApplication
 {
@@ -38,7 +41,57 @@ namespace iSpyApplication
                 Index = index;
             }
         }
+        public static Bitmap GetSpectrumAnalyserImage(Complex[] fft, int w, int h)
+        {
+            Size sz = new Size(w, h);
 
+            if (fft != null)
+            {
+                var r = fft.ToList();
+                const int bars = 128;
+                double xScale = Convert.ToDouble(w) / bars;
+                int t = r.Count / 2 / bars;
+                var img = new Bitmap(sz.Width, sz.Height, PixelFormat.Format24bppRgb);
+
+                using (Graphics g = Graphics.FromImage(img))
+                {
+                    g.Clear(Color.White);
+                    for (int n = 0; n < r.Count / 2; n += t)
+                    {
+                        // averaging out bins
+                        double yPos = 0;
+                        for (int b = 0; b <= t; b++)
+                        {
+                            yPos += GetYPosLog(r[n + b], h);
+                        }
+                        int ind = n / t;
+                        double pow = yPos / t;
+                        if (pow > h)
+                            pow = h;
+
+                        var rect = new Rectangle(Convert.ToInt32(ind * xScale), Convert.ToInt32(pow),
+                            Convert.ToInt32(xScale),
+                            Convert.ToInt32(h - pow));
+
+                        g.FillRectangle(Brushes.CornflowerBlue, rect.X, rect.Y, rect.Width, rect.Height);
+                    }
+                }
+                return img;
+
+            }
+            return null;
+        }
+
+        public static double GetYPosLog(Complex c, double height)
+        {
+            double intensityDb = 10 * Math.Log10(Math.Sqrt(c.X * c.X + c.Y * c.Y));
+            double minDB = -60;
+            if (intensityDb < minDB) intensityDb = minDB;
+            double percent = intensityDb / minDB;
+            // we want 0dB to be at the top (i.e. yPos = 0)
+            double yPos = percent * height;
+            return yPos;
+        }
         public static string RTSPMode(int mode)
         {
             switch (mode)
@@ -53,7 +106,12 @@ namespace iSpyApplication
                     return "tcp";
             }
         }
-
+        public static bool ThreadRunning(Thread t)
+        {
+            if (t == null)
+                return false;
+            return !t.Join(0);
+        }
         public static string NVLookup(CameraWindow c, string name)
         {
             var t = c.Camobject.settings.namevaluesettings.Split(',').ToList();
