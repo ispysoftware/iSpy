@@ -1450,6 +1450,7 @@
     <Content Include="DLLS\x64\avutil-55.dll" />
     <Content Include="DLLS\x64\ffmpeg.exe" />
     <Content Include="DLLS\x64\Interop.NETWORKLIST.dll" />
+    <Content Include="DLLS\x64\libmp3lame.64.dll" />
     <Content Include="DLLS\x64\Microsoft.Kinect.dll" />
     <Content Include="DLLS\x64\msvcp120.dll" />
     <Content Include="DLLS\x64\msvcr120.dll" />
