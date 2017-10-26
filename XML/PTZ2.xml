@@ -7355,4 +7355,60 @@ in the camera's web interface-->
         <Command Name="Contrast 100">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=100</Command>
       </ExtendedCommands>
     </Camera>
+ <Camera id="249">
+    <Makes>
+      <Make Name="Floureon" Model="IPD-E24Y02-BS series" />
+    </Makes>
+      <CommandURL>/form/setPTZCfg?ZFSpeed=0&amp;PTSpeed=0&amp;panSpeed=2&amp;tiltSpeed=2</CommandURL>
+    <Commands>
+      <Stop>command=0</Stop>
+      <Center>command=0</Center>
+      <Left>command=3</Left>
+      <LeftUp>command=6</LeftUp>
+      <Right>command=4</Right>
+      <RightUp>command=7</RightUp>
+      <Up>command=1</Up>
+      <Down>command=2</Down>
+      <LeftDown>command=5</LeftDown>
+      <RightDown>command=8</RightDown>
+      <ZoomIn>command=13</ZoomIn>
+      <ZoomOut>command=14</ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Stop">command=0</Command>
+      <Command Name="Iris Open">command=10</Command>
+      <Command Name="Iris Close">command=9</Command>
+      <Command Name="Focus Near">command=12</Command>
+      <Command Name="Focus Far">command=11</Command>
+      <Command Name="H Patrol">/form/setSpecialFunc?flag=2amp;command=1</Command>
+      <!-- Special function presetNum # 16, 31 to 36, 75 to 78, 81 to 85, 91 to 99 -->
+      <Command Name="Go Preset 1">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=0</Command>
+      <Command Name="Go Preset 2">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=1</Command>
+      <Command Name="Go Preset 3">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=2</Command>
+      <Command Name="Go Preset 4">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=3</Command>
+      <Command Name="Go Preset 5">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=4</Command>
+      <Command Name="Go Preset 6">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=5</Command>
+      <Command Name="Go Preset 7">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=6</Command>
+      <Command Name="Go Preset 8">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=7</Command>
+      <Command Name="Go Preset 9">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=8</Command>
+      <Command Name="Go Preset 10">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=9</Command>
+      <Command Name="Go Preset 11">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=10</Command>
+      <Command Name="Go Preset 12">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=11</Command>
+      <Command Name="Go Preset 13">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=12</Command>
+      <Command Name="Go Preset 14">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=13</Command>
+      <Command Name="Go Preset 15">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=14</Command>
+      <Command Name="Go Preset 16">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=15</Command>
+      <!--<Command Name="Go Preset 17">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=16</Command>-->
+      <Command Name="Go Preset 18">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=17</Command>
+      <Command Name="Go Preset 19">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=18</Command>
+      <Command Name="Go Preset 20">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=19</Command>
+      <Command Name="Go Preset 21">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=20</Command>
+      <Command Name="Start Tour 1">/form/tourSet?flag=2&amp;existFlag=1&amp;presetValue=0&amp;tourNum=0</Command>
+      <Command Name="Start Tour 2">/form/tourSet?flag=2&amp;existFlag=1&amp;presetValue=0&amp;tourNum=1</Command>
+      <Command Name="Start Tour 3">/form/tourSet?flag=2&amp;existFlag=1&amp;presetValue=0&amp;tourNum=2</Command>
+      <Command Name="IR mode: Day">/form/IRset?IRmode=3&amp;c2bwthr=20&amp;bw2cthr=70&amp;IRenabled=1&amp;IRdelay=3</Command>
+      <Command Name="IR mode: Night">/form/IRset?IRmode=2&amp;c2bwthr=20&amp;bw2cthr=70&amp;IRenabled=1&amp;IRdelay=3</Command>
+      <Command Name="IR mode: Auto">/form/IRset?IRmode=4&amp;c2bwthr=20&amp;bw2cthr=70&amp;IRenabled=1&amp;IRdelay=3</Command>
+    </ExtendedCommands>
+  </Camera>
 </PTZSettings2>

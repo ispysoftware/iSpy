@@ -547,8 +547,7 @@ namespace iSpyApplication.Sources.Video
                                         waveProvider = new BufferedWaveProvider(RecordingFormat)
                                                        {
                                                            DiscardOnBufferOverflow = true,
-                                                           BufferDuration =
-                                                               TimeSpan.FromMilliseconds(500)
+                                                           BufferDuration = TimeSpan.FromMilliseconds(500)
                                                        };
                                         sampleChannel = new SampleChannel(waveProvider);
 

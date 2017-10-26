@@ -353,6 +353,7 @@ namespace iSpyApplication
                                     UISync.Execute(() => rtbOutput.Text += "\t" + ip1 + NL);
                             }
                         }
+                        UISync.Execute(() => rtbOutput.Text += NL + NL + "Our new platform, Agent doesn't require port forwarding and should work anywhere with an internet connection: http://www.ispyconnect.com/download-agent.aspx");
                         UISync.Execute(() => rtbOutput.Text += NL + NL + "Please see the troubleshooting section here: http://www.ispyconnect.com/userguide-remote-access-troubleshooting.aspx");
 
                     }

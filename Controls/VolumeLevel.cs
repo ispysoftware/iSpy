@@ -2201,7 +2201,9 @@ namespace iSpyApplication.Controls
             try
             {
                 int totBytes;
-                using (var ws = new TalkHelperStream(e.RawData, e.BytesRecorded, AudioSource.RecordingFormat))
+                var ba = e.RawData;
+                var br = e.BytesRecorded;
+                using (var ws = new TalkHelperStream(ba, br, AudioSource.RecordingFormat))
                 {
                     using (var helpStm = new WaveFormatConversionStream(AudioStreamFormat, ws))
                     {

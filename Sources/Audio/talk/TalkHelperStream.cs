@@ -1,56 +1,55 @@
 ﻿using System;
+using System.IO;
 using NAudio.Wave;
 
 namespace iSpyApplication.Sources.Audio.talk
 {
     class TalkHelperStream: WaveStream
     {
-        private readonly byte[] _sourceBuffer;
-        private long _position;
-        private readonly long _bufferLength;
+        WaveFormat format;
+        long position = 0;
+        long length;
+        private byte[] _buffer;
 
-        public TalkHelperStream(byte[] sourceBuffer, long bufferLength, WaveFormat waveFormat)
+        public TalkHelperStream(byte[] src, long length, WaveFormat format)
         {
-            _sourceBuffer = sourceBuffer;
-            WaveFormat = waveFormat;
-            _bufferLength = bufferLength;
+            this.format = format;
+            this.length = length;
+            _buffer = src;
         }
 
-        /// <summary>
-        /// The WaveFormat of this stream
-        /// </summary>
-        public override WaveFormat WaveFormat { get; }
+        public override WaveFormat WaveFormat
+        {
+            get { return format; }
+        }
 
-        /// <summary>
-        /// The length in bytes of this stream (if supported)
-        /// </summary>
-        public override long Length => _bufferLength;
+        public override long Length
+        {
+            get { return length; }
+        }
 
-        /// <summary>
-        /// The current position in this stream
-        /// </summary>
         public override long Position
         {
             get
             {
-                return _position;
+                return position;
             }
             set
             {
-                _position = value;
+                position =  value;
             }
         }
 
-        /// <summary>
-        /// Reads data from the stream
-        /// </summary>
-        public override int Read(byte[] buffer, int offset, int count)
+        public override int Read(byte[] dest, int offset, int count)
         {
-            var pos = (int) _position;
-            int b = (int) _bufferLength - (pos + offset);
-            if (b < count) count = b;
-            Buffer.BlockCopy(_sourceBuffer, pos + offset, buffer, 0, count);
-            _position += count;
+            if (position >= length)
+            {
+                return 0;
+            }
+            count = (int)Math.Min(count, length - position);
+
+            Buffer.BlockCopy(_buffer, (int) position, dest, offset, count);
+            position += count;
             return count;
         }
     }
