@@ -3377,6 +3377,7 @@ namespace iSpyApplication.Controls
             _writerStopped.Set();
         }
 
+
         [HandleProcessCorruptedStateExceptions]
         private void WriteFrame(Helper.FrameAction fa, ref double maxAlarm, ref Helper.FrameAction? peakFrame)
         {

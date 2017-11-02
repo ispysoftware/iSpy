@@ -233,8 +233,7 @@ namespace iSpyApplication.Realtime
             _closing = true;
 
             Task.Run(() => DoClose());
-            if (MainForm.ShuttingDown)
-                _recordingClosed.WaitOne();
+            _recordingClosed.WaitOne(2000);
         }
 
         private void DoClose()

@@ -35,7 +35,7 @@ namespace iSpyApplication.Sources.Video
         private AVCodecContext* _audioCodecContext;
         private AVFrame* _audioFrame, _videoFrame;
         private AVIOInterruptCB_callback_func _aviocb;
-        private AVCodecContext* _codecContext;
+        private AVCodecContext* _videoCodecContext;
         private bool _disposed;
         private AVFormatContext* _formatContext;
         private AvInterruptCb _interruptCallback;
@@ -354,8 +354,8 @@ namespace iSpyApplication.Sources.Video
                 if (_formatContext->streams[i]->codec->codec_type == AVMediaType.AVMEDIA_TYPE_VIDEO)
                 {
                     // get the pointer to the codec context for the video stream
-                    _codecContext = _formatContext->streams[i]->codec;
-                    _codecContext->workaround_bugs = 1;
+                    _videoCodecContext = _formatContext->streams[i]->codec;
+                    _videoCodecContext->workaround_bugs = 1;
                     _videoStream = _formatContext->streams[i];
                     break;
                 }
@@ -363,9 +363,9 @@ namespace iSpyApplication.Sources.Video
 
             if (_videoStream != null)
             {
-                _codecContext->flags2 |= ffmpeg.CODEC_FLAG2_FAST | ffmpeg.CODEC_FLAG_LOW_DELAY;
+                _videoCodecContext->flags2 |= ffmpeg.CODEC_FLAG2_FAST | ffmpeg.CODEC_FLAG_LOW_DELAY;
 
-                var codec = ffmpeg.avcodec_find_decoder(_codecContext->codec_id);
+                var codec = ffmpeg.avcodec_find_decoder(_videoCodecContext->codec_id);
                 if (codec == null)
                 {
                     throw new ApplicationException("Cannot find a codec to decode the video stream.");
@@ -373,7 +373,7 @@ namespace iSpyApplication.Sources.Video
 
                 if ((codec->capabilities & ffmpeg.AV_CODEC_CAP_TRUNCATED) == ffmpeg.AV_CODEC_CAP_TRUNCATED)
                 {
-                    _codecContext->flags |= ffmpeg.AV_CODEC_FLAG_TRUNCATED;
+                    _videoCodecContext->flags |= ffmpeg.AV_CODEC_FLAG_TRUNCATED;
                 }
 
                 _lastVideoFrame = DateTime.UtcNow;
@@ -385,15 +385,15 @@ namespace iSpyApplication.Sources.Video
                     hwaccel = ffmpeg.av_hwaccel_next(hwaccel);
                     if (hwaccel == null)
                         break;
-                    if (hwaccel->id == _codecContext->codec_id && hwaccel->pix_fmt == _codecContext->pix_fmt)
+                    if (hwaccel->id == _videoCodecContext->codec_id && hwaccel->pix_fmt == _videoCodecContext->pix_fmt)
                     {
                         Logger.LogMessage("Using HW decoder");
-                        _codecContext->hwaccel = hwaccel;
+                        _videoCodecContext->hwaccel = hwaccel;
                         break;
                     }
                 }
 
-                Throw("OPEN2", ffmpeg.avcodec_open2(_codecContext, codec, null));
+                Throw("OPEN2", ffmpeg.avcodec_open2(_videoCodecContext, codec, null));
 
                 _videoFrame = ffmpeg.av_frame_alloc();
             }
@@ -574,35 +574,35 @@ namespace iSpyApplication.Sources.Video
                     }
                 }
 
-                if (nf != null && _videoStream != null && packet.stream_index == _videoStream->index)
+                if (nf != null && _videoStream != null && packet.stream_index == _videoStream->index && _videoCodecContext != null)
                 {
-                    ffmpeg.avcodec_send_packet(_codecContext, &packet);
+                    ffmpeg.avcodec_send_packet(_videoCodecContext, &packet);
                     do
                     {
-                        ret = ffmpeg.avcodec_receive_frame(_codecContext, _videoFrame);
+                        ret = ffmpeg.avcodec_receive_frame(_videoCodecContext, _videoFrame);
                         if (ret == 0 && EmitFrame)
                         {
                             if (!videoInited)
                             {
                                 videoInited = true;
                                 var convertedFrameBufferSize =
-                                    ffmpeg.av_image_get_buffer_size(AVPixelFormat.AV_PIX_FMT_BGR24, _codecContext->width,
-                                        _codecContext->height, 1);
+                                    ffmpeg.av_image_get_buffer_size(AVPixelFormat.AV_PIX_FMT_BGR24, _videoCodecContext->width,
+                                        _videoCodecContext->height, 1);
 
                                 pConvertedFrameBuffer = Marshal.AllocHGlobal(convertedFrameBufferSize);
 
                                 ffmpeg.av_image_fill_arrays(ref dstData, ref dstLinesize, (byte*) pConvertedFrameBuffer,
-                                    AVPixelFormat.AV_PIX_FMT_BGR24, _codecContext->width, _codecContext->height, 1);
+                                    AVPixelFormat.AV_PIX_FMT_BGR24, _videoCodecContext->width, _videoCodecContext->height, 1);
 
 
-                                pConvertContext = ffmpeg.sws_getContext(_codecContext->width, _codecContext->height,
-                                    _codecContext->pix_fmt, _codecContext->width, _codecContext->height,
+                                pConvertContext = ffmpeg.sws_getContext(_videoCodecContext->width, _videoCodecContext->height,
+                                    _videoCodecContext->pix_fmt, _videoCodecContext->width, _videoCodecContext->height,
                                     AVPixelFormat.AV_PIX_FMT_BGR24, ffmpeg.SWS_FAST_BILINEAR, null, null, null);
                             }
 
                             Log("SWS_SCALE",
                                 ffmpeg.sws_scale(pConvertContext, _videoFrame->data, _videoFrame->linesize, 0,
-                                    _codecContext->height, dstData, dstLinesize));
+                                    _videoCodecContext->height, dstData, dstLinesize));
 
                             if (_videoFrame->decode_error_flags > 0)
                             {
@@ -610,7 +610,7 @@ namespace iSpyApplication.Sources.Video
                             }
 
                             using (
-                                var mat = new Bitmap(_codecContext->width, _codecContext->height, dstLinesize[0],
+                                var mat = new Bitmap(_videoCodecContext->width, _videoCodecContext->height, dstLinesize[0],
                                     PixelFormat.Format24bppRgb, pConvertedFrameBuffer))
                             {
                                 var nfe = new NewFrameEventArgs(mat);
@@ -687,7 +687,7 @@ namespace iSpyApplication.Sources.Video
                 _videoStream = null;
                 _audioStream = null;
                 _audioCodecContext = null;
-                _codecContext = null;
+                _videoCodecContext = null;
 
                 if (_swrContext != null)
                 {
