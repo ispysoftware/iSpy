@@ -19,6 +19,8 @@ namespace iSpyApplication.Sources.Video
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public delegate int AvInterruptCb(void* ctx);
 
+        public static WaveFormat OutFormat = new WaveFormat(22050, 16, 1);
+
         private readonly objectsMicrophone _audiosource;
         private readonly int _timeout;
         private readonly string _cookies = "";
@@ -109,7 +111,7 @@ namespace iSpyApplication.Sources.Video
 
                 if (value)
                 {
-                    WaveOutProvider = new BufferedWaveProvider(RecordingFormat)
+                    WaveOutProvider = new BufferedWaveProvider(OutFormat)
                                       {
                                           DiscardOnBufferOverflow = true,
                                           BufferDuration =
@@ -370,6 +372,7 @@ namespace iSpyApplication.Sources.Video
                 {
                     throw new ApplicationException("Cannot find a codec to decode the video stream.");
                 }
+                _videoCodecContext->refcounted_frames = 1;
 
                 if ((codec->capabilities & ffmpeg.AV_CODEC_CAP_TRUNCATED) == ffmpeg.AV_CODEC_CAP_TRUNCATED)
                 {
@@ -415,32 +418,31 @@ namespace iSpyApplication.Sources.Video
                 var audiocodec = ffmpeg.avcodec_find_decoder(_audioCodecContext->codec_id);
                 if (audiocodec != null)
                 {
-                    _audioCodecContext->refcounted_frames = 0;
+                    _audioCodecContext->refcounted_frames = 1;
 
-                    if (ffmpeg.avcodec_open2(_audioCodecContext, audiocodec, null) == 0)
-                    {
-                        _audioCodecContext->request_sample_fmt = AVSampleFormat.AV_SAMPLE_FMT_S16;
+                    Throw("OPEN2 audio", ffmpeg.avcodec_open2(_audioCodecContext, audiocodec, null));
 
-                        var chans = 1;
-                        if (_audioCodecContext->channels > 1) //downmix
-                            chans = 2;
+                    var outlayout = ffmpeg.av_get_default_channel_layout(OutFormat.Channels);
+                    _audioCodecContext->request_sample_fmt = AVSampleFormat.AV_SAMPLE_FMT_S16;
+                    _audioCodecContext->request_channel_layout = (ulong)outlayout;
 
-                        _swrContext = ffmpeg.swr_alloc_set_opts(null,
-                            ffmpeg.av_get_default_channel_layout(chans),
-                            AVSampleFormat.AV_SAMPLE_FMT_S16,
-                            _audioCodecContext->sample_rate,
-                            ffmpeg.av_get_default_channel_layout(_audioCodecContext->channels),
-                            _audioCodecContext->sample_fmt,
-                            _audioCodecContext->sample_rate,
-                            0,
-                            null);
-                        ffmpeg.swr_init(_swrContext);
 
-                        Throw("SWR_INIT", ffmpeg.swr_init(_swrContext));
-                        _audioFrame = ffmpeg.av_frame_alloc();
+                    //var chans = 1;
+                    //if (_audioCodecContext->channels > 1) //downmix
+                    //    chans = 2;
 
-                        RecordingFormat = new WaveFormat(_audioCodecContext->sample_rate, 16,_audioCodecContext->channels);
-                    }
+                    _swrContext = ffmpeg.swr_alloc_set_opts(null,
+                        outlayout,
+                        AVSampleFormat.AV_SAMPLE_FMT_S16,
+                        OutFormat.SampleRate,
+                        ffmpeg.av_get_default_channel_layout(_audioCodecContext->channels),
+                        _audioCodecContext->sample_fmt,
+                        _audioCodecContext->sample_rate,
+                        0,
+                        null);
+
+                    Throw("SWR_INIT", ffmpeg.swr_init(_swrContext));
+                    _audioFrame = ffmpeg.av_frame_alloc();
                 }
             }
 
@@ -547,7 +549,7 @@ namespace iSpyApplication.Sources.Video
                                         waveProvider = new BufferedWaveProvider(RecordingFormat)
                                                        {
                                                            DiscardOnBufferOverflow = true,
-                                                           BufferDuration = TimeSpan.FromMilliseconds(500)
+                                                           BufferDuration = TimeSpan.FromMilliseconds(200)
                                                        };
                                         sampleChannel = new SampleChannel(waveProvider);
 

@@ -648,17 +648,12 @@ namespace iSpyApplication.Realtime
             ffmpeg.avcodec_parameters_from_context(_videoStream->codecpar, _videoCodecContext);
 
             _videoFrame = ffmpeg.av_frame_alloc();
-            if (
-                ffmpeg.avpicture_alloc((AVPicture*) _videoFrame, _videoCodecContext->pix_fmt, _videoCodecContext->width,
-                    _videoCodecContext->height) < 0)
-            {
-                ffmpeg.avpicture_free((AVPicture*) _videoFrame);
-                throw new Exception("Cannot allocate video picture.");
-            }
 
             _videoFrame->width = _videoCodecContext->width;
             _videoFrame->height = _videoCodecContext->height;
             _videoFrame->format = (int) _videoCodecContext->pix_fmt;
+
+            ffmpeg.av_frame_get_buffer(_videoFrame, 32);
         }
 
         private void GetVideoCodec(AVCodecID baseCodec)

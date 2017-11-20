@@ -2548,7 +2548,7 @@ namespace iSpyApplication
                     if (b && provider!="youtube")
                         CameraControl.Camobject.settings.cloudprovider.provider = ddlCloudProviders.SelectedItem.ToString().ToLower();
 
-                    MessageBox.Show(this, b ? LocRm.GetString("OK") : LocRm.GetString("Failed"));
+                    MessageBox.Show(this, b ? LocRm.GetString("OK") : LocRm.GetString("Failed")+": Please ensure your login details are correct and you don't have two factor authentication switched on for your cloud provider.");
                 }
             }
         }

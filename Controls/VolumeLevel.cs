@@ -2200,15 +2200,23 @@ namespace iSpyApplication.Controls
             
             try
             {
-                int totBytes;
+                int totBytes = e.BytesRecorded;
                 var ba = e.RawData;
                 var br = e.BytesRecorded;
-                using (var ws = new TalkHelperStream(ba, br, AudioSource.RecordingFormat))
+                if (!(sender is MediaStream)) //mediastream is already resampling
                 {
-                    using (var helpStm = new WaveFormatConversionStream(AudioStreamFormat, ws))
+                    using (var ws = new TalkHelperStream(ba, br, AudioSource.RecordingFormat))
                     {
-                        totBytes = helpStm.Read(bResampled, 0, 22050);
+                        using (var helpStm = new WaveFormatConversionStream(AudioStreamFormat, ws))
+                        {
+                            totBytes = helpStm.Read(bResampled, 0, 22050);
+                        }
                     }
+                }
+                else
+                {
+                    bResampled = e.RawData;
+                    totBytes = e.BytesRecorded;
                 }
 
                 lock (_lockobject)
