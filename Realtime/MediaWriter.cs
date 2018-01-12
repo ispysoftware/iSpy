@@ -25,7 +25,7 @@ namespace iSpyApplication.Realtime
         private static readonly bool Hwnvidia = true;
         private static bool _hwqsv = true;
         private readonly byte[] _convOut = new byte[44100];
-        private readonly AutoResetEvent _frameWritten = new AutoResetEvent(false);
+        //private readonly AutoResetEvent _frameWritten = new AutoResetEvent(false);
         private readonly bool _isAudio;
         private readonly AutoResetEvent _recordingClosed = new AutoResetEvent(false);
         private bool _abort;
@@ -233,13 +233,14 @@ namespace iSpyApplication.Realtime
             _closing = true;
 
             Task.Run(() => DoClose());
-            _recordingClosed.WaitOne(2000);
+            if (MainForm.ShuttingDown)
+                _recordingClosed.WaitOne();
         }
 
         private void DoClose()
         {
-            _frameWritten.Reset();
-            _frameWritten.WaitOne(200);
+            //_frameWritten.Reset();
+            //_frameWritten.WaitOne();
             Program.MutexHelper.Wait();
             if (_formatContext != null)
             {
@@ -366,7 +367,7 @@ namespace iSpyApplication.Realtime
 
             if (_isAudio)
             {
-                _frameWritten.Set();
+                //_frameWritten.Set();
             }
         }
 
@@ -466,7 +467,7 @@ namespace iSpyApplication.Realtime
             }
 
             ffmpeg.av_packet_unref(&packet);
-            _frameWritten.Set();
+            //_frameWritten.Set();
         }
 
         private void Flush()
@@ -748,7 +749,7 @@ namespace iSpyApplication.Realtime
                 case AVCodecID.AV_CODEC_ID_H264:
                     ffmpeg.av_opt_set(_videoCodecContext->priv_data, "profile", "main", 0);
                     ffmpeg.av_opt_set(_videoCodecContext->priv_data, "preset", "veryfast", 0);
-                    ffmpeg.av_opt_set(_videoCodecContext->priv_data, "tune", "zerolatency", 0);
+                    //ffmpeg.av_opt_set(_videoCodecContext->priv_data, "tune", "zerolatency", 0);
                     //_videoCodecContext->qmin = 16;
                     //_videoCodecContext->qmax = 26;
 

@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using FFmpeg.AutoGen;
+using Google.Apis.Util;
 using iSpyApplication.Controls;
 using iSpyApplication.Sources.Audio;
 using iSpyApplication.Utilities;
@@ -517,16 +518,18 @@ namespace iSpyApplication.Sources.Video
                                     ret = ffmpeg.avcodec_receive_frame(_audioCodecContext, _audioFrame);
                                     if (ret == 0)
                                     {
-                                        var dat = _audioFrame->data[0];
-                                        var numSamplesOut = ffmpeg.swr_convert(_swrContext,
-                                            outPtrs,
-                                            _audioCodecContext->sample_rate,
-                                            &dat,
-                                            _audioFrame->nb_samples);
+                                        fixed (byte** datptr = _audioFrame->data.ToArray())
+                                        {
+                                            var numSamplesOut = ffmpeg.swr_convert(_swrContext,
+                                                outPtrs,
+                                                _audioCodecContext->sample_rate,
+                                                datptr,
+                                                _audioFrame->nb_samples);
 
-                                        var l = numSamplesOut*2*_audioCodecContext->channels;
-                                        Buffer.BlockCopy(tbuffer, 0, buffer, s, l);
-                                        s += l;
+                                            var l = numSamplesOut * 2 * OutFormat.Channels;
+                                            Buffer.BlockCopy(tbuffer, 0, buffer, s, l);
+                                            s += l;
+                                        }
                                     }
 
                                     if (_audioFrame->decode_error_flags > 0)
@@ -561,9 +564,9 @@ namespace iSpyApplication.Sources.Video
 
                                     var sampleBuffer = new float[s];
                                     var read = sampleChannel.Read(sampleBuffer, 0, s);
+                                    
 
-
-                                    da(this, new DataAvailableEventArgs(ba, read));
+                                    da(this, new DataAvailableEventArgs(ba, s));
 
 
                                     if (Listening)

@@ -3199,6 +3199,8 @@ namespace iSpyApplication.Controls
                                 }
                             }
 
+
+
                             if (!Directory.Exists(folder + @"thumbs\"))
                                 Directory.CreateDirectory(folder + @"thumbs\");
 

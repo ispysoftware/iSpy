@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -71,8 +72,7 @@ namespace iSpyApplication.Controls
         
 
         #endregion
-
-
+        
         public GridView(MainForm main, ref configurationGrid cg, iSpyApplication.GridView owner)
         {
             Cg = cg;
@@ -208,7 +208,7 @@ namespace iSpyApplication.Controls
                         del = Convert.ToInt32(cfg[0]);
                         if (cfg.Length >= 4)
                         {
-                            Boolean.TryParse(cfg[3], out sr);
+                            bool.TryParse(cfg[3], out sr);
                         }
                     }
                 }
