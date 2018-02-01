@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FFmpeg.AutoGen;
@@ -19,8 +17,6 @@ namespace iSpyApplication.Realtime
         public delegate int AvInterruptCb(void* ctx);
 
         public delegate int InterruptCallback();
-
-        private const int Iframeinterval = 3000;
 
         private static readonly bool Hwnvidia = true;
         private static bool _hwqsv = true;
@@ -49,11 +45,10 @@ namespace iSpyApplication.Realtime
 
         private bool _isConstantFramerate;
 
-        private DateTime _keyframeInterval;
         private long _lastAudioPts;
 
         private DateTime _lastPacket;
-        private double _maxLevel = -1;
+        //private double _maxLevel = -1;
         private bool _opened;
         private SwsContext* _pConvertContext;
         private SwrContext* _swrContext;
@@ -221,7 +216,6 @@ namespace iSpyApplication.Realtime
             ffmpeg.av_dict_free(&opts);
 
             _frameNumber = 0;
-            _keyframeInterval = DateTime.UtcNow;
             _opened = true;
         }
 
@@ -438,11 +432,7 @@ namespace iSpyApplication.Realtime
 
             packet.data = null;
             packet.size = 0;
-            if (Convert.ToInt32((DateTime.UtcNow - _keyframeInterval).TotalMilliseconds) >= Iframeinterval)
-            {
-                _videoFrame->pict_type = AVPictureType.AV_PICTURE_TYPE_I;
-                _keyframeInterval = DateTime.UtcNow;
-            }
+
             var ret = ffmpeg.avcodec_send_frame(_videoCodecContext, _videoFrame);
             while (ret >= 0)
             {
@@ -643,8 +633,7 @@ namespace iSpyApplication.Realtime
 
         private void OpenVideo()
         {
-            _maxLevel = -1;
-
+            //_maxLevel = -1;
 
             ffmpeg.avcodec_parameters_from_context(_videoStream->codecpar, _videoCodecContext);
 
@@ -747,13 +736,12 @@ namespace iSpyApplication.Realtime
                     ffmpeg.av_opt_set(_videoCodecContext->priv_data, "pkt_size", "1316", 0);
                     break;
                 case AVCodecID.AV_CODEC_ID_H264:
-                    ffmpeg.av_opt_set(_videoCodecContext->priv_data, "profile", "main", 0);
-                    ffmpeg.av_opt_set(_videoCodecContext->priv_data, "preset", "veryfast", 0);
+                    ffmpeg.av_opt_set(_videoCodecContext->priv_data, "profile", "baseline", ffmpeg.AV_OPT_SEARCH_CHILDREN);
+                    ffmpeg.av_opt_set(_videoCodecContext->priv_data, "preset", "veryfast", ffmpeg.AV_OPT_SEARCH_CHILDREN);
                     //ffmpeg.av_opt_set(_videoCodecContext->priv_data, "tune", "zerolatency", 0);
-                    //_videoCodecContext->qmin = 16;
-                    //_videoCodecContext->qmax = 26;
 
-                    //_videoCodecContext->coder_type = ffmpeg.FF_CODER_TYPE_AC;
+                    //_videoCodecContext->profile = ffmpeg.FF_PROFILE_H264_CONSTRAINED_BASELINE;
+                    //_videoCodecContext->coder_type = 1;
                     //_videoCodecContext->flags |= ffmpeg.CODEC_FLAG_LOOP_FILTER;
                     //_videoCodecContext->scenechange_threshold = 40;
                     //_videoCodecContext->gop_size = 40;
@@ -770,7 +758,7 @@ namespace iSpyApplication.Realtime
                     //_videoCodecContext->trellis = 0;
                     //_videoCodecContext->level = 13;
                     //_videoCodecContext->refs = 1;
-                    //ffmpeg.av_opt_set(_videoCodecContext->priv_data, "tune", "zerolatency", 0);
+
 
 
                     break;

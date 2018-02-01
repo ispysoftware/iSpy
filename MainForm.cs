@@ -1856,7 +1856,7 @@ namespace iSpyApplication
                     Resizing = false;
             }
 
-            if (_pingCounter == 301)
+            if (_pingCounter >= 301)
             {
                 _pingCounter = 0;
                 //auto save

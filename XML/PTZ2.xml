@@ -1046,36 +1046,47 @@
   </Camera>
   <Camera id="31">
     <Makes>
-      <Make Name="Vstarcam" Model="" />
+      <Make Name="Vstarcam" Model="C7824WIP" />
     </Makes>
-    <CommandURL>/cgi-bin/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]</CommandURL>
+    <CommandURL></CommandURL>
     <Commands>
-      <Center>command=12</Center>
-      <Left>command=3</Left>
-      <LeftUp>command=4</LeftUp>
-      <Right>command=6</Right>
-      <RightUp>command=7</RightUp>
-      <Up>command=1</Up>
-      <Down>command=2</Down>
-      <LeftDown>command=5</LeftDown>
-      <RightDown>command=8</RightDown>
-      <Stop>command=0</Stop>
-      <ZoomIn>command=18</ZoomIn>
-      <ZoomOut>command=16</ZoomOut>
+      <Center>/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=25&amp;onestep=0</Center>
+      <Left>/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=4&amp;onestep=0</Left>
+      <LeftUp>/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=90&amp;onestep=0</LeftUp>
+      <Right>/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=6&amp;onestep=0</Right>
+      <RightUp>/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=91&amp;onestep=0</RightUp>
+      <Up>/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=0&amp;onestep=0</Up>
+      <Down>/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=2&amp;onestep=0</Down>
+      <LeftDown>/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=92&amp;onestep=0</LeftDown>
+      <RightDown>/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=93&amp;onestep=0</RightDown>
+      <Stop>/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=1&amp;onestep=0</Stop>
+      <ZoomIn>
+      </ZoomIn>
+      <ZoomOut>
+      </ZoomOut>
     </Commands>
     <ExtendedCommands>
-      <Command Name="H Patrol">onestep=0&amp;command=10</Command>
-      <Command Name="V Patrol">onestep=0&amp;command=11</Command>
-      <Command Name="Go Pos 1">command=15&amp;sit=1</Command>
-      <Command Name="Go Pos 2">command=15&amp;sit=2</Command>
-      <Command Name="Go Pos 3">command=15&amp;sit=3</Command>
-      <Command Name="Go Pos 4">command=15&amp;sit=4</Command>
-      <Command Name="Go Pos 5">command=15&amp;sit=5</Command>
-      <Command Name="Save Pos 1">command=13&amp;sit=1</Command>
-      <Command Name="Save Pos 2">command=13&amp;sit=2</Command>
-      <Command Name="Save Pos 3">command=13&amp;sit=3</Command>
-      <Command Name="Save Pos 4">command=13&amp;sit=4</Command>
-      <Command Name="Save Pos 5">command=13&amp;sit=5</Command>
+      <Command Name="Stop">/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=1&amp;onestep=0</Command>
+      <Command Name="IR on">/camera_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;param=14&amp;value=1</Command>
+      <Command Name="IR off">/camera_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;param=14&amp;value=0</Command>
+      <Command Name="H Patrol">/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;onestep=0&amp;command=28</Command>
+      <Command Name="V Patrol">/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;onestep=0&amp;command=26</Command>
+      <Command Name="IO Output High">/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=94</Command>
+      <Command Name="IO Output Low">/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=95</Command>
+      <Command Name="Set Preset 1">/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=30&amp;sit=30&amp;onestep=0</Command>
+      <Command Name="Go Preset 1">/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=31&amp;sit=31&amp;onestep=0</Command>
+      <Command Name="Set Preset 2">/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=32&amp;sit=32&amp;onestep=0</Command>
+      <Command Name="Go Preset 2">/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=33&amp;sit=33&amp;onestep=0</Command>
+      <Command Name="Set Preset 3">/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=34&amp;sit=34&amp;onestep=0</Command>
+      <Command Name="Go Preset 3">/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=35&amp;sit=35&amp;onestep=0</Command>
+      <Command Name="Set Preset 4">/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=36&amp;sit=36&amp;onestep=0</Command>
+      <Command Name="Go Preset 4">/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=37&amp;sit=37&amp;onestep=0</Command>
+      <Command Name="Set Preset 5">/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=38&amp;sit=38&amp;onestep=0</Command>
+      <Command Name="Go Preset 5">/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=39&amp;sit=39&amp;onestep=0</Command>
+      <Command Name="Set Preset 6">/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=40&amp;sit=40&amp;onestep=0</Command>
+      <Command Name="Go Preset 6">/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=41&amp;sit=41&amp;onestep=0</Command>
+      <Command Name="Set Preset 7">/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=42&amp;sit=42&amp;onestep=0</Command>
+      <Command Name="Go Preset 7">/decoder_control.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]&amp;command=43&amp;sit=43&amp;onestep=0</Command>
     </ExtendedCommands>
   </Camera>
   <Camera id="32">

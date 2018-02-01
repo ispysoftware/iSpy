@@ -274,9 +274,9 @@
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi" />
     <url version="Other" prefix="rtsp://" Source="VLC" url="videoMain" />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.jpg" />
-    <url version="PICKTHISFORALL" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="PICKTHISFORALL" prefix="http://" Source="MJPEG" url="cgi-bin/videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="PICKTHISFORALL" prefix="http://" Source="JPEG" url="cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=[USERNAME]&amp;pwd=[PASSWORD]&amp;" port="88" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="cgi-bin/videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
+    <url version="Other" prefix="http://" Source="JPEG" url="cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=[USERNAME]&amp;pwd=[PASSWORD]&amp;" port="88" />
     <url version="PX 3675" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="PX 3675" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="PX 3675" prefix="http://" Source="JPEG" url="cgi-bin/video_snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -2545,10 +2545,6 @@
   <Manufacturer name="AllSky">
     <url version="1080" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=7NuPmaf5_channel=1_stream=0.sdp" />
     <url version="BoaCam" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=LSJsUR9f_channel=1_stream=1.sdp" />
-  </Manufacturer>
-  <Manufacturer name="Almacen">
-    <url version="d-link" prefix="http://" Source="JPEG" url="cgi-bin/video.jpg" />
-    <url version="D-LINK" prefix="http://" Source="MJPEG" url="MJPEG.CGI" />
   </Manufacturer>
   <Manufacturer name="ALP">
     <url version="Other" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=1.sdp" />
@@ -11285,9 +11281,6 @@
   <Manufacturer name="Dizink">
     <url version="930L" prefix="http://" Source="MJPEG" url="VIDEO.CGI" />
   </Manufacturer>
-  <Manufacturer name="DKDCK-HikVision">
-    <url version="DS-2CD2032-I" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/2" />
-  </Manufacturer>
   <Manufacturer name="DKSEG">
     <url version="DK408P" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="ip wireless" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
@@ -15649,7 +15642,6 @@
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
-    <url version="Unlisted" prefix="http://" Source="MJPEG" url="videofeed" />
   </Manufacturer>
   <Manufacturer name="esmart">
     <url version="D-MP" prefix="rtsp://" Source="VLC" url="" />
@@ -32849,6 +32841,7 @@
     <url version="PTZ CAMERA" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" port="10554" />
     <url version="PTZ CAMERA" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" port="81" />
     <url version="WIFICAM" prefix="rtsp://" Source="FFMPEG" url="/tcp/av0_0" port="10554" />
+    <url version="DVR" prefix="rtsp://" Source="FFMPEG" url="/user=[USERNAME]&amp;password=[PASSWORD]&amp;channel=[CHANNEL]&amp;stream=0.sdp?real_stream--rtp-caching=100"/>
   </Manufacturer>
   <Manufacturer name="Santachi">
     <url version="ST-NT280E1" prefix="rtsp://" Source="FFMPEG" url="/tcp/av0_0" />

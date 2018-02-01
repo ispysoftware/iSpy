@@ -248,6 +248,7 @@ internal static class Program
                 {
 
                 }
+                ex = ex.InnerException;
             }
         }
         try

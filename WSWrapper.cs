@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.ServiceModel.Configuration;
 using System.Threading;
 using System.Threading.Tasks;
@@ -258,6 +259,7 @@ namespace iSpyApplication
             }
         }
 
+        private static string lastResponse = "";
         public static void DoPingRequest()
         {
             int port = MainForm.Conf.ServerPort;
@@ -265,20 +267,24 @@ namespace iSpyApplication
                 port = MainForm.Conf.LANPort;
 
             LastLiveCheck = Helper.Now;
-
+            string[] r = null;
             try
             {
                 //using IPAddress in both as the website determines remoteip for ipv4 or uses ipv6 for both internal and external
 
-                Wsa.PingAlive(MainForm.Conf.WSUsername, MainForm.Conf.WSPassword, port,
-                    MainForm.Conf.IPMode == "IPv4", MainForm.IPAddress, MainForm.IPAddress);
-                
+                r = Wsa.PingAlive(MainForm.Conf.WSUsername, MainForm.Conf.WSPassword, port, MainForm.Conf.IPMode == "IPv4", MainForm.IPAddress, MainForm.IPAddress);
+                if (r[0] != lastResponse)
+                {
+                    Logger.LogMessage("Ping: "+r[0]);
+                }
+                lastResponse = r[0];
                 WebsiteLive = true;
                 _pingIndex = 0;
             }
-            catch
+            catch(Exception ex)
             {
                 WebsiteLive = false;
+                Logger.LogException(ex,"Ping");
                 _pingIndex = Math.Min(_pingIndex+1, PingDelays.Length-1);
             }
             _pingRequestThread = null;
