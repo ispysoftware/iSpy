@@ -913,6 +913,10 @@ namespace iSpyApplication
             return Actions.Single(p => p.ID == id).ToString();
         }
 
+        internal static int CalcCRF(int quality)
+        {
+            return Convert.ToInt32(30d - (quality - 1) * ((30d - 18d) / 9d));
+        }
         internal static bool CanArchive
         {
             get

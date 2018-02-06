@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using iSpyApplication.Controls;
 
 namespace iSpyApplication.Sources.Video
@@ -28,20 +29,28 @@ namespace iSpyApplication.Sources.Video
         {
             _cw = cw;
         }
-
-        private DateTime _lastFrame = DateTime.MinValue;
+        
+        private DateTime _nextFrameTarget = DateTime.MinValue;
         public bool EmitFrame
         {
             get
             {
                 if (_cw == null)
                     return true;
-
-                if ((DateTime.UtcNow - _lastFrame).TotalMilliseconds <= FrameInterval)
+                var d = Helper.Now;
+                if (d < _nextFrameTarget)
                 {
                     return false;
                 }
-                _lastFrame = DateTime.UtcNow;
+
+                double dMin = FrameInterval;
+                _nextFrameTarget = _nextFrameTarget.AddMilliseconds(dMin);
+
+                if (_nextFrameTarget < d)
+                {
+                    _nextFrameTarget = d;
+                }
+
                 return true;
             }
         }

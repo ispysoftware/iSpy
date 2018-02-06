@@ -1626,7 +1626,8 @@ namespace iSpyApplication.Controls
                         {
                             recordingStart = fa.TimeStamp;
                         }
-                        _writer = new MediaWriter(filename + ".mp3", AVCodecID.AV_CODEC_ID_MP3, recordingStart);
+                        _writer = new MediaWriter();
+                        _writer.Open(filename + ".mp3", -1,-1,AVCodecID.AV_CODEC_ID_NONE,0, AVCodecID.AV_CODEC_ID_MP3, recordingStart,20);
 
                         try
                         {

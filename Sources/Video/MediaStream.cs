@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
@@ -248,7 +249,7 @@ namespace iSpyApplication.Sources.Video
                         }
                         if (_userAgent != "")
                         {
-                            ffmpeg.av_dict_set(&options, "user-agent", _userAgent, 0);
+                            ffmpeg.av_dict_set(&options, "user_agent", _userAgent, 0);
                         }
                         break;
                     default:
@@ -259,12 +260,13 @@ namespace iSpyApplication.Sources.Video
                         ffmpeg.av_dict_set_int(&options, "stimeout", _timeout * 1000, 0);
                         if (_userAgent != "")
                         {
-                            ffmpeg.av_dict_set(&options, "user-agent", _userAgent, 0);
+                            ffmpeg.av_dict_set(&options, "user_agent", _userAgent, 0);
                         }
                         break;
                 }
 
                 ffmpeg.av_dict_set(&options, "rtsp_transport", _modeRTSP, 0);
+                ffmpeg.av_dict_set(&options, "rtsp_flags", "prefer_tcp", 0);
             }
 
             ffmpeg.av_dict_set_int(&options, "rtbufsize", 10000000, 0);
@@ -359,6 +361,7 @@ namespace iSpyApplication.Sources.Video
                     // get the pointer to the codec context for the video stream
                     _videoCodecContext = _formatContext->streams[i]->codec;
                     _videoCodecContext->workaround_bugs = 1;
+                    _videoCodecContext->flags2 |= ffmpeg.CODEC_FLAG2_FAST | ffmpeg.CODEC_FLAG_LOW_DELAY | ffmpeg.CODEC_FLAG2_CHUNKS;
                     _videoStream = _formatContext->streams[i];
                     break;
                 }
@@ -366,7 +369,7 @@ namespace iSpyApplication.Sources.Video
 
             if (_videoStream != null)
             {
-                _videoCodecContext->flags2 |= ffmpeg.CODEC_FLAG2_FAST | ffmpeg.CODEC_FLAG_LOW_DELAY;
+                
 
                 var codec = ffmpeg.avcodec_find_decoder(_videoCodecContext->codec_id);
                 if (codec == null)
@@ -585,7 +588,9 @@ namespace iSpyApplication.Sources.Video
                     do
                     {
                         ret = ffmpeg.avcodec_receive_frame(_videoCodecContext, _videoFrame);
-                        if (ret == 0 && EmitFrame)
+                        var ef = EmitFrame;
+                        //Debug.WriteLine("ret: "+ret+", ef:"+ef);
+                        if (ret == 0 && ef)
                         {
                             if (!videoInited)
                             {

@@ -67,25 +67,30 @@ namespace iSpyApplication.Realtime
         public int OutChannels = 1;
         public int OutSampleRate = 22050;
         public long SizeBytes;
+        private int _crf;
 
         public int Timeout = 5000;
 
-        public MediaWriter(string fileName, AVCodecID audioCodec, DateTime created) : base("Writer")
+        public MediaWriter(): base("Writer")
         {
-            Open(fileName, -1, -1, AVCodecID.AV_CODEC_ID_NONE, 0, audioCodec, created);
-            _isAudio = true;
+            
         }
+        //public MediaWriter(string fileName, AVCodecID audioCodec, DateTime created) : base("Writer")
+        //{
+        //    Open(fileName, -1, -1, AVCodecID.AV_CODEC_ID_NONE, 0, audioCodec, created);
+        //    _isAudio = true;
+        //}
 
-        public MediaWriter(string fileName, int width, int height, AVCodecID videoCodec, DateTime created) : base("Writer")
-        {
-            Open(fileName, width, height, videoCodec, 0, AVCodecID.AV_CODEC_ID_NONE, created);
-        }
+        //public MediaWriter(string fileName, int width, int height, AVCodecID videoCodec, DateTime created) : base("Writer")
+        //{
+        //    Open(fileName, width, height, videoCodec, 0, AVCodecID.AV_CODEC_ID_NONE, created);
+        //}
 
-        public MediaWriter(string fileName, int width, int height, AVCodecID videoCodec, int framerate,
-            AVCodecID audioCodec, DateTime created) : base("Writer")
-        {
-            Open(fileName, width, height, videoCodec, framerate, audioCodec, created);
-        }
+        //public MediaWriter(string fileName, int width, int height, AVCodecID videoCodec, int framerate,
+        //    AVCodecID audioCodec, DateTime created) : base("Writer")
+        //{
+        //    Open(fileName, width, height, videoCodec, framerate, audioCodec, created);
+        //}
 
         public bool Closed => !_opened;
 
@@ -114,12 +119,13 @@ namespace iSpyApplication.Realtime
             return 0;
         }
 
-        private void Open(string fileName, int width, int height, AVCodecID videoCodec, int framerate,AVCodecID audioCodec, DateTime created)
+        public void Open(string fileName, int width, int height, AVCodecID videoCodec, int framerate,AVCodecID audioCodec, DateTime created, int crf)
         {
             CreatedDate = created;
             Filename = fileName;
             _abort = false;
             _ignoreAudio = false;
+            _crf = crf;
 
             if (videoCodec != AVCodecID.AV_CODEC_ID_NONE)
             {
@@ -634,7 +640,6 @@ namespace iSpyApplication.Realtime
         private void OpenVideo()
         {
             //_maxLevel = -1;
-
             ffmpeg.avcodec_parameters_from_context(_videoStream->codecpar, _videoCodecContext);
 
             _videoFrame = ffmpeg.av_frame_alloc();
@@ -738,29 +743,9 @@ namespace iSpyApplication.Realtime
                 case AVCodecID.AV_CODEC_ID_H264:
                     ffmpeg.av_opt_set(_videoCodecContext->priv_data, "profile", "baseline", ffmpeg.AV_OPT_SEARCH_CHILDREN);
                     ffmpeg.av_opt_set(_videoCodecContext->priv_data, "preset", "veryfast", ffmpeg.AV_OPT_SEARCH_CHILDREN);
-                    //ffmpeg.av_opt_set(_videoCodecContext->priv_data, "tune", "zerolatency", 0);
-
-                    //_videoCodecContext->profile = ffmpeg.FF_PROFILE_H264_CONSTRAINED_BASELINE;
-                    //_videoCodecContext->coder_type = 1;
-                    //_videoCodecContext->flags |= ffmpeg.CODEC_FLAG_LOOP_FILTER;
-                    //_videoCodecContext->scenechange_threshold = 40;
-                    //_videoCodecContext->gop_size = 40;
-                    //_videoCodecContext->max_b_frames = 0;
-                    //_videoCodecContext->max_qdiff = 4;
-                    //_videoCodecContext->me_method = 7;
-                    //_videoCodecContext->me_range = 16;
-                    //_videoCodecContext->me_cmp |= 1;
-                    //_videoCodecContext->me_subpel_quality = 6;
-                    //_videoCodecContext->qmin = 10;
-                    //_videoCodecContext->qmax = 51;
-                    //_videoCodecContext->qcompress = 0.6f;
-                    //_videoCodecContext->keyint_min = 2;
-                    //_videoCodecContext->trellis = 0;
-                    //_videoCodecContext->level = 13;
-                    //_videoCodecContext->refs = 1;
-
-
-
+                    ////ffmpeg.av_opt_set(_videoCodecContext->priv_data, "tune", "zerolatency", 0);
+                    ffmpeg.av_opt_set_int(_videoCodecContext->priv_data, "crf", _crf, ffmpeg.AV_OPT_SEARCH_CHILDREN);
+                    
                     break;
                 case AVCodecID.AV_CODEC_ID_HEVC:
                     ffmpeg.av_opt_set(_videoCodecContext->priv_data, "x265-params", "qp=20", 0);

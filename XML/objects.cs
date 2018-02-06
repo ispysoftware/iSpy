@@ -2785,6 +2785,8 @@ public partial class objectsCameraRecorder {
     
     private int ftpcountermaxField;
     
+    private int bitrateField;
+    
     public objectsCameraRecorder() {
         this.minrecordtimeField = 0;
         this.timelapseenabledField = false;
@@ -2798,6 +2800,7 @@ public partial class objectsCameraRecorder {
         this.ftpfilenameField = "";
         this.ftpcounterField = 0;
         this.ftpcountermaxField = 20;
+        this.bitrateField = 0;
     }
     
     /// <remarks/>
@@ -2996,6 +2999,18 @@ public partial class objectsCameraRecorder {
         }
         set {
             this.ftpcountermaxField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute(0)]
+    public int bitrate {
+        get {
+            return this.bitrateField;
+        }
+        set {
+            this.bitrateField = value;
         }
     }
 }

@@ -472,14 +472,10 @@ namespace iSpyApplication.Controls
         {
             var nf = NewFrame;
             var f = e.Frame;
-            if (f == null)
-            {
-                nf?.Invoke(this, e);
-            }
+
             if (nf==null || f==null)
                 return;
-    
-            
+
             if (_lastframeEvent > DateTime.MinValue)
             {
                 CalculateFramerates();
@@ -619,9 +615,9 @@ namespace iSpyApplication.Controls
                 }
             }
 
-            
             nf.Invoke(this, new NewFrameEventArgs(bmOrig));
-            
+
+
             if (bMotion)
             {
                 TriggerDetect(this);
@@ -977,7 +973,7 @@ namespace iSpyApplication.Controls
             }
             if (CW.HasClones)
                 return new Bitmap(f);
-            return f;                    
+            return (Bitmap)f.Clone();                    
         }
 
         private void CalculateFramerates()

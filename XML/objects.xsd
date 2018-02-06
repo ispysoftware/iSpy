@@ -301,6 +301,7 @@
                                                 <xs:attribute name="ftpfilename" type="xs:string" default="" />
                                                 <xs:attribute name="ftpcounter" type="xs:int" default="0"/>
                                                 <xs:attribute name="ftpcountermax" type="xs:int" default="20" />
+                                                <xs:attribute name="bitrate" type="xs:int" default="0"/>
                                             </xs:complexType>
                                         </xs:element>
                                         <xs:element name="alerts">
