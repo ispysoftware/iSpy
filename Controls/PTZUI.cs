@@ -83,15 +83,8 @@ namespace iSpyApplication.Controls
         {
             _mousedown = false;
             tmrRepeater.Stop();
-            if (CameraControl == null)
-                return;
 
-            PTZSettings2Camera ptz = MainForm.PTZs.SingleOrDefault(p => p.id == CameraControl.Camobject.ptz);
-            if (!string.IsNullOrEmpty(ptz?.Commands.Stop))
-                CameraControl.PTZ.SendPTZCommand(ptz.Commands.Stop);
-
-            if (CameraControl.PTZ.IsContinuous)
-                CameraControl.PTZ.SendPTZCommand(Enums.PtzCommand.Stop);
+            CameraControl?.PTZ.CheckSendStop();
         }
 
         private void tmrRepeater_Tick(object sender, EventArgs e)

@@ -1569,12 +1569,7 @@ namespace iSpyApplication
 
         private void PnlPtzMouseUp(object sender, MouseEventArgs e)
         {
-            PTZSettings2Camera ptz = MainForm.PTZs.SingleOrDefault(p => p.id == CameraControl.Camobject.ptz);
-            if ((ptz != null && ptz.Commands.Stop!=""))
-                SendPtzCommand(ptz.Commands.Stop);
-
-            if (CameraControl.PTZ.IsContinuous)
-                CameraControl.PTZ.SendPTZCommand(Enums.PtzCommand.Stop);
+            CameraControl.PTZ.CheckSendStop();            
         }
 
         private void SendPtzCommand(string cmd)
@@ -1611,6 +1606,7 @@ namespace iSpyApplication
 
         private void LinkLabel6LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+
             var d = new downloader
             {
                 Url = MainForm.ContentSource + "/getcontent.aspx?name=PTZ2",

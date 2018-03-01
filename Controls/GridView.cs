@@ -6,6 +6,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using iSpyApplication.Utilities;
+using iSpyPRO.DirectShow;
 using Timer = System.Timers.Timer;
 
 namespace iSpyApplication.Controls
@@ -84,6 +85,7 @@ namespace iSpyApplication.Controls
             BackColor = MainForm.Conf.BackColor.ToColor();
             MainClass = main;
             _owner = owner;
+            Program.AppIdle.ApplicationLoopDoWork += HandlerApplicationLoopDoWork;
             Init();
         }
 
@@ -144,7 +146,6 @@ namespace iSpyApplication.Controls
                     break;
             }
 
-            Program.AppIdle.ApplicationLoopDoWork += HandlerApplicationLoopDoWork;
         }
 
         private void ClearControls()
@@ -1101,8 +1102,8 @@ namespace iSpyApplication.Controls
                         cameraControl.Calibrating = true;
                         cameraControl.PTZ.SendPTZCommand(
                             e.Delta > 0 ? Enums.PtzCommand.ZoomIn : Enums.PtzCommand.ZoomOut);
-                        if (cameraControl.PTZ.IsContinuous)
-                            cameraControl.PTZ.SendPTZCommand(Enums.PtzCommand.Stop);
+
+                        cameraControl.PTZ.CheckSendStop();
                     }
                     else
                     {

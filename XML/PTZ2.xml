@@ -7304,73 +7304,73 @@ in the camera's web interface-->
     </ExtendedCommands>
   </Camera>
   <Camera id="248">
-      <Makes>
-        <Make Name="Jennov" Model="by Sajo" />
-      </Makes>
-      <CommandURL>/cgi-bin/hi3510/</CommandURL>
-      <Commands>
-        <Center>preset.cgi?-act=goto&amp;-number=0</Center>
-        <Left>ptzctrl.cgi?-step=1&amp;-act=left</Left>
-        <Right>ptzctrl.cgi?-step=1&amp;-act=right</Right>
-        <Up>ptzctrl.cgi?-step=1&amp;-act=up</Up>
-        <Down>ptzctrl.cgi?-step=1&amp;-act=down</Down>
-        <Stop>ptzctrl.cgi?-step=0&amp;-act=stop</Stop>
-        <ZoomIn>ptzctrl.cgi?-step=1&amp;-act=zoomin</ZoomIn>
-        <ZoomOut>ptzctrl.cgi?-step=1&amp;-act=zoomout</ZoomOut>
-      </Commands>
-      <ExtendedCommands>
-        <Command Name="Go Preset 1">preset.cgi?-act=goto&amp;-number=0</Command>
-        <Command Name="Go Preset 2">preset.cgi?-act=goto&amp;-number=1</Command>
-        <Command Name="Go Preset 3">preset.cgi?-act=goto&amp;-number=2</Command>
-        <Command Name="Go Preset 4">preset.cgi?-act=goto&amp;-number=3</Command>
-        <Command Name="Go Preset 5">preset.cgi?-act=goto&amp;-number=4</Command>
-        <Command Name="Go Preset 6">preset.cgi?-act=goto&amp;-number=5</Command>
-        <Command Name="Go Preset 7">preset.cgi?-act=goto&amp;-number=6</Command>
-        <Command Name="Go Preset 8">preset.cgi?-act=goto&amp;-number=7</Command>
-        <Command Name="Set Preset 1">preset.cgi?-act=set&amp;-status=1&amp;-number=0</Command>
-        <Command Name="Set Preset 2">preset.cgi?-act=set&amp;-status=1&amp;-number=1</Command>
-        <Command Name="Set Preset 3">preset.cgi?-act=set&amp;-status=1&amp;-number=2</Command>
-        <Command Name="Set Preset 4">preset.cgi?-act=set&amp;-status=1&amp;-number=3</Command>
-        <Command Name="Set Preset 5">preset.cgi?-act=set&amp;-status=1&amp;-number=4</Command>
-        <Command Name="Set Preset 6">preset.cgi?-act=set&amp;-status=1&amp;-number=5</Command>
-        <Command Name="Set Preset 7">preset.cgi?-act=set&amp;-status=1&amp;-number=6</Command>
-        <Command Name="Set Preset 8">preset.cgi?-act=set&amp;-status=1&amp;-number=7</Command>
-        <Command Name="Show Time Overlay">param.cgi?cmd=setoverlayattr&amp;-region=0&amp;-show=1</Command>
-        <Command Name="Hide Time Overlay">param.cgi?cmd=setoverlayattr&amp;-region=0&amp;-show=0</Command>
-        <Command Name="Show Name Overlay">param.cgi?cmd=setoverlayattr&amp;-region=1&amp;-show=1</Command>
-        <Command Name="Hide Name Overlay">param.cgi?cmd=setoverlayattr&amp;-region=1&amp;-show=0</Command>
-        <Command Name="IR auto">/cgi-bin/hi3510/setinfrared.cgi?-infraredstat=auto</Command>
-        <Command Name="IR on">/cgi-bin/hi3510/setinfrared.cgi?-infraredstat=open</Command>
-        <Command Name="IR off">/cgi-bin/hi3510/setinfrared.cgi?-infraredstat=close</Command>
-        <Command Name="Brightness 0">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=0</Command>
-        <Command Name="Brightness 10">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=10</Command>
-        <Command Name="Brightness 20">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=20</Command>
-        <Command Name="Brightness 30">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=30</Command>
-        <Command Name="Brightness 40">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=40</Command>
-        <Command Name="Brightness 50">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=50</Command>
-        <Command Name="Brightness 60">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=60</Command>
-        <Command Name="Brightness 70">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=70</Command>
-        <Command Name="Brightness 80">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=80</Command>
-        <Command Name="Brightness 90">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=90</Command>
-        <Command Name="Brightness 100">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=100</Command>
-        <Command Name="Contrast 0">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=0</Command>
-        <Command Name="Contrast 10">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=10</Command>
-        <Command Name="Contrast 20">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=20</Command>
-        <Command Name="Contrast 30">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=30</Command>
-        <Command Name="Contrast 40">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=40</Command>
-        <Command Name="Contrast 50">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=50</Command>
-        <Command Name="Contrast 60">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=60</Command>
-        <Command Name="Contrast 70">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=70</Command>
-        <Command Name="Contrast 80">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=80</Command>
-        <Command Name="Contrast 90">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=90</Command>
-        <Command Name="Contrast 100">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=100</Command>
-      </ExtendedCommands>
-    </Camera>
- <Camera id="249">
+    <Makes>
+      <Make Name="Jennov" Model="by Sajo" />
+    </Makes>
+    <CommandURL>/cgi-bin/hi3510/</CommandURL>
+    <Commands>
+      <Center>preset.cgi?-act=goto&amp;-number=0</Center>
+      <Left>ptzctrl.cgi?-step=1&amp;-act=left</Left>
+      <Right>ptzctrl.cgi?-step=1&amp;-act=right</Right>
+      <Up>ptzctrl.cgi?-step=1&amp;-act=up</Up>
+      <Down>ptzctrl.cgi?-step=1&amp;-act=down</Down>
+      <Stop>ptzctrl.cgi?-step=0&amp;-act=stop</Stop>
+      <ZoomIn>ptzctrl.cgi?-step=1&amp;-act=zoomin</ZoomIn>
+      <ZoomOut>ptzctrl.cgi?-step=1&amp;-act=zoomout</ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Go Preset 1">preset.cgi?-act=goto&amp;-number=0</Command>
+      <Command Name="Go Preset 2">preset.cgi?-act=goto&amp;-number=1</Command>
+      <Command Name="Go Preset 3">preset.cgi?-act=goto&amp;-number=2</Command>
+      <Command Name="Go Preset 4">preset.cgi?-act=goto&amp;-number=3</Command>
+      <Command Name="Go Preset 5">preset.cgi?-act=goto&amp;-number=4</Command>
+      <Command Name="Go Preset 6">preset.cgi?-act=goto&amp;-number=5</Command>
+      <Command Name="Go Preset 7">preset.cgi?-act=goto&amp;-number=6</Command>
+      <Command Name="Go Preset 8">preset.cgi?-act=goto&amp;-number=7</Command>
+      <Command Name="Set Preset 1">preset.cgi?-act=set&amp;-status=1&amp;-number=0</Command>
+      <Command Name="Set Preset 2">preset.cgi?-act=set&amp;-status=1&amp;-number=1</Command>
+      <Command Name="Set Preset 3">preset.cgi?-act=set&amp;-status=1&amp;-number=2</Command>
+      <Command Name="Set Preset 4">preset.cgi?-act=set&amp;-status=1&amp;-number=3</Command>
+      <Command Name="Set Preset 5">preset.cgi?-act=set&amp;-status=1&amp;-number=4</Command>
+      <Command Name="Set Preset 6">preset.cgi?-act=set&amp;-status=1&amp;-number=5</Command>
+      <Command Name="Set Preset 7">preset.cgi?-act=set&amp;-status=1&amp;-number=6</Command>
+      <Command Name="Set Preset 8">preset.cgi?-act=set&amp;-status=1&amp;-number=7</Command>
+      <Command Name="Show Time Overlay">param.cgi?cmd=setoverlayattr&amp;-region=0&amp;-show=1</Command>
+      <Command Name="Hide Time Overlay">param.cgi?cmd=setoverlayattr&amp;-region=0&amp;-show=0</Command>
+      <Command Name="Show Name Overlay">param.cgi?cmd=setoverlayattr&amp;-region=1&amp;-show=1</Command>
+      <Command Name="Hide Name Overlay">param.cgi?cmd=setoverlayattr&amp;-region=1&amp;-show=0</Command>
+      <Command Name="IR auto">/cgi-bin/hi3510/setinfrared.cgi?-infraredstat=auto</Command>
+      <Command Name="IR on">/cgi-bin/hi3510/setinfrared.cgi?-infraredstat=open</Command>
+      <Command Name="IR off">/cgi-bin/hi3510/setinfrared.cgi?-infraredstat=close</Command>
+      <Command Name="Brightness 0">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=0</Command>
+      <Command Name="Brightness 10">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=10</Command>
+      <Command Name="Brightness 20">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=20</Command>
+      <Command Name="Brightness 30">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=30</Command>
+      <Command Name="Brightness 40">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=40</Command>
+      <Command Name="Brightness 50">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=50</Command>
+      <Command Name="Brightness 60">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=60</Command>
+      <Command Name="Brightness 70">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=70</Command>
+      <Command Name="Brightness 80">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=80</Command>
+      <Command Name="Brightness 90">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=90</Command>
+      <Command Name="Brightness 100">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-brightness=100</Command>
+      <Command Name="Contrast 0">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=0</Command>
+      <Command Name="Contrast 10">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=10</Command>
+      <Command Name="Contrast 20">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=20</Command>
+      <Command Name="Contrast 30">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=30</Command>
+      <Command Name="Contrast 40">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=40</Command>
+      <Command Name="Contrast 50">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=50</Command>
+      <Command Name="Contrast 60">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=60</Command>
+      <Command Name="Contrast 70">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=70</Command>
+      <Command Name="Contrast 80">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=80</Command>
+      <Command Name="Contrast 90">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=90</Command>
+      <Command Name="Contrast 100">/cgi-bin/hi3510/param.cgi?cmd=setimageattr&amp;-contrast=100</Command>
+    </ExtendedCommands>
+  </Camera>
+  <Camera id="249">
     <Makes>
       <Make Name="Floureon" Model="IPD-E24Y02-BS series" />
     </Makes>
-      <CommandURL>/form/setPTZCfg?ZFSpeed=0&amp;PTSpeed=0&amp;panSpeed=2&amp;tiltSpeed=2</CommandURL>
+    <CommandURL>/form/setPTZCfg?ZFSpeed=0&amp;PTSpeed=0&amp;panSpeed=2&amp;tiltSpeed=2</CommandURL>
     <Commands>
       <Stop>command=0</Stop>
       <Center>command=0</Center>
@@ -7420,6 +7420,94 @@ in the camera's web interface-->
       <Command Name="IR mode: Day">/form/IRset?IRmode=3&amp;c2bwthr=20&amp;bw2cthr=70&amp;IRenabled=1&amp;IRdelay=3</Command>
       <Command Name="IR mode: Night">/form/IRset?IRmode=2&amp;c2bwthr=20&amp;bw2cthr=70&amp;IRenabled=1&amp;IRdelay=3</Command>
       <Command Name="IR mode: Auto">/form/IRset?IRmode=4&amp;c2bwthr=20&amp;bw2cthr=70&amp;IRenabled=1&amp;IRdelay=3</Command>
+    </ExtendedCommands>
+  </Camera>
+  <Camera id="250">
+    <Makes>
+      <Make Name="Pelco" Model="Spectra Enhanced" />
+    </Makes>
+    <CommandURL>/control/</CommandURL>
+    <Method>POST</Method>
+    <Commands>
+      <Center></Center>
+      <Left><![CDATA[PositioningControl-1?<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="urn:schemas-pelco-com:service:PositioningControl:1"><s:Body><ns1:SetVelocity><velocity><rotation><x>-800</x><y>0</y></rotation></velocity></ns1:SetVelocity></s:Body></s:Envelope>]]></Left>
+      <Right><![CDATA[PositioningControl-1?<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="urn:schemas-pelco-com:service:PositioningControl:1"><s:Body><ns1:SetVelocity><velocity><rotation><x>800</x><y>0</y></rotation></velocity></ns1:SetVelocity></s:Body></s:Envelope>]]></Right>
+      <Up><![CDATA[PositioningControl-1?<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="urn:schemas-pelco-com:service:PositioningControl:1"><s:Body><ns1:SetVelocity><velocity><rotation><x>0</x><y>450</y></rotation></velocity></ns1:SetVelocity></s:Body></s:Envelope>]]></Up>
+      <Down><![CDATA[PositioningControl-1?<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="urn:schemas-pelco-com:service:PositioningControl:1"><s:Body><ns1:SetVelocity><velocity><rotation><x>0</x><y>-450</y></rotation></velocity></ns1:SetVelocity></s:Body></s:Envelope>]]></Down>
+      <Stop><![CDATA[PositioningControl-1?<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="urn:schemas-pelco-com:service:PositioningControl:1"><s:Body><ns1:SetVelocity><velocity><rotation><x>0</x><y>0</y></rotation></velocity></ns1:SetVelocity></s:Body></s:Envelope>]]></Stop>
+      <ZoomIn><![CDATA[LensControl-1?<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="urn:schemas-pelco-com:service:LensControl:1"><s:Body><ns1:Zoom><inOut>2</inOut></ns1:Zoom></s:Body></s:Envelope>]]></ZoomIn>
+      <ZoomOut><![CDATA[LensControl-1?<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="urn:schemas-pelco-com:service:LensControl:1"><s:Body><ns1:Zoom><inOut>1</inOut></ns1:Zoom></s:Body></s:Envelope>]]></ZoomOut>
+      <ZoomInStop><![CDATA[LensControl-1?<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="urn:schemas-pelco-com:service:LensControl:1"><s:Body><ns1:Zoom><inOut>0</inOut></ns1:Zoom></s:Body></s:Envelope>]]></ZoomInStop>
+      <ZoomOutStop><![CDATA[LensControl-1?<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="urn:schemas-pelco-com:service:LensControl:1"><s:Body><ns1:Zoom><inOut>0</inOut></ns1:Zoom></s:Body></s:Envelope>]]></ZoomOutStop>
+    </Commands>
+    <ExtendedCommands>
+    </ExtendedCommands>
+  </Camera>
+  <Camera id="251">
+    <Makes>
+      <Make Name="KMOON" Model="SD13W" />
+    </Makes>
+    <CommandURL></CommandURL>
+    <POST>true</POST>
+    <Commands>
+      <Center></Center>
+      <Left>/web/cgi-bin/hi3510/ptzctrl.cgi?-step=1&amp;-act=left&amp;-speed=45</Left>
+      <Right>/web/cgi-bin/hi3510/ptzctrl.cgi?-step=1&amp;-act=right&amp;-speed=45</Right>
+      <Up>/web/cgi-bin/hi3510/ptzctrl.cgi?-step=1&amp;-act=up&amp;-speed=45</Up>
+      <Down>/web/cgi-bin/hi3510/ptzctrl.cgi?-step=1&amp;-act=down&amp;-speed=45</Down>
+      <Stop>/web/cgi-bin/hi3510/ptzctrl.cgi?-step=1&amp;-act=stop&amp;-speed=45</Stop>
+      <ZoomIn>/web/cgi-bin/hi3510/ptzctrl.cgi?-step=1&amp;-act=zoomin&amp;-speed=45</ZoomIn>
+      <ZoomOut>/web/cgi-bin/hi3510/ptzctrl.cgi?-step=1&amp;-act=zoomout&amp;-speed=45</ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Go Preset 1">/web/cgi-bin/hi3510/param.cgi?cmd=preset&amp;-act=goto&amp;-status=1&amp;-number=0</Command>
+      <Command Name="Go Preset 2">/web/cgi-bin/hi3510/param.cgi?cmd=preset&amp;-act=goto&amp;-status=1&amp;-number=1</Command>
+      <Command Name="Go Preset 3">/web/cgi-bin/hi3510/param.cgi?cmd=preset&amp;-act=goto&amp;-status=1&amp;-number=2</Command>
+      <Command Name="Go Preset 4">/web/cgi-bin/hi3510/param.cgi?cmd=preset&amp;-act=goto&amp;-status=1&amp;-number=3</Command>
+      <Command Name="Go Preset 5">/web/cgi-bin/hi3510/param.cgi?cmd=preset&amp;-act=goto&amp;-status=1&amp;-number=4</Command>
+      <Command Name="Set Preset 1">/web/cgi-bin/hi3510/param.cgi?cmd=preset&amp;-act=set&amp;-status=1&amp;-number=0</Command>
+      <Command Name="Set Preset 2">/web/cgi-bin/hi3510/param.cgi?cmd=preset&amp;-act=set&amp;-status=1&amp;-number=1</Command>
+      <Command Name="Set Preset 3">/web/cgi-bin/hi3510/param.cgi?cmd=preset&amp;-act=set&amp;-status=1&amp;-number=2</Command>
+      <Command Name="Set Preset 4">/web/cgi-bin/hi3510/param.cgi?cmd=preset&amp;-act=set&amp;-status=1&amp;-number=3</Command>
+      <Command Name="Set Preset 5">/web/cgi-bin/hi3510/param.cgi?cmd=preset&amp;-act=set&amp;-status=1&amp;-number=4</Command>
+    </ExtendedCommands>
+  </Camera>
+  <Camera id="252">
+    <Makes>
+      <Make Name="Xiaomi" Model="Dafang Hacks" />
+    </Makes>
+    <CommandURL>/cgi-bin/action.cgi</CommandURL>
+    <Commands>
+      <Center>cmd=motor_hcalibrate</Center>
+      <Right>cmd=motor_right&amp;val=100</Right>
+      <Left>cmd=motor_left&amp;val=100</Left>
+      <Down>cmd=motor_down&amp;val=100</Down>
+      <Up>cmd=motor_up&amp;val=100</Up>
+      <Stop></Stop>
+      <LeftDown></LeftDown>
+      <RightDown></RightDown>
+      <RightUp></RightUp>
+      <LeftUp></LeftUp>
+      <ZoomIn></ZoomIn>
+      <ZoomOut></ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Reboot">cmd=reboot</Command>
+      <Command Name="Blue Led On">cmd=blue_led_on</Command>
+      <Command Name="Blue Led Off">cmd=blue_led_off</Command>
+      <Command Name="Yellow Led On">cmd=yellow_led_on</Command>
+      <Command Name="Yellow Led Off">cmd=yellow_led_off</Command>
+      <Command Name="IR Led On">cmd=ir_led_on</Command>
+      <Command Name="IR Led Off">cmd=ir_led_off</Command>
+      <Command Name="IR Cut On">cmd=ir_cut_on</Command>
+      <Command Name="IR Cut Off">cmd=ir_cut_off</Command>
+      <Command Name="Auto Night Mode On">cmd=auto_night_mode_start</Command>
+      <Command Name="Auto Night Mode Off">cmd=auto_night_mode_stop</Command>
+      <Command Name="Nightvision On">cmd=toggle-rtsp-nightvision-on</Command>
+      <Command Name="Nightvisione Off">cmd=toggle-rtsp-nightvision-off</Command>
+      <Command Name="Flip On">cmd=flip-on</Command>
+      <Command Name="Flip Off">cmd=flip-off</Command>
+      <Command Name="Audio Test">cmd=audio_test</Command>
     </ExtendedCommands>
   </Camera>
 </PTZSettings2>

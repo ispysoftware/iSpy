@@ -21,9 +21,7 @@ namespace iSpyApplication.Realtime
         private static readonly bool Hwnvidia = true;
         private static bool _hwqsv = true;
         private readonly byte[] _convOut = new byte[44100];
-        //private readonly AutoResetEvent _frameWritten = new AutoResetEvent(false);
         private readonly bool _isAudio;
-        private readonly AutoResetEvent _recordingClosed = new AutoResetEvent(false);
         private bool _abort;
         private byte[] _audioBuffer = new byte[44100];
         private int _audioBufferSizeCurrent;
@@ -227,20 +225,11 @@ namespace iSpyApplication.Realtime
 
         public void Close()
         {
-            if (_closing)
-                return;
-
-            _closing = true;
-
-            Task.Run(() => DoClose());
-            if (MainForm.ShuttingDown)
-                _recordingClosed.WaitOne();
+            DoClose();
         }
 
         private void DoClose()
         {
-            //_frameWritten.Reset();
-            //_frameWritten.WaitOne();
             Program.MutexHelper.Wait();
             if (_formatContext != null)
             {
@@ -354,7 +343,6 @@ namespace iSpyApplication.Realtime
             if (_convHandle.IsAllocated)
                 _convHandle.Free();
             _opened = false;
-            _recordingClosed.Set();
         }
 
         public void WriteAudio(byte[] soundBuffer, int soundBufferSize, int level, DateTime timestamp)

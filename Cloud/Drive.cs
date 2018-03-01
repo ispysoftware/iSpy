@@ -140,8 +140,6 @@ namespace iSpyApplication.Cloud
         public static string Upload(string filename, string path, out bool success)
         {
             success = false;
-            //if (!Statics.Subscribed)
-            //    return "NotSubscribed";
 
             if (!Authorised)
             {
@@ -260,8 +258,10 @@ namespace iSpyApplication.Cloud
             {
                 //file doesn't exist
                 Logger.LogException(ex);
+                _uploading = false;
                 return;
             }
+
             var mt = MimeTypes.GetMimeType(fi.Extension);
 
             var body = new File {Name = fi.Name, Description = "iSpy", MimeType = mt};

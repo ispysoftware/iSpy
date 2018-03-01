@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO.Ports;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading;
 using iSpyApplication.Controls;
@@ -37,6 +38,11 @@ namespace iSpyApplication
         private Enums.PtzCommand _previousCommand;
         private SerialPort _serialPort;
 
+        public void CheckSendStop()
+        {
+            if (IsContinuous || !string.IsNullOrEmpty(PTZSettings?.Commands.Stop))
+                SendPTZCommand(Enums.PtzCommand.Stop);
+        }
         public bool IsContinuous
         {
             get
@@ -1440,6 +1446,7 @@ namespace iSpyApplication
                     var pd = url.Substring(j + 1);
                     var encoding = new ASCIIEncoding();
                     data = encoding.GetBytes(pd);
+                    url = url.Substring(0, j);
                 }
             }
             

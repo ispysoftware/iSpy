@@ -44,7 +44,8 @@ namespace iSpyApplication.Controls
     public sealed class CameraWindow : PictureBox, ISpyControl
     {
         #region Private
-
+        private int _rtindex;
+        private static readonly int[] ReconnectTargets = { 2, 5, 10, 30, 60 };
         internal MainForm MainClass;
         internal DateTime LastAutoTrackSent = DateTime.MinValue;
         private Color _customColor = Color.Black;
@@ -62,7 +63,7 @@ namespace iSpyApplication.Controls
         private Point _mouseLoc;
         public ConcurrentQueue<Helper.FrameAction> Buffer = new ConcurrentQueue<Helper.FrameAction>();
         private DateTime _errorTime = DateTime.MinValue;
-        private DateTime _reconnectTime = DateTime.MinValue;
+        private DateTime _reconnectTarget = DateTime.MinValue;
         private bool _firstFrame = true;
         private Thread _recordingThread;
         private Camera _camera;
@@ -1030,12 +1031,7 @@ namespace iSpyApplication.Controls
                     break;
                 case MouseButtons.Middle:
                     PTZNavigate = false;
-                    PTZSettings2Camera ptz = MainForm.PTZs.SingleOrDefault(p => p.id == Camobject.ptz);
-                    if (!string.IsNullOrEmpty(ptz?.Commands.Stop))
-                        PTZ.SendPTZCommand(ptz.Commands.Stop);
-
-                    if (PTZ.IsContinuous)
-                        PTZ.SendPTZCommand(Enums.PtzCommand.Stop);
+                    PTZ.CheckSendStop();
                     break;
             }
 
@@ -1860,27 +1856,29 @@ namespace iSpyApplication.Controls
             return s;
         }
 
+        public int NextReconnectTarget
+        {
+
+            get
+            {
+                var i = _rtindex;
+                _rtindex = Math.Min(i + 1, ReconnectTargets.Length - 1);
+                Logger.LogMessage("Reconnecting " + ObjectName + "  in " + ReconnectTargets[i] + "s");
+                return ReconnectTargets[i];
+            }
+        }
+
         private bool CheckReconnect()
         {
-            if (_reconnectTime != DateTime.MinValue && !IsClone)
+            if (_reconnectTarget > DateTime.MinValue && _reconnectTarget < DateTime.UtcNow && !IsClone)
             {
-                if (Camera?.VideoSource != null)
+                var s = Camera?.VideoSource;
+                if (s != null && !s.IsRunning)
                 {
-                    int sec = Convert.ToInt32((Helper.Now - _reconnectTime).TotalSeconds);
-                    if (sec > 10)
-                    {
-                        //try to reconnect every 10 seconds
-                        if (!Camera.VideoSource.IsRunning)
-                        {
-                            Calibrating = true;
-                            if (Camera.VideoSource != null)
-                            {
-                                Camera.Start();
-                            }                           
-                        }
-                        _reconnectTime = Helper.Now;
-                        return true;
-                    }
+                    Calibrating = true;
+                    s.Start();
+                    return true;
+                    
                 }
             }
             return false;
@@ -2960,13 +2958,11 @@ namespace iSpyApplication.Controls
                 
                 
                 if (Camobject.recorder.bufferseconds > 0)
-                    EnqueueAsync.BeginInvoke(Buffer, (Bitmap)e.Frame.Clone(), Camera.MotionLevel, Helper.Now, null,
-                        null);
+                    EnqueueAsync.BeginInvoke(Buffer, new Bitmap(e.Frame), Camera.MotionLevel, Helper.Now, null,null);
                 else
                 {
                     if (Recording)
-                        EnqueueAsync.BeginInvoke(Buffer, (Bitmap)e.Frame.Clone(), Camera.MotionLevel, Helper.Now, null,
-                            null);
+                        EnqueueAsync.BeginInvoke(Buffer, new Bitmap(e.Frame), Camera.MotionLevel, Helper.Now, null,null);
                 }
 
 
@@ -2977,9 +2973,10 @@ namespace iSpyApplication.Controls
                 }
                 
 
-                if (_reconnectTime != DateTime.MinValue)
+                if (_reconnectTarget != DateTime.MinValue)
                 {
-                    _errorTime = _reconnectTime = DateTime.MinValue;
+                    _errorTime = _reconnectTarget = DateTime.MinValue;
+                    _rtindex = 0;
                     DoAlert("reconnect");
                 }
 
@@ -4014,17 +4011,13 @@ namespace iSpyApplication.Controls
         private void SetErrorState(string reason)
         {
             VideoSourceErrorMessage = reason;
-            
+            _reconnectTarget = DateTime.UtcNow.AddSeconds(NextReconnectTarget);
             if (!VideoSourceErrorState)
             {
-                
                 VideoSourceErrorState = true;
                 ErrorHandler?.Invoke(reason);
 
-                if (_reconnectTime == DateTime.MinValue)
-                {
-                    _reconnectTime = Helper.Now;
-                }
+               
                 if (_errorTime == DateTime.MinValue)
                     _errorTime = Helper.Now;
                 var vl = VolumeControl;
@@ -4191,7 +4184,8 @@ namespace iSpyApplication.Controls
                 PTZNavigate = false;
                 UpdateFloorplans(false);
                 MainForm.NeedsSync = true;
-                _errorTime = _reconnectTime = DateTime.MinValue;
+                _errorTime = _reconnectTarget = DateTime.MinValue;
+                _rtindex = 0;
                 BackColor = MainForm.BackgroundColor;
                 _autoofftimer = 0;
 

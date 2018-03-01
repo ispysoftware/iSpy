@@ -1399,7 +1399,7 @@ namespace iSpyApplication
             configurationGrid cg = Conf.GridViews.FirstOrDefault(p => p.name == name);
             if (cg != null)
             {
-               for(int i=0;i<_views.Count;i++)
+                for(int i=0;i<_views.Count;i++)
                 {
                     GridView g = _views[i];
                     if (g != null && !g.IsDisposed)

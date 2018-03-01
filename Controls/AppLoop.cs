@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -13,18 +14,14 @@ namespace iSpyApplication.Controls
         public WinFormsAppIdleHandler()
         {
             Enabled = true;
-            SleepTime = 10;
-
         }
 
         private static readonly Lazy<WinFormsAppIdleHandler> Lazy = new Lazy<WinFormsAppIdleHandler>(() => new WinFormsAppIdleHandler());
         public static WinFormsAppIdleHandler Instance => Lazy.Value;
 
-        private bool _enabled;
 
-        public bool Enabled
+        private bool Enabled
         {
-            get { return _enabled; }
             set
             {
                 if (value)
@@ -34,45 +31,42 @@ namespace iSpyApplication.Controls
                 }
                 else
                     Application.Idle -= ApplicationIdle;
-
-                _enabled = value;
             }
         }
 
-        public int SleepTime { get; set; }
+        private int _refCount = 0;
+
 
         public event EventHandler ApplicationLoopDoWork
         {
             add
             {
                 lock (_completedEventLock)
+                {
                     AppLoopDoWork += value;
+                    _refCount++;
+                    Enabled = true;
+                }
             }
 
             remove
             {
                 lock (_completedEventLock)
+                {
                     AppLoopDoWork -= value;
+                    _refCount--;
+                    if (_refCount == 0)
+                        Enabled = false;
+                }
             }
         }
 
         private void ApplicationIdle(object sender, EventArgs e)
         {
-            while (Enabled && IsAppIdle())
-            {
-                OnApplicationIdleDoWork(EventArgs.Empty);
-                Thread.Sleep(SleepTime);
-            }
+            Debug.WriteLine("idle..");
+            AppLoopDoWork?.Invoke(this, e);
         }
-
-        private void OnApplicationIdleDoWork(EventArgs e)
-        {
-            var handler = AppLoopDoWork;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-        }
+        
 
         public static bool IsAppIdle()
         {

@@ -878,7 +878,7 @@ namespace iSpyApplication
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(6);
-            this.tabPage4.Size = new System.Drawing.Size(192, 74);
+            this.tabPage4.Size = new System.Drawing.Size(725, 288);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Local Device";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -909,7 +909,7 @@ namespace iSpyApplication
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(163, 229);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(713, 229);
             this.tableLayoutPanel4.TabIndex = 22;
             // 
             // label39
@@ -918,7 +918,7 @@ namespace iSpyApplication
             this.label39.Location = new System.Drawing.Point(6, 6);
             this.label39.Margin = new System.Windows.Forms.Padding(6);
             this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(16, 19);
+            this.label39.Size = new System.Drawing.Size(72, 13);
             this.label39.TabIndex = 11;
             this.label39.Text = "Video device:";
             // 
@@ -928,7 +928,7 @@ namespace iSpyApplication
             this.label38.Location = new System.Drawing.Point(6, 99);
             this.label38.Margin = new System.Windows.Forms.Padding(6);
             this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(18, 19);
+            this.label38.Size = new System.Drawing.Size(83, 13);
             this.label38.TabIndex = 12;
             this.label38.Text = "Video resoluton:";
             // 
@@ -936,7 +936,7 @@ namespace iSpyApplication
             // 
             this.videoResolutionsCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.videoResolutionsCombo.FormattingEnabled = true;
-            this.videoResolutionsCombo.Location = new System.Drawing.Point(33, 96);
+            this.videoResolutionsCombo.Location = new System.Drawing.Point(137, 96);
             this.videoResolutionsCombo.Name = "videoResolutionsCombo";
             this.videoResolutionsCombo.Size = new System.Drawing.Size(127, 21);
             this.videoResolutionsCombo.TabIndex = 13;
@@ -946,7 +946,7 @@ namespace iSpyApplication
             // 
             this.devicesCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.devicesCombo.FormattingEnabled = true;
-            this.devicesCombo.Location = new System.Drawing.Point(33, 3);
+            this.devicesCombo.Location = new System.Drawing.Point(137, 3);
             this.devicesCombo.Name = "devicesCombo";
             this.devicesCombo.Size = new System.Drawing.Size(127, 21);
             this.devicesCombo.TabIndex = 9;
@@ -958,7 +958,7 @@ namespace iSpyApplication
             this.label37.Location = new System.Drawing.Point(6, 37);
             this.label37.Margin = new System.Windows.Forms.Padding(6);
             this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(16, 19);
+            this.label37.Size = new System.Drawing.Size(63, 13);
             this.label37.TabIndex = 16;
             this.label37.Text = "Video input:";
             // 
@@ -966,7 +966,7 @@ namespace iSpyApplication
             // 
             this.videoInputsCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.videoInputsCombo.FormattingEnabled = true;
-            this.videoInputsCombo.Location = new System.Drawing.Point(33, 34);
+            this.videoInputsCombo.Location = new System.Drawing.Point(137, 34);
             this.videoInputsCombo.Name = "videoInputsCombo";
             this.videoInputsCombo.Size = new System.Drawing.Size(127, 21);
             this.videoInputsCombo.TabIndex = 17;
@@ -976,7 +976,7 @@ namespace iSpyApplication
             // 
             this.snapshotResolutionsCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.snapshotResolutionsCombo.FormattingEnabled = true;
-            this.snapshotResolutionsCombo.Location = new System.Drawing.Point(33, 127);
+            this.snapshotResolutionsCombo.Location = new System.Drawing.Point(137, 127);
             this.snapshotResolutionsCombo.Name = "snapshotResolutionsCombo";
             this.snapshotResolutionsCombo.Size = new System.Drawing.Size(127, 21);
             this.snapshotResolutionsCombo.TabIndex = 14;
@@ -985,10 +985,10 @@ namespace iSpyApplication
             // chkAutoImageSettings
             // 
             this.chkAutoImageSettings.AutoSize = true;
-            this.chkAutoImageSettings.Location = new System.Drawing.Point(36, 161);
+            this.chkAutoImageSettings.Location = new System.Drawing.Point(140, 161);
             this.chkAutoImageSettings.Margin = new System.Windows.Forms.Padding(6);
             this.chkAutoImageSettings.Name = "chkAutoImageSettings";
-            this.chkAutoImageSettings.Size = new System.Drawing.Size(121, 17);
+            this.chkAutoImageSettings.Size = new System.Drawing.Size(146, 17);
             this.chkAutoImageSettings.TabIndex = 18;
             this.chkAutoImageSettings.Text = "Automatic Image Settings";
             this.chkAutoImageSettings.UseVisualStyleBackColor = true;
@@ -999,7 +999,7 @@ namespace iSpyApplication
             this.snapshotsLabel.Location = new System.Drawing.Point(6, 130);
             this.snapshotsLabel.Margin = new System.Windows.Forms.Padding(6);
             this.snapshotsLabel.Name = "snapshotsLabel";
-            this.snapshotsLabel.Size = new System.Drawing.Size(18, 19);
+            this.snapshotsLabel.Size = new System.Drawing.Size(101, 13);
             this.snapshotsLabel.TabIndex = 15;
             this.snapshotsLabel.Text = "Snapshot resoluton:";
             // 
@@ -1009,7 +1009,7 @@ namespace iSpyApplication
             this.label35.Location = new System.Drawing.Point(6, 68);
             this.label35.Margin = new System.Windows.Forms.Padding(6);
             this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(16, 19);
+            this.label35.Size = new System.Drawing.Size(76, 13);
             this.label35.TabIndex = 19;
             this.label35.Text = "Capture mode:";
             // 
@@ -1018,10 +1018,10 @@ namespace iSpyApplication
             this.flowLayoutPanel5.Controls.Add(this.rdoCaptureVideo);
             this.flowLayoutPanel5.Controls.Add(this.rdoCaptureSnapshots);
             this.flowLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel5.Location = new System.Drawing.Point(30, 62);
+            this.flowLayoutPanel5.Location = new System.Drawing.Point(134, 62);
             this.flowLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel5.Name = "flowLayoutPanel5";
-            this.flowLayoutPanel5.Size = new System.Drawing.Size(133, 31);
+            this.flowLayoutPanel5.Size = new System.Drawing.Size(579, 31);
             this.flowLayoutPanel5.TabIndex = 20;
             // 
             // rdoCaptureVideo
@@ -1039,7 +1039,7 @@ namespace iSpyApplication
             // rdoCaptureSnapshots
             // 
             this.rdoCaptureSnapshots.AutoSize = true;
-            this.rdoCaptureSnapshots.Location = new System.Drawing.Point(6, 35);
+            this.rdoCaptureSnapshots.Location = new System.Drawing.Point(70, 6);
             this.rdoCaptureSnapshots.Margin = new System.Windows.Forms.Padding(6);
             this.rdoCaptureSnapshots.Name = "rdoCaptureSnapshots";
             this.rdoCaptureSnapshots.Size = new System.Drawing.Size(75, 17);
@@ -1543,7 +1543,7 @@ namespace iSpyApplication
             this.tabPage10.Controls.Add(this.splitter1);
             this.tabPage10.Location = new System.Drawing.Point(4, 22);
             this.tabPage10.Name = "tabPage10";
-            this.tabPage10.Size = new System.Drawing.Size(725, 288);
+            this.tabPage10.Size = new System.Drawing.Size(192, 74);
             this.tabPage10.TabIndex = 9;
             this.tabPage10.Text = "ONVIF";
             this.tabPage10.UseVisualStyleBackColor = true;
@@ -1553,14 +1553,14 @@ namespace iSpyApplication
             this.onvifWizard1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.onvifWizard1.Location = new System.Drawing.Point(3, 0);
             this.onvifWizard1.Name = "onvifWizard1";
-            this.onvifWizard1.Size = new System.Drawing.Size(722, 288);
+            this.onvifWizard1.Size = new System.Drawing.Size(189, 74);
             this.onvifWizard1.TabIndex = 59;
             // 
             // splitter1
             // 
             this.splitter1.Location = new System.Drawing.Point(0, 0);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(3, 288);
+            this.splitter1.Size = new System.Drawing.Size(3, 74);
             this.splitter1.TabIndex = 58;
             this.splitter1.TabStop = false;
             // 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://ispyconnect.com/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://ispyconnect.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://ispyconnect.com/" xmlns:s1="http://ispyconnect.com/AbstractTypes" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://ispyconnect.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <s:schema elementFormDefault="qualified" targetNamespace="http://ispyconnect.com/">
       <s:element name="TestConnection">
@@ -157,20 +157,6 @@
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="ListObjectsResult" type="tns:ArrayOfString" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="Encrypt">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="toEncrypt" type="s:string" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="EncryptResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="EncryptResult" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -342,6 +328,35 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="GetByteCount">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="resource" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetByteCountResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetByteCountResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ArrayOfString" nillable="true" type="tns:ArrayOfString" />
+      <s:element name="string" nillable="true" type="s:string" />
+      <s:element name="long" type="s:long" />
+    </s:schema>
+    <s:schema targetNamespace="http://ispyconnect.com/AbstractTypes">
+      <s:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <s:complexType name="StringArray">
+        <s:complexContent mixed="false">
+          <s:restriction base="soapenc:Array">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="unbounded" name="String" type="s:string" />
+            </s:sequence>
+          </s:restriction>
+        </s:complexContent>
+      </s:complexType>
     </s:schema>
   </wsdl:types>
   <wsdl:message name="TestConnectionSoapIn">
@@ -391,12 +406,6 @@
   </wsdl:message>
   <wsdl:message name="ListObjectsSoapOut">
     <wsdl:part name="parameters" element="tns:ListObjectsResponse" />
-  </wsdl:message>
-  <wsdl:message name="EncryptSoapIn">
-    <wsdl:part name="parameters" element="tns:Encrypt" />
-  </wsdl:message>
-  <wsdl:message name="EncryptSoapOut">
-    <wsdl:part name="parameters" element="tns:EncryptResponse" />
   </wsdl:message>
   <wsdl:message name="PingSoapIn">
     <wsdl:part name="parameters" element="tns:Ping" />
@@ -458,6 +467,386 @@
   <wsdl:message name="ProductLatestVersionGetSoapOut">
     <wsdl:part name="parameters" element="tns:ProductLatestVersionGetResponse" />
   </wsdl:message>
+  <wsdl:message name="GetByteCountSoapIn">
+    <wsdl:part name="parameters" element="tns:GetByteCount" />
+  </wsdl:message>
+  <wsdl:message name="GetByteCountSoapOut">
+    <wsdl:part name="parameters" element="tns:GetByteCountResponse" />
+  </wsdl:message>
+  <wsdl:message name="TestConnectionHttpGetIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="port" type="s:string" />
+    <wsdl:part name="identifier" type="s:string" />
+    <wsdl:part name="tryLoopback" type="s:string" />
+    <wsdl:part name="bIPv4" type="s:string" />
+    <wsdl:part name="ipAddress" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="TestConnectionHttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="TestConnection2HttpGetIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="port" type="s:string" />
+    <wsdl:part name="identifier" type="s:string" />
+    <wsdl:part name="tryLoopback" type="s:string" />
+    <wsdl:part name="bIPv4" type="s:string" />
+    <wsdl:part name="ipAddress" type="s:string" />
+    <wsdl:part name="useSsl" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="TestConnection2HttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="RemoteAddressHttpGetIn" />
+  <wsdl:message name="RemoteAddressHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="ConnectHttpGetIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="port" type="s:string" />
+    <wsdl:part name="identifier" type="s:string" />
+    <wsdl:part name="tryLoopBack" type="s:string" />
+    <wsdl:part name="version" type="s:string" />
+    <wsdl:part name="computerName" type="s:string" />
+    <wsdl:part name="bIPv4" type="s:string" />
+    <wsdl:part name="ipAddress" type="s:string" />
+    <wsdl:part name="affiliateID" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ConnectHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="Connect2HttpGetIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="port" type="s:string" />
+    <wsdl:part name="identifier" type="s:string" />
+    <wsdl:part name="tryLoopBack" type="s:string" />
+    <wsdl:part name="version" type="s:string" />
+    <wsdl:part name="computerName" type="s:string" />
+    <wsdl:part name="bIPv4" type="s:string" />
+    <wsdl:part name="ipAddress" type="s:string" />
+    <wsdl:part name="affiliateID" type="s:string" />
+    <wsdl:part name="useSsl" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="Connect2HttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="Connect3HttpGetIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="port" type="s:string" />
+    <wsdl:part name="identifier" type="s:string" />
+    <wsdl:part name="tryLoopBack" type="s:string" />
+    <wsdl:part name="version" type="s:string" />
+    <wsdl:part name="computerName" type="s:string" />
+    <wsdl:part name="bIPv4" type="s:string" />
+    <wsdl:part name="ipAddress" type="s:string" />
+    <wsdl:part name="affiliateID" type="s:string" />
+    <wsdl:part name="useSsl" type="s:string" />
+    <wsdl:part name="productID" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="Connect3HttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="AuthoriseHttpGetIn">
+    <wsdl:part name="Username" type="s:string" />
+    <wsdl:part name="Password" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AuthoriseHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="ListObjectsHttpGetIn">
+    <wsdl:part name="Username" type="s:string" />
+    <wsdl:part name="Password" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ListObjectsHttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="PingHttpGetIn" />
+  <wsdl:message name="PingHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="PingAliveHttpGetIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="port" type="s:string" />
+    <wsdl:part name="ipv4" type="s:string" />
+    <wsdl:part name="ipexternal" type="s:string" />
+    <wsdl:part name="ipinternal" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="PingAliveHttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="DisconnectHttpGetIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="port" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DisconnectHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="SyncHttpGetIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="port" type="s:string" />
+    <wsdl:part name="internalIPAddress" type="s:string" />
+    <wsdl:part name="internalPort" type="s:string" />
+    <wsdl:part name="objectList" type="s:string" />
+    <wsdl:part name="bIPv4" type="s:string" />
+    <wsdl:part name="ipAddress" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SyncHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="SendContentHttpGetIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="emailAddress" type="s:string" />
+    <wsdl:part name="subject" type="s:string" />
+    <wsdl:part name="message" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SendContentHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="SendAlertHttpGetIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="emailAddress" type="s:string" />
+    <wsdl:part name="alertSubject" type="s:string" />
+    <wsdl:part name="alertBody" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SendAlertHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="SendAlertWithImageHttpGetIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="emailAddress" type="s:string" />
+    <wsdl:part name="alertSubject" type="s:string" />
+    <wsdl:part name="alertBody" type="s:string" />
+    <wsdl:part name="imageData" type="s1:StringArray" />
+  </wsdl:message>
+  <wsdl:message name="SendAlertWithImageHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="SendSMSHttpGetIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="smsNumber" type="s:string" />
+    <wsdl:part name="message" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SendSMSHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="SendTweetHttpGetIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="message" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SendTweetHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="ProductLatestVersionGetHttpGetIn">
+    <wsdl:part name="productId" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ProductLatestVersionGetHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="GetByteCountHttpGetIn">
+    <wsdl:part name="resource" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetByteCountHttpGetOut">
+    <wsdl:part name="Body" element="tns:long" />
+  </wsdl:message>
+  <wsdl:message name="TestConnectionHttpPostIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="port" type="s:string" />
+    <wsdl:part name="identifier" type="s:string" />
+    <wsdl:part name="tryLoopback" type="s:string" />
+    <wsdl:part name="bIPv4" type="s:string" />
+    <wsdl:part name="ipAddress" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="TestConnectionHttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="TestConnection2HttpPostIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="port" type="s:string" />
+    <wsdl:part name="identifier" type="s:string" />
+    <wsdl:part name="tryLoopback" type="s:string" />
+    <wsdl:part name="bIPv4" type="s:string" />
+    <wsdl:part name="ipAddress" type="s:string" />
+    <wsdl:part name="useSsl" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="TestConnection2HttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="RemoteAddressHttpPostIn" />
+  <wsdl:message name="RemoteAddressHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="ConnectHttpPostIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="port" type="s:string" />
+    <wsdl:part name="identifier" type="s:string" />
+    <wsdl:part name="tryLoopBack" type="s:string" />
+    <wsdl:part name="version" type="s:string" />
+    <wsdl:part name="computerName" type="s:string" />
+    <wsdl:part name="bIPv4" type="s:string" />
+    <wsdl:part name="ipAddress" type="s:string" />
+    <wsdl:part name="affiliateID" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ConnectHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="Connect2HttpPostIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="port" type="s:string" />
+    <wsdl:part name="identifier" type="s:string" />
+    <wsdl:part name="tryLoopBack" type="s:string" />
+    <wsdl:part name="version" type="s:string" />
+    <wsdl:part name="computerName" type="s:string" />
+    <wsdl:part name="bIPv4" type="s:string" />
+    <wsdl:part name="ipAddress" type="s:string" />
+    <wsdl:part name="affiliateID" type="s:string" />
+    <wsdl:part name="useSsl" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="Connect2HttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="Connect3HttpPostIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="port" type="s:string" />
+    <wsdl:part name="identifier" type="s:string" />
+    <wsdl:part name="tryLoopBack" type="s:string" />
+    <wsdl:part name="version" type="s:string" />
+    <wsdl:part name="computerName" type="s:string" />
+    <wsdl:part name="bIPv4" type="s:string" />
+    <wsdl:part name="ipAddress" type="s:string" />
+    <wsdl:part name="affiliateID" type="s:string" />
+    <wsdl:part name="useSsl" type="s:string" />
+    <wsdl:part name="productID" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="Connect3HttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="AuthoriseHttpPostIn">
+    <wsdl:part name="Username" type="s:string" />
+    <wsdl:part name="Password" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AuthoriseHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="ListObjectsHttpPostIn">
+    <wsdl:part name="Username" type="s:string" />
+    <wsdl:part name="Password" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ListObjectsHttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="PingHttpPostIn" />
+  <wsdl:message name="PingHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="PingAliveHttpPostIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="port" type="s:string" />
+    <wsdl:part name="ipv4" type="s:string" />
+    <wsdl:part name="ipexternal" type="s:string" />
+    <wsdl:part name="ipinternal" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="PingAliveHttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="DisconnectHttpPostIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="port" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DisconnectHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="SyncHttpPostIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="port" type="s:string" />
+    <wsdl:part name="internalIPAddress" type="s:string" />
+    <wsdl:part name="internalPort" type="s:string" />
+    <wsdl:part name="objectList" type="s:string" />
+    <wsdl:part name="bIPv4" type="s:string" />
+    <wsdl:part name="ipAddress" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SyncHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="SendContentHttpPostIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="emailAddress" type="s:string" />
+    <wsdl:part name="subject" type="s:string" />
+    <wsdl:part name="message" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SendContentHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="SendAlertHttpPostIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="emailAddress" type="s:string" />
+    <wsdl:part name="alertSubject" type="s:string" />
+    <wsdl:part name="alertBody" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SendAlertHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="SendAlertWithImageHttpPostIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="emailAddress" type="s:string" />
+    <wsdl:part name="alertSubject" type="s:string" />
+    <wsdl:part name="alertBody" type="s:string" />
+    <wsdl:part name="imageData" type="s1:StringArray" />
+  </wsdl:message>
+  <wsdl:message name="SendAlertWithImageHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="SendSMSHttpPostIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="smsNumber" type="s:string" />
+    <wsdl:part name="message" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SendSMSHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="SendTweetHttpPostIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="message" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SendTweetHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="ProductLatestVersionGetHttpPostIn">
+    <wsdl:part name="productId" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ProductLatestVersionGetHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="GetByteCountHttpPostIn">
+    <wsdl:part name="resource" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetByteCountHttpPostOut">
+    <wsdl:part name="Body" element="tns:long" />
+  </wsdl:message>
   <wsdl:portType name="iSpyAPISoap">
     <wsdl:operation name="TestConnection">
       <wsdl:input message="tns:TestConnectionSoapIn" />
@@ -490,10 +879,6 @@
     <wsdl:operation name="ListObjects">
       <wsdl:input message="tns:ListObjectsSoapIn" />
       <wsdl:output message="tns:ListObjectsSoapOut" />
-    </wsdl:operation>
-    <wsdl:operation name="Encrypt">
-      <wsdl:input message="tns:EncryptSoapIn" />
-      <wsdl:output message="tns:EncryptSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="Ping">
       <wsdl:input message="tns:PingSoapIn" />
@@ -534,6 +919,166 @@
     <wsdl:operation name="ProductLatestVersionGet">
       <wsdl:input message="tns:ProductLatestVersionGetSoapIn" />
       <wsdl:output message="tns:ProductLatestVersionGetSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetByteCount">
+      <wsdl:input message="tns:GetByteCountSoapIn" />
+      <wsdl:output message="tns:GetByteCountSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="iSpyAPIHttpGet">
+    <wsdl:operation name="TestConnection">
+      <wsdl:input message="tns:TestConnectionHttpGetIn" />
+      <wsdl:output message="tns:TestConnectionHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TestConnection2">
+      <wsdl:input message="tns:TestConnection2HttpGetIn" />
+      <wsdl:output message="tns:TestConnection2HttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoteAddress">
+      <wsdl:input message="tns:RemoteAddressHttpGetIn" />
+      <wsdl:output message="tns:RemoteAddressHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Connect">
+      <wsdl:input message="tns:ConnectHttpGetIn" />
+      <wsdl:output message="tns:ConnectHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Connect2">
+      <wsdl:input message="tns:Connect2HttpGetIn" />
+      <wsdl:output message="tns:Connect2HttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Connect3">
+      <wsdl:input message="tns:Connect3HttpGetIn" />
+      <wsdl:output message="tns:Connect3HttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Authorise">
+      <wsdl:input message="tns:AuthoriseHttpGetIn" />
+      <wsdl:output message="tns:AuthoriseHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListObjects">
+      <wsdl:input message="tns:ListObjectsHttpGetIn" />
+      <wsdl:output message="tns:ListObjectsHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Ping">
+      <wsdl:input message="tns:PingHttpGetIn" />
+      <wsdl:output message="tns:PingHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PingAlive">
+      <wsdl:input message="tns:PingAliveHttpGetIn" />
+      <wsdl:output message="tns:PingAliveHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Disconnect">
+      <wsdl:input message="tns:DisconnectHttpGetIn" />
+      <wsdl:output message="tns:DisconnectHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Sync">
+      <wsdl:input message="tns:SyncHttpGetIn" />
+      <wsdl:output message="tns:SyncHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendContent">
+      <wsdl:input message="tns:SendContentHttpGetIn" />
+      <wsdl:output message="tns:SendContentHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendAlert">
+      <wsdl:input message="tns:SendAlertHttpGetIn" />
+      <wsdl:output message="tns:SendAlertHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendAlertWithImage">
+      <wsdl:input message="tns:SendAlertWithImageHttpGetIn" />
+      <wsdl:output message="tns:SendAlertWithImageHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendSMS">
+      <wsdl:input message="tns:SendSMSHttpGetIn" />
+      <wsdl:output message="tns:SendSMSHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendTweet">
+      <wsdl:input message="tns:SendTweetHttpGetIn" />
+      <wsdl:output message="tns:SendTweetHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ProductLatestVersionGet">
+      <wsdl:input message="tns:ProductLatestVersionGetHttpGetIn" />
+      <wsdl:output message="tns:ProductLatestVersionGetHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetByteCount">
+      <wsdl:input message="tns:GetByteCountHttpGetIn" />
+      <wsdl:output message="tns:GetByteCountHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="iSpyAPIHttpPost">
+    <wsdl:operation name="TestConnection">
+      <wsdl:input message="tns:TestConnectionHttpPostIn" />
+      <wsdl:output message="tns:TestConnectionHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TestConnection2">
+      <wsdl:input message="tns:TestConnection2HttpPostIn" />
+      <wsdl:output message="tns:TestConnection2HttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoteAddress">
+      <wsdl:input message="tns:RemoteAddressHttpPostIn" />
+      <wsdl:output message="tns:RemoteAddressHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Connect">
+      <wsdl:input message="tns:ConnectHttpPostIn" />
+      <wsdl:output message="tns:ConnectHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Connect2">
+      <wsdl:input message="tns:Connect2HttpPostIn" />
+      <wsdl:output message="tns:Connect2HttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Connect3">
+      <wsdl:input message="tns:Connect3HttpPostIn" />
+      <wsdl:output message="tns:Connect3HttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Authorise">
+      <wsdl:input message="tns:AuthoriseHttpPostIn" />
+      <wsdl:output message="tns:AuthoriseHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListObjects">
+      <wsdl:input message="tns:ListObjectsHttpPostIn" />
+      <wsdl:output message="tns:ListObjectsHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Ping">
+      <wsdl:input message="tns:PingHttpPostIn" />
+      <wsdl:output message="tns:PingHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PingAlive">
+      <wsdl:input message="tns:PingAliveHttpPostIn" />
+      <wsdl:output message="tns:PingAliveHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Disconnect">
+      <wsdl:input message="tns:DisconnectHttpPostIn" />
+      <wsdl:output message="tns:DisconnectHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Sync">
+      <wsdl:input message="tns:SyncHttpPostIn" />
+      <wsdl:output message="tns:SyncHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendContent">
+      <wsdl:input message="tns:SendContentHttpPostIn" />
+      <wsdl:output message="tns:SendContentHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendAlert">
+      <wsdl:input message="tns:SendAlertHttpPostIn" />
+      <wsdl:output message="tns:SendAlertHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendAlertWithImage">
+      <wsdl:input message="tns:SendAlertWithImageHttpPostIn" />
+      <wsdl:output message="tns:SendAlertWithImageHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendSMS">
+      <wsdl:input message="tns:SendSMSHttpPostIn" />
+      <wsdl:output message="tns:SendSMSHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendTweet">
+      <wsdl:input message="tns:SendTweetHttpPostIn" />
+      <wsdl:output message="tns:SendTweetHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ProductLatestVersionGet">
+      <wsdl:input message="tns:ProductLatestVersionGetHttpPostIn" />
+      <wsdl:output message="tns:ProductLatestVersionGetHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetByteCount">
+      <wsdl:input message="tns:GetByteCountHttpPostIn" />
+      <wsdl:output message="tns:GetByteCountHttpPostOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="iSpyAPISoap" type="tns:iSpyAPISoap">
@@ -603,15 +1148,6 @@
     </wsdl:operation>
     <wsdl:operation name="ListObjects">
       <soap:operation soapAction="http://ispyconnect.com/ListObjects" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="Encrypt">
-      <soap:operation soapAction="http://ispyconnect.com/Encrypt" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -709,6 +1245,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetByteCount">
+      <soap:operation soapAction="http://ispyconnect.com/GetByteCount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="iSpyAPISoap12" type="tns:iSpyAPISoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
@@ -777,15 +1322,6 @@
     </wsdl:operation>
     <wsdl:operation name="ListObjects">
       <soap12:operation soapAction="http://ispyconnect.com/ListObjects" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="Encrypt">
-      <soap12:operation soapAction="http://ispyconnect.com/Encrypt" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -883,6 +1419,363 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetByteCount">
+      <soap12:operation soapAction="http://ispyconnect.com/GetByteCount" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="iSpyAPIHttpGet" type="tns:iSpyAPIHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="TestConnection">
+      <http:operation location="/TestConnection" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TestConnection2">
+      <http:operation location="/TestConnection2" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoteAddress">
+      <http:operation location="/RemoteAddress" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Connect">
+      <http:operation location="/Connect" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Connect2">
+      <http:operation location="/Connect2" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Connect3">
+      <http:operation location="/Connect3" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Authorise">
+      <http:operation location="/Authorise" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListObjects">
+      <http:operation location="/ListObjects" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Ping">
+      <http:operation location="/Ping" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PingAlive">
+      <http:operation location="/PingAlive" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Disconnect">
+      <http:operation location="/Disconnect" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sync">
+      <http:operation location="/Sync" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendContent">
+      <http:operation location="/SendContent" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendAlert">
+      <http:operation location="/SendAlert" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendAlertWithImage">
+      <http:operation location="/SendAlertWithImage" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendSMS">
+      <http:operation location="/SendSMS" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendTweet">
+      <http:operation location="/SendTweet" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProductLatestVersionGet">
+      <http:operation location="/ProductLatestVersionGet" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetByteCount">
+      <http:operation location="/GetByteCount" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="iSpyAPIHttpPost" type="tns:iSpyAPIHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="TestConnection">
+      <http:operation location="/TestConnection" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TestConnection2">
+      <http:operation location="/TestConnection2" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoteAddress">
+      <http:operation location="/RemoteAddress" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Connect">
+      <http:operation location="/Connect" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Connect2">
+      <http:operation location="/Connect2" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Connect3">
+      <http:operation location="/Connect3" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Authorise">
+      <http:operation location="/Authorise" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListObjects">
+      <http:operation location="/ListObjects" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Ping">
+      <http:operation location="/Ping" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PingAlive">
+      <http:operation location="/PingAlive" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Disconnect">
+      <http:operation location="/Disconnect" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sync">
+      <http:operation location="/Sync" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendContent">
+      <http:operation location="/SendContent" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendAlert">
+      <http:operation location="/SendAlert" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendAlertWithImage">
+      <http:operation location="/SendAlertWithImage" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendSMS">
+      <http:operation location="/SendSMS" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendTweet">
+      <http:operation location="/SendTweet" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProductLatestVersionGet">
+      <http:operation location="/ProductLatestVersionGet" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetByteCount">
+      <http:operation location="/GetByteCount" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="iSpyAPI">
     <wsdl:port name="iSpyAPISoap" binding="tns:iSpyAPISoap">
@@ -890,6 +1783,12 @@
     </wsdl:port>
     <wsdl:port name="iSpyAPISoap12" binding="tns:iSpyAPISoap12">
       <soap12:address location="https://www.ispyconnect.com/webservices/ispyapi.asmx" />
+    </wsdl:port>
+    <wsdl:port name="iSpyAPIHttpGet" binding="tns:iSpyAPIHttpGet">
+      <http:address location="https://www.ispyconnect.com/webservices/ispyapi.asmx" />
+    </wsdl:port>
+    <wsdl:port name="iSpyAPIHttpPost" binding="tns:iSpyAPIHttpPost">
+      <http:address location="https://www.ispyconnect.com/webservices/ispyapi.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

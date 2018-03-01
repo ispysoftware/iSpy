@@ -18,7 +18,6 @@ internal static class Program
     //public static Mutex Mutex;
     private static string _apppath = "", _appdatapath = "";
     public static string Platform = "x86";
-    public static int GridViews = 0;
     private static uint _previousExecutionState;
     public static WinFormsAppIdleHandler AppIdle;
     public static string AppPath
@@ -211,15 +210,14 @@ internal static class Program
            
 
             _previousExecutionState = NativeCalls.SetThreadExecutionState(NativeCalls.EsContinuous | NativeCalls.EsSystemRequired);
-            
-            AppIdle = new WinFormsAppIdleHandler {Enabled = false};
+
+            AppIdle = new WinFormsAppIdleHandler();
             var mf = new MainForm(silentstartup, command);
             GC.KeepAlive(FfmpegMutex);
             
             Application.Run(mf);
             FfmpegMutex.Close();
 
-            AppIdle.Enabled = false;
             ffmpeg.avformat_network_deinit();
 
 

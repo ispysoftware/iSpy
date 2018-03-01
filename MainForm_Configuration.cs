@@ -1579,6 +1579,7 @@ namespace iSpyApplication
                     {
                         c = (Manufacturers)s.Deserialize(reader);
                         reader.Close();
+                        
                     }
                     fs.Close();
                 }
@@ -3637,8 +3638,7 @@ namespace iSpyApplication
                 {
                     cameraControl.Calibrating = true;
                     cameraControl.PTZ.SendPTZCommand(e.Delta > 0 ? Enums.PtzCommand.ZoomIn : Enums.PtzCommand.ZoomOut);
-                    if (cameraControl.PTZ.IsContinuous)
-                        cameraControl.PTZ.SendPTZCommand(Enums.PtzCommand.Stop);
+                    cameraControl.PTZ.CheckSendStop();
                 }
                 else
                 {

@@ -43,9 +43,6 @@ namespace iSpyApplication
 
             if (alwaysOnTopToolStripMenuItem.Checked)
                 OnTop();
-
-            Program.AppIdle.Enabled = true;
-            Program.GridViews++;
         }
 
         private void MaxMin()
@@ -129,9 +126,6 @@ namespace iSpyApplication
 
         private void GridView_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Program.GridViews--;
-            if (Program.GridViews == 0)
-                Program.AppIdle.Enabled = false;
         }
 
         private void quickSelectToolStripMenuItem_Click(object sender, EventArgs e)

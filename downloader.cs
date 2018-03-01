@@ -21,7 +21,6 @@ namespace iSpyApplication
         public downloader()
         {
             InitializeComponent();
-
         }
 
         private void downloader_Load(object sender, EventArgs e)

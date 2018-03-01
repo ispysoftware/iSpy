@@ -23,7 +23,7 @@ namespace iSpyApplication.iSpyWS {
     
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Web.Services.WebServiceBindingAttribute(Name="iSpyAPISoap", Namespace="http://ispyconnect.com/")]
@@ -45,8 +45,6 @@ namespace iSpyApplication.iSpyWS {
         
         private System.Threading.SendOrPostCallback ListObjectsOperationCompleted;
         
-        private System.Threading.SendOrPostCallback EncryptOperationCompleted;
-        
         private System.Threading.SendOrPostCallback PingOperationCompleted;
         
         private System.Threading.SendOrPostCallback PingAliveOperationCompleted;
@@ -66,6 +64,8 @@ namespace iSpyApplication.iSpyWS {
         private System.Threading.SendOrPostCallback SendTweetOperationCompleted;
         
         private System.Threading.SendOrPostCallback ProductLatestVersionGetOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback GetByteCountOperationCompleted;
         
         private bool useDefaultCredentialsSetExplicitly;
         
@@ -130,9 +130,6 @@ namespace iSpyApplication.iSpyWS {
         public event ListObjectsCompletedEventHandler ListObjectsCompleted;
         
         /// <remarks/>
-        public event EncryptCompletedEventHandler EncryptCompleted;
-        
-        /// <remarks/>
         public event PingCompletedEventHandler PingCompleted;
         
         /// <remarks/>
@@ -161,6 +158,9 @@ namespace iSpyApplication.iSpyWS {
         
         /// <remarks/>
         public event ProductLatestVersionGetCompletedEventHandler ProductLatestVersionGetCompleted;
+        
+        /// <remarks/>
+        public event GetByteCountCompletedEventHandler GetByteCountCompleted;
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://ispyconnect.com/TestConnection", RequestNamespace="http://ispyconnect.com/", ResponseNamespace="http://ispyconnect.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
@@ -479,35 +479,6 @@ namespace iSpyApplication.iSpyWS {
             if ((this.ListObjectsCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.ListObjectsCompleted(this, new ListObjectsCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://ispyconnect.com/Encrypt", RequestNamespace="http://ispyconnect.com/", ResponseNamespace="http://ispyconnect.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public string Encrypt(string toEncrypt) {
-            object[] results = this.Invoke("Encrypt", new object[] {
-                        toEncrypt});
-            return ((string)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void EncryptAsync(string toEncrypt) {
-            this.EncryptAsync(toEncrypt, null);
-        }
-        
-        /// <remarks/>
-        public void EncryptAsync(string toEncrypt, object userState) {
-            if ((this.EncryptOperationCompleted == null)) {
-                this.EncryptOperationCompleted = new System.Threading.SendOrPostCallback(this.OnEncryptOperationCompleted);
-            }
-            this.InvokeAsync("Encrypt", new object[] {
-                        toEncrypt}, this.EncryptOperationCompleted, userState);
-        }
-        
-        private void OnEncryptOperationCompleted(object arg) {
-            if ((this.EncryptCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.EncryptCompleted(this, new EncryptCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -864,6 +835,35 @@ namespace iSpyApplication.iSpyWS {
         }
         
         /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://ispyconnect.com/GetByteCount", RequestNamespace="http://ispyconnect.com/", ResponseNamespace="http://ispyconnect.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public long GetByteCount(string resource) {
+            object[] results = this.Invoke("GetByteCount", new object[] {
+                        resource});
+            return ((long)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void GetByteCountAsync(string resource) {
+            this.GetByteCountAsync(resource, null);
+        }
+        
+        /// <remarks/>
+        public void GetByteCountAsync(string resource, object userState) {
+            if ((this.GetByteCountOperationCompleted == null)) {
+                this.GetByteCountOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetByteCountOperationCompleted);
+            }
+            this.InvokeAsync("GetByteCount", new object[] {
+                        resource}, this.GetByteCountOperationCompleted, userState);
+        }
+        
+        private void OnGetByteCountOperationCompleted(object arg) {
+            if ((this.GetByteCountCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.GetByteCountCompleted(this, new GetByteCountCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
         public new void CancelAsync(object userState) {
             base.CancelAsync(userState);
         }
@@ -883,11 +883,11 @@ namespace iSpyApplication.iSpyWS {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void TestConnectionCompletedEventHandler(object sender, TestConnectionCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class TestConnectionCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -909,11 +909,11 @@ namespace iSpyApplication.iSpyWS {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void TestConnection2CompletedEventHandler(object sender, TestConnection2CompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class TestConnection2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -935,11 +935,11 @@ namespace iSpyApplication.iSpyWS {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void RemoteAddressCompletedEventHandler(object sender, RemoteAddressCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class RemoteAddressCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -961,11 +961,11 @@ namespace iSpyApplication.iSpyWS {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void ConnectCompletedEventHandler(object sender, ConnectCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ConnectCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -987,11 +987,11 @@ namespace iSpyApplication.iSpyWS {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void Connect2CompletedEventHandler(object sender, Connect2CompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class Connect2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1013,11 +1013,11 @@ namespace iSpyApplication.iSpyWS {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void Connect3CompletedEventHandler(object sender, Connect3CompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class Connect3CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1039,11 +1039,11 @@ namespace iSpyApplication.iSpyWS {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void AuthoriseCompletedEventHandler(object sender, AuthoriseCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class AuthoriseCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1065,11 +1065,11 @@ namespace iSpyApplication.iSpyWS {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void ListObjectsCompletedEventHandler(object sender, ListObjectsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ListObjectsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1091,37 +1091,11 @@ namespace iSpyApplication.iSpyWS {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
-    public delegate void EncryptCompletedEventHandler(object sender, EncryptCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class EncryptCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal EncryptCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public string Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((string)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void PingCompletedEventHandler(object sender, PingCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class PingCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1143,11 +1117,11 @@ namespace iSpyApplication.iSpyWS {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void PingAliveCompletedEventHandler(object sender, PingAliveCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class PingAliveCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1169,11 +1143,11 @@ namespace iSpyApplication.iSpyWS {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void DisconnectCompletedEventHandler(object sender, DisconnectCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class DisconnectCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1195,11 +1169,11 @@ namespace iSpyApplication.iSpyWS {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void SyncCompletedEventHandler(object sender, SyncCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class SyncCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1221,11 +1195,11 @@ namespace iSpyApplication.iSpyWS {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void SendContentCompletedEventHandler(object sender, SendContentCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class SendContentCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1247,11 +1221,11 @@ namespace iSpyApplication.iSpyWS {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void SendAlertCompletedEventHandler(object sender, SendAlertCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class SendAlertCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1273,11 +1247,11 @@ namespace iSpyApplication.iSpyWS {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void SendAlertWithImageCompletedEventHandler(object sender, SendAlertWithImageCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class SendAlertWithImageCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1299,11 +1273,11 @@ namespace iSpyApplication.iSpyWS {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void SendSMSCompletedEventHandler(object sender, SendSMSCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class SendSMSCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1325,11 +1299,11 @@ namespace iSpyApplication.iSpyWS {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void SendTweetCompletedEventHandler(object sender, SendTweetCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class SendTweetCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1351,11 +1325,11 @@ namespace iSpyApplication.iSpyWS {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void ProductLatestVersionGetCompletedEventHandler(object sender, ProductLatestVersionGetCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1586.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ProductLatestVersionGetCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1372,6 +1346,32 @@ namespace iSpyApplication.iSpyWS {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((string)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    public delegate void GetByteCountCompletedEventHandler(object sender, GetByteCountCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class GetByteCountCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal GetByteCountCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public long Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((long)(this.results[0]));
             }
         }
     }
