@@ -177,16 +177,16 @@ namespace iSpyApplication.Cloud
                 _uploading = false;
                 return;
             }
-            
+
 
             FileInfo fi;
             byte[] byteArray;
             try
             {
                 fi = new FileInfo(entry.SourceFilename);
-                byteArray = File.ReadAllBytes(fi.FullName);
+                byteArray = Helper.ReadBytesWithRetry(fi);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 //file doesn't exist
                 Logger.LogException(ex);

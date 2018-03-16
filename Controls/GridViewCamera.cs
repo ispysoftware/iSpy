@@ -32,15 +32,15 @@ namespace iSpyApplication.Controls
             numDelay.Value = Delay;
             foreach(var c in MainForm.Cameras)
             {
-                lbCameras.Items.Add(new GridViewItem(c.name, c.id, 2,null));
+                lbCameras.Items.Add(new GridViewItem(c.name, c.id, 2));
             }
             foreach (var c in MainForm.Microphones)
             {
-                lbCameras.Items.Add(new GridViewItem(c.name, c.id, 1, null));
+                lbCameras.Items.Add(new GridViewItem(c.name, c.id, 1));
             }
             foreach (var c in MainForm.FloorPlans)
             {
-                lbCameras.Items.Add(new GridViewItem(c.name, c.id, 3, null));
+                lbCameras.Items.Add(new GridViewItem(c.name, c.id, 3));
             }        
 
             for(int j=0;j<lbCameras.Items.Count;j++)

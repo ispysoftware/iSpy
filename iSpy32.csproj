@@ -383,6 +383,7 @@
     <Compile Include="PlayerVLC.Designer.cs">
       <DependentUpon>PlayerVLC.cs</DependentUpon>
     </Compile>
+    <Compile Include="Sources\Audio\talk\TalkDoorbird.cs" />
     <Compile Include="Sources\Video\FFmpegBase.cs" />
     <Compile Include="Sources\Video\MediaStream.cs" />
     <Compile Include="Sources\Video\VideoCaptureDevice.cs" />

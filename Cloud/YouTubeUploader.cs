@@ -202,9 +202,10 @@ namespace iSpyApplication.Cloud
                         }
                 };
 
+            
             try
             {
-                using (var fileStream = new FileStream(us.Filename, FileMode.Open))
+                using (var fileStream = new FileStream(us.Filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
 
                     var videosInsertRequest = s.Videos.Insert(video, "snippet,status", fileStream, "video/*");

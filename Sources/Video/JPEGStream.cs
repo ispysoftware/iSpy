@@ -264,7 +264,6 @@ namespace iSpyApplication.Sources.Video
                         }
                     }
 
-
                     // wait for a while ?
                     if (FrameInterval > 0)
                     {

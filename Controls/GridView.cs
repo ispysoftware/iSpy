@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using iSpyApplication.Utilities;
-using iSpyPRO.DirectShow;
 using Timer = System.Timers.Timer;
 
 namespace iSpyApplication.Controls
@@ -127,7 +125,7 @@ namespace iSpyApplication.Controls
                         {
                             if (cfg[1] != "")
                             {
-                                var gvi = new GridViewItem("", Convert.ToInt32(cfg[1]), 2, this);
+                                var gvi = new GridViewItem("", Convert.ToInt32(cfg[1]), 2);
                                 _controls[0] =
                                     new GridViewConfig(
                                         new List<GridViewItem> { gvi  }, 1000) {Hold = true};
@@ -182,7 +180,7 @@ namespace iSpyApplication.Controls
                 {
                     if (o.GridIndex < _controls.Count)
                     {
-                        var li = o.Item.Select(c => new GridViewItem("", c.ObjectID, c.TypeID, this)).ToList();
+                        var li = o.Item.Select(c => new GridViewItem("", c.ObjectID, c.TypeID)).ToList();
 
                         if (li.Count == 0)
                             _controls[o.GridIndex] = null;
@@ -218,7 +216,6 @@ namespace iSpyApplication.Controls
                 {
                     var c = _controls[k];
                     if (c == null || c.Hold) continue;
-                    _controls[k].ObjectIDs[0].DeInit();
                     _controls[k] = null;
                 }
 
@@ -244,7 +241,7 @@ namespace iSpyApplication.Controls
                                 i++;
                             if (i == _maxItems)
                                 break;
-                            _controls[i] = new GridViewConfig(new List<GridViewItem> { new GridViewItem("", cam.id, 2,this) }, 1000);
+                            _controls[i] = new GridViewConfig(new List<GridViewItem> { new GridViewItem("", cam.id, 2) }, 1000);
                             
                         }                           
                     }
@@ -275,7 +272,7 @@ namespace iSpyApplication.Controls
                                     i++;
                                 if (i == _maxItems)
                                     break;
-                                _controls[i] = new GridViewConfig(new List<GridViewItem> { new GridViewItem("", mic.id, 1, this) },1000);
+                                _controls[i] = new GridViewConfig(new List<GridViewItem> { new GridViewItem("", mic.id, 1) },1000);
                             }
                         }
                     }
@@ -534,7 +531,7 @@ namespace iSpyApplication.Controls
                                     {
                                         if (cw.Camera != null && cw.GotImage)
                                         {
-                                            var bmp = obj.LastFrame;
+                                            var bmp = cw.LastFrame;
                                             if (bmp != null)
                                             {
                                                 if (!Cg.Fill)
@@ -1153,10 +1150,6 @@ namespace iSpyApplication.Controls
                 }
                 if (gvc.ShowDialog(this) == DialogResult.OK)
                 {
-                    foreach (var gvi in gvc.SelectedIDs)
-                    {
-                        gvi.Init(this);
-                    }
                     cgv = gvc.SelectedIDs.Count > 0 ? new GridViewConfig(gvc.SelectedIDs, gvc.Delay) : null;
 
                     if (Cg != null)

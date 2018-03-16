@@ -63,7 +63,6 @@ namespace iSpyApplication.Controls
 
         private void ApplicationIdle(object sender, EventArgs e)
         {
-            Debug.WriteLine("idle..");
             AppLoopDoWork?.Invoke(this, e);
         }
         

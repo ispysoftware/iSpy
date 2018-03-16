@@ -2145,7 +2145,7 @@ namespace iSpyApplication.Controls
 
                         while (filename.IndexOf("{", StringComparison.Ordinal) != -1 && i < 20)
                         {
-                            filename = String.Format(CultureInfo.InvariantCulture, filename, DateTime.Now);
+                            filename = string.Format(CultureInfo.InvariantCulture, filename, DateTime.Now);
                             i++;
                         }
 
@@ -2174,7 +2174,7 @@ namespace iSpyApplication.Controls
                                 new FTPTask(ftp.server, ftp.port,
                                     ftp.usepassive, ftp.username,
                                     ftp.password, filename,
-                                    imageStream.ToArray(), Camobject.id, Camobject.ftp.counter, ftp.rename, ftp.sftp));
+                                    "", Camobject.id, Camobject.ftp.counter, ftp.rename, ftp.sftp, imageStream.ToArray()));
 
                             myThumbnail.Dispose();
                         }
@@ -2226,15 +2226,15 @@ namespace iSpyApplication.Controls
                 if (ftp != null)
                 {
                     Camobject.ftp.ready = false;
-
+                    
                     ThreadPool.QueueUserWorkItem((new AsynchronousFtpUpLoader()).FTP,
                         new FTPTask(ftp.server, ftp.port,
                             ftp.usepassive, ftp.username,
                             ftp.password, filename,
-                            File.ReadAllBytes(path),
+                            path,
                             Camobject.id,
                             Camobject.recorder.ftpcounter,
-                            ftp.rename, ftp.sftp));
+                            ftp.rename, ftp.sftp,null));
                 }
 
             }
@@ -5278,7 +5278,24 @@ namespace iSpyApplication.Controls
             if (Recording)
             {
                 _stopWrite.Set();
-                _writerStopped.WaitOne();
+                var t = 0;
+                while (Recording && t < 20)
+                {
+                    _writerStopped.WaitOne(200);
+                    t++;
+                }
+                if (t == 20)
+                {
+                    try
+                    {
+                        _recordingThread?.Abort();
+                        Logger.LogError("cam: aborted writing thread");
+                    }
+                    catch
+                    {
+
+                    }
+                }
             }
         }
 

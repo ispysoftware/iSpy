@@ -277,7 +277,8 @@ namespace iSpyApplication.Sources.Video
             GC.KeepAlive(_mPlayer);
 
             _needsSetup = true;
-            _mPlayer.CustomRenderer.SetFormat(new BitmapFormat(_source.settings.vlcWidth, _source.settings.vlcHeight, ChromaType.RV24));
+            if (!_modeAudio)
+                _mPlayer.CustomRenderer.SetFormat(new BitmapFormat(_source.settings.vlcWidth, _source.settings.vlcHeight, ChromaType.RV24));
             _mPlayer.Open(_mMedia);
             _mMedia.Parse(true);
 
@@ -432,7 +433,7 @@ namespace iSpyApplication.Sources.Video
         void EventsTimeChanged(object sender, MediaPlayerTimeChanged e)
         {
             Time = e.NewTime;
-            if (LastFrame == DateTime.MinValue)
+            if (LastFrame == DateTime.MinValue && !_modeAudio)
             {
                 var sz = _mPlayer.GetVideoSize(0);
                 _source.settings.vlcWidth = sz.Width;

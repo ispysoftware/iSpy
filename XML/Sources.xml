@@ -13226,10 +13226,12 @@
     <url version="huanso" prefix="rtsp://" Source="FFMPEG" url="/onvif1" />
   </Manufacturer>
   <Manufacturer name="Doorbird">
-    <url version="d101" prefix="rtsp://" Source="FFMPEG" url="/mpeg/media.amp" />
-    <url version="D101" prefix="http://" Source="MJPEG" url="axis-cgi/mjpg/video.cgi" />
-    <url version="DoorBird_D101" prefix="rtsp://" Source="FFMPEG" url="/mpeg/media.amp" />
-    <url version="doorstation" prefix="http://" Source="MJPEG" url="axis-cgi/mjpg/video.cgi" />
+    <url version="d101" prefix="rtsp://" AudioModel="Doorbird" Source="FFMPEG" url="/mpeg/media.amp" />
+    <url version="DoorBird_D101" prefix="rtsp://" AudioModel="Doorbird" Source="FFMPEG" url="/mpeg/media.amp" />
+    <url version="BirdGuard" prefix="rtsp://" AudioModel="Doorbird" port="8557" Source="FFMPEG" url="/mpeg/media.amp" />
+    <url version="doorstation" prefix="http://" AudioModel="Doorbird" Source="MJPEG" url="axis-cgi/mjpg/video.cgi" />
+    <url version="Other" prefix="http://" AudioModel="Doorbird" Source="MJPEG" url="bha-api/video.cgi?http-user=[USERNAME]&amp;http-password=[PASSWORD]" AudioURL="bha-api/audio-receive.cgi" />
+    <url version="Other" prefix="http://" AudioModel="Doorbird" Source="JPEG" url="bha-api/image.cgi?http-user=[USERNAME]&amp;http-password=[PASSWORD]" AudioURL="bha-api/audio-receive.cgi" />
   </Manufacturer>
   <Manufacturer name="DoorCam">
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]" />

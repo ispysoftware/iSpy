@@ -1519,7 +1519,25 @@ namespace iSpyApplication.Controls
             if (Recording)
             {
                 _stopWrite.Set();
-                _writerStopped.WaitOne();
+
+                var t = 0;
+                while (Recording && t < 20)
+                {
+                    _writerStopped.WaitOne(200);
+                    t++;
+                }
+                if (t == 20)
+                {
+                    try
+                    {
+                        _recordingThread?.Abort();
+                        Logger.LogError("mic: aborted writing thread");
+                    }
+                    catch
+                    {
+
+                    }
+                }
 
                 var cc = CameraControl;
                 if (cc!=null)
@@ -1591,8 +1609,7 @@ namespace iSpyApplication.Controls
                 {
                     if (cw.AbortedAudio)
                     {
-                        Logger.LogError(Micobject.name +
-                                                ": paired recording aborted as the camera is already recording");
+                        Logger.LogError(Micobject.name + ": paired recording aborted as the camera is already recording");
                         ForcedRecording = false;
                         return;
                     }

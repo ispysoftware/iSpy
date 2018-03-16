@@ -41,6 +41,32 @@ namespace iSpyApplication
                 Index = index;
             }
         }
+
+        public static byte[] ReadBytesWithRetry(FileInfo fi)
+        {
+            int numTries = 0;
+            while (numTries<10)
+            {
+                ++numTries;
+                try
+                {
+                    using (FileStream fs = File.Open(fi.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    {
+                        var byteArray = new byte[fs.Length];
+                        fs.Read(byteArray, 0, (int) fs.Length);
+                        return byteArray;
+                    }
+                }
+                catch (IOException)
+                {
+                   
+                   Thread.Sleep(500);
+                }
+            }
+            throw new Exception("Cannot read file: "+fi.Name+" - something else has a lock on it.");
+        }
+
+
         public static Bitmap GetSpectrumAnalyserImage(Complex[] fft, int w, int h)
         {
             Size sz = new Size(w, h);

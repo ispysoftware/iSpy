@@ -84,12 +84,12 @@ namespace iSpyApplication.Controls
                         string error;
                         CleanData();
 
-                        string fn = String.Format(CultureInfo.InvariantCulture, _testloc, Helper.Now);
+                        string fn = string.Format(CultureInfo.InvariantCulture, _testloc, Helper.Now);
                         int port = (int) txtFTPPort.Value;
                         if ((new AsynchronousFtpUpLoader()).FTP(txtFTPServer.Text, port,
                                                                 chkUsePassive.Checked,
                                                                 txtFTPUsername.Text, txtFTPPassword.Text, fn, 0,
-                                                                imageStream.ToArray(), out error, chkFTPRename.Checked, chkSFTP.Checked))
+                                                                "", out error, chkFTPRename.Checked, chkSFTP.Checked, imageStream.ToArray()))
                         {
                             MessageBox.Show(LocRm.GetString("ImageUploaded"), LocRm.GetString("Success"));
                         }

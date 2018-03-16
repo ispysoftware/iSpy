@@ -125,11 +125,7 @@ namespace iSpyApplication.Cloud
 
         }
 
-        private class UploadEntry
-        {
-            public string SourceFilename;
-            public string DestinationPath;
-        }
+        
 
         private class LookupPair
         {
@@ -252,7 +248,7 @@ namespace iSpyApplication.Cloud
             try
             {
                 fi = new FileInfo(entry.SourceFilename);
-                byteArray = System.IO.File.ReadAllBytes(fi.FullName);
+                byteArray = Helper.ReadBytesWithRetry(fi);
             }
             catch(Exception ex)
             {
@@ -319,6 +315,13 @@ namespace iSpyApplication.Cloud
             }
 
 
+        }
+
+
+        private class UploadEntry
+        {
+            public string SourceFilename;
+            public string DestinationPath;
         }
 
     }

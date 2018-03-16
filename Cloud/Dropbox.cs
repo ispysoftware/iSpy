@@ -166,7 +166,7 @@ namespace iSpyApplication.Cloud
             try
             {
                 fi = new FileInfo(entry.SourceFilename);
-                byteArray = File.ReadAllBytes(fi.FullName);
+                byteArray = Helper.ReadBytesWithRetry(fi);
             }
             catch (Exception ex)
             {

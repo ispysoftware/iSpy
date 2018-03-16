@@ -107,6 +107,7 @@
                         { "text": "None", "value": "None" },
                         { "text": "Local Playback", "value": "Local Playback" },
                         { "text": "Axis", "value": "Axis", "noTranslate": true  },
+                        { "text": "Doorbird", "value": "Doorbird", "noTranslate": true  },
                         { "text": "Foscam", "value": "Foscam", "noTranslate": true  },
                         { "text": "iSpy Server", "value": "iSpy Server", "noTranslate": true  },
                         { "text": "Network Kinect", "value": "Network Kinect", "noTranslate": true  },
