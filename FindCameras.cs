@@ -1141,9 +1141,18 @@ namespace iSpyApplication
 
             if (!string.IsNullOrEmpty(s.port))
                 nPort = Convert.ToInt32(s.port);
+            else
+            {
+                if (s.prefix.ToLowerInvariant().StartsWith("rtsp"))
+                {
+                    nPort = 554;
+                }
+            }
+
+
             
             int channel;
-            var uri = new Uri("http://"+addr+":"+nPort);
+            var uri = new Uri(s.prefix+addr+":"+nPort);
             int.TryParse(txtChannel.Text.Trim(), out channel);
             return Conf.GetAddr(s, uri, channel, Username, Password, audio);
 

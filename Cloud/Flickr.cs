@@ -154,51 +154,57 @@ namespace iSpyApplication.Cloud
 
         private static void Upload(object state)
         {
-            if (UploadList.Count == 0)
-            {
-                _uploading = false;
-                return;
-            }
+            try { 
+                if (UploadList.Count == 0)
+                {
+                    _uploading = false;
+                    return;
+                }
 
-            UploadEntry entry;
+                UploadEntry entry;
 
-            try
-            {
-                var l = UploadList.ToList();
-                entry = l[0];//could have been cleared by Authorise
-                l.RemoveAt(0);
-                UploadList = l.ToList();
-            }
-            catch
-            {
-                _uploading = false;
-                return;
-            }
+                try
+                {
+                    var l = UploadList.ToList();
+                    entry = l[0];//could have been cleared by Authorise
+                    l.RemoveAt(0);
+                    UploadList = l.ToList();
+                }
+                catch
+                {
+                    _uploading = false;
+                    return;
+                }
 
-            var s = Service;
-            if (s == null)
-            {
-                _uploading = false;
-                return;
-            }
+                var s = Service;
+                if (s == null)
+                {
+                    _uploading = false;
+                    return;
+                }
 
 
-            FileInfo fi;
-            try
-            {
-                fi = new FileInfo(entry.SourceFilename);
-                var r = s.UploadPicture(entry.SourceFilename, fi.Name,"iSpy video");
-                if (r != null)
-                    Logger.LogMessage("Uploaded to flickr: " + fi.Name);
-                else
-                    Logger.LogMessage("Upload to flickr failed ("+ fi.Name + ")");
+                FileInfo fi;
+                try
+                {
+                    fi = new FileInfo(entry.SourceFilename);
+                    var r = s.UploadPicture(entry.SourceFilename, fi.Name,"iSpy video");
+                    if (r != null)
+                        Logger.LogMessage("Uploaded to flickr: " + fi.Name);
+                    else
+                        Logger.LogMessage("Upload to flickr failed ("+ fi.Name + ")");
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogException(ex,"Flickr");
+                }
+                
+                Upload(null);
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex,"Flickr");
+                Logger.LogException(ex, "Dropbox");
             }
-                
-            Upload(null);
         }
 
     }

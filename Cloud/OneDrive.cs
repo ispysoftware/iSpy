@@ -151,84 +151,89 @@ namespace iSpyApplication.Cloud
 
         private static void Upload(object state)
         {
-            if (UploadList.Count == 0)
-            {
-                _uploading = false;
-                return;
-            }
-
-            UploadEntry entry;
-
-            try
-            {
-                var l = UploadList.ToList();
-                entry = l[0];
-                l.RemoveAt(0);
-                UploadList = l.ToList();
-            }
-            catch
-            {
-                _uploading = false;
-                return;
-            }
-
-            if (AccessToken == "")
-            {
-                _uploading = false;
-                return;
-            }
-
-
-            FileInfo fi;
-            byte[] byteArray;
-            try
-            {
-                fi = new FileInfo(entry.SourceFilename);
-                byteArray = Helper.ReadBytesWithRetry(fi);
-            }
-            catch (Exception ex)
-            {
-                //file doesn't exist
-                Logger.LogException(ex);
-                return;
-            }
-
             try { 
-                var path = entry.DestinationPath.Replace(@"\", "/");
-    //            var drive = Get("drive");
-                var url = $"{baseURL}drive/root:/{path}/{fi.Name}:/content";
-                //PUT /drive/root:/{parent-path}/{filename}:/content
-                var request =
-                        (HttpWebRequest)
-                            WebRequest.Create(url);
-
-                request.Headers.Add("Authorization","bearer "+ AccessToken);
-            
-                request.Method = "PUT";
-                request.ContentType = "application/octet-stream";
-                request.ContentLength = byteArray.Length;
-
-                using (var stream = request.GetRequestStream())
+                if (UploadList.Count == 0)
                 {
-                    stream.Write(byteArray, 0, byteArray.Length);
+                    _uploading = false;
+                    return;
                 }
 
-                var response = (HttpWebResponse)request.GetResponse();
-                var  s = response.GetResponseStream();
-                if (s == null)
-                    throw new Exception("null response stream");
-                var responseString = new StreamReader(s).ReadToEnd();
+                UploadEntry entry;
 
-                dynamic d = JsonConvert.DeserializeObject(responseString);
-                Logger.LogMessage("File uploaded to onedrive: "+d.name+" ("+d.id+")");
+                try
+                {
+                    var l = UploadList.ToList();
+                    entry = l[0];
+                    l.RemoveAt(0);
+                    UploadList = l.ToList();
+                }
+                catch
+                {
+                    _uploading = false;
+                    return;
+                }
+
+                if (AccessToken == "")
+                {
+                    _uploading = false;
+                    return;
+                }
+
+
+                FileInfo fi;
+                byte[] byteArray;
+                try
+                {
+                    fi = new FileInfo(entry.SourceFilename);
+                    byteArray = Helper.ReadBytesWithRetry(fi);
+                }
+                catch (Exception ex)
+                {
+                    //file doesn't exist
+                    Logger.LogException(ex);
+                    return;
+                }
+
+                try { 
+                    var path = entry.DestinationPath.Replace(@"\", "/");
+        //            var drive = Get("drive");
+                    var url = $"{baseURL}drive/root:/{path}/{fi.Name}:/content";
+                    //PUT /drive/root:/{parent-path}/{filename}:/content
+                    var request =
+                            (HttpWebRequest)
+                                WebRequest.Create(url);
+
+                    request.Headers.Add("Authorization","bearer "+ AccessToken);
+            
+                    request.Method = "PUT";
+                    request.ContentType = "application/octet-stream";
+                    request.ContentLength = byteArray.Length;
+
+                    using (var stream = request.GetRequestStream())
+                    {
+                        stream.Write(byteArray, 0, byteArray.Length);
+                    }
+
+                    var response = (HttpWebResponse)request.GetResponse();
+                    var  s = response.GetResponseStream();
+                    if (s == null)
+                        throw new Exception("null response stream");
+                    var responseString = new StreamReader(s).ReadToEnd();
+
+                    dynamic d = JsonConvert.DeserializeObject(responseString);
+                    Logger.LogMessage("File uploaded to onedrive: "+d.name+" ("+d.id+")");
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogException(ex, "OneDrive");
+                }
+
+                Upload(null);
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex, "OneDrive");
+                Logger.LogException(ex, "Dropbox");
             }
-
-            Upload(null);            
-
         }
 
         //private static dynamic Get(string path)

@@ -6357,6 +6357,7 @@ copy or delete as many lines as you need.-->
   <Camera id="226">
     <Makes>
       <Make Name="Ebode" Model="IPv38" />
+      <Make Name="Asgari" Model="PTZ-80IR G2"/>
     </Makes>
     <CommandURL>/cgi-bin/CGIProxy.fcgi?usr=[USERNAME]&amp;pwd=[PASSWORD]</CommandURL>
     <Commands>
@@ -7509,5 +7510,29 @@ in the camera's web interface-->
       <Command Name="Flip Off">cmd=flip-off</Command>
       <Command Name="Audio Test">cmd=audio_test</Command>
     </ExtendedCommands>
+  </Camera>
+  <Camera id="253">
+    <Makes>
+      <Make Name="Escam" Model="QF007"/>
+    </Makes>
+    <CommandURL>/dvrcmd</CommandURL>
+    <Method>POST</Method>
+    <Commands>
+      <Center></Center>
+      <Left>command=ptz_req&amp;req=start&amp;param=directionleft&amp;channel=[CHANNEL]&amp;stream=1</Left>
+      <LeftUp>command=ptz_req&amp;req=start&amp;param=directionleftup&amp;channel=[CHANNEL]&amp;stream=1</LeftUp>
+      <Right>command=ptz_req&amp;req=start&amp;param=directionright&amp;channel=[CHANNEL]&amp;stream=1</Right>
+      <RightUp>command=ptz_req&amp;req=start&amp;param=directionrightup&amp;channel=[CHANNEL]&amp;stream=1</RightUp>
+      <Up>command=ptz_req&amp;req=start&amp;param=directionup&amp;channel=[CHANNEL]&amp;stream=1</Up>
+      <Down>command=ptz_req&amp;req=start&amp;param=directiondown&amp;channel=[CHANNEL]&amp;stream=1</Down>
+      <LeftDown>command=ptz_req&amp;req=start&amp;param=directionleftdown&amp;channel=[CHANNEL]&amp;stream=1</LeftDown>
+      <RightDown>command=ptz_req&amp;req=start&amp;param=directionrightdown&amp;channel=[CHANNEL]&amp;stream=1</RightDown>
+      <Stop>command=ptz_req&amp;req=stop&amp;param=directionright&amp;channel=[CHANNEL]&amp;stream=1</Stop>
+      <ZoomIn>
+      </ZoomIn>
+      <ZoomOut>
+      </ZoomOut>
+    </Commands>
+    <ExtendedCommands/>
   </Camera>
 </PTZSettings2>

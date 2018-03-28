@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using iSpyApplication.Controls;
 using iSpyApplication.DevicePTZ;
 using iSpyApplication.Pelco;
@@ -1468,7 +1469,7 @@ namespace iSpyApplication
             };
 
 
-            _connectionFactory.BeginGetResponse(co, CoCallback);
+            Task.Run(() => _connectionFactory.BeginGetResponse(co, CoCallback));
         }
 
         public void CoCallback(object sender, EventArgs e)

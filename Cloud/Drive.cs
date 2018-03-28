@@ -213,79 +213,85 @@ namespace iSpyApplication.Cloud
 
         private static void Upload(object state)
         {
-            if (UploadList.Count == 0)
-            {
-                _uploading = false;
-                return;
-            }
+            try { 
+                if (UploadList.Count == 0)
+                {
+                    _uploading = false;
+                    return;
+                }
 
-            UploadEntry entry;
+                UploadEntry entry;
 
-            try
-            {
-                var l = UploadList.ToList();
-                entry = l[0];
-                l.RemoveAt(0);
-                UploadList = l.ToList();
-            }
-            catch
-            {
-                _uploading = false;
-                return;
-            }
+                try
+                {
+                    var l = UploadList.ToList();
+                    entry = l[0];
+                    l.RemoveAt(0);
+                    UploadList = l.ToList();
+                }
+                catch
+                {
+                    _uploading = false;
+                    return;
+                }
 
-            var s = Service;
+                var s = Service;
 
-            if (s == null)
-            {
-                _uploading = false;
-                return;
-            }
+                if (s == null)
+                {
+                    _uploading = false;
+                    return;
+                }
             
 
-            FileInfo fi;
-            byte[] byteArray;
-            try
-            {
-                fi = new FileInfo(entry.SourceFilename);
-                byteArray = Helper.ReadBytesWithRetry(fi);
-            }
-            catch(Exception ex)
-            {
-                //file doesn't exist
-                Logger.LogException(ex);
-                _uploading = false;
-                return;
-            }
-
-            var mt = MimeTypes.GetMimeType(fi.Extension);
-
-            var body = new File {Name = fi.Name, Description = "iSpy", MimeType = mt};
-            string fid = GetOrCreateFolder(entry.DestinationPath);
-                
-            try
-            {
-                using (var stream = new MemoryStream(byteArray))
+                FileInfo fi;
+                byte[] byteArray;
+                try
                 {
-                    body.Parents = new List<string> {fid};
-                    var request = s.Files.Create(body, stream, mt);
-                    request.ProgressChanged += RequestProgressChanged;
-                    request.ResponseReceived += RequestResponseReceived;
-                    try
+                    fi = new FileInfo(entry.SourceFilename);
+                    byteArray = Helper.ReadBytesWithRetry(fi);
+                }
+                catch(Exception ex)
+                {
+                    //file doesn't exist
+                    Logger.LogException(ex);
+                    _uploading = false;
+                    return;
+                }
+
+                var mt = MimeTypes.GetMimeType(fi.Extension);
+
+                var body = new File {Name = fi.Name, Description = "iSpy", MimeType = mt};
+                string fid = GetOrCreateFolder(entry.DestinationPath);
+                
+                try
+                {
+                    using (var stream = new MemoryStream(byteArray))
                     {
-                        request.Upload();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.LogException(ex);
+                        body.Parents = new List<string> {fid};
+                        var request = s.Files.Create(body, stream, mt);
+                        request.ProgressChanged += RequestProgressChanged;
+                        request.ResponseReceived += RequestResponseReceived;
+                        try
+                        {
+                            request.Upload();
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.LogException(ex);
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    Logger.LogException(ex);
+                }
+                Upload(null);
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex);
+                Logger.LogException(ex, "Dropbox");
             }
-            Upload(null);            
 
         }
 

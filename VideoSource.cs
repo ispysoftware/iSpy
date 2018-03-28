@@ -589,8 +589,7 @@ namespace iSpyApplication
 
             SourceIndex = GetSourceIndex();
 
-            CameraLogin = txtLogin.Text;
-            CameraPassword = txtPassword.Text;
+            CameraLogin = CameraPassword = "";
 
 
             FriendlyName = "Camera " + MainForm.Cameras.Count;
@@ -604,6 +603,8 @@ namespace iSpyApplication
                         MessageBox.Show(LocRm.GetString("Validate_SelectCamera"), LocRm.GetString("Note"));
                         return;
                     }
+                    CameraLogin = txtLogin.Text;
+                    CameraPassword = txtPassword.Text;
                     VideoSourceString = url;
                     SetPTZPort();
                     break;

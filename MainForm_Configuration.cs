@@ -2558,6 +2558,7 @@ namespace iSpyApplication
                 if (cw.VolumeControl != null && !cw.VolumeControl.IsEnabled)
                     cw.VolumeControl.Enable();
                 NeedsSync = true;
+                SaveObjects();
             }
             else
             {
@@ -2718,7 +2719,7 @@ namespace iSpyApplication
             oc.settings.resize = true;
             oc.settings.directoryIndex = Conf.MediaDirectories.First().ID;
 
-            oc.settings.vlcargs = VlcHelper.VlcInstalled ? "--rtsp-caching=100" : "";
+            oc.settings.vlcargs = "--rtsp-caching=100";
 
             oc.detector.recordondetect = Conf.DefaultRecordOnDetect;
             oc.detector.recordonalert = Conf.DefaultRecordOnAlert;
@@ -2785,6 +2786,7 @@ namespace iSpyApplication
                 AddObject(vl.Micobject);
                 SetNewStartPosition();
                 NeedsSync = true;
+                SaveObjects();
             }
             else
             {
@@ -3210,13 +3212,17 @@ namespace iSpyApplication
             return null;
         }
 
-        private void SaveObjects(string fileName)
+        private void SaveObjects(string fileName="")
         {
             if (_shuttingDown)
                 return;
 
+            bool rename = false;
             if (fileName == "")
-                fileName = Program.AppDataPath + @"XML\objects.xml";
+            {
+                fileName = Program.AppDataPath + @"XML\objects_new.xml";
+                rename = true;
+            }
             var c = new objects { Version = Convert.ToInt32(Application.ProductVersion.Replace(".", "")), actions = new objectsActions {entries = _actions.ToArray()} };
             foreach (objectsCamera oc in Cameras)
             {
@@ -3266,6 +3272,18 @@ namespace iSpyApplication
                     {
                         s.Serialize(writer, c);
                         File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
+                        if (rename)
+                        {
+                            var src = fileName;
+                            var dest = Program.AppDataPath + @"XML\objects.xml";
+                            var backup = Program.AppDataPath + @"XML\objects_bak.xml";
+                            if (File.Exists(dest))
+                            {
+                                File.Delete(backup);
+                                File.Move(dest, backup);
+                            }
+                            File.Move(src, dest);
+                        }
                     }
                     catch (Exception e)
                     {

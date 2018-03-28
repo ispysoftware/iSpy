@@ -148,82 +148,88 @@ namespace iSpyApplication.Cloud
 
         private static void Upload(object state)
         {
-            if (UploadList.Count == 0)
-            {
-                _uploading = false;
-                return;
-            }
-
-            UserState us;
-
-            try
-            {
-                var l = UploadList.ToList();
-                us = l[0];
-                l.RemoveAt(0);
-                UploadList = l.ToList();
-            }
-            catch
-            {
-                _uploading = false;
-                return;
-            }
-
-            var s = Service;
-
-            if (s == null)
-            {
-                _uploading = false;
-                return;
-            }
-
-            if (us.CameraData == null)
-                return;
-
-            var video = new Video
+            try { 
+                if (UploadList.Count == 0)
                 {
-                    Snippet =
-                        new VideoSnippet
-                        {
-                            Title = "iSpy: " + us.CameraData.name,
-                            Description =
-								"iSpy surveillance software: " +
-                                us.CameraData.description,
-                            Tags = us.CameraData.settings.youtube.tags.Split(','),
-                            CategoryId = "22"
-                        },
-                    Status =
-                        new VideoStatus
-                        {
-                            PrivacyStatus =
-                                us.CameraData.settings.youtube.@public
-                                    ? "public"
-                                    : "private"
-                        }
-                };
+                    _uploading = false;
+                    return;
+                }
+
+                UserState us;
+
+                try
+                {
+                    var l = UploadList.ToList();
+                    us = l[0];
+                    l.RemoveAt(0);
+                    UploadList = l.ToList();
+                }
+                catch
+                {
+                    _uploading = false;
+                    return;
+                }
+
+                var s = Service;
+
+                if (s == null)
+                {
+                    _uploading = false;
+                    return;
+                }
+
+                if (us.CameraData == null)
+                    return;
+
+                var video = new Video
+                    {
+                        Snippet =
+                            new VideoSnippet
+                            {
+                                Title = "iSpy: " + us.CameraData.name,
+                                Description =
+								    "iSpy surveillance software: " +
+                                    us.CameraData.description,
+                                Tags = us.CameraData.settings.youtube.tags.Split(','),
+                                CategoryId = "22"
+                            },
+                        Status =
+                            new VideoStatus
+                            {
+                                PrivacyStatus =
+                                    us.CameraData.settings.youtube.@public
+                                        ? "public"
+                                        : "private"
+                            }
+                    };
 
             
-            try
-            {
-                using (var fileStream = new FileStream(us.Filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                try
                 {
-
-                    var videosInsertRequest = s.Videos.Insert(video, "snippet,status", fileStream, "video/*");
-                    videosInsertRequest.ProgressChanged += VideosInsertRequestProgressChanged;
-                    videosInsertRequest.ResponseReceived += VideosInsertRequestResponseReceived;
-                    _uploaded = false;
-                    videosInsertRequest.Upload();
-                    if (_uploaded)
+                    using (var fileStream = new FileStream(us.Filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                     {
-                        Uploaded.Add(us.Filename);
+
+                        var videosInsertRequest = s.Videos.Insert(video, "snippet,status", fileStream, "video/*");
+                        videosInsertRequest.ProgressChanged += VideosInsertRequestProgressChanged;
+                        videosInsertRequest.ResponseReceived += VideosInsertRequestResponseReceived;
+                        _uploaded = false;
+                        videosInsertRequest.Upload();
+                        if (_uploaded)
+                        {
+                            Uploaded.Add(us.Filename);
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    Logger.LogException(ex,"YouTube");
+                }
+                Upload(null);
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex,"YouTube");
+                Logger.LogException(ex, "Dropbox");
             }
-            Upload(null);
 
         }
 

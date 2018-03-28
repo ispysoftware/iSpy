@@ -134,93 +134,101 @@ namespace iSpyApplication.Cloud
 
         private static void Upload(object state)
         {
-            if (UploadList.Count == 0)
-            {
-                _uploading = false;
-                return;
-            }
-
-            UploadEntry entry;
-
             try
             {
-                var l = UploadList.ToList();
-                entry = l[0];//could have been cleared by Authorise
-                l.RemoveAt(0);
-                UploadList = l.ToList();
-            }
-            catch
-            {
-                _uploading = false;
-                return;
-            }
-            
-            if (AccessToken == "")
-            {
-                _uploading = false;
-                return;                
-            }
+                if (UploadList.Count == 0)
+                {
+                    _uploading = false;
+                    return;
+                }
 
-            FileInfo fi;
-            byte[] byteArray;
-            try
-            {
-                fi = new FileInfo(entry.SourceFilename);
-                byteArray = Helper.ReadBytesWithRetry(fi);
-            }
-            catch (Exception ex)
-            {
-                //file doesn't exist
-                Logger.LogException(ex);
-                return;
-            }
+                UploadEntry entry;
 
-            try
-            {
-                var path = entry.DestinationPath.Replace(@"\", "/");
-                var url = $"https://content.dropboxapi.com/2/files/upload";
-                var request =
-                    (HttpWebRequest)
+                try
+                {
+                    var l = UploadList.ToList();
+                    entry = l[0]; //could have been cleared by Authorise
+                    l.RemoveAt(0);
+                    UploadList = l.ToList();
+                }
+                catch
+                {
+                    _uploading = false;
+                    return;
+                }
+
+                if (AccessToken == "")
+                {
+                    _uploading = false;
+                    return;
+                }
+
+                FileInfo fi;
+                byte[] byteArray;
+                try
+                {
+                    fi = new FileInfo(entry.SourceFilename);
+                    byteArray = Helper.ReadBytesWithRetry(fi);
+                }
+                catch (Exception ex)
+                {
+                    //file doesn't exist
+                    Logger.LogException(ex);
+                    return;
+                }
+
+                try
+                {
+                    var path = entry.DestinationPath.Replace(@"\", "/");
+                    var url = $"https://content.dropboxapi.com/2/files/upload";
+                    var request =
+                        (HttpWebRequest)
                         WebRequest.Create(url);
 
-                request.Headers.Add("Authorization", "Bearer " + AccessToken);
-                request.Headers.Add("Dropbox-API-Arg",
-                    "{\"path\": \"/" + path + fi.Name +
-                    "\",\"mode\": \"add\",\"autorename\": false,\"mute\": false}");
+                    request.Headers.Add("Authorization", "Bearer " + AccessToken);
+                    request.Headers.Add("Dropbox-API-Arg",
+                        "{\"path\": \"/" + path + fi.Name +
+                        "\",\"mode\": \"add\",\"autorename\": false,\"mute\": false}");
 
-                request.Method = "POST";
-                request.ContentType = "application/octet-stream";
-                request.ContentLength = byteArray.Length;
+                    request.Method = "POST";
+                    request.ContentType = "application/octet-stream";
+                    request.ContentLength = byteArray.Length;
 
-                using (var stream = request.GetRequestStream())
+                    using (var stream = request.GetRequestStream())
+                    {
+                        stream.Write(byteArray, 0, byteArray.Length);
+                    }
+
+                    var response = (HttpWebResponse) request.GetResponse();
+                    var s = response.GetResponseStream();
+                    if (s == null)
+                        throw new Exception("null response stream");
+                    var responseString = new StreamReader(s).ReadToEnd();
+
+                    dynamic d = JsonConvert.DeserializeObject(responseString);
+                    Logger.LogMessage("File uploaded to dropbox: " + d.path_lower);
+                }
+                catch (WebException wex)
                 {
-                    stream.Write(byteArray, 0, byteArray.Length);
+                    var s = wex.Response.GetResponseStream();
+                    if (s != null)
+                    {
+                        var resp = new StreamReader(s).ReadToEnd();
+                        Logger.LogError("Dropbox: " + resp);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogException(ex, "Dropbox");
                 }
 
-                var response = (HttpWebResponse) request.GetResponse();
-                var s = response.GetResponseStream();
-                if (s == null)
-                    throw new Exception("null response stream");
-                var responseString = new StreamReader(s).ReadToEnd();
-
-                dynamic d = JsonConvert.DeserializeObject(responseString);
-                Logger.LogMessage("File uploaded to dropbox: " + d.path_lower);
-            }
-            catch (WebException wex)
-            {
-                var s = wex.Response.GetResponseStream();
-                if (s != null)
-                {
-                    var resp = new StreamReader(s).ReadToEnd();
-                    Logger.LogError("Dropbox: " + resp);
-                }
+                Upload(null);
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex,"Dropbox");
+                Logger.LogException(ex, "Dropbox");
             }
-
-            Upload(null);
         }
 
     }
