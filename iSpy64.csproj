@@ -286,14 +286,9 @@
     <Reference Include="NSpeex">
       <HintPath>DLLS\NSpeex.dll</HintPath>
     </Reference>
-    <Reference Include="nVLC.Declarations">
-      <HintPath>DLLS\nVLC.Declarations.dll</HintPath>
-    </Reference>
-    <Reference Include="nVLC.Implementation">
-      <HintPath>DLLS\nVLC.Implementation.dll</HintPath>
-    </Reference>
-    <Reference Include="nVLC.LibVlcWrapper">
-      <HintPath>DLLS\nVLC.LibVlcWrapper.dll</HintPath>
+    <Reference Include="nVLC, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\nVLC.3.0.0\lib\net40\nVLC.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Renci.SshNet">
       <HintPath>DLLS\Renci.SshNet.dll</HintPath>

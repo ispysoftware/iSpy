@@ -250,7 +250,7 @@
     <url version="NX-4284-675" prefix="rtsp://" Source="FFMPEG" url="/live/ch0" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf" />
@@ -295,7 +295,7 @@
     <url version="PX3615" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="PX3615" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="PX3615" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="PX3615" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="PX3615" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="PX3615" prefix="http://" Source="JPEG" url="snapshot.cgi" />
     <url version="PX3615" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
     <url version="PX3615" prefix="http://" Source="MJPEG" url="cgi/mjpg/mjpeg.cgi" />
@@ -1276,7 +1276,7 @@
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="MJPEG" url="img/video.mjpeg" />
     <url version="WB-IP03A" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="WB-IP03A" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="WB-IP03A" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="WB-IP03A" prefix="http://" Source="MJPEG" url="video.cgi?resolution=VGA" />
     <url version="WB-IP03A" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
     <url version="WB-IP03A" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0" />
@@ -1577,7 +1577,7 @@
     <url version="101" prefix="http://" Source="MJPEG" url="mjpg/video.mjpg" />
     <url version="101" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="101" prefix="http://" Source="JPEG" url="image.jpg" />
-    <url version="101" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="101" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="101" prefix="http://" Source="MJPEG" url="video.cgi" />
     <url version="1620W" prefix="http://" Source="MJPEG" url="cgi/mjpg/mjpeg.cgi" />
     <url version="1620W" prefix="http://" Source="MJPEG" url="cgi/mjpg/mjpg.cgi" />
@@ -1992,7 +1992,7 @@
     <url version="xx40a" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="xx40a" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="xx40a" prefix="http://" Source="FFMPEG" url="videostream.asf" />
-    <url version="xx40a" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="xx40a" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="xx40a" prefix="http://" Source="MJPEG" url="VIDEO.CGI" />
     <url version="xx40a" prefix="http://" Source="MJPEG" url="video.cgi?resolution=VGA" />
     <url version="xx40a" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
@@ -2030,7 +2030,7 @@
     <url version="xx59a" prefix="http://" Source="MJPEG" url="cgi-bin/videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="xx59A" prefix="http://" Source="JPEG" url="cgi-bin/video_snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="XX59A" prefix="http://" Source="JPEG" url="cgi-bin/mobile_snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="xx60a" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="xx60a" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="xx60a" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
     <url version="XX60A" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="XXA36A" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
@@ -3077,7 +3077,7 @@
     <url version="IPC1000" prefix="rtsp://" Source="FFMPEG" url="/av0_0" />
   </Manufacturer>
   <Manufacturer name="Ana Pola">
-    <url version="Polaroid" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Polaroid" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
   </Manufacturer>
   <Manufacturer name="anba">
     <url version="HZD-600DM" prefix="rtsp://" Source="VLC" url="cam[CHANNEL]/h264" />
@@ -3711,12 +3711,12 @@
     <url version="apexis J series" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
     <url version="apexis J series" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
     <url version="APEXIS J SERIES" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="APEXIS J SERIES" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="APEXIS J SERIES" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="APEXIS J SERIES" prefix="http://" Source="JPEG" url="snapshot.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="APEXIS J SERIES" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
     <url version="apm- j0011- ws" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="apm- j0011- ws" prefix="http://" Source="MJPEG" url="videostream.cgi" />
-    <url version="apm- j0011- ws" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="apm- j0011- ws" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="APM- J0011- WS" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="APM- J0011- WS" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="apm- j803- ws" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
@@ -3726,7 +3726,7 @@
     <url version="APM-H803" prefix="rtsp://" Source="FFMPEG" url="/live/av0" />
     <url version="APM-H803" prefix="http://" Source="JPEG" url="cgi-bin/video_snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="APM-H803-WS" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="APM-H803-WS" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="APM-H803-WS" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="APM-H803-WS" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="APM-H803-WS" prefix="http://" Source="JPEG" url="cgi-bin/mobile_snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="APM-H803-WS" prefix="http://" Source="JPEG" url="cgi-bin/video_snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -3736,7 +3736,7 @@
     <url version="APM-H804-WS" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="APM-H804-WS" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="APM-H804-WS" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="APM-H804-WS" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="APM-H804-WS" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="APM-H804-WS" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="APM-H804-WS" prefix="http://" Source="JPEG" url="snap.jpg?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="APM-H804-WS" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -3754,7 +3754,7 @@
     <url version="APM-J001" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="APM-J011" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="APM-J011" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="APM-J011" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="APM-J011" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="APM-J011" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="APM-J011" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="APM-J011" prefix="http://" Source="JPEG" url="cgi-bin/video_snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -3774,7 +3774,7 @@
     <url version="APM-J011" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
     <url version="APM-J011-Richard" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
     <url version="APM-J011-ws" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="APM-J011-ws" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="APM-J011-ws" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="APM-J011-WS" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="APM-J011-WS" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="APM-J011-WS" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
@@ -3938,7 +3938,7 @@
     <url version="Rat-CAM" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="Sol-Cam1" prefix="http://" Source="JPEG" url="cgi-bin/video_snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Wireless" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]*[HEIGHT]" />
-    <url version="ws-400" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="ws-400" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="XC36a" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="XF-IP49" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
     <url version="Z_COR" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
@@ -4088,7 +4088,7 @@
     <url version="lc-7226" prefix="http://" Source="MJPEG" url="axis-cgi/mjpg/video.cgi" />
     <url version="LC-74xx" prefix="http://" Source="JPEG" url="dms?nowprofileid=[CHANNEL]" />
     <url version="LC-74xx" prefix="http://" Source="MJPEG" url="ipcam/stream.cgi?nowprofileid=[CHANNEL]" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="JPEG" url="dms" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
     <url version="Other" prefix="http://" Source="MJPEG" url="VIDEO.CGI" />
@@ -6904,7 +6904,7 @@
     <url version="AVM357Z" prefix="http://" Source="JPEG" url="cgi-bin/guest/Video.cgi?media=JPEG" />
     <url version="AZTECH WIPC409HD" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="c303" prefix="http://" Source="FFMPEG" url="/goform/video" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="JPEG" url="snap.jpg" />
@@ -6916,7 +6916,7 @@
     <url version="WIPC" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
     <url version="WIPC 480HD" prefix="rtsp://" Source="VLC" url="cgi-bin/rtspStream/[CHANNEL]" />
     <url version="WIPC 480HD" prefix="rtsp://" Source="VLC" url="live1.sdp" />
-    <url version="WIPC302" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="WIPC302" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="WIPC302" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="WIPC302" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;count=0" />
     <url version="WIPC302" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0" />
@@ -7219,7 +7219,7 @@
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
     <url version="Other" prefix="rtsp://" Source="VLC" url="" />
     <url version="Robo2" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="Robo2" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Robo2" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Robo2" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Robocam 4" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Robocam 4" prefix="rtsp://" Source="VLC" url="" />
@@ -7761,7 +7761,7 @@
   <Manufacturer name="BSTI">
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" />
     <url version="PD100DV2" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="PD100DV2" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="PD100DV2" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="PD100DV2" prefix="http://" Source="JPEG" url="snapshot.cgi" />
     <url version="PD100DV2" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
     <url version="PD100HV2" prefix="http://" Source="JPEG" url="snapshot.cgi" />
@@ -7809,7 +7809,7 @@
   </Manufacturer>
   <Manufacturer name="buyee">
     <url version="csmnct" prefix="rtsp://" Source="FFMPEG" url="/11" />
-    <url version="CSMNCT" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="CSMNCT" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="CSMNCT" prefix="http://" Source="JPEG" url="img/snapshot.cgi?size=2" />
   </Manufacturer>
   <Manufacturer name="BVUSA">
@@ -8209,7 +8209,7 @@
     <url version="Other" prefix="http://" Source="MJPEG" url="cgi/mjpg/mjpeg.cgi" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="Other" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="Other" prefix="http://" Source="JPEG" url="img/snapshot.cgi?size=2" />
@@ -8245,7 +8245,7 @@
     <url version="sec-016-ne" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="sec-016-ne" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="sec-016-ne" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0" />
-    <url version="SEC-016-NE" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="SEC-016-NE" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="SEC-016-NE" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="SEC-016-NE" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="SEC-016-NE" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
@@ -8452,7 +8452,7 @@
     <url version="Other" prefix="rtsp://" Source="FFMPEG" url="/ucast/11" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="JPEG" url="snap.jpg?JpegCam=[CHANNEL]" />
     <url version="Other" prefix="http://" Source="JPEG" url="snap.jpg" />
     <url version="Other" prefix="http://" Source="MJPEG" url="video.cgi?resolution=[WIDTH]x[HEIGHT]" />
@@ -9011,12 +9011,12 @@
   <Manufacturer name="Comtac">
     <url version="CS2" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="CS9267" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="CS9267" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="CS9267" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="CS9267" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="MJPEG" url="user/videostream.cgi" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
-    <url version="v2.0" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="v2.0" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
   </Manufacturer>
   <Manufacturer name="Comtrend">
     <url version="VD-21ir" prefix="http://" Source="MJPEG" url="cgi/mjpg/mjpeg.cgi" />
@@ -10516,7 +10516,7 @@
     <url version="Other" prefix="rtsp://" Source="VLC" url="cam/realmonitor?channel=[CHANNEL]&amp;subtype=1" />
     <url version="Other" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" />
     <url version="Other" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.cgi" />
     <url version="Other" prefix="http://" Source="JPEG" url="snap.jpg?JpegCam=[CHANNEL]" />
@@ -10631,8 +10631,8 @@
     <url version="VA060K" prefix="rtsp://" Source="VLC" url="ch0_0.h264" />
     <url version="VA060K" prefix="http://" Source="JPEG" url="cgi-bin/net_jpeg.cgi?ch=[CHANNEL]" />
     <url version="VA390k" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
-    <url version="Version 2" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
-    <url version="wifi ip ir" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Version 2" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="wifi ip ir" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="wifi ip ir" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="wifi ip ir" prefix="http://" Source="JPEG" url="video.cgi" />
     <url version="wifi ip ir" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -13526,7 +13526,7 @@
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
   </Manufacturer>
   <Manufacturer name="easy4IP">
@@ -13627,7 +13627,7 @@
     <url version="EasyN HS-691 A105" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="EASYN HS-691 A105" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="EASYN HS-691 A105" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
-    <url version="ELPIDIO" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="ELPIDIO" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="ELPIDIO" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
     <url version="es100v mini" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="est-007660" prefix="http://" Source="JPEG" url="snapshot.cgi" />
@@ -13639,7 +13639,7 @@
     <url version="ezcam pan/tilt v2" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="EZCAM PAN/TILT V2" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="F" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="F" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="F" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="F" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="F" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="F" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -13671,7 +13671,7 @@
     <url version="F SERIES" prefix="http://" Source="JPEG" url="snapshot.cgi?" />
     <url version="F SERIES" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
     <url version="F SERIES" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="F SERIES" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="F SERIES" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="F SERIES" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="F_M10R" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="F_M10R" prefix="rtsp://" Source="FFMPEG" url="live_h264.sdp" />
@@ -13700,7 +13700,7 @@
     <url version="f138" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
     <url version="F166" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="F1B" prefix="rtsp://" Source="FFMPEG" url="/11" />
-    <url version="F2-611B" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="F2-611B" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="F2-611B" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="F2-611B" prefix="rtsp://" Source="FFMPEG" url="/11" />
     <url version="F2-611B" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -13742,7 +13742,7 @@
     <url version="F3-M166" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;count=0" />
     <url version="F3-M166" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="F3-m187" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
-    <url version="F3M187" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="F3M187" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="F3M187" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="F3M187" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
     <url version="F3M187" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
@@ -13761,7 +13761,7 @@
     <url version="f-m105" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="f-m105" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="f-m105" prefix="http://" Source="JPEG" url="snapshot.cgi" />
-    <url version="F-M105" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="F-M105" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="F-M106" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="F-M106" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="F-M10R" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
@@ -13773,7 +13773,7 @@
     <url version="F-M10R" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="fm-136" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="F-M136" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="F-M136" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="F-M136" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="F-M136" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="F-M136" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="F-M136" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
@@ -13798,7 +13798,7 @@
     <url version="F-M166" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="F-M166" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="F-M166" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="F-M166" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="F-M166" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="F-M166" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="F-M166" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="F-M166" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -13824,13 +13824,13 @@
     <url version="F-M1BF" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="fs 613" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="FS-603A M106" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="FS-603A M106" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="FS-603A M106" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="FS-603A M106" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="FS-603A M106" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" />
     <url version="FS-603A M106" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
     <url version="FS-603A M106" prefix="http://" Source="MJPEG" url="videostream.cgi" />
     <url version="FS613" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="FS-613" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="FS-613" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="FS-613" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="FS-613" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="FS-613" prefix="http://" Source="FFMPEG" url="videostream.asf" />
@@ -13844,7 +13844,7 @@
     <url version="FS-613" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="FS-613" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;count=0" />
     <url version="FS-613" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
-    <url version="FS613 b M166" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="FS613 b M166" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="FS613 B M166" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="FS613 B M166" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="FS613 B M166" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" />
@@ -13853,7 +13853,7 @@
     <url version="fs613A" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="FS-613A" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]*[HEIGHT]" />
     <url version="FS-613A-M136" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="FS-613A-M136" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="FS-613A-M136" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="FS-613A-M136" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="FS-613A-M136" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="FS-613A-M136" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -13868,7 +13868,7 @@
     <url version="FS-613A-M136 Custom" prefix="http://" Source="MJPEG" url="video.cgi?resolution=VGA" />
     <url version="FS-613A-M36" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]*[HEIGHT]" />
     <url version="FS-613B" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="FS-613B" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="FS-613B" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="FS-613B" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="FS-613B" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="FS-613B" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -13893,7 +13893,7 @@
     <url version="FS-613B-MJPEG" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
     <url version="fseries" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
     <url version="fseries" prefix="http://" Source="MJPEG" url="videostream.cgi?" />
-    <url version="f-Series" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="f-Series" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="f-Series" prefix="http://" Source="JPEG" url="snapshot.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="f-Series" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="f-Series" prefix="http://" Source="MJPEG" url="videostream.cgi" />
@@ -13915,7 +13915,7 @@
     <url version="FS-M136" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" />
     <url version="gtaip" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="H187" prefix="rtsp://" Source="FFMPEG" url="/11" />
-    <url version="H3" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="H3" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="H3" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="H3" prefix="rtsp://" Source="FFMPEG" url="live_h264.sdp" />
     <url version="H3" prefix="http://" Source="JPEG" url="snapshot.cgi" />
@@ -13963,7 +13963,7 @@
     <url version="H3-V10R" prefix="rtsp://" Source="VLC" url="11" />
     <url version="H3-V137" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="H3-V137" prefix="rtsp://" Source="VLC" url="H264" />
-    <url version="H6-837" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="H6-837" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="H6-837" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="H6-837" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="H6-837" prefix="http://" Source="JPEG" url="snapshot.cgi?" />
@@ -13974,17 +13974,17 @@
     <url version="H6-M137h" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="H6-M137h" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="H6-M137h" prefix="rtsp://" Source="VLC" url="H264" />
-    <url version="H6-M137H" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="H6-M137H" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="H6-M137H" prefix="http://" Source="MJPEG" url="videostream.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="H7 Series" prefix="rtsp://" Source="FFMPEG" url="live_h264.sdp" />
     <url version="H7 Series" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" />
     <url version="H7 Series" prefix="rtsp://" Source="VLC" url="H264" />
     <url version="H7 Series" prefix="rtsp://" Source="VLC" url="0/video[CHANNEL]" />
-    <url version="H7 SERIES" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
-    <url version="H7 SERİES" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="H7 SERIES" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="H7 SERİES" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="H7 SERİES" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" />
     <url version="Hedge Camera" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="HS-691" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="HS-691" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="HS-691" prefix="rtsp://" Source="FFMPEG" url="/11" />
     <url version="HS-691" prefix="http://" Source="JPEG" url="snap.jpg" />
     <url version="HS-691" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
@@ -14001,7 +14001,7 @@
     <url version="IP-CAMERA" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="IP-CAMERA" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="IP-CAMERA" prefix="rtsp://" Source="FFMPEG" url="/11" />
-    <url version="IP-CAMERA" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="IP-CAMERA" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="IP-CAMERA" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="IP-CAMERA" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="IP-CAMERA" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
@@ -14012,7 +14012,7 @@
     <url version="M136" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="M187" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="m1bf" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="M-F136" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="M-F136" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Mini 10D" prefix="rtsp://" Source="FFMPEG" url="/11" />
     <url version="Mini 10D" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="mitsos" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
@@ -14029,7 +14029,7 @@
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.cgi?" />
     <url version="Other" prefix="rtsp://" Source="VLC" url="H264" />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -14086,7 +14086,7 @@
   </Manufacturer>
   <Manufacturer name="EasySE">
     <url version="F/B/N/I" prefix="http://" Source="FFMPEG" url="videostream.asf" />
-    <url version="F/B/N/I" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="F/B/N/I" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="F/B/N/I" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="F/B/N/I" prefix="http://" Source="JPEG" url="snapshot.cgi" />
     <url version="F/B/N/I" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
@@ -14445,7 +14445,7 @@
     <url version="IC-7010PTn" prefix="http://" Source="MJPEG" url="mjpg/video.mjpg" />
     <url version="IC-7010PTn" prefix="rtsp://" Source="VLC" url="ipcam_h264.sdp" />
     <url version="IC-7010PTN" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="IC-7010PTN" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="IC-7010PTN" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="IC-7010PTN" prefix="http://" Source="JPEG" url="snapshot.cgi" />
     <url version="IC-7010PTN" prefix="http://" Source="JPEG" url="snapshot.jpg?account=[USERNAME]&amp;password=[PASSWORD]" />
     <url version="IC-7010PTN" prefix="http://" Source="JPEG" url="jpg/image.jpg" />
@@ -14734,7 +14734,7 @@
     <url version="903IP" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="903IP" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="903IP" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="903IP" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="903IP" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="903IP" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="903IP" prefix="http://" Source="JPEG" url="snapshot.cgi" />
     <url version="903IP" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
@@ -14787,7 +14787,7 @@
     <url version="C704IP.2" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="C704IP.2" prefix="http://" Source="JPEG" url="snapshot.cgi" />
     <url version="C704IP.2" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="C704IP.2" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="C704IP.2" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="C704IP.2" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
     <url version="C704IP.2" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="C723IP" prefix="rtsp://" Source="FFMPEG" url="/av0_1" />
@@ -14822,11 +14822,11 @@
     <url version="C803IP" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
     <url version="C803IP" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="C803IP" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
-    <url version="C803IP" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="C803IP" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="C803IP" prefix="http://" Source="MJPEG" url="MJPEG.CGI" />
     <url version="C803IP" prefix="http://" Source="MJPEG" url="video.cgi?resolution=[WIDTH]x[HEIGHT]" />
     <url version="c900" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="c900" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="c900" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="C900IP" prefix="http://" Source="JPEG" url="image.jpg" />
     <url version="C900IP" prefix="http://" Source="MJPEG" url="MJPEG.CGI" />
     <url version="C900IP" prefix="http://" Source="MJPEG" url="video.cgi?resolution=VGA" />
@@ -14837,7 +14837,7 @@
     <url version="C901" prefix="http://" Source="MJPEG" url="mjpeg.cgi" />
     <url version="C901" prefix="http://" Source="MJPEG" url="video.cgi?resolution=[WIDTH]x[HEIGHT]" />
     <url version="C901IP" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="C901IP" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="C901IP" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="C901IP" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="C901IP" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="C901IP" prefix="http://" Source="JPEG" url="image.jpg" />
@@ -14847,11 +14847,11 @@
     <url version="C903" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
     <url version="C903" prefix="http://" Source="MJPEG" url="video.cgi?resolution=VGA" />
     <url version="C903" prefix="http://" Source="MJPEG" url="MJPEG.CGI" />
-    <url version="C9031p" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="C9031p" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="C903IP" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="C903IP" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="C903IP" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="C903IP" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="C903IP" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="C903IP" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="C903IP" prefix="http://" Source="JPEG" url="jpg/image.jpg?size=3" />
     <url version="C903IP" prefix="http://" Source="JPEG" url="snapshot.cgi?" />
@@ -14872,7 +14872,7 @@
     <url version="C903IP.2" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="C903IP.2" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="C903IP.2" prefix="http://" Source="MJPEG" url="videostream.cgi" />
-    <url version="C903IP.2" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="C903IP.2" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="C903IP.2" prefix="http://" Source="JPEG" url="snapshot.cgi" />
     <url version="C903IP.2" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="C903IP.2" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
@@ -14917,7 +14917,7 @@
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="MJPEG" url="GetData.cgi?CH=[CHANNEL]&amp;Codec=jpeg&amp;Size=[WIDTH]x[HEIGHT]" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="WIFI IP Camera" prefix="http://" Source="MJPEG" url="video.cgi?resolution=[WIDTH]x[HEIGHT]" />
   </Manufacturer>
@@ -15530,7 +15530,7 @@
   <Manufacturer name="Esky">
     <url version="5900" prefix="http://" Source="MJPEG" url="user/videostream.cgi" />
     <url version="C5700" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="C5700" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="C5700" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="C5700" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="C5700" prefix="http://" Source="MJPEG" url="videostream.cgi" />
     <url version="C5700" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
@@ -15555,7 +15555,7 @@
     <url version="L Series" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
     <url version="Live" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
     <url version="Live" prefix="http://" Source="MJPEG" url="user/videostream.cgi" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
@@ -16037,7 +16037,7 @@
     <url version="LX Series DVR" prefix="http://" Source="JPEG" url="cgi-bin/wappaint?camera_no=[CHANNEL]&amp;animation=0&amp;name=[USERNAME]&amp;password=[PASSWORD]&amp;pic_size=2" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="Other" prefix="rtsp://" Source="FFMPEG" url="/cam/realmonitor" />
@@ -16654,7 +16654,7 @@
     <url version="FI8602" prefix="http://" Source="MJPEG" url="video.cgi" />
     <url version="FI8602" prefix="http://" Source="VLC" url="/iphone/11?[USERNAME]:[PASSWORD]&amp;" />
     <url version="FI8602" prefix="http://" Source="VLC" url="videostream.asf" />
-    <url version="FI8602W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="FI8602W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="FI8602W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="FI8602W" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="FI8602W" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
@@ -16778,12 +16778,12 @@
     <url version="FI8904W" prefix="http://" Source="JPEG" url="cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=[USERNAME]&amp;pwd=[PASSWORD]" port="88" />
     <url version="FI8904W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" port="88" />
     <url version="FI8904W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" port="88" />
-    <url version="FI8904W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" port="88" />
+    <url version="FI8904W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" port="88" />
     <url version="FI8904W" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" port="88" />
     <url version="FI8904W" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="FI8904W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="FI8904W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="FI8904W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="FI8904W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="FI8904W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="FI8904W" prefix="rtsp://" Source="FFMPEG" url="videoMain" />
     <url version="FI8904W" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" />
@@ -16855,7 +16855,7 @@
     <url version="FI8905W" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="FI8905W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="FI8905W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="FI8905W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="FI8905W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="FI8905W" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="FI8905W" prefix="rtsp://" Source="FFMPEG" url="videoMain" />
     <url version="FI8905W" prefix="http://" Source="JPEG" url="snapshot.cgi?" />
@@ -16935,7 +16935,7 @@
     <url version="fI8908w" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="FI8908w" prefix="http://" Source="JPEG" url="snap.jpg?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="FI8908W" prefix="http://" Source="FFMPEG" url="videostream.asf" />
-    <url version="FI8908W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="FI8908W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="FI8908W" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="FI8908W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="FI8908W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
@@ -17117,7 +17117,7 @@
     <url version="fI8918w" prefix="http://" Source="JPEG" url="snapshot.cgi?" />
     <url version="FI8918w" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
     <url version="FI8918w" prefix="rtsp://" Source="FFMPEG" url="/2.3gp" port="8554" />
-    <url version="FI8918W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="FI8918W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="FI8918W" prefix="http://" Source="JPEG" url="snapshot.cgi?" />
     <url version="FI8918W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="FI8918W" prefix="http://" Source="FFMPEG" url="videostream.asf" />
@@ -17434,10 +17434,10 @@
     <url version="FI9816" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
     <url version="FI9816P" prefix="http://" Source="JPEG" url="cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=[USERNAME]&amp;pwd=[PASSWORD]&amp;" />
     <url version="FI9816P" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="FI9816P" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="FI9816P" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="FI9816P" prefix="rtsp://" Source="FFMPEG" url="/videoMain" />
     <url version="FI9816P" prefix="http://" Source="JPEG" url="cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="FI9816P" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" port="152" />
+    <url version="FI9816P" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" port="152" />
     <url version="FI9816P" prefix="http://" Source="MJPEG" url="videostream.cgi?" />
     <url version="FI9816P (ONVIF)" prefix="rtsp://" Source="FFMPEG" url="/videoMain" />
     <url version="FI9816P V2" prefix="http://" Source="JPEG" url="cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=[USERNAME]&amp;pwd=[PASSWORD]&amp;" />
@@ -17450,7 +17450,7 @@
     <url version="FI9818W" prefix="http://" Source="JPEG" url="cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=[USERNAME]&amp;pwd=[PASSWORD]&amp;" />
     <url version="FI9818W" prefix="http://" Source="JPEG" url="snapshot.cgi?camera=[CHANNEL]" />
     <url version="FI9818W" prefix="http://" Source="JPEG" url="cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="FI9818W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" port="8091" />
+    <url version="FI9818W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" port="8091" />
     <url version="FI9818W" prefix="rtsp://" Source="FFMPEG" url="videoMain" port="88" />
     <url version="FI9818W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" port="88" />
     <url version="FI9818W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" port="88" />
@@ -17465,7 +17465,7 @@
     <url version="FI9819" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="FI9820" prefix="rtsp://" Source="FFMPEG" url="videoMain" port="88" />
     <url version="FI9820" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="FI9820" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="FI9820" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="FI9820" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="FI9820" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="FI9820" prefix="http://" Source="JPEG" url="snap.jpg?JpegCam=[CHANNEL]" />
@@ -17834,7 +17834,7 @@
     <url version="Other" prefix="http://" Source="JPEG" url="cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=[USERNAME]&amp;pwd=[PASSWORD]&amp;" />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="rtsp://" Source="FFMPEG" url="videoMain" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="rtsp://" Source="FFMPEG" url="/videoMain" />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot/view[CHANNEL].jpg" />
@@ -18184,7 +18184,7 @@
     <url version="c802" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="C802" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="C802" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;count=0" />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi" />
@@ -18383,7 +18383,7 @@
     <url version="Other" prefix="http://" Source="JPEG" url="snap.jpg?JpegCam=[CHANNEL]" />
     <url version="Other" prefix="http://" Source="MJPEG" url="GetData.cgi?CH=2" />
     <url version="Other" prefix="http://" Source="JPEG" url="img/snapshot.cgi?size=2" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf" />
@@ -20434,7 +20434,7 @@
     <url version="ip60w" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="Other" prefix="http://" Source="MJPEG" url="video.cgi" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
@@ -20465,9 +20465,9 @@
   <Manufacturer name="HeeToo">
     <url version="EXPLOTEC" prefix="http://" Source="JPEG" url="snapshot.cgi?camera=[CHANNEL]" />
     <url version="HT501-L" prefix="http://" Source="VLC" url="vdata.v" />
-    <url version="HT8260" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="HT8260" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="HT8260" prefix="http://" Source="VLC" url="vdata.v" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="Other" prefix="http://" Source="VLC" url="vdata.v" />
   </Manufacturer>
@@ -21526,7 +21526,7 @@
   </Manufacturer>
   <Manufacturer name="HIVDC-2300V">
     <url version="hivdc-2300" prefix="rtsp://" Source="FFMPEG" url="/av0_0" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
   </Manufacturer>
   <Manufacturer name="hiview">
     <url version="general" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" />
@@ -21776,7 +21776,7 @@
     <url version="HT-IP212" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
     <url version="HT-IP212" prefix="http://" Source="MJPEG" url="videostream.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="HT-IP212" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="HT-IP212" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="HT-IP212" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="HT-IP212/HT-IP212F" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="IP009HDP" prefix="http://" Source="MJPEG" url="cgi-bin/videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="IP009HDP" prefix="http://" Source="JPEG" url="cgi-bin/video_snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -22262,7 +22262,7 @@
     <url version="Bseries" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Bseries" prefix="http://" Source="JPEG" url="snapshot.cgi" />
     <url version="dome" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="I908W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="I908W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="I908W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="I908W" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="I908W" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -22373,7 +22373,7 @@
     <url version="(2)" prefix="http://" Source="JPEG" url="showimg_pda.cgi?cam=[CHANNEL]" />
     <url version="(2)" prefix="http://" Source="JPEG" url="pda.cgi?[USERNAME]&amp;page=image&amp;cam=[CHANNEL]" />
     <url version="l series" prefix="http://" Source="MJPEG" url="videostream.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="JPEG" url="pda.cgi?[USERNAME]&amp;page=image&amp;cam=[CHANNEL]" />
     <url version="Other" prefix="http://" Source="JPEG" url="pda.cgi?page=image&amp;cam=[CHANNEL]" />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" />
@@ -23757,7 +23757,7 @@
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
   </Manufacturer>
   <Manufacturer name="ipcam-oprit">
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
   </Manufacturer>
   <Manufacturer name="IPCC">
     <url version="20hd" prefix="http://" Source="JPEG" url="cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=[USERNAME]&amp;pwd=[PASSWORD]&amp;" />
@@ -25122,12 +25122,12 @@
     <url version="SIP1602" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="SIP1602" prefix="http://" Source="MJPEG" url="videostream.cgi?" />
     <url version="SIP1602" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
-    <url version="SIP1602" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="SIP1602" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="sip1602w" prefix="http://" Source="JPEG" url="snapshot.cgi?camera=[CHANNEL]" />
     <url version="sip1602w" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
     <url version="sip1602w" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
     <url version="sip1602w" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" port="81" />
-    <url version="SIP1602W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="SIP1602W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="SIP1602W" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="SIP1602W" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
     <url version="SIP1602W" prefix="http://" Source="MJPEG" url="videostream.cgi" />
@@ -25261,7 +25261,7 @@
     <url version="KK001" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="kk002" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="kk002" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="kk002" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="kk002" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="kk002" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="KK002" prefix="rtsp://" Source="FFMPEG" url="/rtsp_live0" />
     <url version="KK002" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
@@ -25270,7 +25270,7 @@
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Wi-Fi IP Camera" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="WI-FI IP CAMERA" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
   </Manufacturer>
@@ -25662,7 +25662,7 @@
     <url version="SP-SHEX21-SL" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="SP-SHEX21-SL" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="SP-SHEX21-SL" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="SP-SHEX21-SL" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="SP-SHEX21-SL" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
   </Manufacturer>
   <Manufacturer name="Kowa">
     <url version="KW-90IP" prefix="http://" Source="JPEG" url="img/snapshot.cgi?size=2" />
@@ -26443,7 +26443,7 @@
     <url version="abc" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="Aegis" prefix="rtsp://" Source="VLC" url="live.sdp" />
     <url version="Beacon" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="CSX2200" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="CSX2200" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="CSX2200" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="CSX2200" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="CSX2200" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -27100,7 +27100,7 @@
   </Manufacturer>
   <Manufacturer name="LW">
     <url version="lw-h264tf" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
-    <url version="lw-h264tf" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="lw-h264tf" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="lw-h264tf" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi" />
   </Manufacturer>
@@ -27136,9 +27136,9 @@
     <url version="10AC" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="10AC" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
     <url version="10AC" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="10AC" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="10AC" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="1pc-3ac" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="1PC-3AC" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="1PC-3AC" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="20C" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" />
     <url version="20C" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="20C" prefix="http://" Source="JPEG" url="snapshot.jpg?account=[USERNAME]&amp;password=[PASSWORD]" />
@@ -27194,7 +27194,7 @@
     <url version="IPC 20C" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
     <url version="IPC 20C" prefix="http://" Source="MJPEG" url="videostream.cgi" />
     <url version="IPC 20C" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="IPC 20C" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="IPC 20C" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="IPC 20C" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" />
     <url version="ipc 3ac" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="ipc 3ac" prefix="http://" Source="JPEG" url="snapshot.cgi" />
@@ -27210,7 +27210,7 @@
     <url version="ipc-1" prefix="http://" Source="MJPEG" url="video.cgi?resolution=VGA" />
     <url version="i-pc1" prefix="http://" Source="JPEG" url="snapshot.cgi?camera=[CHANNEL]" />
     <url version="IPC-1" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
-    <url version="IPC-1" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="IPC-1" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="IPC-1" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="IPC-1" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="IPC-1" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
@@ -27233,7 +27233,7 @@
     <url version="IPC-100" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="IPC-100 AC" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="IPC-100 AC" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="IPC-100 AC" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="IPC-100 AC" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="IPC-100 AC" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="IPC-100 AC" prefix="http://" Source="JPEG" url="snapshot.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="IPC-100 AC" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
@@ -27257,7 +27257,7 @@
     <url version="ipc-10ac" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
     <url version="IPC-10AC" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="IPC-10AC" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="IPC-10AC" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="IPC-10AC" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="IPC-10AC" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="IPC-10AC" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="IPC-10AC" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -27350,7 +27350,7 @@
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?" />
     <url version="Other" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf" />
@@ -27378,7 +27378,7 @@
     <url version="supra IPC-10AC" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="supra IPC-10AC" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Supra IPC-10AC" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="Supra IPC-10AC" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Supra IPC-10AC" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Supra IPC-10AC" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Supra IPC-10AC" prefix="http://" Source="MJPEG" url="videostream.cgi?" />
     <url version="Supra IPC-1A" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
@@ -27388,7 +27388,7 @@
     <url version="SUPRA IPC-1A" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Supra IPC-20c" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Supra IPC-20c" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="SUPRA IPC-20C" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="SUPRA IPC-20C" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="SUPRA IPC-20C" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="SUPRA IPC-20C" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
     <url version="SUPRA IPC-20C" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" />
@@ -28605,7 +28605,7 @@
     <url version="NIP-02(OAM)" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;count=0" />
     <url version="NIP-02(OAM)" prefix="http://" Source="MJPEG" url="videostream.cgi" />
     <url version="NIP-02(OAM)" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="NIP-02BGPW3A2" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="NIP-02BGPW3A2" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="NIP-02BGPW3A2" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="NIP-02BGPW3A2" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="NIP-02BGPW3A2" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;count=0" />
@@ -28623,7 +28623,7 @@
     <url version="NIP-06" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="NIP-066777-BWESL" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="NIP-06new" prefix="http://" Source="MJPEG" url="user/videostream.cgi" />
-    <url version="NIP-09" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="NIP-09" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="NIP-09" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="NIP-09" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="NIP-09" prefix="http://" Source="FFMPEG" url="videostream.asf" />
@@ -28673,7 +28673,7 @@
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="Other" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -29004,7 +29004,7 @@
     <url version="NIP" prefix="http://" Source="VLC" url="ipcam/avc.cgi?audiostream=[CHANNEL]" />
     <url version="NIP" prefix="http://" Source="JPEG" url="snap.jpg?JpegCam=[CHANNEL]" />
     <url version="NIP2" prefix="http://" Source="MJPEG" url="ipcam/mjpegcif.cgi" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/1" />
     <url version="Other" prefix="http://" Source="JPEG" url="cgi-bin/snapshot.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]" />
   </Manufacturer>
@@ -29343,7 +29343,7 @@
     <url version="CM-610" prefix="rtsp://" Source="VLC" url="h264" />
     <url version="CM-710" prefix="rtsp://" Source="VLC" url="h264" />
     <url version="CM-715A" prefix="rtsp://" Source="VLC" url="h264" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="rtsp://" Source="VLC" url="h264" />
   </Manufacturer>
   <Manufacturer name="Opexia">
@@ -29386,7 +29386,7 @@
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="Other" prefix="http://" Source="MJPEG" url="cgi/sf.cgi" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="MJPEG" url="video.cgi?resolution=VGA" />
@@ -31293,7 +31293,7 @@
     <url version="IP-200B" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
     <url version="IP-200B" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="IP-201B" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
-    <url version="IP201W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="IP201W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="IP-300" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0" />
     <url version="IP-300" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="IP-300" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
@@ -31328,7 +31328,7 @@
     <url version="POLIP201W" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
     <url version="POLIP201W" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" />
     <url version="POLIP201W" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0" />
-    <url version="POLIP351S" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="POLIP351S" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="POLIP351S" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" />
     <url version="POLIP351S" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
     <url version="POLIP35i5" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
@@ -31551,18 +31551,18 @@
     <url version="D-Link" prefix="http://" Source="MJPEG" url="video.cgi?resolution=VGA" />
     <url version="HD 17" prefix="http://" Source="MJPEG" url="cgi-bin/videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="HD22" prefix="http://" Source="MJPEG" url="cgi-bin/videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="HD22" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="HD22" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="HD22" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
     <url version="HD46" prefix="http://" Source="MJPEG" url="cgi-bin/videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
     <url version="phcm" prefix="http://" Source="MJPEG" url="video.cgi?resolution=VGA" />
     <url version="phcm29" prefix="http://" Source="MJPEG" url="video.cgi?resolution=VGA" />
-    <url version="pip15" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="pip15" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="pipcam" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Pipcam12" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
     <url version="PIPCAM15" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
-    <url version="PIPCAM15" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="PIPCAM15" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="pipcam25" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
     <url version="pipcam5" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
     <url version="pipcam65" prefix="http://" Source="MJPEG" url="cgi-bin/videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -32798,7 +32798,7 @@
     <url version="SIP-PT10W" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="SIP-PT10W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="SIP-PT10W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="SIP-PT10W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="SIP-PT10W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="SIP-PT10W" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" />
     <url version="SIP-PT10W" prefix="http://" Source="JPEG" url="video.cgi" />
     <url version="SIP-PT20W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
@@ -32838,10 +32838,10 @@
     <url version="43230" prefix="rtsp://" Source="FFMPEG" url="/11" />
   </Manufacturer>
   <Manufacturer name="Security Labs">
-    <url version="FNJX9RPY94LR3J6PUFWJ" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="FNJX9RPY94LR3J6PUFWJ" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="FNJX9RPY94LR3J6PUFWJ" prefix="http://" Source="MJPEG" url=" videostream.cgi" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="SLW 164" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="SLW 164" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="SLW-163" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="SLW-164" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="SWL-164" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
@@ -34738,7 +34738,7 @@
     <url version="SQLodge" prefix="rtsp://" Source="FFMPEG" url="/onvif1" />
     <url version="SRICAM AP006" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="SRICAM AP006" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="SRICAM AP006" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="SRICAM AP006" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="SRICAM AP009" prefix="http://" Source="JPEG" url="img/snapshot.cgi?size=2" />
     <url version="SRICAM AP009" prefix="http://" Source="JPEG" url="cgi/snapshot.cgi?action=getdata&amp;channel.[CHANNEL].capture=true&amp;channel.[CHANNEL].resolution=1" port="81" />
     <url version="SRICAM SP004" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -34815,9 +34815,9 @@
     <url version="AP-003" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="AP-003" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="AP-003" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
-    <url version="AP-003" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="AP-003" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="AP-003" prefix="http://" Source="MJPEG" url="videostream.cgi?" />
-    <url version="AP-004" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="AP-004" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="AP-004" prefix="http://" Source="JPEG" url="img/snapshot.cgi?size=2" />
     <url version="AP-004" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="AP-004" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -34853,7 +34853,7 @@
     <url version="AP-006" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="AP-006" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
     <url version="AP-007" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
-    <url version="AP-008" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="AP-008" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="AP-008" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
     <url version="AP-008" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
     <url version="AP-008" prefix="http://" Source="MJPEG" url="videostream.cgi" />
@@ -34895,7 +34895,7 @@
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="JPEG" url="cgi/snapshot.cgi?action=getdata&amp;channel.[CHANNEL].capture=true&amp;channel.[CHANNEL].resolution=1" port="81" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="JPEG" url="cgi/snapshot.cgi?action=getdata&amp;channel.[CHANNEL].capture=true&amp;channel.[CHANNEL].resolution=1" />
     <url version="Other" prefix="rtsp://" Source="FFMPEG" url="/onvif1" />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" port="81" />
@@ -35198,7 +35198,7 @@
   <Manufacturer name="Suneyes">
     <url version="Other" prefix="rtsp://" Source="FFMPEG" url="/tcp/av0_0" port="10554" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="Other" prefix="rtsp://" Source="FFMPEG" url="/11" />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -35230,7 +35230,7 @@
     <url version="SP-HS01W" prefix="rtsp://" Source="VLC" url="H264" />
     <url version="SP-HS02W" prefix="http://" Source="JPEG" url="img/snapshot.cgi?size=2" />
     <url version="SP-HS02W" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="SP-HS02W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="SP-HS02W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="SP-HS02W" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="SP-HS02W" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
     <url version="SP-HS02W" prefix="rtsp://" Source="VLC" url="H264" />
@@ -35586,7 +35586,7 @@
     <url version="NHD-806" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
     <url version="Other" prefix="rtsp://" Source="FFMPEG" url="/Streaming/channels/101" />
     <url version="Other" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/1" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="JPEG" url="stillimg[CHANNEL].jpg" />
     <url version="Other" prefix="http://" Source="MJPEG" url="cgi/mjpg/mjpeg.cgi" />
     <url version="Other" prefix="rtsp://" Source="VLC" url="mpeg4" />
@@ -35654,7 +35654,7 @@
     <url version="SWANHD-830" prefix="rtsp://" Source="VLC" url="live/h264" />
     <url version="SwannEye" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="SwannEye" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="SWK-2550" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="SWK-2550" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="SWNHD-806CAM" prefix="rtsp://" Source="FFMPEG" url="/h264Preview_01_main" />
     <url version="SWNHD-820CAM" prefix="rtsp://" Source="FFMPEG" url="/Streaming/Channels/1" />
     <url version="SWNHD-820CAM" prefix="rtsp://" Source="VLC" url="live/h264" />
@@ -36020,7 +36020,7 @@
     <url version="C50S" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
     <url version="C-59" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="Other" prefix="rtsp://" Source="VLC" url="cam/realmonitor?channel=[CHANNEL]&amp;subtype=00" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi" />
@@ -36034,11 +36034,11 @@
     <url version="0001rw" prefix="http://" Source="JPEG" url="snapshot.cgi" />
     <url version="0012" prefix="http://" Source="JPEG" url="snapshot.cgi" />
     <url version="0012" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="1P602W 2013" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="1P602W 2013" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="1P602W 2013" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="2013" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="319-W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="319-W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="319-W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="319-W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]*[HEIGHT]" />
     <url version="330-KP" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="3813" prefix="http://" Source="JPEG" url="snapshot.cgi" />
@@ -36047,7 +36047,7 @@
     <url version="3815" prefix="rtsp://" Source="FFMPEG" url="/12" />
     <url version="3815" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="3815" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;count=0" />
-    <url version="3815" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="3815" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="3815" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
     <url version="3815" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="3815" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
@@ -36064,7 +36064,7 @@
     <url version="3815-W" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="3815-W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="3815-W" prefix="http://" Source="FFMPEG" url="videostream.asf" />
-    <url version="3815-W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="3815-W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="3815-W" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="3815-W" prefix="http://" Source="JPEG" url="snapshot.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="3815-W" prefix="http://" Source="JPEG" url="cgi-bin/snapshot.cgi?chn=[CHANNEL]&amp;u=[USERNAME]&amp;p=[PASSWORD]" />
@@ -36090,7 +36090,7 @@
     <url version="3815W." prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="3815w2013" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="3815W2013" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="3815W2013" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="3815W2013" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="3815W2013" prefix="rtsp://" Source="FFMPEG" url="/11" />
     <url version="3815W2013" prefix="rtsp://" Source="FFMPEG" url="/12" />
     <url version="3815W2013" prefix="http://" Source="JPEG" url="snapshot.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -36158,7 +36158,7 @@
     <url version="IP-319W" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="IP-319W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="IP-319W" prefix="http://" Source="FFMPEG" url="videostream.asf" />
-    <url version="IP-319W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="IP-319W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="IP-319W" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
     <url version="IP-319W" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
     <url version="IP-319W" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -36184,7 +36184,7 @@
     <url version="IP-391W" prefix="http://" Source="MJPEG" url="user/videostream.cgi" />
     <url version="IP-391W" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="IP-391W" prefix="rtsp://" Source="FFMPEG" url="/0/video0" />
-    <url version="IP-391W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="IP-391W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="IP-391W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]*[HEIGHT]" />
     <url version="IP391W HD" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="IP-391WHD" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
@@ -36212,7 +36212,7 @@
     <url version="IP-602W" prefix="http://" Source="MJPEG" url="videostream.cgi" />
     <url version="IP-602W" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="IP-602W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="IP-602W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="IP-602W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="IP-602W" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;count=0" />
     <url version="IP-602W" prefix="http://" Source="JPEG" url="current[CHANNEL].jpg" />
     <url version="IP-602W" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -36254,13 +36254,13 @@
     <url version="JP-3815" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="JP-3815" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="JP-3815" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JP-3815" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="JP-3815" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="JP-3815" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="JP-3815" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="JP-3815" prefix="http://" Source="MJPEG" url="videostream.cgi?" />
     <url version="JP-3815" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="JP-3815_1" prefix="http://" Source="MJPEG" url="videostream.cgi?" />
-    <url version="JP-3815W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="JP-3815W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="JP-3815W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="JP-3815W" prefix="rtsp://" Source="FFMPEG" url="/11" />
     <url version="JP-3815W" prefix="http://" Source="JPEG" url="snapshot.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -36279,7 +36279,7 @@
     <url version="JPT 3815W HD" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="JPT 3815W-HD" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="JPT3185w" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="JPT3185W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="JPT3185W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="JPT3185W" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="JPT3185W" prefix="http://" Source="JPEG" url="snapshot.cgi" />
     <url version="JPT-3814WP2P" prefix="http://" Source="JPEG" url="snapshot.cgi" />
@@ -36289,7 +36289,7 @@
     <url version="JPT-3815" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
     <url version="JPT-3815" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="JPT-3815" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="JPT-3815" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="JPT-3815" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="JPT-3815" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="JPT-3815" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="JPT-3815" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;strm=[CHANNEL]" />
@@ -36312,7 +36312,7 @@
     <url version="JPT-3815HD" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="JPT-3815-P2P" prefix="http://" Source="JPEG" url="snapshot.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="JPT-3815-P2P" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0 " />
-    <url version="JPT-3815-P2P" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="JPT-3815-P2P" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="JPT-3815-P2P" prefix="http://" Source="JPEG" url="cgi-bin/snapshot.cgi?loginuse=[USERNAME]&amp;loginpas=[PASSWORD]" />
     <url version="JPT-3815-P2P" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;count=0" />
     <url version="JPT-3815-P2P" prefix="http://" Source="JPEG" url="snapshot.cgi" />
@@ -36343,7 +36343,7 @@
     <url version="JPT-3815W" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="JPT-3815W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="JPT-3815W" prefix="http://" Source="FFMPEG" url="videostream.asf" />
-    <url version="JPT-3815W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="JPT-3815W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="JPT-3815W" prefix="rtsp://" Source="FFMPEG" url="/11" />
     <url version="JPT-3815W" prefix="http://" Source="JPEG" url="snapshot.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="JPT-3815W" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
@@ -36368,7 +36368,7 @@
     <url version="JPT-3815W 2013" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="JPT-3815W 2013" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="JPT-3815W 2013" prefix="http://" Source="FFMPEG" url="videostream.asf" />
-    <url version="JPT-3815W 2013" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="JPT-3815W 2013" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="JPT-3815W 2013" prefix="rtsp://" Source="FFMPEG" url="/11" />
     <url version="JPT-3815W 2013" prefix="http://" Source="JPEG" url="snapshot.cgi" />
     <url version="JPT-3815W 2013" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
@@ -36390,7 +36390,7 @@
     <url version="JPT-3815W+" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="JPT-3815W+" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="JPT-3815W+" prefix="http://" Source="FFMPEG" url="videostream.asf" />
-    <url version="JPT-3815W+" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="JPT-3815W+" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="JPT-3815W+" prefix="http://" Source="JPEG" url="snapshot.cgi?" />
     <url version="JPT-3815W+" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="JPT-3815W+" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
@@ -36405,9 +36405,9 @@
     <url version="JPT-3815W+ 2013" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="JPT3815WHD" prefix="rtsp://" Source="FFMPEG" url="/11" port="1200" />
     <url version="JPT-3815WHD" prefix="http://" Source="JPEG" url="snapshot.cgi" />
-    <url version="JPT-3815WP2P" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="JPT-3815WP2P" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="JPT-3815WP2P" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="JPT-3818" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="JPT-3818" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="JPT-3818" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
     <url version="JPT-3818" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="JPT-381HD" prefix="rtsp://" Source="FFMPEG" url="/0/video0" />
@@ -36420,7 +36420,7 @@
     <url version="JPW-3815 HD" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
     <url version="JTP" prefix="rtsp://" Source="FFMPEG" url="/11" />
     <url version="JW-1315" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
-    <url version="JW-1315" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="JW-1315" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="LTP2013W" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Mini-318w" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Mini-318W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
@@ -36503,7 +36503,7 @@
     <url version="Other" prefix="http://" Source="MJPEG" url="user/videostream.cgi" />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.cgi?camera=[CHANNEL]" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="JPEG" url="cgi-bin/viewer/video.jpg?resolution=640x480" />
     <url version="Other" prefix="http://" Source="JPEG" url="jpg/image.jpg?size=3" />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.cgi?" />
@@ -36565,10 +36565,10 @@
     <url version="TR3815W" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="TR-3818" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="TR-3818" prefix="http://" Source="FFMPEG" url="videostream.asf" />
-    <url version="TR-3818" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="TR-3818" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="TR-3818" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
     <url version="TR-3818" prefix="http://" Source="MJPEG" url="user/videostream.cgi" />
-    <url version="TR3818 (home)" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="TR3818 (home)" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="TR3818 (HOME)" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="TR-3828" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
     <url version="TS4001" prefix="rtsp://" Source="FFMPEG" url="/0/video1" />
@@ -37073,7 +37073,7 @@
     <url version="TLSC-3130" prefix="http://" Source="JPEG" url="jpg/image.jpg" />
     <url version="TLSC-3130" prefix="rtsp://" Source="VLC" url="video.mp4" />
     <url version="TLSC-3130" prefix="http://" Source="VLC" url="cgi-bin/net_video.cgi?channel=[CHANNEL]" />
-    <url version="TLSC-3130" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="TLSC-3130" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="TLSC-3130" prefix="http://" Source="JPEG" url="live/mjpeg" />
     <url version="TLSC-3130" prefix="http://" Source="MJPEG" url="video.mjpg" />
     <url version="TLSC-3130" prefix="http://" Source="MJPEG" url="videostream.cgi" />
@@ -38770,7 +38770,7 @@
     <url version="VC305" prefix="http://" Source="MJPEG" url="cgi-bin/sf.cgi" />
     <url version="VIN-IP-L14-96IB36" prefix="rtsp://" Source="VLC" url="cam/realmonitor?channel=[CHANNEL]&amp;subtype=1" />
     <url version="VS-IPC1002" prefix="http://" Source="MJPEG" url="cgi-bin/sf.cgi" />
-    <url version="VS-IPC1002" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="VS-IPC1002" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="VS-IPC1002" prefix="http://" Source="JPEG" url="video.cgi" />
     <url version="VS-IPC1002" prefix="http://" Source="MJPEG" url="cgi/sf.cgi" />
     <url version="VS-IPC1002" prefix="rtsp://" Source="VLC" url="live.sdp" />
@@ -39829,7 +39829,7 @@
     <url version="F-6836W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="F-6836W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="F-6836W" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="F-6836W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="F-6836W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="F-6836W" prefix="http://" Source="JPEG" url="snapshot.cgi" />
     <url version="F-6836W" prefix="http://" Source="JPEG" url="video.cgi" />
     <url version="F-6836W" prefix="http://" Source="MJPEG" url="videostream.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -40159,7 +40159,7 @@
     <url version="AJ-C0WA-C001" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="AJ-C0WA-C0D8" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="AJ-C0WA-C0D8" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="AJ-C0WA-C0D8" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="AJ-C0WA-C0D8" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="AJ-C0WA-C0D8" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="AJ-C0WA-C0D8" prefix="http://" Source="FFMPEG" url="videostream.asf" />
     <url version="AJ-C0WA-C0D8" prefix="rtsp://" Source="FFMPEG" url="/cam/realmonitor" />
@@ -40252,7 +40252,7 @@
     <url version="AJ-C2WA-C198" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="AJ-C2WA-C198" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="AJ-C2WA-C198" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="AJ-C2WA-C198" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="AJ-C2WA-C198" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="AJ-C2WA-C198" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="AJ-C2WA-C198-RADI" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="AJ-C2WA-C198-RADI" prefix="http://" Source="JPEG" url="cgi-bin/snapshot.cgi?chn=[CHANNEL]&amp;u=[USERNAME]&amp;p=[PASSWORD]" />
@@ -40273,7 +40273,7 @@
     <url version="AJ-COWA-C116" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="AJ-COWA-C116" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="AJ-COWA-C116" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
-    <url version="AJ-COWA-C116" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="AJ-COWA-C116" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="AJ-COWA-C116" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="AJ-COWA-C116" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="AJ-COWA-C116" prefix="http://" Source="JPEG" url="snapshot.cgi?" />
@@ -40341,7 +40341,7 @@
     <url version="FR4020A2" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
     <url version="FR4020A2" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
     <url version="FR-4020A2" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="FR-4020A2" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="FR-4020A2" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="FR-4020A2" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="FR-4020A2" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="FR-4020A2" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -40809,7 +40809,7 @@
     <url version="NC-541B" prefix="http://" Source="JPEG" url="snapshot.cgi?camera=[CHANNEL]" />
     <url version="NC-541w" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="NC-541w" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="NC-541w" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="NC-541w" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="NC-541w" prefix="http://" Source="JPEG" url="snapshot.cgi?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="NC-541w" prefix="http://" Source="JPEG" url="snap.jpg?JpegCam=[CHANNEL]" />
     <url version="NC-541w" prefix="http://" Source="MJPEG" url="videostream.cgi" />
@@ -40853,7 +40853,7 @@
     <url version="NCB-540W" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="NCB-541W" prefix="http://" Source="MJPEG" url="videostream.cgi" />
     <url version="NCB-541W" prefix="http://" Source="FFMPEG" url="videostream.asf" />
-    <url version="NCB-541W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="NCB-541W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="NCB-541W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
     <url version="NCB-541W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
     <url version="NCB-541W" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -40893,7 +40893,7 @@
     <url version="NCB-543W" prefix="http://" Source="MJPEG" url="videostream.cgi?" />
     <url version="NCB-543W" prefix="http://" Source="MJPEG" url="videostream.cgi" />
     <url version="NCB-543W" prefix="rtsp://" Source="VLC" url="11" />
-    <url version="NCB-543W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="NCB-543W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="NCB-543W" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="NCB-543W" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="NCB-543W" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
@@ -41050,7 +41050,7 @@
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?" />
     <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
-    <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="Other" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="Other" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="Other" prefix="http://" Source="JPEG" url="cgi/snapshot.cgi?action=getdata&amp;channel.[CHANNEL].capture=true&amp;channel.[CHANNEL].resolution=1" />
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.cgi?camera=[CHANNEL]" />
@@ -41159,7 +41159,7 @@
   <Manufacturer name="Wansview">
     <url version="1080" prefix="rtsp://" Source="FFMPEG" url="/live/ch0" />
     <url version="1080" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]*[HEIGHT]" />
-    <url version="1080" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="1080" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="1080" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="1080p" prefix="rtsp://" Source="FFMPEG" url="/live/ch0" />
     <url version="1080p" prefix="rtsp://" Source="FFMPEG" url="/live/ch1" />
@@ -41174,7 +41174,7 @@
     <url version="541" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="541" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]*[HEIGHT]" />
     <url version="541" prefix="rtsp://" Source="FFMPEG" url="/ucast/11" />
-    <url version="541W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="541W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="541W" prefix="rtsp://" Source="FFMPEG" url="/11" />
     <url version="541W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]*[HEIGHT]" />
     <url version="624W" prefix="rtsp://" Source="FFMPEG" url="/live/ch1" />
@@ -41212,7 +41212,7 @@
     <url version="N541" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="N541" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="NBC543W" prefix="rtsp://" Source="FFMPEG" url="/11" />
-    <url version="NBC543W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="NBC543W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="NBC543W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="NBC543W" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=11" />
     <url version="NBC543W" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
@@ -41227,7 +41227,7 @@
     <url version="NC543W-P" prefix="http://" Source="JPEG" url="snapshot.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="NC543W-P" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="ncb5140" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]*[HEIGHT]" />
-    <url version="NCB-534W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="NCB-534W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="NCB-534W" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
     <url version="NCB-534W" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0" />
     <url version="NCB-534W" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
@@ -41237,7 +41237,7 @@
     <url version="NCB-541w" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="NCB541W" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32" />
     <url version="NCB-541W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
-    <url version="NCB-541W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="NCB-541W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="NCB-541W" prefix="http://" Source="MJPEG" url="videostream.cgi?user=[USERNAME]&amp;password=[PASSWORD]" />
     <url version="NCB-541W" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0" />
     <url version="NCB-541W" prefix="http://" Source="MJPEG" url="videostream.cgi?" />
@@ -41249,7 +41249,7 @@
     <url version="NCB-543W" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="NCB-543W" prefix="http://" Source="JPEG" url="tmpfs/auto.jpg" />
     <url version="NCB-543W" prefix="http://" Source="MJPEG" url="videostream.cgi?" />
-    <url version="NCB-543W" prefix="http://" Source="FFMPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
+    <url version="NCB-543W" prefix="http://" Source="MJPEG" url="videostream.cgi?resolution=8&amp;rate=13" />
     <url version="NCB-543W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]*[HEIGHT]" />
     <url version="NCB545W" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=64&amp;rate=0" />
     <url version="NCB545W" prefix="http://" Source="MJPEG" url="videostream.cgi?rate=0&amp;user=[USERNAME]&amp;pwd=[PASSWORD]" />

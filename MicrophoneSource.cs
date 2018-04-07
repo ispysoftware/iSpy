@@ -142,8 +142,8 @@ namespace iSpyApplication
                     Mic.settings.sourcename = txtWavStreamURL.Text;
 
                     //set default format
-                    Mic.settings.channels = 1;
-                    Mic.settings.samples = 16000;
+                    Mic.settings.channels = (int)numChannels.Value;
+                    Mic.settings.samples = (int)numSamples.Value;
                     Mic.settings.bits = 16;
                     break;
             }
@@ -276,6 +276,8 @@ namespace iSpyApplication
             }
 
             SetSourceIndex(Mic.settings.typeindex);
+            numSamples.Value = Mic.settings.samples;
+            numChannels.Value = Mic.settings.channels;
 
             switch (Mic.settings.typeindex)
             {

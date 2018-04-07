@@ -55,7 +55,7 @@ namespace iSpyApplication.Controls
         private double _alarmLevel = 0.0005;
         private double _alarmLevelMax = 1;
         private int _height = -1;
-        private DateTime _lastframeEvent = DateTime.MinValue;
+        public DateTime LastFrameEvent = DateTime.MinValue;
 
         private int _width = -1;
         private bool _pluginTrigger;
@@ -391,7 +391,7 @@ namespace iSpyApplication.Controls
             if (VideoSource != null)
             {
                 _framerates = new Queue<double>();
-                _lastframeEvent = DateTime.MinValue;
+                LastFrameEvent = DateTime.MinValue;
                 _motionRecentlyDetected = false;
                 if (!CW.IsClone)
                 {
@@ -476,12 +476,12 @@ namespace iSpyApplication.Controls
             if (nf==null || f==null)
                 return;
 
-            if (_lastframeEvent > DateTime.MinValue)
+            if (LastFrameEvent > DateTime.MinValue)
             {
                 CalculateFramerates();
             }
             
-            _lastframeEvent = Helper.Now;
+            LastFrameEvent = Helper.Now;
 
             if (_updateResources)
             {
@@ -978,7 +978,7 @@ namespace iSpyApplication.Controls
 
         private void CalculateFramerates()
         {
-            TimeSpan tsFr = Helper.Now - _lastframeEvent;
+            TimeSpan tsFr = Helper.Now - LastFrameEvent;
             _framerates.Enqueue(1000d/tsFr.TotalMilliseconds);
             if (_framerates.Count >= 30)
                 _framerates.Dequeue();

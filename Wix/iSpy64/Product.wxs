@@ -206,14 +206,8 @@
       <Component Win64="yes" Id="Component64" Guid="{5278D2A1-F218-4D52-A762-34678BBDDAF3}">
         <File Id="NSpeex.dll" Source="$(var.OutputDir)\NSpeex.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Win64="yes" Id="Component65" Guid="{5DA5D4E3-1BE1-4B26-BF68-F91D6643990E}">
-        <File Id="nVLC.Declarations.dll" Source="$(var.OutputDir)\nVLC.Declarations.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Win64="yes" Id="Component66" Guid="{FFA19B28-2CD6-46E5-87B6-11C20A59EBC7}">
-        <File Id="nVLC.Implementation.dll" Source="$(var.OutputDir)\nVLC.Implementation.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
-      <Component Win64="yes" Id="Component67" Guid="{8D957F94-CD3C-4708-8390-CE2F4279AF99}">
-        <File Id="nVLC.LibVlcWrapper.dll" Source="$(var.OutputDir)\nVLC.LibVlcWrapper.dll" KeyPath="yes" Checksum="yes" />
+      <Component Win64="yes" Id="Component67" Guid="{20E437C6-492D-4012-88BC-2BB4F292371E}">
+        <File Id="nVLC.dll" Source="$(var.OutputDir)\nVLC.dll" KeyPath="yes" Checksum="yes" />
       </Component>
       <Component Win64="yes" Id="Component73" Guid="{76C2C908-ABFF-42BB-B3E6-E81E75FB652A}">
         <File Id="Renci.SshNet.dll" Source="$(var.OutputDir)\Renci.SshNet.dll" KeyPath="yes" Checksum="yes" />

@@ -2021,6 +2021,9 @@ namespace iSpyApplication.Controls
             if (c == null || !c.IsRunning)
                 return "";
 
+            if (c.LastFrameEvent < Helper.Now.AddSeconds(-2))
+                return "";
+
             if (!Helper.HasFeature(Enums.Features.Save_Frames))
             {
                 return "";
@@ -4302,6 +4305,8 @@ namespace iSpyApplication.Controls
         private void initONVIF()
         {
             ONVIFDevice oDev = null;
+            if (Camobject.settings.onvifident == null)
+                return;
             var cfg = Camobject.settings.onvifident.Split('|');
             try
             {               

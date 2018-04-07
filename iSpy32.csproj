@@ -264,17 +264,9 @@
     <Reference Include="NSpeex">
       <HintPath>DLLS\NSpeex.dll</HintPath>
     </Reference>
-    <Reference Include="nVLC.Declarations, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>DLLS\nVLC.Declarations.dll</HintPath>
-    </Reference>
-    <Reference Include="nVLC.Implementation, Version=2.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>DLLS\nVLC.Implementation.dll</HintPath>
-    </Reference>
-    <Reference Include="nVLC.LibVlcWrapper, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>DLLS\nVLC.LibVlcWrapper.dll</HintPath>
+    <Reference Include="nVLC, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\nVLC.3.0.0\lib\net40\nVLC.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Renci.SshNet">
       <HintPath>DLLS\Renci.SshNet.dll</HintPath>
@@ -1438,9 +1430,6 @@
     <Content Include="DLLS\NAudio.dll" />
     <Content Include="DLLS\NAudio.Lame.dll" />
     <Content Include="DLLS\NSpeex.dll" />
-    <Content Include="DLLS\nVLC.Declarations.dll" />
-    <Content Include="DLLS\nVLC.Implementation.dll" />
-    <Content Include="DLLS\nVLC.LibVlcWrapper.dll" />
     <Content Include="DLLS\Renci.SshNet.dll" />
     <Content Include="DLLS\Renderers.dll" />
     <Content Include="DLLS\Windows7ToolStripRenderer.dll" />

@@ -585,7 +585,7 @@ namespace iSpyApplication.Sources.Video
                 return;
             }
 
-            _videoQueue.Enqueue(frame);
+            _videoQueue.Enqueue((Bitmap)frame.Clone());
         }
 
         #endregion
@@ -606,7 +606,7 @@ namespace iSpyApplication.Sources.Video
         private void EventManager()
         {
             Bitmap frame;
-            while (!_abort.WaitOne(0) && !MainForm.ShuttingDown)
+            while (!_abort.WaitOne(5) && !MainForm.ShuttingDown)
             {
                 try
                 {

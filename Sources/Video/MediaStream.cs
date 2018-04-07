@@ -24,7 +24,7 @@ namespace iSpyApplication.Sources.Video
         public static WaveFormat OutFormat = new WaveFormat(22050, 16, 1);
 
         private readonly objectsMicrophone _audiosource;
-        private readonly int _timeout;
+        private int _timeout;
         private readonly string _cookies = "";
         private readonly string _headers = "";
 
@@ -230,14 +230,11 @@ namespace iSpyApplication.Sources.Video
             if (_inputFormat == null)
             {
                 var prefix = vss.ToLower().Substring(0, vss.IndexOf(":", StringComparison.Ordinal));
+                ffmpeg.av_dict_set_int(&options, "rw_timeout", _timeout * 1000, 0);
                 switch (prefix)
                 {
                     case "https":
                     case "http":
-                    case "mmsh":
-                    case "mms":
-                        ffmpeg.av_dict_set_int(&options, "timeout", _timeout, 0);
-                        ffmpeg.av_dict_set_int(&options, "stimeout", _timeout * 1000, 0);
                         if (_cookies != "")
                         {
                             ffmpeg.av_dict_set(&options, "cookies", _cookies, 0);
@@ -252,9 +249,6 @@ namespace iSpyApplication.Sources.Video
                             ffmpeg.av_dict_set(&options, "user_agent", _userAgent, 0);
                         }
                         break;
-                    default:
-                        ffmpeg.av_dict_set_int(&options, "timeout", _timeout, 0);
-                        break;
                     case "rtsp":
                     case "rtmp":
                         ffmpeg.av_dict_set_int(&options, "stimeout", _timeout * 1000, 0);
@@ -262,11 +256,12 @@ namespace iSpyApplication.Sources.Video
                         {
                             ffmpeg.av_dict_set(&options, "user_agent", _userAgent, 0);
                         }
+                        ffmpeg.av_dict_set(&options, "rtsp_transport", _modeRTSP, 0);
+                        ffmpeg.av_dict_set(&options, "rtsp_flags", "prefer_tcp", 0);
                         break;
                 }
 
-                ffmpeg.av_dict_set(&options, "rtsp_transport", _modeRTSP, 0);
-                ffmpeg.av_dict_set(&options, "rtsp_flags", "prefer_tcp", 0);
+                
             }
 
             ffmpeg.av_dict_set_int(&options, "rtbufsize", 10000000, 0);
@@ -320,8 +315,11 @@ namespace iSpyApplication.Sources.Video
                 Throw("OPEN_INPUT", ffmpeg.avformat_open_input(&pFormatContext, vss, _inputFormat, &options));               
                 _formatContext = pFormatContext;
 
-
+                var t = _timeout;
+                _timeout = Math.Max(_timeout, 15000);
                 SetupFormat();
+                _timeout = t;
+
             }
             catch (Exception ex)
             {

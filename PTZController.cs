@@ -1450,11 +1450,19 @@ namespace iSpyApplication
                     url = url.Substring(0, j);
                 }
             }
-            
+            string ckies = _cameraControl.Camobject.settings.cookies;
+            if (!string.IsNullOrEmpty(ptz.Cookies))
+                ckies = ptz.Cookies;
+
+            ckies = ckies.Replace("[USERNAME]", Uri.EscapeDataString(un));
+            ckies = ckies.Replace("[PASSWORD]", Uri.EscapeDataString(pwd));
+            ckies = ckies.Replace("[CHANNEL]", Uri.EscapeDataString(_cameraControl.Camobject.settings.ptzchannel));
+
+
             var co = new ConnectionOptions
             {
                 channel = _cameraControl.Camobject.settings.ptzchannel,
-                cookies = _cameraControl.Camobject.settings.cookies,
+                cookies = ckies,
                 headers = _cameraControl.Camobject.settings.headers,
                 method = ptz.Method,
                 password = pwd,
