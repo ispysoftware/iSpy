@@ -299,7 +299,6 @@ namespace iSpyApplication.Sources.Video
             {
                 Seekable = false;
             }
-            _mPlayer.WindowHandle = IntPtr.Zero;
 
             _videoQueue = new ConcurrentQueue<Bitmap>();
             _audioQueue = new ConcurrentQueue<byte[]>();

@@ -42,6 +42,43 @@ namespace iSpyApplication
             }
         }
 
+        public static int GetSourceType(string source, int ot)
+        {
+            var _vlc = VlcHelper.VlcInstalled;
+            if (source == "VLC" && !_vlc)
+                source = "FFMPEG";
+
+            switch (ot)
+            {
+                case 1:
+                    switch (source.ToUpper())
+                    {
+                        case "FFMPEG":
+                            return 3;
+                        case "VLC":
+                            return 2;
+                        case "WAVSTREAM":
+                            return 6;
+                    }
+                    return 3;
+                default:
+                    switch (source.ToUpper())
+                    {
+                        case "JPEG":
+                            return 0;
+                        case "MJPEG":
+                            return 1;
+                        case "FFMPEG":
+                            return 2;
+                        case "VLC":
+                            return 5;
+                    }
+                    return 2;
+            }
+
+            
+        }
+
         public static byte[] ReadBytesWithRetry(FileInfo fi)
         {
             int numTries = 0;

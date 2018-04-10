@@ -39,50 +39,6 @@ namespace iSpyApplication.Server
                                                     };
         public static object[] SampleRates = { 8000, 11025, 12000, 16000, 22050, 32000, 44100, 48000 };
 
-        public static Uri GetAddr(ManufacturersManufacturerUrl s, Uri addr, int channel, string username, string password, bool audio = false)
-        {
-            var nPort = addr.Port;
-
-            if (!string.IsNullOrEmpty(s.port))
-                nPort = Convert.ToInt32(s.port);
-
-            string connectUrl = s.prefix;
-
-            if (!string.IsNullOrEmpty(username) && s.url.IndexOf("[TOKEN]", StringComparison.Ordinal) == -1)
-            {
-                connectUrl += username;
-
-                if (!string.IsNullOrEmpty(password))
-                    connectUrl += ":" + password;
-                connectUrl += "@";
-
-            }
-            connectUrl += addr.DnsSafeHost + ":" + nPort;
-
-            string url = !audio ? s.url : s.AudioURL;
-            if (!url.StartsWith("/"))
-                url = "/" + url;
-
-
-            url = url.Replace("[USERNAME]", username).Replace("[PASSWORD]", password);
-            url = url.Replace("[CHANNEL]", channel.ToString(CultureInfo.InvariantCulture).Trim());
-            //defaults:
-            url = url.Replace("[WIDTH]", "320");
-            url = url.Replace("[HEIGHT]", "240");
-
-            if (url.IndexOf("[AUTH]", StringComparison.Ordinal) != -1)
-            {
-                string credentials = $"{username}:{password}";
-                byte[] bytes = Encoding.ASCII.GetBytes(credentials);
-                url = url.Replace("[AUTH]", Convert.ToBase64String(bytes));
-            }
-
-            connectUrl += url;
-            Uri uri;
-            Uri.TryCreate(connectUrl, UriKind.Absolute, out uri);
-            return uri;
-        }
-
         public static int GetSourceType(string source, int objectType)
         {
             source = source.ToUpperInvariant();

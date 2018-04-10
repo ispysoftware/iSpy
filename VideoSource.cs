@@ -1263,20 +1263,23 @@ namespace iSpyApplication
             {
                 if (fc.ShowDialog(this) != DialogResult.OK) return;
                 SetSourceIndex(fc.VideoSourceType);
+                
+                
+                CameraControl.Camobject.settings.login = txtLogin.Text = txtLogin2.Text = onvifWizard1.txtOnvifUsername.Text = fc.Username;
+                CameraControl.Camobject.settings.password = txtPassword.Text = txtPassword2.Text = onvifWizard1.txtOnvifPassword.Text = fc.Password;
+                CameraControl.Camobject.settings.cookies = fc.Cookies;
+
+                CameraControl.Camobject.settings.tokenconfig.tokenpath = fc.tokenPath;
+                CameraControl.Camobject.settings.tokenconfig.tokenpost = fc.tokenPost;
+                CameraControl.Camobject.settings.tokenconfig.tokenport = fc.tokenPort;
 
                 switch (fc.VideoSourceType)
                 {
                     case 0:
                         cmbJPEGURL.Text = fc.FinalUrl;
-                        txtLogin.Text = fc.Username;
-                        txtPassword.Text = fc.Password;
-                        CameraControl.Camobject.settings.cookies = fc.Cookies;
                         break;
                     case 1:
-                        cmbMJPEGURL.Text = fc.FinalUrl;
-                        txtLogin2.Text = fc.Username;
-                        txtPassword2.Text = fc.Password;
-                        CameraControl.Camobject.settings.cookies = fc.Cookies;
+                        cmbMJPEGURL.Text = fc.FinalUrl;                                                
                         break;
                     case 2:
                         cmbFile.Text = fc.FinalUrl;
@@ -1285,12 +1288,9 @@ namespace iSpyApplication
                         cmbVLCURL.Text = fc.FinalUrl;
                         break;
                     case 9:
-                        onvifWizard1.txtOnvifUsername.Text = fc.Username;
-                        onvifWizard1.txtOnvifPassword.Text = fc.Password;
                         onvifWizard1.ddlDeviceURL.Text = fc.FinalUrl;
                         onvifWizard1.GoStep1();
                         return;
-
                 }
 
                 if (!string.IsNullOrEmpty(fc.Flags))
@@ -1316,12 +1316,6 @@ namespace iSpyApplication
                     CameraControl.Camobject.settings.ptzusername = fc.Username;
                     CameraControl.Camobject.settings.ptzpassword = fc.Password;
                 }
-                
-
-                CameraControl.Camobject.settings.tokenconfig.tokenpath = fc.tokenPath;
-                CameraControl.Camobject.settings.tokenconfig.tokenpost = fc.tokenPost;
-                CameraControl.Camobject.settings.tokenconfig.tokenport = fc.tokenPort;
-               
 
                 if (!string.IsNullOrEmpty(fc.AudioModel))
                 {
@@ -1672,16 +1666,25 @@ namespace iSpyApplication
 
         private void Vfr_ErrorHandler(string message)
         {
+            vfr.ErrorHandler -= Vfr_ErrorHandler;
             UISync.Execute(() => {
-                                     MessageBox.Show(this, "Connection Failed");
+                                     MessageBox.Show(this, message);
             });
             vfr.Close();
         }
 
         private void Vfr_NewFrame(object sender, Sources.NewFrameEventArgs e)
         {
-            UISync.Execute(() => {
-                                     MessageBox.Show(this, "Connected!"); });
+            vfr.NewFrame -= Vfr_NewFrame;
+            if (e.Frame == null)
+            {
+                UISync.Execute(() => {MessageBox.Show(this, "Connection Failed");});
+            }
+            else
+            {
+                UISync.Execute(() => { MessageBox.Show(this, "Connected!"); });
+            }
+
             vfr.Close();
         }
     }

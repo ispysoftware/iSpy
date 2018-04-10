@@ -9,6 +9,11 @@ namespace iSpyApplication
 {
     public static class Extensions
     {
+        public static Uri SetPort(this Uri uri, int newPort)
+        {
+            var builder = new UriBuilder(uri) { Port = newPort };
+            return builder.Uri;
+        }
         public static string ToBase64(this IEnumerable<byte> bytes, bool insertLineBreaks = false)
         {
             if (bytes == null)

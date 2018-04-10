@@ -369,6 +369,8 @@
     <Compile Include="Controls\Authorizer.Designer.cs">
       <DependentUpon>Authorizer.cs</DependentUpon>
     </Compile>
+    <Compile Include="CameraDiscovery\CameraScanner.cs" />
+    <Compile Include="CameraDiscovery\URLDiscovery.cs" />
     <Compile Include="PlayerVLC.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -894,7 +896,6 @@
     </Compile>
     <Compile Include="RestartableStream.cs" />
     <Compile Include="SerializableFont.cs" />
-    <Compile Include="Server\CameraScanner.cs" />
     <Compile Include="Server\Conf.cs" />
     <Compile Include="Server\ConnectionOption.cs" />
     <Compile Include="Server\HTTPRequest.cs" />

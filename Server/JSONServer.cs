@@ -27,9 +27,28 @@ namespace iSpyApplication.Server
     public partial class LocalServer
     {
         private static Scanner _scanner;
-        private static CameraScanner _deviceScanner;
+        private static CameraDiscovery.CameraScanner _deviceScanner;
+
+        public static CameraDiscovery.CameraScanner DeviceScanner
+        {
+            get
+            {
+                if (_deviceScanner == null)
+                {
+                    _deviceScanner = new CameraDiscovery.CameraScanner();
+                    _deviceScanner.URLFound += DeviceScannerURLFound;
+                }
+                return _deviceScanner;
+            }
+        }
+
+        static void DeviceScannerURLFound(object sender, CameraDiscovery.ConnectionOptionEventArgs e)
+        {
+            _devicescanResults.Add(e.Co);
+        }
+
         private List<NetworkDevice> _scanResults = new List<NetworkDevice>();
-        private List<ConnectionOption> _devicescanResults = new List<ConnectionOption>();
+        private static List<ConnectionOption> _devicescanResults = new List<ConnectionOption>();
 
         private void LoadJson(string sPhysicalFilePath, string sRequest, string sBuffer, string sHttpVersion, HttpRequest req)
         {
@@ -133,14 +152,15 @@ namespace iSpyApplication.Server
 
                                 string audioUri = "";
                                 int audioSourceTypeID = -1;
+                                var disc = new CameraDiscovery.URLDiscovery(origUri);
                                 if (!string.IsNullOrEmpty(mmurl.AudioSource))
                                 {
-                                    audioUri = Conf.GetAddr(mmurl, origUri, channel, username, password, true).ToString();
+                                    audioUri = disc.GetAddr(mmurl, channel, username, password, true).ToString();
                                     audioSourceTypeID = Conf.GetSourceType(mmurl.AudioSource, 1);
                                 }
 
                                 int sourceTypeID = Conf.GetSourceType(mmurl.Source, 2);
-                                string sourceUri = Conf.GetAddr(mmurl, origUri, channel, username, password).ToString();
+                                string sourceUri = disc.GetAddr(mmurl, channel, username, password).ToString();
 
 
                                 oid = MainForm.NextCameraId;
@@ -326,11 +346,6 @@ namespace iSpyApplication.Server
                     break;
                 case "scandevice":
                     {
-                        if (_deviceScanner != null)
-                        {
-                            _deviceScanner.QuitScanner();
-                            _deviceScanner = null;
-                        }
                         Uri uri;
                         if (!Uri.TryCreate(GetVar(sPhysicalFilePath, "url"), UriKind.Absolute, out uri))
                         {
@@ -345,17 +360,20 @@ namespace iSpyApplication.Server
                             break;
                         }
                         make = m.name;
+
                         _devicescanResults = new List<ConnectionOption>();
-                        _deviceScanner = new CameraScanner();
-                        _deviceScanner.URLFound += DeviceScannerURLFound;
-                        _deviceScanner.ScanComplete += DeviceScannerScanComplete;
-                        _deviceScanner.Channel = Convert.ToInt32(GetVar(sPhysicalFilePath, "channel"));
-                        _deviceScanner.Make = make;
-                        _deviceScanner.Model = GetVar(sPhysicalFilePath, "model");
-                        _deviceScanner.Username = GetVar(sPhysicalFilePath, "username");
-                        _deviceScanner.Password = GetVar(sPhysicalFilePath, "password");
-                        _deviceScanner.Uri = uri;
-                        _deviceScanner.ScanCamera(m);
+                        DeviceScanner.Stop();
+
+                        DeviceScanner.URLFound += DeviceScannerURLFound;
+
+                        DeviceScanner.Channel = Convert.ToInt32(GetVar(sPhysicalFilePath, "channel"));
+                        DeviceScanner.Make = make;
+                        DeviceScanner.Model = GetVar(sPhysicalFilePath, "model");
+                        DeviceScanner.Username = GetVar(sPhysicalFilePath, "username");
+                        DeviceScanner.Password = GetVar(sPhysicalFilePath, "password");
+                        DeviceScanner.Uri = uri;
+                        DeviceScanner.ScanCamera(m);
+
 
                         resp = "{\"running\":true}";
 
@@ -363,7 +381,7 @@ namespace iSpyApplication.Server
                     break;
                 case "getscandeviceresults":
                     {
-                        resp = "{\"finished\":" + (_deviceScanner == null).ToString().ToLower();
+                        resp = "{\"finished\":" + (!DeviceScanner.Running).ToString().ToLower();
                         resp += ",\"results\":[";
                         if (_devicescanResults != null)
                         {
@@ -1840,15 +1858,6 @@ namespace iSpyApplication.Server
             MainForm.NeedsMediaRefresh = Helper.Now;
         }
 
-        void DeviceScannerScanComplete(object sender, EventArgs e)
-        {
-            _deviceScanner = null;
-        }
-
-        void DeviceScannerURLFound(object sender, ConnectionOptionEventArgs e)
-        {
-            _devicescanResults.Add(e.CO);
-        }
 
         void ScannerScanFinished(object sender, EventArgs e)
         {

@@ -97,7 +97,9 @@ public partial class ManufacturersManufacturerUrl {
     
     private string flagsField;
     
-    private string portField;
+    private int portField;
+    
+    private bool portFieldSpecified;
     
     private string cookiesField;
     
@@ -215,12 +217,23 @@ public partial class ManufacturersManufacturerUrl {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string port {
+    public int port {
         get {
             return this.portField;
         }
         set {
             this.portField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool portSpecified {
+        get {
+            return this.portFieldSpecified;
+        }
+        set {
+            this.portFieldSpecified = value;
         }
     }
     

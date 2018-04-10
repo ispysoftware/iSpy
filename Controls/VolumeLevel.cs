@@ -2192,7 +2192,7 @@ namespace iSpyApplication.Controls
             f = f*100;
             f = f*Micobject.detector.gain;
 
-            if (f >= Micobject.detector.minsensitivity  && f<= Micobject.detector.maxsensitivity)
+            if (f >= Micobject.detector.minsensitivity  && f <= Micobject.detector.maxsensitivity)
             {
                 TriggerDetect(sender);
             }

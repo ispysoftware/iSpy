@@ -310,13 +310,15 @@ namespace iSpyApplication.Sources.Video
                           };
                 pFormatContext->interrupt_callback.callback = _aviocb;
                 pFormatContext->interrupt_callback.opaque = null;
-                pFormatContext->max_analyze_duration = 0;
+                pFormatContext->max_analyze_duration = 0; //0 = auto
+
+                var t = _timeout;
+                _timeout = Math.Max(_timeout, 15000);
 
                 Throw("OPEN_INPUT", ffmpeg.avformat_open_input(&pFormatContext, vss, _inputFormat, &options));               
                 _formatContext = pFormatContext;
 
-                var t = _timeout;
-                _timeout = Math.Max(_timeout, 15000);
+                
                 SetupFormat();
                 _timeout = t;
 
@@ -325,8 +327,8 @@ namespace iSpyApplication.Sources.Video
             {
                 ErrorHandler?.Invoke(ex.Message);
                 _res = ReasonToFinishPlaying.VideoSourceError;
-                PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
-                AudioFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
+                CleanUp();
+                
             }
             finally
             {
@@ -454,16 +456,22 @@ namespace iSpyApplication.Sources.Video
             }
 
             _lastPacket = DateTime.UtcNow;
-
-            _thread = new Thread(ReadFrames) {Name = Source, IsBackground = true};
+            if (_abort)
+            {
+                throw new Exception("Connect aborted");
+            }
+            _thread = new Thread(ReadFrames) {Name = Source, IsBackground = false};
             _thread.Start();
         }
 
+        private IntPtr pConvertedFrameBuffer = IntPtr.Zero;
+        private SwsContext* pConvertContext = null;
+        private SampleChannel sampleChannel = null;
 
         private void ReadFrames()
         {
-            var pConvertedFrameBuffer = IntPtr.Zero;
-            SwsContext* pConvertContext = null;
+            pConvertedFrameBuffer = IntPtr.Zero;
+            pConvertContext = null;
 
             var audioInited = false;
             var videoInited = false;
@@ -471,7 +479,7 @@ namespace iSpyApplication.Sources.Video
             var dstData = new byte_ptrArray4();
             var dstLinesize = new int_array4();
             BufferedWaveProvider waveProvider = null;
-            SampleChannel sampleChannel = null;
+            sampleChannel = null;
             var packet = new AVPacket();
 
             do
@@ -527,9 +535,16 @@ namespace iSpyApplication.Sources.Video
                                                 datptr,
                                                 _audioFrame->nb_samples);
 
-                                            var l = numSamplesOut * 2 * OutFormat.Channels;
-                                            Buffer.BlockCopy(tbuffer, 0, buffer, s, l);
-                                            s += l;
+                                            if (numSamplesOut > 0)
+                                            {
+                                                var l = numSamplesOut * 2 * OutFormat.Channels;
+                                                Buffer.BlockCopy(tbuffer, 0, buffer, s, l);
+                                                s += l;
+                                            }
+                                            else
+                                            {
+                                                ret = numSamplesOut; //(error)
+                                            }
                                         }
                                     }
 
@@ -644,18 +659,26 @@ namespace iSpyApplication.Sources.Video
 
             NewFrame?.Invoke(this, new NewFrameEventArgs(null));
 
+            CleanUp();
+        }
+
+        private void CleanUp()
+        {
             try
             {
                 Program.MutexHelper.Wait();
 
                 if (pConvertedFrameBuffer != IntPtr.Zero)
+                {
                     Marshal.FreeHGlobal(pConvertedFrameBuffer);
+                    pConvertedFrameBuffer = IntPtr.Zero;
+                }
 
                 if (_formatContext != null)
                 {
                     if (_formatContext->streams != null)
                     {
-                        var j = (int) _formatContext->nb_streams;
+                        var j = (int)_formatContext->nb_streams;
                         for (var i = j - 1; i >= 0; i--)
                         {
                             var stream = _formatContext->streams[i];
@@ -709,6 +732,7 @@ namespace iSpyApplication.Sources.Video
                 if (pConvertContext != null)
                 {
                     ffmpeg.sws_freeContext(pConvertContext);
+                    pConvertContext = null;
                 }
 
                 if (sampleChannel != null)
@@ -731,10 +755,8 @@ namespace iSpyApplication.Sources.Video
                 {
                 }
             }
-
             PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
             AudioFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
-
         }
 
         private void SampleChannelPreVolumeMeter(object sender, StreamVolumeEventArgs e)

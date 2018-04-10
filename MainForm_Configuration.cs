@@ -3384,26 +3384,24 @@ namespace iSpyApplication
             switch (objectTypeId)
             {
                 case 2:
-                    if (Cameras.FirstOrDefault(p => p.settings.videosourcestring == url) == null)
-                    {
-                        if (name == "") name = "Camera " + NextCameraId;
-                        if (InvokeRequired)
-                            oret =  Invoke(new Delegates.AddObjectExternalDelegate(AddCameraExternal), sourceIndex, url, width, height,
-                                   name);
-                        else
-                            oret = AddCameraExternal(sourceIndex, url, width, height, name);
-                    }
+                    
+                    if (name == "") name = "Camera " + NextCameraId;
+                    if (InvokeRequired)
+                        oret =  Invoke(new Delegates.AddObjectExternalDelegate(AddCameraExternal), sourceIndex, url, width, height,
+                                name);
+                    else
+                        oret = AddCameraExternal(sourceIndex, url, width, height, name);
+
                     break;
                 case 1:
-                    if (Microphones.FirstOrDefault(p => p.settings.sourcename == url) == null)
-                    {
-                        if (name == "") name = "Mic " + NextMicrophoneId;
-                        if (InvokeRequired)
-                            oret = Invoke(new Delegates.AddObjectExternalDelegate(AddMicrophoneExternal), sourceIndex, url, width, height,
-                                   name);
-                        else
-                            oret = AddMicrophoneExternal(sourceIndex, url, width, height, name);
-                    }
+                    
+                    if (name == "") name = "Mic " + NextMicrophoneId;
+                    if (InvokeRequired)
+                        oret = Invoke(new Delegates.AddObjectExternalDelegate(AddMicrophoneExternal), sourceIndex, url, width, height,
+                                name);
+                    else
+                        oret = AddMicrophoneExternal(sourceIndex, url, width, height, name);
+
                     break;
             }
             NeedsSync = true;
