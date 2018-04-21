@@ -1673,7 +1673,7 @@ namespace iSpyApplication
             _toolStripButton4.Text = LocRm.GetString("settings");
             _toolStripButton8.Text = LocRm.GetString("Commands");
             _toolStripDropDownButton1.Text = LocRm.GetString("AccessMedia");
-            _toolStripDropDownButton2.Text = LocRm.GetString("Add");
+            _toolStripDropDownButton2.Text = LocRm.GetString("AddObjects");
             _viewMediaToolStripMenuItem.Text = LocRm.GetString("Viewmedia");
             toolStripToolStripMenuItem.Text = LocRm.GetString("toolStrip");
             menuItem6.Text = LocRm.GetString("toolStrip");
