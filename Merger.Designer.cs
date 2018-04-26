@@ -57,30 +57,30 @@
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(428, 105);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(428, 97);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // dateTimePicker2
             // 
             this.dateTimePicker2.CustomFormat = "MMM dd yyyy HH mm ss";
             this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker2.Location = new System.Drawing.Point(79, 65);
+            this.dateTimePicker2.Location = new System.Drawing.Point(79, 61);
             this.dateTimePicker2.Name = "dateTimePicker2";
             this.dateTimePicker2.ShowUpDown = true;
-            this.dateTimePicker2.Size = new System.Drawing.Size(169, 20);
+            this.dateTimePicker2.Size = new System.Drawing.Size(169, 21);
             this.dateTimePicker2.TabIndex = 9;
             // 
             // dateTimePicker1
             // 
             this.dateTimePicker1.CustomFormat = "MMM dd yyyy HH mm ss";
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker1.Location = new System.Drawing.Point(79, 34);
+            this.dateTimePicker1.Location = new System.Drawing.Point(79, 32);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.ShowUpDown = true;
-            this.dateTimePicker1.Size = new System.Drawing.Size(169, 20);
+            this.dateTimePicker1.Size = new System.Drawing.Size(169, 21);
             this.dateTimePicker1.TabIndex = 8;
             // 
             // label1
@@ -89,27 +89,27 @@
             this.label1.Location = new System.Drawing.Point(6, 6);
             this.label1.Margin = new System.Windows.Forms.Padding(6);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
+            this.label1.Size = new System.Drawing.Size(41, 12);
             this.label1.TabIndex = 0;
             this.label1.Text = "Object";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 37);
+            this.label2.Location = new System.Drawing.Point(6, 35);
             this.label2.Margin = new System.Windows.Forms.Padding(6);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(30, 13);
+            this.label2.Size = new System.Drawing.Size(29, 12);
             this.label2.TabIndex = 1;
             this.label2.Text = "From";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 68);
+            this.label3.Location = new System.Drawing.Point(6, 64);
             this.label3.Margin = new System.Windows.Forms.Padding(6);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(20, 13);
+            this.label3.Size = new System.Drawing.Size(17, 12);
             this.label3.TabIndex = 2;
             this.label3.Text = "To";
             // 
@@ -120,15 +120,15 @@
             this.ddlObject.FormattingEnabled = true;
             this.ddlObject.Location = new System.Drawing.Point(79, 3);
             this.ddlObject.Name = "ddlObject";
-            this.ddlObject.Size = new System.Drawing.Size(346, 21);
+            this.ddlObject.Size = new System.Drawing.Size(346, 20);
             this.ddlObject.TabIndex = 5;
             // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(350, 8);
+            this.button1.Location = new System.Drawing.Point(350, 7);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(75, 21);
             this.button1.TabIndex = 4;
             this.button1.Text = "OK";
             this.button1.UseVisualStyleBackColor = true;
@@ -139,16 +139,16 @@
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 105);
+            this.panel1.Location = new System.Drawing.Point(0, 97);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(428, 38);
+            this.panel1.Size = new System.Drawing.Size(428, 35);
             this.panel1.TabIndex = 1;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(6, 13);
+            this.label4.Location = new System.Drawing.Point(6, 12);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(238, 13);
             this.label4.TabIndex = 5;
@@ -156,9 +156,9 @@
             // 
             // Merger
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(428, 143);
+            this.ClientSize = new System.Drawing.Size(428, 132);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
