@@ -1454,9 +1454,9 @@ namespace iSpyApplication
             if (!string.IsNullOrEmpty(ptz.Cookies))
                 ckies = ptz.Cookies;
 
-            ckies = ckies.Replace("[USERNAME]", Uri.EscapeDataString(un));
-            ckies = ckies.Replace("[PASSWORD]", Uri.EscapeDataString(pwd));
-            ckies = ckies.Replace("[CHANNEL]", Uri.EscapeDataString(_cameraControl.Camobject.settings.ptzchannel));
+            ckies = ckies.Replace("[USERNAME]", un);
+            ckies = ckies.Replace("[PASSWORD]", pwd);
+            ckies = ckies.Replace("[CHANNEL]", _cameraControl.Camobject.settings.ptzchannel);
 
 
             var co = new ConnectionOptions

@@ -111,13 +111,15 @@ namespace iSpyApplication.CameraDiscovery
         public Uri GetAddr(ManufacturersManufacturerUrl s, int channel, string username, string password, bool audio = false)
         {
             string urlStart = s.prefix;
+            username = username ?? "";
+            password = password ?? "";
 
             if (!string.IsNullOrEmpty(username) && s.url.IndexOf("[TOKEN]", StringComparison.Ordinal) == -1)
             {
-                urlStart += username;
+                urlStart += Uri.EscapeDataString(username);
 
                 if (!string.IsNullOrEmpty(password))
-                    urlStart += ":" + password;
+                    urlStart += ":" + Uri.EscapeDataString(password);
                 else
                     urlStart += ":";
                 urlStart += "@";
@@ -129,7 +131,7 @@ namespace iSpyApplication.CameraDiscovery
                 url = "/" + url;
 
 
-            url = url.Replace("[USERNAME]", username).Replace("[PASSWORD]", password);
+            url = url.Replace("[USERNAME]", Uri.EscapeDataString(username)).Replace("[PASSWORD]", Uri.EscapeDataString(password));
             url = url.Replace("[CHANNEL]", channel.ToString(CultureInfo.InvariantCulture).Trim());
             //defaults:
             url = url.Replace("[WIDTH]", "320");

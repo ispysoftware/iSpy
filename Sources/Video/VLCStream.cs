@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -231,7 +232,7 @@ namespace iSpyApplication.Sources.Video
                     Logger.LogException(ex, "VLC Stream");
                     Logger.LogMessage("VLC arguments are: " + string.Join(",", args.ToArray()), "VLC Stream");
                     Logger.LogMessage("Using default VLC configuration.", "VLC Stream");
-                    _mFactory = new MediaPlayerFactory(args.ToArray());
+                    return;
                 }
                 GC.KeepAlive(_mFactory);
             }
@@ -534,9 +535,8 @@ namespace iSpyApplication.Sources.Video
 
             try
             {
-                var l = (int)soundData.SamplesSize;
-                var data = new byte[l];
-                Marshal.Copy(soundData.SamplesData, data, 0, l);
+                var data = new byte[soundData.Count];
+                Marshal.Copy(soundData.SamplesData, data, 0, (int)soundData.Count);
 
                 if (_realChannels > 2)
                 {
@@ -560,7 +560,7 @@ namespace iSpyApplication.Sources.Video
         private static byte[] ToStereo(byte[] input, int fromChannels)
         {
             double ratio = fromChannels / 2d;
-            int newLen = Convert.ToInt32(input.Length / ratio);
+            var newLen = Convert.ToInt32(input.Length / ratio);
             var output = new byte[newLen];
             int outputIndex = 0;
             for (var n = 0; n < input.Length; n += (fromChannels * 2))
@@ -583,7 +583,7 @@ namespace iSpyApplication.Sources.Video
                 frame.Dispose();
                 return;
             }
-
+            
             _videoQueue.Enqueue((Bitmap)frame.Clone());
         }
 

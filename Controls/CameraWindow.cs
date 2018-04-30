@@ -4336,8 +4336,6 @@ namespace iSpyApplication.Controls
                     if (urls.Length > di)
                     {
                         Camobject.settings.videosourcestring = urls[di].URI.Uri;
-                        Camobject.settings.videosourcestring = Camobject.settings.videosourcestring.Replace("://",
-                            "://" + Camobject.settings.login + ":" + Camobject.settings.password + "@");
                         oDev.SelectProfile(di);
                         _onvifDevice = oDev;
                     }

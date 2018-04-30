@@ -136,7 +136,7 @@ namespace iSpyApplication
         public static Rectangle RFolderOff = new Rectangle(473, 83, 16, 16);
 
         private static List<string> _tags;
-        private static bool CustomWebserver;
+        public static bool CustomWebserver;
         public static List<string> Tags
         {
             get
@@ -889,6 +889,7 @@ namespace iSpyApplication
                 ffmpeg.avfilter_register_all();
                 ffmpeg.avformat_network_init();
                 ffmpeg.av_register_all();
+                Program.SetFfmpegLogging();
             }
             catch (Exception ex)
             {
@@ -1673,7 +1674,7 @@ namespace iSpyApplication
             _toolStripButton4.Text = LocRm.GetString("settings");
             _toolStripButton8.Text = LocRm.GetString("Commands");
             _toolStripDropDownButton1.Text = LocRm.GetString("AccessMedia");
-            _toolStripDropDownButton2.Text = LocRm.GetString("Add");
+            _toolStripDropDownButton2.Text = LocRm.GetString("AddMenu");
             _viewMediaToolStripMenuItem.Text = LocRm.GetString("Viewmedia");
             toolStripToolStripMenuItem.Text = LocRm.GetString("toolStrip");
             menuItem6.Text = LocRm.GetString("toolStrip");

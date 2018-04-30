@@ -17,7 +17,7 @@ namespace iSpyApplication.Onvif
         private static AnnouncementService _announcementSrv = null;
         private static readonly List<DiscoveryClient> DiscoveryClients = new List<DiscoveryClient>();
         //public static event EventHandler DiscoveryComplete;
-        public static List<string> DiscoveredDevices = new List<string>();
+        public static List<Uri> DiscoveredDevices = new List<Uri>();
         private static readonly List<XmlQualifiedName> CtNs = new List<XmlQualifiedName>
                                                               {
                                                                   new XmlQualifiedName("NetworkVideoTransmitter", @"http://www.onvif.org/ver10/network/wsdl"),
@@ -128,7 +128,7 @@ namespace iSpyApplication.Onvif
                 {
                     foreach (var uri in uris)
                     {
-                        AddDevice(uri.ToString());
+                        AddDevice(uri);
                     }
                     return;
                 }
@@ -142,7 +142,7 @@ namespace iSpyApplication.Onvif
             }
         }
 
-        private static void AddDevice(string uri)
+        private static void AddDevice(Uri uri)
         {
             lock(Lock) 
                 if (!DiscoveredDevices.Contains(uri))
@@ -157,7 +157,7 @@ namespace iSpyApplication.Onvif
         {
             lock (Lock)
             {
-                DiscoveredDevices.RemoveAll(p => p == uri);
+                DiscoveredDevices.RemoveAll(p => p.ToString() == uri.ToString());
                 Logger.LogMessage("Removed device: " + uri);
             }
         }

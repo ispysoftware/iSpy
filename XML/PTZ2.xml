@@ -6661,6 +6661,7 @@ in the camera's web interface-->
   <Camera id="234">
     <Makes>
       <Make Name="Floureon" Model="IPD-L26Y02-BS" />
+      <Make Name="GTM-PTZ" Model="2162-3x"/>
     </Makes>
     <CommandURL>/form/setPTZCfg?ZFSpeed=0&amp;PTSpeed=0&amp;panSpeed=6&amp;tiltSpeed=6</CommandURL>
     <Commands>
@@ -7449,7 +7450,7 @@ in the camera's web interface-->
       <Make Name="KMOON" Model="SD13W" />
     </Makes>
     <CommandURL></CommandURL>
-    <POST>true</POST>
+    <Method>POST</Method>
     <Commands>
       <Center></Center>
       <Left>/web/cgi-bin/hi3510/ptzctrl.cgi?-step=1&amp;-act=left&amp;-speed=45</Left>

@@ -39,6 +39,7 @@ namespace iSpyApplication.CameraDiscovery
             _lp = new List<Uri>();
             _quit = false;
             Finished.Reset();
+            
             Urlscanner = new Thread(() => ListCameras(l, Model));
             Urlscanner.Start();
         }
@@ -67,6 +68,17 @@ namespace iSpyApplication.CameraDiscovery
             try
             {
                 var httpUri = _discoverer.BaseUri.SetPort(_discoverer.HttpPort);
+
+                //check for this devices 
+                foreach (var d in Discovery.DiscoveredDevices)
+                {
+                    if (d.DnsSafeHost == Uri.DnsSafeHost)
+                    {
+                        httpUri = _discoverer.BaseUri.SetPort(d.Port);
+                        break;
+                    }
+                }
+
                 var onvifurl = httpUri + "onvif/device_service";
                 var dev = new ONVIFDevice(onvifurl, Username, Password);
                 if (dev.Profiles != null)
@@ -93,7 +105,6 @@ namespace iSpyApplication.CameraDiscovery
                 Logger.LogException(ex);
             }
 
-
             foreach (var m in mm)
             {
                 //scan selected model first
@@ -113,21 +124,25 @@ namespace iSpyApplication.CameraDiscovery
         {
             if (_quit || cand.Count == 0)
                 return;
+
+            var un = Uri.EscapeDataString(Username);
+            var pwd = Uri.EscapeDataString(Password);
+
             foreach (var s in cand)
             {
                 Uri audioUri = null;
                 int audioSourceTypeID = -1;
-                var addr = _discoverer.GetAddr(s, Channel, Username, Password);
-                if (!_lp.Contains(addr))
+                var addr = _discoverer.GetAddr(s, Channel, un, pwd);
+                if (addr != null && !_lp.Contains(addr))
                 {
                     _lp.Add(addr);
                     URLScan?.Invoke(addr, EventArgs.Empty);
-                    bool found = _discoverer.TestAddress(addr, s, Username, Password);
+                    bool found = _discoverer.TestAddress(addr, s, un, pwd);
                     if (found)
                     {
                         if (!string.IsNullOrEmpty(s.AudioSource))
                         {
-                            audioUri = _discoverer.GetAddr(s, Channel, Username, Password, true);
+                            audioUri = _discoverer.GetAddr(s, Channel, un, pwd, true);
                             audioSourceTypeID = Helper.GetSourceType(s.AudioSource, 1);
                         }
                         ManufacturersManufacturerUrl s1 = s;

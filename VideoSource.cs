@@ -265,7 +265,6 @@ namespace iSpyApplication
             cmbFile.Items.AddRange(ObjectList(MainForm.Conf.RecentFileList));
             cmbVLCURL.Items.AddRange(ObjectList(MainForm.Conf.RecentVLCList));
 
-            numAnalyseDuration.Value = CameraControl.Camobject.settings.analyseduration;
            
             int selectedCameraIndex = 0;
 
@@ -629,7 +628,6 @@ namespace iSpyApplication
                         return;
                     }
                     VideoSourceString = url;
-                    CameraControl.Camobject.settings.analyseduration = (int)numAnalyseDuration.Value;
                     //analyse cannot be greater than timeout
                     if (CameraControl.Camobject.settings.analyseduration > CameraControl.Camobject.settings.timeout - 500)
                         CameraControl.Camobject.settings.timeout = CameraControl.Camobject.settings.analyseduration + 500;
@@ -790,9 +788,8 @@ namespace iSpyApplication
 
                     CameraLogin = onvifWizard1.txtOnvifUsername.Text;
                     CameraPassword = onvifWizard1.txtOnvifPassword.Text;
-
-                    VideoSourceString = url.Replace("://","://"+CameraLogin+":"+CameraPassword+"@");
-                    CameraControl.Camobject.settings.analyseduration = (int)numAnalyseDuration.Value;
+                    VideoSourceString = url;
+                    //VideoSourceString = url.Replace("://","://"+CameraLogin+":"+CameraPassword+"@");
                     CameraControl.Camobject.settings.onvifident = onvifWizard1.ddlDeviceURL.Text + "|" + onvifWizard1.lbOnvifURLs.SelectedIndex;
                     CameraControl.Camobject.ptz = -5;//onvif
                     CameraControl.Camobject.settings.rtspmode = onvifWizard1.ddlTransport.SelectedIndex;
@@ -1642,6 +1639,7 @@ namespace iSpyApplication
                     source = source.Substring(0, i).ToLower() + source.Substring(i);
                 }
                 CameraControl.Camobject.settings.videosourcestring = source;
+                CameraControl.Camobject.settings.rtspmode = ddlRTSP.SelectedIndex;
 
                 vfr = new MediaStream(CameraControl);
                 vfr.NewFrame += Vfr_NewFrame;
@@ -1686,6 +1684,11 @@ namespace iSpyApplication
             }
 
             vfr.Close();
+        }
+
+        private void numAnalyseDuration_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
     

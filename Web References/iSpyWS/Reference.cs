@@ -33,6 +33,8 @@ namespace iSpyApplication.iSpyWS {
         
         private System.Threading.SendOrPostCallback TestConnection2OperationCompleted;
         
+        private System.Threading.SendOrPostCallback TestConnection3OperationCompleted;
+        
         private System.Threading.SendOrPostCallback RemoteAddressOperationCompleted;
         
         private System.Threading.SendOrPostCallback ConnectOperationCompleted;
@@ -40,6 +42,8 @@ namespace iSpyApplication.iSpyWS {
         private System.Threading.SendOrPostCallback Connect2OperationCompleted;
         
         private System.Threading.SendOrPostCallback Connect3OperationCompleted;
+        
+        private System.Threading.SendOrPostCallback Connect4OperationCompleted;
         
         private System.Threading.SendOrPostCallback AuthoriseOperationCompleted;
         
@@ -64,8 +68,6 @@ namespace iSpyApplication.iSpyWS {
         private System.Threading.SendOrPostCallback SendTweetOperationCompleted;
         
         private System.Threading.SendOrPostCallback ProductLatestVersionGetOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback GetByteCountOperationCompleted;
         
         private bool useDefaultCredentialsSetExplicitly;
         
@@ -112,6 +114,9 @@ namespace iSpyApplication.iSpyWS {
         public event TestConnection2CompletedEventHandler TestConnection2Completed;
         
         /// <remarks/>
+        public event TestConnection3CompletedEventHandler TestConnection3Completed;
+        
+        /// <remarks/>
         public event RemoteAddressCompletedEventHandler RemoteAddressCompleted;
         
         /// <remarks/>
@@ -122,6 +127,9 @@ namespace iSpyApplication.iSpyWS {
         
         /// <remarks/>
         public event Connect3CompletedEventHandler Connect3Completed;
+        
+        /// <remarks/>
+        public event Connect4CompletedEventHandler Connect4Completed;
         
         /// <remarks/>
         public event AuthoriseCompletedEventHandler AuthoriseCompleted;
@@ -158,9 +166,6 @@ namespace iSpyApplication.iSpyWS {
         
         /// <remarks/>
         public event ProductLatestVersionGetCompletedEventHandler ProductLatestVersionGetCompleted;
-        
-        /// <remarks/>
-        public event GetByteCountCompletedEventHandler GetByteCountCompleted;
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://ispyconnect.com/TestConnection", RequestNamespace="http://ispyconnect.com/", ResponseNamespace="http://ispyconnect.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
@@ -243,6 +248,49 @@ namespace iSpyApplication.iSpyWS {
             if ((this.TestConnection2Completed != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.TestConnection2Completed(this, new TestConnection2CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://ispyconnect.com/TestConnection3", RequestNamespace="http://ispyconnect.com/", ResponseNamespace="http://ispyconnect.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public string[] TestConnection3(string username, string password, int port, string identifier, bool tryLoopback, bool bIPv4, string ipAddress, bool useSsl) {
+            object[] results = this.Invoke("TestConnection3", new object[] {
+                        username,
+                        password,
+                        port,
+                        identifier,
+                        tryLoopback,
+                        bIPv4,
+                        ipAddress,
+                        useSsl});
+            return ((string[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void TestConnection3Async(string username, string password, int port, string identifier, bool tryLoopback, bool bIPv4, string ipAddress, bool useSsl) {
+            this.TestConnection3Async(username, password, port, identifier, tryLoopback, bIPv4, ipAddress, useSsl, null);
+        }
+        
+        /// <remarks/>
+        public void TestConnection3Async(string username, string password, int port, string identifier, bool tryLoopback, bool bIPv4, string ipAddress, bool useSsl, object userState) {
+            if ((this.TestConnection3OperationCompleted == null)) {
+                this.TestConnection3OperationCompleted = new System.Threading.SendOrPostCallback(this.OnTestConnection3OperationCompleted);
+            }
+            this.InvokeAsync("TestConnection3", new object[] {
+                        username,
+                        password,
+                        port,
+                        identifier,
+                        tryLoopback,
+                        bIPv4,
+                        ipAddress,
+                        useSsl}, this.TestConnection3OperationCompleted, userState);
+        }
+        
+        private void OnTestConnection3OperationCompleted(object arg) {
+            if ((this.TestConnection3Completed != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.TestConnection3Completed(this, new TestConnection3CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -417,6 +465,55 @@ namespace iSpyApplication.iSpyWS {
             if ((this.Connect3Completed != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.Connect3Completed(this, new Connect3CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://ispyconnect.com/Connect4", RequestNamespace="http://ispyconnect.com/", ResponseNamespace="http://ispyconnect.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public string Connect4(string username, string password, int port, string identifier, bool tryLoopBack, string version, string computerName, bool bIPv4, string ipAddress, int affiliateID, bool useSsl) {
+            object[] results = this.Invoke("Connect4", new object[] {
+                        username,
+                        password,
+                        port,
+                        identifier,
+                        tryLoopBack,
+                        version,
+                        computerName,
+                        bIPv4,
+                        ipAddress,
+                        affiliateID,
+                        useSsl});
+            return ((string)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void Connect4Async(string username, string password, int port, string identifier, bool tryLoopBack, string version, string computerName, bool bIPv4, string ipAddress, int affiliateID, bool useSsl) {
+            this.Connect4Async(username, password, port, identifier, tryLoopBack, version, computerName, bIPv4, ipAddress, affiliateID, useSsl, null);
+        }
+        
+        /// <remarks/>
+        public void Connect4Async(string username, string password, int port, string identifier, bool tryLoopBack, string version, string computerName, bool bIPv4, string ipAddress, int affiliateID, bool useSsl, object userState) {
+            if ((this.Connect4OperationCompleted == null)) {
+                this.Connect4OperationCompleted = new System.Threading.SendOrPostCallback(this.OnConnect4OperationCompleted);
+            }
+            this.InvokeAsync("Connect4", new object[] {
+                        username,
+                        password,
+                        port,
+                        identifier,
+                        tryLoopBack,
+                        version,
+                        computerName,
+                        bIPv4,
+                        ipAddress,
+                        affiliateID,
+                        useSsl}, this.Connect4OperationCompleted, userState);
+        }
+        
+        private void OnConnect4OperationCompleted(object arg) {
+            if ((this.Connect4Completed != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.Connect4Completed(this, new Connect4CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -835,35 +932,6 @@ namespace iSpyApplication.iSpyWS {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://ispyconnect.com/GetByteCount", RequestNamespace="http://ispyconnect.com/", ResponseNamespace="http://ispyconnect.com/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public long GetByteCount(string resource) {
-            object[] results = this.Invoke("GetByteCount", new object[] {
-                        resource});
-            return ((long)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void GetByteCountAsync(string resource) {
-            this.GetByteCountAsync(resource, null);
-        }
-        
-        /// <remarks/>
-        public void GetByteCountAsync(string resource, object userState) {
-            if ((this.GetByteCountOperationCompleted == null)) {
-                this.GetByteCountOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetByteCountOperationCompleted);
-            }
-            this.InvokeAsync("GetByteCount", new object[] {
-                        resource}, this.GetByteCountOperationCompleted, userState);
-        }
-        
-        private void OnGetByteCountOperationCompleted(object arg) {
-            if ((this.GetByteCountCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.GetByteCountCompleted(this, new GetByteCountCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
         public new void CancelAsync(object userState) {
             base.CancelAsync(userState);
         }
@@ -921,6 +989,32 @@ namespace iSpyApplication.iSpyWS {
         private object[] results;
         
         internal TestConnection2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    public delegate void TestConnection3CompletedEventHandler(object sender, TestConnection3CompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class TestConnection3CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal TestConnection3CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
@@ -1025,6 +1119,32 @@ namespace iSpyApplication.iSpyWS {
         private object[] results;
         
         internal Connect3CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    public delegate void Connect4CompletedEventHandler(object sender, Connect4CompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class Connect4CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal Connect4CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
@@ -1346,32 +1466,6 @@ namespace iSpyApplication.iSpyWS {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((string)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    public delegate void GetByteCountCompletedEventHandler(object sender, GetByteCountCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class GetByteCountCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal GetByteCountCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public long Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((long)(this.results[0]));
             }
         }
     }

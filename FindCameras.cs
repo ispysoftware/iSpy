@@ -541,7 +541,8 @@ namespace iSpyApplication
 
         private void _deviceScanner_URLScan(object sender, EventArgs e)
         {
-            UISync.Execute(() => tsslCurrent.Text = sender.ToString());
+            if (sender!=null)
+                UISync.Execute(() => tsslCurrent.Text = sender.ToString());
         }
 
         private void AddConnections(Uri uri)
@@ -740,6 +741,8 @@ namespace iSpyApplication
                 string make = txtMake.Text;
                 string model = txtModel.Text;
                 FinalUrl = "";
+                Username = DeviceScanner.Username;
+                Password = DeviceScanner.Password;
 
                 if (MainForm.IPLISTED)
                 {
@@ -760,6 +763,8 @@ namespace iSpyApplication
                         {
                             var o = (pnlOptions.Controls[j]).Tag;
                             s = o as ConnectionOption;
+                            if (s == null)
+                                continue;
                             FinalUrl = s.URL;
 
                             VideoSourceType = s.VideoSourceTypeID;
@@ -823,7 +828,7 @@ namespace iSpyApplication
 
                 LastConfig.Iptype = MainForm.IPTYPE;
                 LastConfig.Ipmodel = MainForm.IPMODEL;
-                if (s != null)
+                if (s?.MmUrl != null)
                 {
                     AudioModel = s.MmUrl.AudioModel;
                     LastConfig.Prefix = s.MmUrl.prefix;

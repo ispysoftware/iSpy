@@ -321,7 +321,7 @@
             // 
             this.numTimeout.Location = new System.Drawing.Point(114, 96);
             this.numTimeout.Maximum = new decimal(new int[] {
-            25000,
+            60000,
             0,
             0,
             0});

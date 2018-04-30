@@ -48,6 +48,27 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="TestConnection3">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="port" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="identifier" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="tryLoopback" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="bIPv4" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="ipAddress" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="useSsl" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TestConnection3Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TestConnection3Result" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="RemoteAddress">
         <s:complexType />
       </s:element>
@@ -127,6 +148,30 @@
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="Connect3Result" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Connect4">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="port" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="identifier" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="tryLoopBack" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="version" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="computerName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="bIPv4" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="ipAddress" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="affiliateID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="useSsl" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Connect4Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Connect4Result" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -328,23 +373,8 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="GetByteCount">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="resource" type="s:string" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="GetByteCountResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="GetByteCountResult" type="s:long" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
       <s:element name="ArrayOfString" nillable="true" type="tns:ArrayOfString" />
       <s:element name="string" nillable="true" type="s:string" />
-      <s:element name="long" type="s:long" />
     </s:schema>
     <s:schema targetNamespace="http://ispyconnect.com/AbstractTypes">
       <s:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
@@ -371,6 +401,12 @@
   <wsdl:message name="TestConnection2SoapOut">
     <wsdl:part name="parameters" element="tns:TestConnection2Response" />
   </wsdl:message>
+  <wsdl:message name="TestConnection3SoapIn">
+    <wsdl:part name="parameters" element="tns:TestConnection3" />
+  </wsdl:message>
+  <wsdl:message name="TestConnection3SoapOut">
+    <wsdl:part name="parameters" element="tns:TestConnection3Response" />
+  </wsdl:message>
   <wsdl:message name="RemoteAddressSoapIn">
     <wsdl:part name="parameters" element="tns:RemoteAddress" />
   </wsdl:message>
@@ -394,6 +430,12 @@
   </wsdl:message>
   <wsdl:message name="Connect3SoapOut">
     <wsdl:part name="parameters" element="tns:Connect3Response" />
+  </wsdl:message>
+  <wsdl:message name="Connect4SoapIn">
+    <wsdl:part name="parameters" element="tns:Connect4" />
+  </wsdl:message>
+  <wsdl:message name="Connect4SoapOut">
+    <wsdl:part name="parameters" element="tns:Connect4Response" />
   </wsdl:message>
   <wsdl:message name="AuthoriseSoapIn">
     <wsdl:part name="parameters" element="tns:Authorise" />
@@ -467,12 +509,6 @@
   <wsdl:message name="ProductLatestVersionGetSoapOut">
     <wsdl:part name="parameters" element="tns:ProductLatestVersionGetResponse" />
   </wsdl:message>
-  <wsdl:message name="GetByteCountSoapIn">
-    <wsdl:part name="parameters" element="tns:GetByteCount" />
-  </wsdl:message>
-  <wsdl:message name="GetByteCountSoapOut">
-    <wsdl:part name="parameters" element="tns:GetByteCountResponse" />
-  </wsdl:message>
   <wsdl:message name="TestConnectionHttpGetIn">
     <wsdl:part name="username" type="s:string" />
     <wsdl:part name="password" type="s:string" />
@@ -496,6 +532,19 @@
     <wsdl:part name="useSsl" type="s:string" />
   </wsdl:message>
   <wsdl:message name="TestConnection2HttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="TestConnection3HttpGetIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="port" type="s:string" />
+    <wsdl:part name="identifier" type="s:string" />
+    <wsdl:part name="tryLoopback" type="s:string" />
+    <wsdl:part name="bIPv4" type="s:string" />
+    <wsdl:part name="ipAddress" type="s:string" />
+    <wsdl:part name="useSsl" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="TestConnection3HttpGetOut">
     <wsdl:part name="Body" element="tns:ArrayOfString" />
   </wsdl:message>
   <wsdl:message name="RemoteAddressHttpGetIn" />
@@ -548,6 +597,22 @@
     <wsdl:part name="productID" type="s:string" />
   </wsdl:message>
   <wsdl:message name="Connect3HttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="Connect4HttpGetIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="port" type="s:string" />
+    <wsdl:part name="identifier" type="s:string" />
+    <wsdl:part name="tryLoopBack" type="s:string" />
+    <wsdl:part name="version" type="s:string" />
+    <wsdl:part name="computerName" type="s:string" />
+    <wsdl:part name="bIPv4" type="s:string" />
+    <wsdl:part name="ipAddress" type="s:string" />
+    <wsdl:part name="affiliateID" type="s:string" />
+    <wsdl:part name="useSsl" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="Connect4HttpGetOut">
     <wsdl:part name="Body" element="tns:string" />
   </wsdl:message>
   <wsdl:message name="AuthoriseHttpGetIn">
@@ -654,12 +719,6 @@
   <wsdl:message name="ProductLatestVersionGetHttpGetOut">
     <wsdl:part name="Body" element="tns:string" />
   </wsdl:message>
-  <wsdl:message name="GetByteCountHttpGetIn">
-    <wsdl:part name="resource" type="s:string" />
-  </wsdl:message>
-  <wsdl:message name="GetByteCountHttpGetOut">
-    <wsdl:part name="Body" element="tns:long" />
-  </wsdl:message>
   <wsdl:message name="TestConnectionHttpPostIn">
     <wsdl:part name="username" type="s:string" />
     <wsdl:part name="password" type="s:string" />
@@ -683,6 +742,19 @@
     <wsdl:part name="useSsl" type="s:string" />
   </wsdl:message>
   <wsdl:message name="TestConnection2HttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="TestConnection3HttpPostIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="port" type="s:string" />
+    <wsdl:part name="identifier" type="s:string" />
+    <wsdl:part name="tryLoopback" type="s:string" />
+    <wsdl:part name="bIPv4" type="s:string" />
+    <wsdl:part name="ipAddress" type="s:string" />
+    <wsdl:part name="useSsl" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="TestConnection3HttpPostOut">
     <wsdl:part name="Body" element="tns:ArrayOfString" />
   </wsdl:message>
   <wsdl:message name="RemoteAddressHttpPostIn" />
@@ -735,6 +807,22 @@
     <wsdl:part name="productID" type="s:string" />
   </wsdl:message>
   <wsdl:message name="Connect3HttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="Connect4HttpPostIn">
+    <wsdl:part name="username" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="port" type="s:string" />
+    <wsdl:part name="identifier" type="s:string" />
+    <wsdl:part name="tryLoopBack" type="s:string" />
+    <wsdl:part name="version" type="s:string" />
+    <wsdl:part name="computerName" type="s:string" />
+    <wsdl:part name="bIPv4" type="s:string" />
+    <wsdl:part name="ipAddress" type="s:string" />
+    <wsdl:part name="affiliateID" type="s:string" />
+    <wsdl:part name="useSsl" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="Connect4HttpPostOut">
     <wsdl:part name="Body" element="tns:string" />
   </wsdl:message>
   <wsdl:message name="AuthoriseHttpPostIn">
@@ -841,12 +929,6 @@
   <wsdl:message name="ProductLatestVersionGetHttpPostOut">
     <wsdl:part name="Body" element="tns:string" />
   </wsdl:message>
-  <wsdl:message name="GetByteCountHttpPostIn">
-    <wsdl:part name="resource" type="s:string" />
-  </wsdl:message>
-  <wsdl:message name="GetByteCountHttpPostOut">
-    <wsdl:part name="Body" element="tns:long" />
-  </wsdl:message>
   <wsdl:portType name="iSpyAPISoap">
     <wsdl:operation name="TestConnection">
       <wsdl:input message="tns:TestConnectionSoapIn" />
@@ -855,6 +937,10 @@
     <wsdl:operation name="TestConnection2">
       <wsdl:input message="tns:TestConnection2SoapIn" />
       <wsdl:output message="tns:TestConnection2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TestConnection3">
+      <wsdl:input message="tns:TestConnection3SoapIn" />
+      <wsdl:output message="tns:TestConnection3SoapOut" />
     </wsdl:operation>
     <wsdl:operation name="RemoteAddress">
       <wsdl:input message="tns:RemoteAddressSoapIn" />
@@ -871,6 +957,10 @@
     <wsdl:operation name="Connect3">
       <wsdl:input message="tns:Connect3SoapIn" />
       <wsdl:output message="tns:Connect3SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Connect4">
+      <wsdl:input message="tns:Connect4SoapIn" />
+      <wsdl:output message="tns:Connect4SoapOut" />
     </wsdl:operation>
     <wsdl:operation name="Authorise">
       <wsdl:input message="tns:AuthoriseSoapIn" />
@@ -920,10 +1010,6 @@
       <wsdl:input message="tns:ProductLatestVersionGetSoapIn" />
       <wsdl:output message="tns:ProductLatestVersionGetSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="GetByteCount">
-      <wsdl:input message="tns:GetByteCountSoapIn" />
-      <wsdl:output message="tns:GetByteCountSoapOut" />
-    </wsdl:operation>
   </wsdl:portType>
   <wsdl:portType name="iSpyAPIHttpGet">
     <wsdl:operation name="TestConnection">
@@ -933,6 +1019,10 @@
     <wsdl:operation name="TestConnection2">
       <wsdl:input message="tns:TestConnection2HttpGetIn" />
       <wsdl:output message="tns:TestConnection2HttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TestConnection3">
+      <wsdl:input message="tns:TestConnection3HttpGetIn" />
+      <wsdl:output message="tns:TestConnection3HttpGetOut" />
     </wsdl:operation>
     <wsdl:operation name="RemoteAddress">
       <wsdl:input message="tns:RemoteAddressHttpGetIn" />
@@ -949,6 +1039,10 @@
     <wsdl:operation name="Connect3">
       <wsdl:input message="tns:Connect3HttpGetIn" />
       <wsdl:output message="tns:Connect3HttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Connect4">
+      <wsdl:input message="tns:Connect4HttpGetIn" />
+      <wsdl:output message="tns:Connect4HttpGetOut" />
     </wsdl:operation>
     <wsdl:operation name="Authorise">
       <wsdl:input message="tns:AuthoriseHttpGetIn" />
@@ -998,10 +1092,6 @@
       <wsdl:input message="tns:ProductLatestVersionGetHttpGetIn" />
       <wsdl:output message="tns:ProductLatestVersionGetHttpGetOut" />
     </wsdl:operation>
-    <wsdl:operation name="GetByteCount">
-      <wsdl:input message="tns:GetByteCountHttpGetIn" />
-      <wsdl:output message="tns:GetByteCountHttpGetOut" />
-    </wsdl:operation>
   </wsdl:portType>
   <wsdl:portType name="iSpyAPIHttpPost">
     <wsdl:operation name="TestConnection">
@@ -1011,6 +1101,10 @@
     <wsdl:operation name="TestConnection2">
       <wsdl:input message="tns:TestConnection2HttpPostIn" />
       <wsdl:output message="tns:TestConnection2HttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TestConnection3">
+      <wsdl:input message="tns:TestConnection3HttpPostIn" />
+      <wsdl:output message="tns:TestConnection3HttpPostOut" />
     </wsdl:operation>
     <wsdl:operation name="RemoteAddress">
       <wsdl:input message="tns:RemoteAddressHttpPostIn" />
@@ -1027,6 +1121,10 @@
     <wsdl:operation name="Connect3">
       <wsdl:input message="tns:Connect3HttpPostIn" />
       <wsdl:output message="tns:Connect3HttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Connect4">
+      <wsdl:input message="tns:Connect4HttpPostIn" />
+      <wsdl:output message="tns:Connect4HttpPostOut" />
     </wsdl:operation>
     <wsdl:operation name="Authorise">
       <wsdl:input message="tns:AuthoriseHttpPostIn" />
@@ -1076,10 +1174,6 @@
       <wsdl:input message="tns:ProductLatestVersionGetHttpPostIn" />
       <wsdl:output message="tns:ProductLatestVersionGetHttpPostOut" />
     </wsdl:operation>
-    <wsdl:operation name="GetByteCount">
-      <wsdl:input message="tns:GetByteCountHttpPostIn" />
-      <wsdl:output message="tns:GetByteCountHttpPostOut" />
-    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="iSpyAPISoap" type="tns:iSpyAPISoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
@@ -1094,6 +1188,15 @@
     </wsdl:operation>
     <wsdl:operation name="TestConnection2">
       <soap:operation soapAction="http://ispyconnect.com/TestConnection2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TestConnection3">
+      <soap:operation soapAction="http://ispyconnect.com/TestConnection3" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1130,6 +1233,15 @@
     </wsdl:operation>
     <wsdl:operation name="Connect3">
       <soap:operation soapAction="http://ispyconnect.com/Connect3" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Connect4">
+      <soap:operation soapAction="http://ispyconnect.com/Connect4" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1245,15 +1357,6 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetByteCount">
-      <soap:operation soapAction="http://ispyconnect.com/GetByteCount" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="iSpyAPISoap12" type="tns:iSpyAPISoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
@@ -1268,6 +1371,15 @@
     </wsdl:operation>
     <wsdl:operation name="TestConnection2">
       <soap12:operation soapAction="http://ispyconnect.com/TestConnection2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TestConnection3">
+      <soap12:operation soapAction="http://ispyconnect.com/TestConnection3" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1304,6 +1416,15 @@
     </wsdl:operation>
     <wsdl:operation name="Connect3">
       <soap12:operation soapAction="http://ispyconnect.com/Connect3" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Connect4">
+      <soap12:operation soapAction="http://ispyconnect.com/Connect4" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1419,15 +1540,6 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetByteCount">
-      <soap12:operation soapAction="http://ispyconnect.com/GetByteCount" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="iSpyAPIHttpGet" type="tns:iSpyAPIHttpGet">
     <http:binding verb="GET" />
@@ -1442,6 +1554,15 @@
     </wsdl:operation>
     <wsdl:operation name="TestConnection2">
       <http:operation location="/TestConnection2" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TestConnection3">
+      <http:operation location="/TestConnection3" />
       <wsdl:input>
         <http:urlEncoded />
       </wsdl:input>
@@ -1478,6 +1599,15 @@
     </wsdl:operation>
     <wsdl:operation name="Connect3">
       <http:operation location="/Connect3" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Connect4">
+      <http:operation location="/Connect4" />
       <wsdl:input>
         <http:urlEncoded />
       </wsdl:input>
@@ -1586,15 +1716,6 @@
     </wsdl:operation>
     <wsdl:operation name="ProductLatestVersionGet">
       <http:operation location="/ProductLatestVersionGet" />
-      <wsdl:input>
-        <http:urlEncoded />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:mimeXml part="Body" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetByteCount">
-      <http:operation location="/GetByteCount" />
       <wsdl:input>
         <http:urlEncoded />
       </wsdl:input>
@@ -1623,6 +1744,15 @@
         <mime:mimeXml part="Body" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="TestConnection3">
+      <http:operation location="/TestConnection3" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="RemoteAddress">
       <http:operation location="/RemoteAddress" />
       <wsdl:input>
@@ -1652,6 +1782,15 @@
     </wsdl:operation>
     <wsdl:operation name="Connect3">
       <http:operation location="/Connect3" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Connect4">
+      <http:operation location="/Connect4" />
       <wsdl:input>
         <mime:content type="application/x-www-form-urlencoded" />
       </wsdl:input>
@@ -1760,15 +1899,6 @@
     </wsdl:operation>
     <wsdl:operation name="ProductLatestVersionGet">
       <http:operation location="/ProductLatestVersionGet" />
-      <wsdl:input>
-        <mime:content type="application/x-www-form-urlencoded" />
-      </wsdl:input>
-      <wsdl:output>
-        <mime:mimeXml part="Body" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetByteCount">
-      <http:operation location="/GetByteCount" />
       <wsdl:input>
         <mime:content type="application/x-www-form-urlencoded" />
       </wsdl:input>

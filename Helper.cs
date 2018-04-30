@@ -155,6 +155,22 @@ namespace iSpyApplication
             double yPos = percent * height;
             return yPos;
         }
+        //public static string RTSPMode(int mode)
+        //{
+        //    switch (mode)
+        //    {
+        //        case 1:
+        //            return "tcp,udp";
+        //        case 2:
+        //            return "udp,tcp";
+        //        case 3:
+        //            return "udp_multicast";
+        //        case 4:
+        //            return "http";
+        //        default:
+        //            return "udp,tcp";
+        //    }
+        //}
         public static string RTSPMode(int mode)
         {
             switch (mode)
@@ -166,7 +182,7 @@ namespace iSpyApplication
                 case 4:
                     return "http";
                 default:
-                    return "tcp";
+                    return "";
             }
         }
         public static bool ThreadRunning(Thread t)

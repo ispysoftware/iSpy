@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FindCameras));
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
@@ -68,6 +71,7 @@
             this.rdoUnlisted = new System.Windows.Forms.RadioButton();
             this.rdoListed = new System.Windows.Forms.RadioButton();
             this.tbl1 = new System.Windows.Forms.TableLayoutPanel();
+            this.txtFindModel = new iSpyApplication.Controls.AutoCompleteTextbox();
             this.pnlNetwork = new System.Windows.Forms.Panel();
             this.pnlFindNetwork = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -86,7 +90,6 @@
             this.quitScannerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsslCurrent = new System.Windows.Forms.ToolStripStatusLabel();
             this.pnlmain = new System.Windows.Forms.Panel();
-            this.txtFindModel = new iSpyApplication.Controls.AutoCompleteTextbox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tbl2.SuspendLayout();
@@ -112,11 +115,35 @@
             // 
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.BackgroundColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(236, 0);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(28, 109);
             this.dataGridView1.TabIndex = 0;
@@ -532,6 +559,18 @@
             this.tbl1.Size = new System.Drawing.Size(194, 37);
             this.tbl1.TabIndex = 14;
             // 
+            // txtFindModel
+            // 
+            this.txtFindModel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtFindModel.Location = new System.Drawing.Point(102, 2);
+            this.txtFindModel.Margin = new System.Windows.Forms.Padding(2);
+            this.txtFindModel.MaxDropDownItems = 16;
+            this.txtFindModel.MinTypedCharacters = 2;
+            this.txtFindModel.Name = "txtFindModel";
+            this.txtFindModel.SelectedIndex = -1;
+            this.txtFindModel.Size = new System.Drawing.Size(90, 20);
+            this.txtFindModel.TabIndex = 0;
+            // 
             // pnlNetwork
             // 
             this.pnlNetwork.Controls.Add(this.dataGridView1);
@@ -725,18 +764,6 @@
             this.pnlmain.Name = "pnlmain";
             this.pnlmain.Size = new System.Drawing.Size(632, 473);
             this.pnlmain.TabIndex = 12;
-            // 
-            // txtFindModel
-            // 
-            this.txtFindModel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtFindModel.Location = new System.Drawing.Point(102, 2);
-            this.txtFindModel.Margin = new System.Windows.Forms.Padding(2);
-            this.txtFindModel.MaxDropDownItems = 16;
-            this.txtFindModel.MinTypedCharacters = 2;
-            this.txtFindModel.Name = "txtFindModel";
-            this.txtFindModel.SelectedIndex = -1;
-            this.txtFindModel.Size = new System.Drawing.Size(90, 20);
-            this.txtFindModel.TabIndex = 0;
             // 
             // FindCameras
             // 

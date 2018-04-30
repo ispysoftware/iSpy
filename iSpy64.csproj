@@ -197,8 +197,8 @@
       <HintPath>packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FFmpeg.AutoGen, Version=3.4.0.4, Culture=neutral, PublicKeyToken=9b7632533a381715, processorArchitecture=MSIL">
-      <HintPath>packages\FFmpeg.AutoGen.3.4.0.4\lib\net45\FFmpeg.AutoGen.dll</HintPath>
+    <Reference Include="FFmpeg.AutoGen, Version=3.4.0.6, Culture=neutral, PublicKeyToken=9b7632533a381715, processorArchitecture=MSIL">
+      <HintPath>packages\FFmpeg.AutoGen.3.4.0.6\lib\net45\FFmpeg.AutoGen.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FlickrNet, Version=3.24.0.0, Culture=neutral, PublicKeyToken=2491df59efa5d132, processorArchitecture=MSIL">
@@ -372,6 +372,8 @@
     <Compile Include="AddRemoteCommand.Designer.cs">
       <DependentUpon>AddRemoteCommand.cs</DependentUpon>
     </Compile>
+    <Compile Include="CameraDiscovery\CameraScanner.cs" />
+    <Compile Include="CameraDiscovery\URLDiscovery.cs" />
     <Compile Include="Cloud\Box.cs" />
     <Compile Include="Cloud\CloudGateway.cs" />
     <Compile Include="Cloud\Drive.cs" />
@@ -471,7 +473,6 @@
       <DependentUpon>PTZConfig.cs</DependentUpon>
     </Compile>
     <Compile Include="Realtime\MediaWriter.cs" />
-    <Compile Include="Server\CameraScanner.cs" />
     <Compile Include="Server\Conf.cs" />
     <Compile Include="Server\ConnectionOption.cs" />
     <Compile Include="Server\HTTPRequest.cs" />
@@ -515,6 +516,7 @@
     </Compile>
     <Compile Include="Sources\Audio\talk\TalkDoorbird.cs" />
     <Compile Include="Sources\Audio\talk\TalkFoscam.cs" />
+    <Compile Include="Sources\Audio\talk\WaveFormatConverter.cs" />
     <Compile Include="Sources\Video\FFmpegBase.cs" />
     <Compile Include="Sources\Video\MediaStream.cs" />
     <Compile Include="Sources\Video\Tokeniser.cs" />

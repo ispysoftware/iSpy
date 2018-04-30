@@ -19189,6 +19189,7 @@
   </Manufacturer>
   <Manufacturer name="guangzhou">
     <url version="Other" prefix="http://" Source="JPEG" url="snapshot.jpg?user=[USERNAME]&amp;pwd=[PASSWORD]" />
+    <url version="Other" prefix="rtsp://" Source="FFMPEG" url="ch0_0.264" />
   </Manufacturer>
   <Manufacturer name="Guard">
     <url version="101ip" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=[WIDTH]x[HEIGHT]" />
@@ -41721,6 +41722,9 @@
   </Manufacturer>
   <Manufacturer name="xipcam">
     <url version="000C5DDC7754" prefix="http://" Source="FFMPEG" url="videostream.asf?usr=[USERNAME]&amp;pwd=[PASSWORD]" />
+  </Manufacturer>
+  <Manufacturer name="Xmarto">
+    <url version="Other" prefix="rtsp://" Source="FFMPEG" url="ch0_0.264" />
   </Manufacturer>
   <Manufacturer name="xmeye">
     <url version="DOME_IP" prefix="rtsp://" Source="FFMPEG" url="/user=admin_password=tlJwpbo6_channel=1_stream=0.sdp" />

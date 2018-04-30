@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using FFmpeg.AutoGen;
-using Google.Apis.Util;
 using iSpyApplication.Controls;
 using iSpyApplication.Sources.Audio;
 using iSpyApplication.Utilities;
@@ -23,15 +20,16 @@ namespace iSpyApplication.Sources.Video
 
         public static WaveFormat OutFormat = new WaveFormat(22050, 16, 1);
 
+        private const int BUFSIZE = 512000;
         private readonly objectsMicrophone _audiosource;
-        private int _timeout;
+        private int _timeoutMicroSeconds;
         private readonly string _cookies = "";
         private readonly string _headers = "";
 
 
         private readonly AVInputFormat* _inputFormat;
         private readonly string _options = "";
-        private readonly string _modeRTSP = "tcp";
+        private readonly string _modeRTSP = "udp";
         private readonly objectsCamera _source;
 
         private readonly string _userAgent = "";
@@ -63,7 +61,7 @@ namespace iSpyApplication.Sources.Video
             IsAudio = false;
 
             _cookies = _source.settings.cookies;
-            _timeout = Math.Max(3000, _source.settings.timeout);
+            _timeoutMicroSeconds = Math.Max(5000000, _source.settings.timeout*1000);
 
             _userAgent = _source.settings.useragent;
             _headers = _source.settings.headers;
@@ -75,7 +73,7 @@ namespace iSpyApplication.Sources.Video
             _audiosource = source;
             _inputFormat = null;
             IsAudio = true;
-            _timeout = Math.Max(3000, source.settings.timeout);
+            _timeoutMicroSeconds = Math.Max(5000000, source.settings.timeout*1000);
             _options = source.settings.ffmpeg;
         }
 
@@ -203,7 +201,7 @@ namespace iSpyApplication.Sources.Video
 
         public int InterruptCb(void* ctx)
         {
-            if ((DateTime.UtcNow - _lastPacket).TotalMilliseconds > _timeout || _abort)
+            if ((DateTime.UtcNow - _lastPacket).TotalMilliseconds*1000 > _timeoutMicroSeconds || _abort)
             {
                 if (!_abort)
                 {
@@ -230,41 +228,60 @@ namespace iSpyApplication.Sources.Video
             if (_inputFormat == null)
             {
                 var prefix = vss.ToLower().Substring(0, vss.IndexOf(":", StringComparison.Ordinal));
-                ffmpeg.av_dict_set_int(&options, "rw_timeout", _timeout * 1000, 0);
+                ffmpeg.av_dict_set_int(&options, "rw_timeout", _timeoutMicroSeconds, 0);
                 switch (prefix)
                 {
                     case "https":
                     case "http":
-                        if (_cookies != "")
+                    case "mmsh":
+                    case "mms":
+                        ffmpeg.av_dict_set_int(&options, "timeout", _timeoutMicroSeconds, 0);
+                        ffmpeg.av_dict_set_int(&options, "stimeout", _timeoutMicroSeconds, 0);
+
+                        if (!string.IsNullOrEmpty(_cookies))
                         {
                             ffmpeg.av_dict_set(&options, "cookies", _cookies, 0);
                         }
-
-                        if (_headers != "")
+                        if (!string.IsNullOrEmpty(_headers))
                         {
                             ffmpeg.av_dict_set(&options, "headers", _headers, 0);
                         }
-                        if (_userAgent != "")
+                        if (!string.IsNullOrEmpty(_userAgent))
                         {
                             ffmpeg.av_dict_set(&options, "user_agent", _userAgent, 0);
                         }
                         break;
                     case "rtsp":
                     case "rtmp":
-                        ffmpeg.av_dict_set_int(&options, "stimeout", _timeout * 1000, 0);
-                        if (_userAgent != "")
+                        ffmpeg.av_dict_set_int(&options, "stimeout", _timeoutMicroSeconds, 0);
+                        if (!string.IsNullOrEmpty(_userAgent))
                         {
                             ffmpeg.av_dict_set(&options, "user_agent", _userAgent, 0);
                         }
-                        ffmpeg.av_dict_set(&options, "rtsp_transport", _modeRTSP, 0);
+                        if (!string.IsNullOrEmpty(_modeRTSP))
+                            ffmpeg.av_dict_set(&options, "rtsp_transport", _modeRTSP, 0);
+                        //if (_modeRTSP.IndexOf("tcp", StringComparison.Ordinal)<_modeRTSP.IndexOf("udp", StringComparison.Ordinal))
+                        //ffmpeg.av_dict_set(&options, "rtsp_flags", "prefer_tcp", 0);
                         ffmpeg.av_dict_set(&options, "rtsp_flags", "prefer_tcp", 0);
+                        ffmpeg.av_dict_set_int(&options, "recv_buffer_size", BUFSIZE, 0);
+                        ffmpeg.av_dict_set_int(&options, "tcp_nodelay", 1, 0);
+                        break;
+                    default: 
+                        ffmpeg.av_dict_set_int(&options, "timeout", _timeoutMicroSeconds, 0);
+                        break;
+
+                    case "tcp":
+                        ffmpeg.av_dict_set_int(&options, "timeout", _timeoutMicroSeconds, 0);
+                        ffmpeg.av_dict_set_int(&options, "recv_buffer_size", BUFSIZE, 0);
+                        ffmpeg.av_dict_set_int(&options, "tcp_nodelay", 1, 0);
+                        break;
+                    case "udp":
+                        ffmpeg.av_dict_set_int(&options, "timeout", _timeoutMicroSeconds, 0);
+                        ffmpeg.av_dict_set_int(&options, "buffer_size", BUFSIZE, 0);
                         break;
                 }
-
-                
             }
-
-            ffmpeg.av_dict_set_int(&options, "rtbufsize", 10000000, 0);
+            ffmpeg.av_dict_set_int(&options, "rtbufsize", BUFSIZE, 0);
 
             var lo = _options.Split(Environment.NewLine.ToCharArray());
             foreach (var nv in lo)
@@ -312,15 +329,14 @@ namespace iSpyApplication.Sources.Video
                 pFormatContext->interrupt_callback.opaque = null;
                 pFormatContext->max_analyze_duration = 0; //0 = auto
 
-                var t = _timeout;
-                _timeout = Math.Max(_timeout, 15000);
+                var t = _timeoutMicroSeconds;
+                _timeoutMicroSeconds = Math.Max(_timeoutMicroSeconds, 15000000);
 
-                Throw("OPEN_INPUT", ffmpeg.avformat_open_input(&pFormatContext, vss, _inputFormat, &options));               
+                Throw("OPEN_INPUT", ffmpeg.avformat_open_input(&pFormatContext, vss, _inputFormat, &options));
                 _formatContext = pFormatContext;
-
                 
                 SetupFormat();
-                _timeout = t;
+                _timeoutMicroSeconds = t;
 
             }
             catch (Exception ex)
@@ -353,6 +369,7 @@ namespace iSpyApplication.Sources.Video
 
             _formatContext->flags |= ffmpeg.AVFMT_FLAG_DISCARD_CORRUPT;
             _formatContext->flags |= ffmpeg.AVFMT_FLAG_NOBUFFER;
+
 
             for (var i = 0; i < _formatContext->nb_streams; i++)
             {
@@ -399,7 +416,6 @@ namespace iSpyApplication.Sources.Video
                         break;
                     }
                 }
-
                 Throw("OPEN2", ffmpeg.avcodec_open2(_videoCodecContext, codec, null));
 
                 _videoFrame = ffmpeg.av_frame_alloc();
@@ -492,7 +508,9 @@ namespace iSpyApplication.Sources.Video
                 }
 
                 if (Log("AV_READ_FRAME", ffmpeg.av_read_frame(_formatContext, &packet)))
+                {
                     break;
+                }
 
 
                 if ((packet.flags & ffmpeg.AV_PKT_FLAG_CORRUPT) == ffmpeg.AV_PKT_FLAG_CORRUPT)
@@ -647,7 +665,7 @@ namespace iSpyApplication.Sources.Video
 
                 if (nf != null && _videoStream != null)
                 {
-                    if ((DateTime.UtcNow - _lastVideoFrame).TotalMilliseconds > _timeout)
+                    if ((DateTime.UtcNow - _lastVideoFrame).TotalMilliseconds*1000 > _timeoutMicroSeconds)
                     {
                         _res = ReasonToFinishPlaying.DeviceLost;
                         _abort = true;

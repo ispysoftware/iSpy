@@ -74,6 +74,10 @@ namespace iSpyApplication
                     return;
                 }
             }
+            if (VolumeLevel.Micobject.id == -1)
+            {
+                VolumeLevel.Micobject.id = MainForm.NextMicrophoneId;
+            }
             VolumeLevel.IsEdit = true;
             if (VolumeLevel.CameraControl != null)
                 VolumeLevel.CameraControl.IsEdit = true;

@@ -90,7 +90,7 @@ namespace iSpyApplication.Sources.Audio
         /// New frame from Audio source.
         /// </summary>
         /// 
-        public byte[] RawData { get; }
+        public byte[] RawData { get; set; }
     }
 
     public class LevelChangedEventArgs : EventArgs

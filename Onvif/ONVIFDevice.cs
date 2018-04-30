@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Text;
 using iSpyApplication.DeviceClient;
 using iSpyApplication.DeviceMedia;
 using iSpyApplication.DevicePTZ;
@@ -25,7 +26,7 @@ namespace iSpyApplication.Onvif
 
             Username = username;
             Password = password;
-            URL = url;
+            URL = uri;
 
         }
 
@@ -66,6 +67,14 @@ namespace iSpyApplication.Onvif
                             try
                             {
                                 var l = mc.GetStreamUri(streamSetup, p.token);
+                                //make sure using correct ip address (for external access)
+                                var u = new UriBuilder(l.Uri) {Host = URL.Host};
+                                l.Uri = u.ToString();
+                                if (!string.IsNullOrEmpty(Username))
+                                {
+                                    l.Uri = l.Uri.ReplaceFirst("://", "://" + Uri.EscapeDataString(Username) + ":" + Uri.EscapeDataString(Password) + "@");
+                                }
+
                                 var s = p?.VideoSourceConfiguration;
                                 uris.Add(new MediaEndpoint(l,s));
                             }
@@ -165,7 +174,7 @@ namespace iSpyApplication.Onvif
         }
         public string Username { get; set; }
         public string Password { get; set; }
-        public string URL { get; set; }
+        public Uri URL { get; set; }
 
         private MediaClient _mediaClient;
         public MediaClient MediaClient
@@ -179,7 +188,6 @@ namespace iSpyApplication.Onvif
                 try
                 {
                     EndpointAddress serviceAddress = new EndpointAddress(_svcURL);
-
                     HttpTransportBindingElement httpBinding = new HttpTransportBindingElement
                                                               {
                                                                   AuthenticationScheme = AuthenticationSchemes.Digest
@@ -196,11 +204,10 @@ namespace iSpyApplication.Onvif
                     Client = new DeviceClient.DeviceClient(binder, serviceAddress);
                     binder.SendTimeout = binder.CloseTimeout = binder.ReceiveTimeout = binder.OpenTimeout = TimeSpan.FromSeconds(5);
                     
-
                     double diff = 0;
 
                     var basic = new BasicAuthBehaviour(Username, Password);
-                    bool useAuth = !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password);
+                    bool useAuth = !string.IsNullOrEmpty(Username);
                     if (useAuth)
                     {
                         Client.Endpoint.Behaviors.Add(basic);
@@ -220,6 +227,7 @@ namespace iSpyApplication.Onvif
                     {
                         Logger.LogException(ex, "ONVIF time query");
                     }
+                    
                     PasswordDigestBehavior digest = new PasswordDigestBehavior(Username, Password, diff);
                     Client.Endpoint.Behaviors.Add(digest);
 
@@ -245,7 +253,7 @@ namespace iSpyApplication.Onvif
 
         public Uri GetEndPointUri(Uri deviceUri, string xAddr, DeviceClient.Capabilities caps)
         {
-            if (String.IsNullOrEmpty(xAddr))
+            if (string.IsNullOrEmpty(xAddr))
                 return deviceUri;
 
             var url = new Uri(xAddr, UriKind.RelativeOrAbsolute);
