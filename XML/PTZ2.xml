@@ -7447,7 +7447,7 @@ in the camera's web interface-->
   </Camera>
   <Camera id="251">
     <Makes>
-      <Make Name="KMOON" Model="SD13W" />
+      <Make Name="KKMOON" Model="SD13W" />
     </Makes>
     <CommandURL></CommandURL>
     <Method>POST</Method>

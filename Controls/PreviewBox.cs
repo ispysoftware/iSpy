@@ -197,6 +197,11 @@ namespace iSpyApplication.Controls
 
             string[] parts = FileName.Split('\\');
             string fn = parts[parts.Length - 1];
+            if (mode== Enums.PlaybackMode.Website && (WsWrapper.LoginFailed || WsWrapper.Expired))
+            {
+                mode = Enums.PlaybackMode.Default;
+            }
+
             switch (mode)
             {
                 case Enums.PlaybackMode.Website:

@@ -1869,15 +1869,6 @@ namespace iSpyApplication.Controls
                             {
                                 AudioSource.Stop();
                             }
-                            try
-                            {
-                                _converter?.Close();
-                                _converter = null;
-                            }
-                            catch (Exception ex)
-                            {
-                                Logger.LogException(ex);
-                            }
                         }
                     }
                     else
@@ -2218,41 +2209,32 @@ namespace iSpyApplication.Controls
 
         public static WaveFormat AudioStreamFormat = new WaveFormat(22050, 16, 1);
 
-        private WaveFormatConverter _converter = null;
-        private byte[] ResampleAudio(byte[] data, int len)
-        {
-            var c = _converter;
-            if (c == null)
-            {
-                c = _converter = new WaveFormatConverter(new WaveFormat(Micobject.settings.samples, Micobject.settings.channels), MediaStream.OutFormat);
-            }
-
-            try
-            {
-                return c.Process(data, len);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogException(ex,"Resampler");
-            }
-
-            return new byte[] { };
-
-        }
-
         public void AudioDeviceDataAvailable(object sender, DataAvailableEventArgs e)
         {
             if (Levels == null)
                 return;
 
+            byte[] bResampled = new byte[44100];
+
             try
             {
+                int totBytes = e.BytesRecorded;
                 var ba = e.RawData;
                 var br = e.BytesRecorded;
                 if (!(sender is MediaStream)) //mediastream is already resampling
                 {
-                    e.RawData = ResampleAudio(e.RawData, e.BytesRecorded);
-                    e.BytesRecorded = e.RawData.Length;
+                    using (var ws = new TalkHelperStream(ba, br, AudioSource.RecordingFormat))
+                    {
+                        using (var helpStm = new WaveFormatConversionStream(AudioStreamFormat, ws))
+                        {
+                            totBytes = helpStm.Read(bResampled, 0, 44100);
+                        }
+                    }
+                }
+                else
+                {
+                    bResampled = e.RawData;
+                    totBytes = e.BytesRecorded;
                 }
                 lock (_lockobject)
                 {                   
@@ -2276,7 +2258,7 @@ namespace iSpyApplication.Controls
                             }
                         }
                     }
-                    fa = new Helper.FrameAction(e.RawData, e.BytesRecorded, Levels.Max(), Helper.Now);
+                    fa = new Helper.FrameAction(bResampled, totBytes, Levels.Max(), Helper.Now);
                     Buffer.Enqueue(fa);
                     
                 }
