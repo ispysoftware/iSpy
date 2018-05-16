@@ -843,7 +843,19 @@ namespace iSpyApplication
             }
             if (PlayerVLC == null)
             {
-                PlayerVLC = new PlayerVLC(displayName, this);
+                try
+                {
+                    PlayerVLC = new PlayerVLC(displayName, this);
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogException(ex,"Play with VLC");
+                    Conf.PlaybackMode = (int) Enums.PlaybackMode.Default;
+                    MessageBox.Show(
+                        "Could not start VLC. Check you have the right version installed. Using default player instead");
+                    return;
+                }
+
                 PlayerVLC.Show(this);
                 PlayerVLC.Closed += PlayerClosed;
                 PlayerVLC.Activate();

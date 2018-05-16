@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:wsnt="http://docs.oasis-open.org/wsn/b-2" xmlns:tt="http://www.onvif.org/ver10/schema" elementFormDefault="qualified" targetNamespace="http://www.onvif.org/ver10/schema" version="16.12" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="Vector2D">
+    <xs:attribute name="x" type="xs:float" use="required" />
+    <xs:attribute name="y" type="xs:float" use="required" />
+    <xs:attribute name="space" type="xs:anyURI" use="optional">
+      <xs:annotation>
+        <xs:documentation>
+  				Pan/tilt coordinate space selector. The following options are defined:<ul><li> http://www.onvif.org/ver10/tptz/PanTiltSpaces/PositionGenericSpace</li><li> http://www.onvif.org/ver10/tptz/PanTiltSpaces/TranslationGenericSpace</li><li> http://www.onvif.org/ver10/tptz/PanTiltSpaces/VelocityGenericSpace</li><li> http://www.onvif.org/ver10/tptz/PanTiltSpaces/GenericSpeedSpace</li></ul></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="Vector1D">
+    <xs:attribute name="x" type="xs:float" use="required" />
+    <xs:attribute name="space" type="xs:anyURI" use="optional">
+      <xs:annotation>
+        <xs:documentation>
+				Zoom coordinate space selector. The following options are defined:<ul style=""><li> http://www.onvif.org/ver10/tptz/ZoomSpaces/PositionGenericSpace</li><li> http://www.onvif.org/ver10/tptz/ZoomSpaces/TranslationGenericSpace</li><li> http://www.onvif.org/ver10/tptz/ZoomSpaces/VelocityGenericSpace</li><li> http://www.onvif.org/ver10/tptz/ZoomSpaces/ZoomGenericSpeedSpace</li></ul></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="PTZVector">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="PanTilt" type="tt:Vector2D">
+        <xs:annotation>
+          <xs:documentation>Pan and tilt position. The x component corresponds to pan and the y component to tilt.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Zoom" type="tt:Vector1D">
+        <xs:annotation>
+          <xs:documentation>
+            A zoom position.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PTZStatus">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Position" type="tt:PTZVector">
+        <xs:annotation>
+          <xs:documentation>
+            Specifies the absolute position of the PTZ unit together with the Space references. The default absolute spaces of the corresponding PTZ configuration MUST be referenced within the Position element.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MoveStatus" type="tt:PTZMoveStatus">
+        <xs:annotation>
+          <xs:documentation>
+            Indicates if the Pan/Tilt/Zoom device unit is currently moving, idle or in an unknown state.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Error" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            States a current PTZ error.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="UtcTime" type="xs:dateTime">
+        <xs:annotation>
+          <xs:documentation>
+            Specifies the UTC time when this status was generated.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+    <xs:anyAttribute processContents="lax" />
+  </xs:complexType>
+  <xs:complexType name="PTZMoveStatus">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="PanTilt" type="tt:MoveStatus">
+        <xs:annotation>
+          <xs:documentation />
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Zoom" type="tt:MoveStatus">
+        <xs:annotation>
+          <xs:documentation />
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="MoveStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="IDLE" />
+      <xs:enumeration value="MOVING" />
+      <xs:enumeration value="UNKNOWN" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Vector">
+    <xs:attribute name="x" type="xs:float" />
+    <xs:attribute name="y" type="xs:float" />
+  </xs:complexType>
+  <xs:complexType name="Rectangle">
+    <xs:attribute name="bottom" type="xs:float" />
+    <xs:attribute name="top" type="xs:float" />
+    <xs:attribute name="right" type="xs:float" />
+    <xs:attribute name="left" type="xs:float" />
+  </xs:complexType>
+  <xs:complexType name="Polygon">
+    <xs:sequence>
+      <xs:element minOccurs="3" maxOccurs="unbounded" name="Point" type="tt:Vector" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Polygon" type="tt:Polygon" />
+  <xs:complexType name="Color">
+    <xs:attribute name="X" type="xs:float" use="required" />
+    <xs:attribute name="Y" type="xs:float" use="required" />
+    <xs:attribute name="Z" type="xs:float" use="required" />
+    <xs:attribute name="Colorspace" type="xs:anyURI" />
+  </xs:complexType>
+  <xs:complexType name="ColorCovariance">
+    <xs:attribute name="XX" type="xs:float" use="required" />
+    <xs:attribute name="YY" type="xs:float" use="required" />
+    <xs:attribute name="ZZ" type="xs:float" use="required" />
+    <xs:attribute name="XY" type="xs:float" />
+    <xs:attribute name="XZ" type="xs:float" />
+    <xs:attribute name="YZ" type="xs:float" />
+    <xs:attribute name="Colorspace" type="xs:anyURI" />
+  </xs:complexType>
+  <xs:complexType name="Transformation">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Translate" type="tt:Vector" />
+      <xs:element minOccurs="0" name="Scale" type="tt:Vector" />
+      <xs:element minOccurs="0" name="Extension" type="tt:TransformationExtension" />
+    </xs:sequence>
+    <xs:anyAttribute processContents="lax" />
+  </xs:complexType>
+  <xs:complexType name="TransformationExtension">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

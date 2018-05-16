@@ -241,7 +241,6 @@ namespace iSpyApplication.Onvif
 
                     _mediaClient.Endpoint.Behaviors.Add(digest);
                     PTZClient.Endpoint.Behaviors.Add(digest);
-                    
                 }
                 catch (Exception ex)
                 {

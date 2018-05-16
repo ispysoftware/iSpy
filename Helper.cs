@@ -175,6 +175,8 @@ namespace iSpyApplication
         {
             switch (mode)
             {
+                case 1:
+                    return "tcp";
                 case 2:
                     return "udp";
                 case 3:

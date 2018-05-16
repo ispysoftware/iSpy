@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
@@ -20,7 +21,7 @@ namespace iSpyApplication.Sources.Video
 
         public static WaveFormat OutFormat = new WaveFormat(22050, 16, 1);
 
-        private const int BUFSIZE = 512000;
+        private const int BUFSIZE = 2000000;
         private readonly objectsMicrophone _audiosource;
         private int _timeoutMicroSeconds;
         private readonly string _cookies = "";
@@ -152,9 +153,10 @@ namespace iSpyApplication.Sources.Video
         public void Start()
         {
             if (_starting || IsRunning) return;
+            _starting = true;
             _abort = false;
             _res = ReasonToFinishPlaying.DeviceLost;
-            _starting = true;
+            
             Task.Factory.StartNew(DoStart);
         }
 
@@ -201,7 +203,8 @@ namespace iSpyApplication.Sources.Video
 
         public int InterruptCb(void* ctx)
         {
-            if ((DateTime.UtcNow - _lastPacket).TotalMilliseconds*1000 > _timeoutMicroSeconds || _abort)
+            //don't check abort here as breaks teardown of rtsp streams
+            if ((DateTime.UtcNow - _lastPacket).TotalMilliseconds*1000 > _timeoutMicroSeconds) 
             {
                 if (!_abort)
                 {
@@ -259,12 +262,12 @@ namespace iSpyApplication.Sources.Video
                             ffmpeg.av_dict_set(&options, "user_agent", _userAgent, 0);
                         }
                         if (!string.IsNullOrEmpty(_modeRTSP))
+                        {
                             ffmpeg.av_dict_set(&options, "rtsp_transport", _modeRTSP, 0);
-                        //if (_modeRTSP.IndexOf("tcp", StringComparison.Ordinal)<_modeRTSP.IndexOf("udp", StringComparison.Ordinal))
-                        //ffmpeg.av_dict_set(&options, "rtsp_flags", "prefer_tcp", 0);
-                        ffmpeg.av_dict_set(&options, "rtsp_flags", "prefer_tcp", 0);
-                        ffmpeg.av_dict_set_int(&options, "recv_buffer_size", BUFSIZE, 0);
-                        ffmpeg.av_dict_set_int(&options, "tcp_nodelay", 1, 0);
+                            if (_modeRTSP == "tcp")
+                                ffmpeg.av_dict_set(&options, "rtsp_flags", "prefer_tcp", 0);
+                        }
+                        ffmpeg.av_dict_set_int(&options, "buffer_size", BUFSIZE, 0);
                         break;
                     default: 
                         ffmpeg.av_dict_set_int(&options, "timeout", _timeoutMicroSeconds, 0);
@@ -272,8 +275,7 @@ namespace iSpyApplication.Sources.Video
 
                     case "tcp":
                         ffmpeg.av_dict_set_int(&options, "timeout", _timeoutMicroSeconds, 0);
-                        ffmpeg.av_dict_set_int(&options, "recv_buffer_size", BUFSIZE, 0);
-                        ffmpeg.av_dict_set_int(&options, "tcp_nodelay", 1, 0);
+                        ffmpeg.av_dict_set_int(&options, "buffer_size", BUFSIZE, 0);
                         break;
                     case "udp":
                         ffmpeg.av_dict_set_int(&options, "timeout", _timeoutMicroSeconds, 0);
@@ -281,7 +283,7 @@ namespace iSpyApplication.Sources.Video
                         break;
                 }
             }
-            ffmpeg.av_dict_set_int(&options, "rtbufsize", BUFSIZE, 0);
+            //ffmpeg.av_dict_set_int(&options, "rtbufsize", BUFSIZE, 0);
 
             var lo = _options.Split(Environment.NewLine.ToCharArray());
             foreach (var nv in lo)
@@ -336,6 +338,7 @@ namespace iSpyApplication.Sources.Video
                 _formatContext = pFormatContext;
                 
                 SetupFormat();
+
                 _timeoutMicroSeconds = t;
 
             }
@@ -363,12 +366,12 @@ namespace iSpyApplication.Sources.Video
         {
             if (ffmpeg.avformat_find_stream_info(_formatContext, null) != 0)
             {
-                throw new ApplicationException(@"Could not find stream info");
+                throw new ApplicationException("Could not find stream info");
             }
 
 
-            _formatContext->flags |= ffmpeg.AVFMT_FLAG_DISCARD_CORRUPT;
-            _formatContext->flags |= ffmpeg.AVFMT_FLAG_NOBUFFER;
+            //_formatContext->flags |= ffmpeg.AVFMT_FLAG_DISCARD_CORRUPT;
+            //_formatContext->flags |= ffmpeg.AVFMT_FLAG_NOBUFFER;
 
 
             for (var i = 0; i < _formatContext->nb_streams; i++)
@@ -377,8 +380,6 @@ namespace iSpyApplication.Sources.Video
                 {
                     // get the pointer to the codec context for the video stream
                     _videoCodecContext = _formatContext->streams[i]->codec;
-                    _videoCodecContext->workaround_bugs = 1;
-                    _videoCodecContext->flags2 |= ffmpeg.CODEC_FLAG2_FAST | ffmpeg.CODEC_FLAG_LOW_DELAY | ffmpeg.CODEC_FLAG2_CHUNKS;
                     _videoStream = _formatContext->streams[i];
                     break;
                 }
@@ -395,10 +396,7 @@ namespace iSpyApplication.Sources.Video
                 }
                 _videoCodecContext->refcounted_frames = 1;
 
-                if ((codec->capabilities & ffmpeg.AV_CODEC_CAP_TRUNCATED) == ffmpeg.AV_CODEC_CAP_TRUNCATED)
-                {
-                    _videoCodecContext->flags |= ffmpeg.AV_CODEC_FLAG_TRUNCATED;
-                }
+                
 
                 _lastVideoFrame = DateTime.UtcNow;
 
@@ -416,6 +414,24 @@ namespace iSpyApplication.Sources.Video
                         break;
                     }
                 }
+
+                //_videoCodecContext->idct_algo = ffmpeg.FF_IDCT_AUTO;
+                //_videoCodecContext->skip_frame = AVDiscard.AVDISCARD_DEFAULT;
+                //_videoCodecContext->skip_idct = AVDiscard.AVDISCARD_DEFAULT;
+                //_videoCodecContext->skip_loop_filter = AVDiscard.AVDISCARD_DEFAULT;
+                //_videoCodecContext->error_concealment = 3;
+
+                _videoCodecContext->workaround_bugs = 1;
+                _videoCodecContext->flags2 |= ffmpeg.CODEC_FLAG2_FAST | ffmpeg.CODEC_FLAG_LOW_DELAY;// | ffmpeg.CODEC_FLAG2_CHUNKS;
+
+                
+                if ((codec->capabilities & ffmpeg.CODEC_CAP_DR1) != 0)
+                    _videoCodecContext->flags |= ffmpeg.CODEC_FLAG_EMU_EDGE;
+                if ((codec->capabilities & ffmpeg.AV_CODEC_CAP_TRUNCATED) == ffmpeg.AV_CODEC_CAP_TRUNCATED)
+                {
+                    _videoCodecContext->flags |= ffmpeg.AV_CODEC_FLAG_TRUNCATED;
+                }
+
                 Throw("OPEN2", ffmpeg.avcodec_open2(_videoCodecContext, codec, null));
 
                 _videoFrame = ffmpeg.av_frame_alloc();
@@ -476,6 +492,7 @@ namespace iSpyApplication.Sources.Video
             {
                 throw new Exception("Connect aborted");
             }
+
             _thread = new Thread(ReadFrames) {Name = Source, IsBackground = false};
             _thread.Start();
         }
@@ -523,7 +540,7 @@ namespace iSpyApplication.Sources.Video
 
                 _lastPacket = DateTime.UtcNow;
 
-                int ret;
+                int ret = -11; //EAGAIN
                 if (_audioStream != null && packet.stream_index == _audioStream->index && _audioCodecContext!=null)
                 {
                     if (HasAudioStream != null)
@@ -673,6 +690,10 @@ namespace iSpyApplication.Sources.Video
                 }
 
                 ffmpeg.av_packet_unref(&packet);
+                if (ret == -11)
+                {
+                    Thread.Sleep(10);
+                }
             } while (!_abort && !MainForm.ShuttingDown);
 
             NewFrame?.Invoke(this, new NewFrameEventArgs(null));

@@ -377,6 +377,11 @@
     <Compile Include="PlayerVLC.Designer.cs">
       <DependentUpon>PlayerVLC.cs</DependentUpon>
     </Compile>
+    <Compile Include="Service References\DeviceImaging\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Sources\Audio\talk\TalkDoorbird.cs" />
     <Compile Include="Sources\Audio\talk\WaveFormatConverter.cs" />
     <Compile Include="Sources\Video\FFmpegBase.cs" />
@@ -1314,6 +1319,58 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Service References\DeviceImaging\b-2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceImaging\bf-2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceImaging\common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceImaging\ImagingService.wsdl" />
+    <None Include="Service References\DeviceImaging\include.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceImaging\iSpyApplication.DeviceImaging.Capabilities.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DeviceImaging\iSpyApplication.DeviceImaging.GetPresetsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DeviceImaging\iSpyApplication.DeviceImaging.ImagingOptions20.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DeviceImaging\iSpyApplication.DeviceImaging.ImagingPreset.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DeviceImaging\iSpyApplication.DeviceImaging.ImagingSettings20.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DeviceImaging\iSpyApplication.DeviceImaging.ImagingStatus20.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DeviceImaging\iSpyApplication.DeviceImaging.MoveOptions20.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DeviceImaging\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceImaging\onvif.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceImaging\t-1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceImaging\ws-addr.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceImaging\xml.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DeviceImaging\xmlmime.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\DeviceMedia\configuration91.svcinfo" />
     <None Include="Service References\DeviceMedia\configuration.svcinfo" />
     <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.AudioDecoderConfiguration.datasource">
@@ -1463,6 +1520,12 @@
     <Content Include="DLLS\x86\swresample-2.dll" />
     <Content Include="DLLS\x86\swscale-4.dll" />
     <Content Include="DLLS\xiApi.NET.dll" />
+    <None Include="Service References\DeviceImaging\configuration91.svcinfo" />
+    <None Include="Service References\DeviceImaging\configuration.svcinfo" />
+    <None Include="Service References\DeviceImaging\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="XML\Translations.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -2325,6 +2388,7 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\DeviceClient\" />
+    <WCFMetadataStorage Include="Service References\DeviceImaging\" />
     <WCFMetadataStorage Include="Service References\DeviceMedia\" />
     <WCFMetadataStorage Include="Service References\DevicePTZ\" />
   </ItemGroup>

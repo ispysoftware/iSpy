@@ -1666,9 +1666,9 @@ namespace iSpyApplication
         {
             vfr.ErrorHandler -= Vfr_ErrorHandler;
             UISync.Execute(() => {
-                                     MessageBox.Show(this, message);
+                               MessageBox.Show(this, message);
+                               btnTest.Enabled = true;
             });
-            vfr.Close();
         }
 
         private void Vfr_NewFrame(object sender, Sources.NewFrameEventArgs e)

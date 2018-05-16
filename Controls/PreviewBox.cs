@@ -223,7 +223,15 @@ namespace iSpyApplication.Controls
                     }
                     break;
                 case Enums.PlaybackMode.iSpy:
+                    try
+                    {
                         MainForm.InstanceReference.Play(movie, Oid, DisplayName);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+
                     break;
                 case Enums.PlaybackMode.Default:
                     try
