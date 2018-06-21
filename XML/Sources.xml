@@ -9021,6 +9021,13 @@
   <Manufacturer name="Comtrend">
     <url version="VD-21ir" prefix="http://" Source="MJPEG" url="cgi/mjpg/mjpeg.cgi" />
   </Manufacturer>
+  <Manufacturer name="Commend">
+    <url version="WS-CM" prefix="http://" Source="MJPEG" url="video.cgi" />
+    <url version="WS300" prefix="http://" Source="MJPEG" url="mjpeg/video.mjpg" />
+    <url version="Duetto (EE980CM)" prefix="http://" Source="MJPEG" url="3.mjpg" />
+    <url version="Intercom Client for Windows" prefix="http://" Source="MJPEG" url="video" />
+    <url version="TS8110V Series" prefix="http://" Source="MJPEG" url="video" />
+  </Manufacturer>
   <Manufacturer name="Conceptronic">
     <url version="B series" prefix="http://" Source="VLC" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]" />
     <url version="B SERIES" prefix="http://" Source="FFMPEG" url="videostream.asf?user=[USERNAME]&amp;pwd=[PASSWORD]&amp;resolution=32&amp;rate=0" />
@@ -31857,7 +31864,7 @@
     <url version="RLC-422" prefix="rtmp://" port="1935" Source="FFMPEG" url="/bcs/channel0_main.bcs?token=[TOKEN]&amp;channel=0&amp;stream=0" tokenPath="cgi-bin/api.cgi?cmd=Login&amp;token=null" tokenPost="[{&quot;cmd&quot;:&quot;Login&quot;,&quot;action&quot;:0,&quot;param&quot;:{&quot;User&quot;:{&quot;userName&quot;:&quot;[USERNAME]&quot;,&quot;password&quot;:&quot;[PASSWORD]&quot;}}}]" tokenPort="80"/>
     <url version="RLC-423" prefix="rtmp://" port="1935" Source="FFMPEG" url="/bcs/channel0_main.bcs?token=[TOKEN]&amp;channel=0&amp;stream=0" tokenPath="cgi-bin/api.cgi?cmd=Login&amp;token=null" tokenPost="[{&quot;cmd&quot;:&quot;Login&quot;,&quot;action&quot;:0,&quot;param&quot;:{&quot;User&quot;:{&quot;userName&quot;:&quot;[USERNAME]&quot;,&quot;password&quot;:&quot;[PASSWORD]&quot;}}}]" tokenPort="80"/>
     <url version="C1" prefix="rtmp://" port="1935" Source="FFMPEG" url="/bcs/channel0_main.bcs?token=[TOKEN]&amp;channel=0&amp;stream=0" tokenPath="cgi-bin/api.cgi?cmd=Login&amp;token=null" tokenPost="[{&quot;cmd&quot;:&quot;Login&quot;,&quot;action&quot;:0,&quot;param&quot;:{&quot;User&quot;:{&quot;userName&quot;:&quot;[USERNAME]&quot;,&quot;password&quot;:&quot;[PASSWORD]&quot;}}}]" tokenPort="80"/>
-    <url version="C2" prefix="rtmp://" port="1935" Source="FFMPEG" url="/bcs/channel0_main.bcs?token=[TOKEN]&amp;channel=0&amp;stream=0" tokenPath="cgi-bin/api.cgi?cmd=Login&amp;token=null" tokenPost="[{&quot;cmd&quot;:&quot;Login&quot;,&quot;action&quot;:0,&quot;param&quot;:{&quot;User&quot;:{&quot;userName&quot;:&quot;[USERNAME]&quot;,&quot;password&quot;:&quot;[PASSWORD]&quot;}}}]" tokenPort="80"/>    
+    <url version="C2" prefix="rtmp://" port="1935" Source="FFMPEG" url="/bcs/channel0_main.bcs?token=[TOKEN]&amp;channel=0&amp;stream=0" tokenPath="cgi-bin/api.cgi?cmd=Login&amp;token=null" tokenPost="[{&quot;cmd&quot;:&quot;Login&quot;,&quot;action&quot;:0,&quot;param&quot;:{&quot;User&quot;:{&quot;userName&quot;:&quot;[USERNAME]&quot;,&quot;password&quot;:&quot;[PASSWORD]&quot;}}}]" tokenPort="80"/>
   </Manufacturer>
   <Manufacturer name="Repotec">
     <url version="Other" prefix="http://" Source="JPEG" url="IMAGE.JPG" />

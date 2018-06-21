@@ -197,8 +197,8 @@
       <HintPath>packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FFmpeg.AutoGen, Version=3.4.0.6, Culture=neutral, PublicKeyToken=9b7632533a381715, processorArchitecture=MSIL">
-      <HintPath>packages\FFmpeg.AutoGen.3.4.0.6\lib\net45\FFmpeg.AutoGen.dll</HintPath>
+    <Reference Include="FFmpeg.AutoGen, Version=4.0.0.2, Culture=neutral, PublicKeyToken=9b7632533a381715, processorArchitecture=MSIL">
+      <HintPath>packages\FFmpeg.AutoGen.4.0.0.2\lib\net45\FFmpeg.AutoGen.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FlickrNet, Version=3.24.0.0, Culture=neutral, PublicKeyToken=2491df59efa5d132, processorArchitecture=MSIL">
@@ -518,7 +518,7 @@
     <Compile Include="Sources\Audio\talk\TalkFoscam.cs" />
     <Compile Include="Sources\Audio\talk\WaveFormatConverter.cs" />
     <Compile Include="Sources\Video\FFmpegBase.cs" />
-    <Compile Include="Sources\Video\MediaStream.cs" />
+    <Compile Include="Sources\Video\MediaStream-gpu.cs" />
     <Compile Include="Sources\Video\Tokeniser.cs" />
     <Compile Include="Sources\Video\VideoBase.cs" />
     <Compile Include="TagConfigure.cs">

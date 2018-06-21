@@ -10,7 +10,7 @@ using iSpyApplication.DeviceMedia;
 using iSpyApplication.DevicePTZ;
 using iSpyApplication.Utilities;
 using DateTime = System.DateTime;
-using VideoSourceConfiguration = iSpyApplication.DeviceMedia.VideoSourceConfiguration;
+using VideoEncoderConfiguration = iSpyApplication.DeviceMedia.VideoEncoderConfiguration;
 
 namespace iSpyApplication.Onvif
 {
@@ -75,7 +75,7 @@ namespace iSpyApplication.Onvif
                                     l.Uri = l.Uri.ReplaceFirst("://", "://" + Uri.EscapeDataString(Username) + ":" + Uri.EscapeDataString(Password) + "@");
                                 }
 
-                                var s = p?.VideoSourceConfiguration;
+                                var s = p?.VideoEncoderConfiguration;
                                 uris.Add(new MediaEndpoint(l,s));
                             }
                             catch (Exception ex)
@@ -102,9 +102,9 @@ namespace iSpyApplication.Onvif
         public class MediaEndpoint
         {
             public MediaUri URI;
-            public VideoSourceConfiguration Config;
+            public VideoEncoderConfiguration Config;
 
-            public MediaEndpoint(MediaUri uri, VideoSourceConfiguration config)
+            public MediaEndpoint(MediaUri uri, VideoEncoderConfiguration config)
             {
                 URI = uri;
                 Config = config;
@@ -112,7 +112,7 @@ namespace iSpyApplication.Onvif
 
             public override string ToString()
             {
-                return Config.Bounds.width + "x" + Config.Bounds.height + ": " + URI.Uri;
+                return Config.Resolution.Width + "x" + Config.Resolution.Height + ": " + URI.Uri;
             }
         }
 
@@ -128,25 +128,6 @@ namespace iSpyApplication.Onvif
                     Endpoint = MediaEndpoints[profileIndex];
             }
                 
-        }
-
-
-        private VideoSourceConfiguration[] _vconfigs;
-        public VideoSourceConfiguration[] VideoSourceConfigurations
-        {
-            get
-            {
-                if (_vconfigs != null)
-                    return _vconfigs;
-
-
-                var mc = MediaClient;
-                if (mc != null)
-                {
-                    _vconfigs = mc.GetVideoSourceConfigurations().ToArray();
-                }
-                return _vconfigs;
-            }
         }
 
         private Profile[] _profiles;

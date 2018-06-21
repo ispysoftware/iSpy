@@ -85,8 +85,8 @@ namespace iSpyApplication.CameraDiscovery
                 {
                     foreach (var p in dev.Profiles)
                     {
-                        var b = p?.VideoSourceConfiguration?.Bounds;
-                        if (b != null && b.width > 0)
+                        var b = p?.VideoEncoderConfiguration?.Resolution;
+                        if (b != null && b.Width > 0)
                         {
                             dev.SelectProfile(i);
                             var co = new ConnectionOption(onvifurl, null, 9, -1, null)

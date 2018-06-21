@@ -4541,7 +4541,7 @@
     </Makes>
     <CommandURL>/decoder_control.cgi</CommandURL>
     <Commands>
-      <Left>command=2</Left>
+      <Left>command=4</Left>
       <Right>command=6</Right>
       <Up>command=0</Up>
       <Down>command=2</Down>
@@ -5031,10 +5031,10 @@ copy or delete as many lines as you need.-->
     <Method>POST</Method>
     <Commands>
       <Center>PanTiltPresetPositionMove=0</Center>
-      <Left>PanSingleMoveDegree=1&amp;TiltSingleMoveDegree=1&amp;PanTiltSingleMove=3</Left>
-      <Right>PanSingleMoveDegree=1&amp;TiltSingleMoveDegree=1&amp;PanTiltSingleMove=5</Right>
-      <Up>PanSingleMoveDegree=1&amp;TiltSingleMoveDegree=1&amp;PanTiltSingleMove=1</Up>
-      <Down>PanSingleMoveDegree=1&amp;TiltSingleMoveDegree=1&amp;PanTiltSingleMove=7</Down>
+      <Left>PanSingleMoveDegree=20&amp;TiltSingleMoveDegree=20&amp;PanTiltSingleMove=3</Left>
+      <Right>PanSingleMoveDegree=20&amp;TiltSingleMoveDegree=20&amp;PanTiltSingleMove=5</Right>
+      <Up>PanSingleMoveDegree=20&amp;TiltSingleMoveDegree=20&amp;PanTiltSingleMove=1</Up>
+      <Down>PanSingleMoveDegree=20&amp;TiltSingleMoveDegree=20&amp;PanTiltSingleMove=7</Down>
     </Commands>
     <ExtendedCommands>
       <Command Name="Position 1">PanTiltPresetPositionMove=1</Command>
@@ -7517,23 +7517,107 @@ in the camera's web interface-->
       <Make Name="Escam" Model="QF007"/>
     </Makes>
     <CommandURL>/dvrcmd</CommandURL>
+    <Cookies>NetSuveillanceWebCookie=%7B%22username%22%3A%22admin%22%7D</Cookies>
     <Method>POST</Method>
     <Commands>
       <Center></Center>
-      <Left>command=ptz_req&amp;req=start&amp;param=directionleft&amp;channel=[CHANNEL]&amp;stream=1</Left>
-      <LeftUp>command=ptz_req&amp;req=start&amp;param=directionleftup&amp;channel=[CHANNEL]&amp;stream=1</LeftUp>
-      <Right>command=ptz_req&amp;req=start&amp;param=directionright&amp;channel=[CHANNEL]&amp;stream=1</Right>
-      <RightUp>command=ptz_req&amp;req=start&amp;param=directionrightup&amp;channel=[CHANNEL]&amp;stream=1</RightUp>
-      <Up>command=ptz_req&amp;req=start&amp;param=directionup&amp;channel=[CHANNEL]&amp;stream=1</Up>
-      <Down>command=ptz_req&amp;req=start&amp;param=directiondown&amp;channel=[CHANNEL]&amp;stream=1</Down>
-      <LeftDown>command=ptz_req&amp;req=start&amp;param=directionleftdown&amp;channel=[CHANNEL]&amp;stream=1</LeftDown>
-      <RightDown>command=ptz_req&amp;req=start&amp;param=directionrightdown&amp;channel=[CHANNEL]&amp;stream=1</RightDown>
-      <Stop>command=ptz_req&amp;req=stop&amp;param=directionright&amp;channel=[CHANNEL]&amp;stream=1</Stop>
+      <Left>command=ptz_req&amp;req=start&amp;param=directionleft&amp;channel=1&amp;stream=0</Left>
+      <LeftUp>command=ptz_req&amp;req=start&amp;param=directionleftup&amp;channel=1&amp;stream=0</LeftUp>
+      <Right>command=ptz_req&amp;req=start&amp;param=directionright&amp;channel=1&amp;stream=0</Right>
+      <RightUp>command=ptz_req&amp;req=start&amp;param=directionrightup&amp;channel=1&amp;stream=0</RightUp>
+      <Up>command=ptz_req&amp;req=start&amp;param=directionup&amp;channel=1&amp;stream=0</Up>
+      <Down>command=ptz_req&amp;req=start&amp;param=directiondown&amp;channel=1&amp;stream=0</Down>
+      <LeftDown>command=ptz_req&amp;req=start&amp;param=directionleftdown&amp;channel=1&amp;stream=0</LeftDown>
+      <RightDown>command=ptz_req&amp;req=start&amp;param=directionrightdown&amp;channel=1&amp;stream=0</RightDown>
+      <Stop>command=ptz_req&amp;req=stop&amp;param=directionright&amp;channel=1&amp;stream=0</Stop>
       <ZoomIn>
       </ZoomIn>
       <ZoomOut>
       </ZoomOut>
     </Commands>
     <ExtendedCommands/>
+  </Camera>
+  <Camera id="254">
+    <Makes>
+      <Make Name="Azemax" Model="IPS610" />
+    </Makes>
+    <CommandURL>/web/cgi-bin/hi3510/</CommandURL>
+    <Commands>
+      <Center>ptzctrl.cgi?-step=1&amp;-act=home&amp;-speed=45</Center>
+      <Left>ptzctrl.cgi?-step=1&amp;-act=left&amp;-speed=45</Left>
+      <Right>ptzctrl.cgi?-step=1&amp;-act=right&amp;-speed=45</Right>
+      <Up>ptzctrl.cgi?-step=1&amp;-act=up&amp;-speed=45</Up>
+      <Down>ptzctrl.cgi?-step=1&amp;-act=down&amp;-speed=45</Down>
+      <Stop>ptzctrl.cgi?-step=1&amp;-act=stop</Stop>
+      <ZoomIn>ptzctrl.cgi?-step=1&amp;-act=zoomin</ZoomIn>
+      <ZoomOut>ptzctrl.cgi?-step=1&amp;-act=zoomout</ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Go Preset 1">param.cgi?cmd=preset&amp;-act=goto&amp;-number=0</Command>
+      <Command Name="Go Preset 2">param.cgi?cmd=preset&amp;-act=goto&amp;-number=1</Command>
+      <Command Name="Go Preset 3">param.cgi?cmd=preset&amp;-act=goto&amp;-number=2</Command>
+      <Command Name="Go Preset 4">param.cgi?cmd=preset&amp;-act=goto&amp;-number=3</Command>
+      <Command Name="Go Preset 5">param.cgi?cmd=preset&amp;-act=goto&amp;-number=4</Command>
+      <Command Name="Go Preset 6">param.cgi?cmd=preset&amp;-act=goto&amp;-number=6</Command>
+      <Command Name="Go Preset 7">param.cgi?cmd=preset&amp;-act=goto&amp;-number=7</Command>
+      <Command Name="Go Preset 7">param.cgi?cmd=preset&amp;-act=goto&amp;-number=8</Command>
+    </ExtendedCommands>
+  </Camera>
+  <Camera id="255">
+    <Makes>
+      <Make Name="Azemax" Model="IPS610v2" />
+    </Makes>
+    <CommandURL>/web/cgi-bin/hi3510/</CommandURL>
+    <Commands>
+      <Center>ptzctrl.cgi?-step=1&amp;-act=home</Center>
+      <Left>ptzctrl.cgi?-step=1&amp;-act=left</Left>
+      <Right>ptzctrl.cgi?-step=1&amp;-act=right</Right>
+      <Up>ptzctrl.cgi?-step=1&amp;-act=up</Up>
+      <Down>ptzctrl.cgi?-step=1&amp;-act=down</Down>
+      <Stop>ptzctrl.cgi?-step=0&amp;-act=stop</Stop>
+      <ZoomIn>ptzctrl.cgi?-step=1&amp;-act=zoomin</ZoomIn>
+      <ZoomOut>ptzctrl.cgi?-step=1&amp;-act=zoomout</ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Go Preset 1">param.cgi?cmd=preset&amp;-act=goto&amp;-number=0</Command>
+      <Command Name="Go Preset 2">param.cgi?cmd=preset&amp;-act=goto&amp;-number=1</Command>
+      <Command Name="Go Preset 3">param.cgi?cmd=preset&amp;-act=goto&amp;-number=2</Command>
+      <Command Name="Go Preset 4">param.cgi?cmd=preset&amp;-act=goto&amp;-number=3</Command>
+      <Command Name="Go Preset 5">param.cgi?cmd=preset&amp;-act=goto&amp;-number=4</Command>
+      <Command Name="Go Preset 6">param.cgi?cmd=preset&amp;-act=goto&amp;-number=6</Command>
+      <Command Name="Go Preset 7">param.cgi?cmd=preset&amp;-act=goto&amp;-number=7</Command>
+      <Command Name="Go Preset 7">param.cgi?cmd=preset&amp;-act=goto&amp;-number=8</Command>
+    </ExtendedCommands>
+  </Camera>
+  <Camera id="256" AppendAuth="user=[USERNAME]&amp;pwd=[PASSWORD]">
+    <Makes>
+      <Make Name="FDT" Model="720HD" />
+    </Makes>
+    <CommandURL>/param.cgi</CommandURL>
+    <Commands>
+      <Center></Center>
+      <Left>cmd=ptzctrl&amp;-step=0&amp;-act=reft&amp;-speed=45</Left>
+      <Right>cmd=ptzctrl&amp;-step=0&amp;-act=right&amp;-speed=45</Right>
+      <Up>cmd=ptzctrl&amp;-step=0&amp;-act=up&amp;-speed=45</Up>
+      <Down>cmd=ptzctrl&amp;-step=0&amp;-act=down&amp;-speed=45</Down>
+      <Stop>cmd=ptzctrl&amp;-step=0&amp;-act=stop&amp;-speed=45</Stop>
+      <LeftUp>cmd=ptzctrl&amp;-step=0&amp;-act=upleft&amp;-speed=45</LeftUp>
+      <RightUp>cmd=ptzctrl&amp;-step=0&amp;-act=upright&amp;-speed=45</RightUp>
+      <LeftDown>cmd=ptzctrl&amp;-step=0&amp;-act=downleft&amp;-speed=45</LeftDown>
+      <RightDown>cmd=ptzctrl&amp;-step=0&amp;-act=downright&amp;-speed=45</RightDown>
+      <ZoomIn></ZoomIn>
+      <ZoomOut></ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Left">cmd=ptzctrl&amp;-step=0&amp;-act=left&amp;-speed=45</Command>
+      <Command Name="Right">cmd=ptzctrl&amp;-step=0&amp;-act=right&amp;-speed=45</Command>
+      <Command Name="Up">cmd=ptzctrl&amp;-step=0&amp;-act=up&amp;-speed=45</Command>
+      <Command Name="Down">cmd=ptzctrl&amp;-step=0&amp;-act=down&amp;-speed=45</Command>
+      <Command Name="Stop">cmd=ptzctrl&amp;-step=0&amp;-act=stop&amp;-speed=45</Command>
+      <Command Name="Up-Left">cmd=ptzctrl&amp;-step=0&amp;-act=upleft&amp;-speed=45</Command>
+      <Command Name="Up-Right">cmd=ptzctrl&amp;-step=0&amp;-act=upright&amp;-speed=45</Command>
+      <Command Name="Down-Left">cmd=ptzctrl&amp;-step=0&amp;-act=downleft&amp;-speed=45</Command>
+      <Command Name="Down-Right">cmd=ptzctrl&amp;-step=0&amp;-act=downright&amp;-speed=45</Command>
+    </ExtendedCommands>
   </Camera>
 </PTZSettings2>

@@ -18,8 +18,6 @@ namespace iSpyApplication.Realtime
 
         public delegate int InterruptCallback();
 
-        private static readonly bool Hwnvidia = true;
-        private static bool _hwqsv = true;
         private readonly byte[] _convOut = new byte[44100];
         private readonly bool _isAudio;
         private bool _abort;
@@ -66,29 +64,34 @@ namespace iSpyApplication.Realtime
         public int OutSampleRate = 22050;
         public long SizeBytes;
         private int _crf;
+        public int GpuIndex = 0;
 
         public int Timeout = 5000;
+
+        public HwEncoder Gpu;
+        public class HwEncoder
+        {
+            public string Codec;
+            public string Name;
+
+            public HwEncoder(string codec, string name)
+            {
+                Codec = codec;
+                Name = name;
+            }
+        }
+
+        public static HwEncoder[] Encoders =
+        {
+            new HwEncoder("h264_nvenc", "nvidia"),
+            new HwEncoder("h264_qsv", "quicksync"),
+            new HwEncoder("h264_amf", "amd"),
+        };
 
         public MediaWriter(): base("Writer")
         {
             
         }
-        //public MediaWriter(string fileName, AVCodecID audioCodec, DateTime created) : base("Writer")
-        //{
-        //    Open(fileName, -1, -1, AVCodecID.AV_CODEC_ID_NONE, 0, audioCodec, created);
-        //    _isAudio = true;
-        //}
-
-        //public MediaWriter(string fileName, int width, int height, AVCodecID videoCodec, DateTime created) : base("Writer")
-        //{
-        //    Open(fileName, width, height, videoCodec, 0, AVCodecID.AV_CODEC_ID_NONE, created);
-        //}
-
-        //public MediaWriter(string fileName, int width, int height, AVCodecID videoCodec, int framerate,
-        //    AVCodecID audioCodec, DateTime created) : base("Writer")
-        //{
-        //    Open(fileName, width, height, videoCodec, framerate, audioCodec, created);
-        //}
 
         public bool Closed => !_opened;
 
@@ -641,43 +644,36 @@ namespace iSpyApplication.Realtime
 
         private void GetVideoCodec(AVCodecID baseCodec)
         {
-            if (baseCodec == AVCodecID.AV_CODEC_ID_H264)
+            if (Gpu != null)
             {
-                if (Hwnvidia && MainForm.Conf.GPU.nVidia)
-                {
-                    _avPixelFormat = AVPixelFormat.AV_PIX_FMT_YUV420P;
-                    _videoCodec = ffmpeg.avcodec_find_encoder_by_name("nvenc_h264");
-                    if (_videoCodec != null)
-                    {
-                        if (TryOpenVideoCodec(baseCodec))
-                        {
-                            Logger.LogMessage("using Nvidia hardware encoder");
-                            return;
-                        }
-                    }
-                }
+                _videoCodec = ffmpeg.avcodec_find_encoder_by_name(Gpu.Codec);
+                _avPixelFormat = AVPixelFormat.AV_PIX_FMT_NV12;
 
-                if (_hwqsv && MainForm.Conf.GPU.QuickSync)
+                if (_videoCodec != null)
                 {
-                    _avPixelFormat = AVPixelFormat.AV_PIX_FMT_NV12;
-                    _videoCodec = ffmpeg.avcodec_find_encoder_by_name("h264_qsv");
-                    if (_videoCodec != null)
+                    if (TryOpenVideoCodec(baseCodec, Gpu))
                     {
-                        if (TryOpenVideoCodec(baseCodec))
-                        {
-                            Logger.LogMessage("using Intel QSV hardware encoder");
-                            return;
-                        }
-                        Logger.LogMessage("Install Intel Media Server Studio and restart iSpy to use QSV");
-                        _hwqsv = false;
+                        Logger.LogMessage("using " + Gpu.Name + " hardware encoder");
+                        return;
+                    }
+
+                    switch (Gpu.Name)
+                    {
+                        case "quicksync":
+                            Logger.LogError("Install Intel Media Server Studio to use QSV encoder");
+                            break;
+                        default:
+                            Logger.LogError("Update graphics driver to use " + Gpu.Name + " encoder");
+                            break;
                     }
                 }
             }
 
-            _avPixelFormat = AVPixelFormat.AV_PIX_FMT_YUV420P;
+            
             _videoCodec = ffmpeg.avcodec_find_encoder(baseCodec);
+            _avPixelFormat = AVPixelFormat.AV_PIX_FMT_YUV420P;
 
-            if (TryOpenVideoCodec(baseCodec))
+            if (TryOpenVideoCodec(baseCodec, null))
             {
                 Logger.LogMessage("using software encoder");
                 return;
@@ -687,7 +683,7 @@ namespace iSpyApplication.Realtime
             throw new Exception("Failed opening any codec");
         }
 
-        private bool TryOpenVideoCodec(AVCodecID baseCodec)
+        private bool TryOpenVideoCodec(AVCodecID baseCodec, HwEncoder gpu)
         {
             _videoCodecContext = ffmpeg.avcodec_alloc_context3(_videoCodec);
 
@@ -729,11 +725,40 @@ namespace iSpyApplication.Realtime
                     ffmpeg.av_opt_set(_videoCodecContext->priv_data, "pkt_size", "1316", 0);
                     break;
                 case AVCodecID.AV_CODEC_ID_H264:
-                    ffmpeg.av_opt_set(_videoCodecContext->priv_data, "profile", "baseline", ffmpeg.AV_OPT_SEARCH_CHILDREN);
-                    ffmpeg.av_opt_set(_videoCodecContext->priv_data, "preset", "veryfast", ffmpeg.AV_OPT_SEARCH_CHILDREN);
-                    ////ffmpeg.av_opt_set(_videoCodecContext->priv_data, "tune", "zerolatency", 0);
+                    ffmpeg.av_opt_set(_videoCodecContext->priv_data, "profile", "baseline", ffmpeg.AV_OPT_SEARCH_CHILDREN); //keep as baseline - otherwise rewind doesn't work
+                    if (gpu != null)
+                    {
+                        ffmpeg.av_opt_set_int(_videoCodecContext->priv_data, "hwaccel_device", GpuIndex, ffmpeg.AV_OPT_SEARCH_CHILDREN);
+                        if (gpu.Name == "amd")
+                        {
+                            //amf doesn't support "baseline" only "constrained_baseline";
+                            ffmpeg.av_opt_set(_videoCodecContext->priv_data, "profile", "constrained_baseline", ffmpeg.AV_OPT_SEARCH_CHILDREN);
+                            ffmpeg.av_opt_set(_videoCodecContext->priv_data, "preset", "fast", ffmpeg.AV_OPT_SEARCH_CHILDREN);
+                            ffmpeg.av_opt_set_int(_videoCodecContext->priv_data, "crf", _crf, ffmpeg.AV_OPT_SEARCH_CHILDREN);
+
+                            // https://github.com/GPUOpen-LibrariesAndSDKs/AMF/blob/master/amf/doc/AMF_Video_Encode_API.pdf
+                            // https://stackoverflow.com/questions/45181730/ffmpeg-encode-x264-with-amd-gpu-on-windows
+
+                            _videoCodecContext->bit_rate = 100000000;
+                            _videoCodecContext->rc_max_rate = 100000000;
+                            _videoCodecContext->rc_min_rate = 50000000;
+                            _videoCodecContext->qmin = 18;
+                            _videoCodecContext->qmax = 46;
+                            _videoCodecContext->max_qdiff = 4;
+                        }
+                        else
+                        {
+
+                            //only fast and slow available
+                            ffmpeg.av_opt_set(_videoCodecContext->priv_data, "preset", "fast", ffmpeg.AV_OPT_SEARCH_CHILDREN);
+                            _videoCodecContext->bit_rate = 10000000;
+                        }
+                    }
+                    else
+                        ffmpeg.av_opt_set(_videoCodecContext->priv_data, "preset", "veryfast", ffmpeg.AV_OPT_SEARCH_CHILDREN);
+
                     ffmpeg.av_opt_set_int(_videoCodecContext->priv_data, "crf", _crf, ffmpeg.AV_OPT_SEARCH_CHILDREN);
-                    
+
                     break;
                 case AVCodecID.AV_CODEC_ID_HEVC:
                     ffmpeg.av_opt_set(_videoCodecContext->priv_data, "x265-params", "qp=20", 0);
@@ -751,7 +776,7 @@ namespace iSpyApplication.Realtime
 
             if ((_formatContext->oformat->flags & ffmpeg.AVFMT_GLOBALHEADER) == ffmpeg.AVFMT_GLOBALHEADER)
             {
-                _videoCodecContext->flags |= ffmpeg.CODEC_FLAG_GLOBAL_HEADER;
+                _videoCodecContext->flags |= ffmpeg.AV_CODEC_FLAG_GLOBAL_HEADER;
             }
 
             int cdc;
@@ -853,10 +878,10 @@ namespace iSpyApplication.Realtime
 
             if ((_formatContext->oformat->flags & ffmpeg.AVFMT_GLOBALHEADER) == ffmpeg.AVFMT_GLOBALHEADER)
             {
-                _audioCodecContext->flags |= ffmpeg.CODEC_FLAG_GLOBAL_HEADER;
+                _audioCodecContext->flags |= ffmpeg.AV_CODEC_FLAG_GLOBAL_HEADER;
             }
 
-            if ((codec->capabilities & ffmpeg.CODEC_CAP_EXPERIMENTAL) != 0)
+            if ((codec->capabilities & ffmpeg.AV_CODEC_CAP_EXPERIMENTAL) != 0)
             {
                 _audioCodecContext->strict_std_compliance = -2;
             }

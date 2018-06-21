@@ -548,10 +548,10 @@ namespace iSpyApplication.Server
 
                             foreach (var p in dev.Profiles)
                             {
-                                var b = p?.VideoSourceConfiguration?.Bounds;
-                                if (b != null && b.width > 0)
+                                var b = p?.VideoEncoderConfiguration?.Resolution;
+                                if (b != null && b.Width > 0)
                                 {
-                                    resp += string.Format(template, b.width + "x" + b.height, i);
+                                    resp += string.Format(template, b.Width + "x" + b.Height, i);
                                 }
                                 i++;
                             }
@@ -1347,7 +1347,7 @@ namespace iSpyApplication.Server
                                     if (ptzEntry?.ExtendedCommands?.Command != null)
                                     {
                                         commands = ptzEntry.ExtendedCommands.Command.Aggregate(commands,
-                                            (current, extcmd) => current + string.Format(template, extcmd.Name.JsonSafe(), extcmd.Value));
+                                            (current, extcmd) => current + string.Format(template, extcmd.Name.JsonSafe(), extcmd.Value.JsonSafe()));
                                     }
                                     if (commands == "")
                                     {

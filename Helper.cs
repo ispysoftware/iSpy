@@ -78,7 +78,51 @@ namespace iSpyApplication
 
             
         }
+        public static Size CalcResizeSize(bool resize, Size nativeSize, Size resizeSize)
+        {
+            if (!resize)
+                return MakeEven(new Size(nativeSize.Width, nativeSize.Height));
 
+            int w = nativeSize.Width;
+            if (resizeSize.Width > 0)
+                w = Math.Min(w, resizeSize.Width);
+
+            int h = nativeSize.Height;
+            if (resizeSize.Height > 0)
+                h = Math.Min(h, resizeSize.Height);
+
+            if (resizeSize.Width < 1 && resizeSize.Height < 1)
+                return MakeEven(new Size(w, h));
+
+            var ar = Convert.ToDouble(nativeSize.Width) / Convert.ToDouble(nativeSize.Height);
+
+            if (resizeSize.Width == 0) //auto width based on height
+            {
+                return MakeEven(new Size(Convert.ToInt32(ar * h), h));
+            }
+
+            if (resizeSize.Height == 0) //auto height based on width
+            {
+                return MakeEven(new Size(w, Convert.ToInt32(w / ar)));
+            }
+
+            return MakeEven(new Size(w, h));
+
+        }
+
+        private static Size MakeEven(Size sz)
+        {
+            if (sz.Width % 2 != 0)
+            {
+                sz.Width++;
+            }
+            if (sz.Height % 2 != 0)
+            {
+                sz.Height++;
+            }
+
+            return sz;
+        }
         public static byte[] ReadBytesWithRetry(FileInfo fi)
         {
             int numTries = 0;

@@ -184,8 +184,8 @@
       <HintPath>packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FFmpeg.AutoGen, Version=3.4.0.6, Culture=neutral, PublicKeyToken=9b7632533a381715, processorArchitecture=MSIL">
-      <HintPath>packages\FFmpeg.AutoGen.3.4.0.6\lib\net45\FFmpeg.AutoGen.dll</HintPath>
+    <Reference Include="FFmpeg.AutoGen, Version=4.0.0.2, Culture=neutral, PublicKeyToken=9b7632533a381715, processorArchitecture=MSIL">
+      <HintPath>packages\FFmpeg.AutoGen.4.0.0.2\lib\net45\FFmpeg.AutoGen.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FlickrNet, Version=3.24.0.0, Culture=neutral, PublicKeyToken=2491df59efa5d132, processorArchitecture=MSIL">
@@ -385,8 +385,8 @@
     <Compile Include="Sources\Audio\talk\TalkDoorbird.cs" />
     <Compile Include="Sources\Audio\talk\WaveFormatConverter.cs" />
     <Compile Include="Sources\Video\FFmpegBase.cs" />
-    <Compile Include="Sources\Video\MediaStream.cs" />
     <Compile Include="Sources\Audio\TinyAudioProcessor.cs" />
+    <Compile Include="Sources\Video\MediaStream.cs" />
     <Compile Include="Sources\Video\VideoCaptureDevice.cs" />
     <Compile Include="Sources\Video\Tokeniser.cs" />
     <Compile Include="Cloud\CloudGateway.cs" />
@@ -1493,32 +1493,32 @@
     <Content Include="DLLS\Renci.SshNet.dll" />
     <Content Include="DLLS\Renderers.dll" />
     <Content Include="DLLS\Windows7ToolStripRenderer.dll" />
-    <Content Include="DLLS\x64\avcodec-57.dll" />
-    <Content Include="DLLS\x64\avdevice-57.dll" />
-    <Content Include="DLLS\x64\avfilter-6.dll" />
-    <Content Include="DLLS\x64\avformat-57.dll" />
-    <Content Include="DLLS\x64\avutil-55.dll" />
+    <Content Include="DLLS\x64\avcodec-58.dll" />
+    <Content Include="DLLS\x64\avdevice-58.dll" />
+    <Content Include="DLLS\x64\avfilter-7.dll" />
+    <Content Include="DLLS\x64\avformat-58.dll" />
+    <Content Include="DLLS\x64\avutil-56.dll" />
     <Content Include="DLLS\x64\ffmpeg.exe" />
     <Content Include="DLLS\x64\Interop.NETWORKLIST.dll" />
     <Content Include="DLLS\x64\libmp3lame.64.dll" />
     <Content Include="DLLS\x64\Microsoft.Kinect.dll" />
     <Content Include="DLLS\x64\msvcp120.dll" />
     <Content Include="DLLS\x64\msvcr120.dll" />
-    <Content Include="DLLS\x64\postproc-54.dll" />
-    <Content Include="DLLS\x64\swresample-2.dll" />
-    <Content Include="DLLS\x64\swscale-4.dll" />
-    <Content Include="DLLS\x86\avcodec-57.dll" />
-    <Content Include="DLLS\x86\avdevice-57.dll" />
-    <Content Include="DLLS\x86\avfilter-6.dll" />
-    <Content Include="DLLS\x86\avformat-57.dll" />
-    <Content Include="DLLS\x86\avutil-55.dll" />
+    <Content Include="DLLS\x64\postproc-55.dll" />
+    <Content Include="DLLS\x64\swresample-3.dll" />
+    <Content Include="DLLS\x64\swscale-5.dll" />
+    <Content Include="DLLS\x86\avcodec-58.dll" />
+    <Content Include="DLLS\x86\avdevice-58.dll" />
+    <Content Include="DLLS\x86\avfilter-7.dll" />
+    <Content Include="DLLS\x86\avformat-58.dll" />
+    <Content Include="DLLS\x86\avutil-56.dll" />
     <Content Include="DLLS\x86\ffmpeg.exe" />
     <Content Include="DLLS\x86\libmp3lame.32.dll" />
     <Content Include="DLLS\x86\msvcp120.dll" />
     <Content Include="DLLS\x86\msvcr120.dll" />
-    <Content Include="DLLS\x86\postproc-54.dll" />
-    <Content Include="DLLS\x86\swresample-2.dll" />
-    <Content Include="DLLS\x86\swscale-4.dll" />
+    <Content Include="DLLS\x86\postproc-55.dll" />
+    <Content Include="DLLS\x86\swresample-3.dll" />
+    <Content Include="DLLS\x86\swscale-5.dll" />
     <Content Include="DLLS\xiApi.NET.dll" />
     <None Include="Service References\DeviceImaging\configuration91.svcinfo" />
     <None Include="Service References\DeviceImaging\configuration.svcinfo" />

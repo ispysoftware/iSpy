@@ -204,7 +204,7 @@ namespace iSpyApplication
             }
             
             txtVLCArgs.Text = CameraControl.Camobject.settings.vlcargs.Replace("\r\n","\n").Replace("\n\n","\n").Replace("\n", Environment.NewLine);
-
+            chkUseGPU.Checked = CameraControl.Camobject.settings.useGPU;
             foreach (var cam in MainForm.Cameras)
             {
                 if (cam.id != CameraControl.Camobject.id && cam.settings.sourceindex!=10) //dont allow a clone of a clone as the events get too complicated (and also it's pointless)
@@ -789,12 +789,11 @@ namespace iSpyApplication
                     CameraLogin = onvifWizard1.txtOnvifUsername.Text;
                     CameraPassword = onvifWizard1.txtOnvifPassword.Text;
                     VideoSourceString = url;
-                    //VideoSourceString = url.Replace("://","://"+CameraLogin+":"+CameraPassword+"@");
                     CameraControl.Camobject.settings.onvifident = onvifWizard1.ddlDeviceURL.Text + "|" + onvifWizard1.lbOnvifURLs.SelectedIndex;
                     CameraControl.Camobject.ptz = -5;//onvif
                     CameraControl.Camobject.settings.rtspmode = onvifWizard1.ddlTransport.SelectedIndex;
                     
-                    SetVideoSize(new Size(cfg.Config.Bounds.width, cfg.Config.Bounds.height));
+                    SetVideoSize(new Size(cfg.Config.Resolution.Width, cfg.Config.Resolution.Height));
 
                     if (onvifWizard1.ddlConnectWith.SelectedIndex==1)
                     {
@@ -1689,6 +1688,11 @@ namespace iSpyApplication
         private void numAnalyseDuration_ValueChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void chkUseGPU_CheckedChanged(object sender, EventArgs e)
+        {
+            CameraControl.Camobject.settings.useGPU = chkUseGPU.Checked;
         }
     }
     

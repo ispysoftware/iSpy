@@ -150,6 +150,7 @@
           <xsd:complexType>
             <xsd:attribute name="nVidia" type="xsd:boolean" default="false" />
             <xsd:attribute name="QuickSync" type="xsd:boolean" default="false" />
+            <xsd:attribute name="amd" type="xsd:boolean" default="false" />
           </xsd:complexType>
         </xsd:element>
         <xsd:element name="Logging">

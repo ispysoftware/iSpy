@@ -159,6 +159,8 @@ namespace iSpyApplication
             this.chkTimelapse = new System.Windows.Forms.CheckBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.lblEncoder = new System.Windows.Forms.Label();
             this.label90 = new System.Windows.Forms.Label();
             this.label61 = new System.Windows.Forms.Label();
             this.lblQuality = new System.Windows.Forms.Label();
@@ -1406,12 +1408,11 @@ namespace iSpyApplication
             // 
             this.tableLayoutPanel5.SetColumnSpan(this.ranger1, 4);
             this.ranger1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ranger1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ranger1.Gain = 10F;
             this.ranger1.Location = new System.Drawing.Point(92, 37);
             this.ranger1.Margin = new System.Windows.Forms.Padding(4);
             this.ranger1.Name = "ranger1";
-            this.ranger1.Size = new System.Drawing.Size(567, 73);
+            this.ranger1.Size = new System.Drawing.Size(462, 73);
             this.ranger1.TabIndex = 61;
             this.ranger1.ValueMax = 100D;
             this.ranger1.ValueMin = 0D;
@@ -1810,7 +1811,7 @@ namespace iSpyApplication
             // 
             this.groupBox1.Controls.Add(this.tableLayoutPanel10);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox1.Location = new System.Drawing.Point(6, 322);
+            this.groupBox1.Location = new System.Drawing.Point(6, 355);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(6);
@@ -2045,7 +2046,7 @@ namespace iSpyApplication
             // 
             this.panel2.Controls.Add(this.chkTimelapse);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(6, 283);
+            this.panel2.Location = new System.Drawing.Point(6, 316);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(637, 39);
             this.panel2.TabIndex = 86;
@@ -2071,7 +2072,7 @@ namespace iSpyApplication
             this.groupBox4.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Padding = new System.Windows.Forms.Padding(6);
-            this.groupBox4.Size = new System.Drawing.Size(637, 216);
+            this.groupBox4.Size = new System.Drawing.Size(637, 249);
             this.groupBox4.TabIndex = 83;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Recording Settings";
@@ -2085,6 +2086,8 @@ namespace iSpyApplication
             this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel9.Controls.Add(this.comboBox1, 1, 6);
+            this.tableLayoutPanel9.Controls.Add(this.lblEncoder, 0, 6);
             this.tableLayoutPanel9.Controls.Add(this.label90, 0, 5);
             this.tableLayoutPanel9.Controls.Add(this.label61, 0, 4);
             this.tableLayoutPanel9.Controls.Add(this.lblQuality, 0, 3);
@@ -2109,15 +2112,37 @@ namespace iSpyApplication
             this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel9.Location = new System.Drawing.Point(6, 19);
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
-            this.tableLayoutPanel9.RowCount = 6;
+            this.tableLayoutPanel9.RowCount = 7;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(625, 191);
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(625, 224);
             this.tableLayoutPanel9.TabIndex = 75;
+            // 
+            // comboBox1
+            // 
+            this.tableLayoutPanel9.SetColumnSpan(this.comboBox1, 3);
+            this.comboBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(127, 189);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(308, 21);
+            this.comboBox1.TabIndex = 87;
+            // 
+            // lblEncoder
+            // 
+            this.lblEncoder.AutoSize = true;
+            this.lblEncoder.Location = new System.Drawing.Point(6, 194);
+            this.lblEncoder.Margin = new System.Windows.Forms.Padding(6, 8, 6, 0);
+            this.lblEncoder.Name = "lblEncoder";
+            this.lblEncoder.Size = new System.Drawing.Size(47, 13);
+            this.lblEncoder.TabIndex = 84;
+            this.lblEncoder.Text = "Encoder";
             // 
             // label90
             // 
@@ -4770,5 +4795,7 @@ namespace iSpyApplication
         private System.Windows.Forms.CheckBox chkFill;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel11;
         private System.Windows.Forms.NumericUpDown numProcessInterval;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label lblEncoder;
     }
 }

@@ -1738,14 +1738,15 @@ namespace iSpyApplication.Controls
 
         private void CheckStopPTZTracking()
         {
-            if (Camobject.settings.ptzautotrack && !Calibrating && Camobject.ptz != -1)
+            if (Camobject.settings.ptzautotrack && Camobject.ptz != -1)
             {
                 if (Ptzneedsstop && LastAutoTrackSent < Helper.Now.AddMilliseconds(-1000))
                 {
                     PTZ.SendPTZCommand(Enums.PtzCommand.Stop);
                     Ptzneedsstop = false;
                 }
-                if (Camobject.settings.ptzautohome && LastAutoTrackSent > DateTime.MinValue &&
+
+                if (Camobject.settings.ptzautohome && LastAutoTrackSent > DateTime.MinValue && !Calibrating &&
                     LastAutoTrackSent < Helper.Now.AddSeconds(0 - Camobject.settings.ptzautohomedelay))
                 {
                     LastAutoTrackSent = DateTime.MinValue;
@@ -3166,17 +3167,20 @@ namespace iSpyApplication.Controls
                             
                             if (bAudio)
                             {
-                                _writer = new MediaWriter();
+                                _writer = new MediaWriter
+                                          {
+                                              Gpu = MediaWriter.Encoders.FirstOrDefault(
+                                                  p => p.Name == Camobject.settings.encoder)
+                                          };
                                 _writer.Open(videopath, _videoWidth, _videoHeight, Codec, CodecFramerate,CodecAudio, recordingStart, Helper.CalcCRF(Camobject.recorder.quality));
                             }
                             else
                             {
+                                _writer = new MediaWriter
+                                          {
+                                              Gpu = MediaWriter.Encoders.FirstOrDefault(p => p.Name == Camobject.settings.encoder)
+                                          };
 
-                                //bracket between 15 and 40
-                                //1 = 30, 10=18
-
-                                _writer = new MediaWriter();
-                                         
                                 _writer.Open(videopath, _videoWidth, _videoHeight, Codec, CodecFramerate, AVCodecID.AV_CODEC_ID_NONE, recordingStart, Helper.CalcCRF(Camobject.recorder.quality));
                             }
                                 

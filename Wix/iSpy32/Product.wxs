@@ -239,32 +239,32 @@
       </Component>
     </ComponentGroup>
     <ComponentGroup Id="FFMPEG" Directory="INSTALLFOLDER">
-      <Component Id="Component9" Guid="{18D43303-F6F9-4226-A84E-D9BCB6DB5030}">
-        <File Id="avcodec57.dll" Source="$(var.OutputDir)\avcodec-57.dll" KeyPath="yes" Checksum="yes" />
+      <Component Id="ComponentF9" Guid="{c28d52bc-bdf4-48fe-a686-7ee928df7eed}">
+        <File Id="avcodec58.dll" Source="$(var.OutputDir)\avcodec-58.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Id="Component10" Guid="{920D9C2C-4F53-40C4-89F1-5CF2DBE5A5B8}">
-        <File Id="avdevice57.dll" Source="$(var.OutputDir)\avdevice-57.dll" KeyPath="yes" Checksum="yes" />
+      <Component Id="ComponentF10" Guid="{b478a681-ce9f-4cf8-b342-40c8b2d75ca1}">
+        <File Id="avdevice58.dll" Source="$(var.OutputDir)\avdevice-58.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Id="Component11" Guid="{6B16AD6E-12DE-475C-9736-9A0BA39073D6}">
-        <File Id="avfilter6.dll" Source="$(var.OutputDir)\avfilter-6.dll" KeyPath="yes" Checksum="yes" />
+      <Component Id="ComponentF11" Guid="{360cd2fe-2470-4ee9-98a3-a98997a70284}">
+        <File Id="avfilter7.dll" Source="$(var.OutputDir)\avfilter-7.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Id="Component12" Guid="{19AD3C2B-5303-42CC-A657-EE843A85A472}">
-        <File Id="avformat57.dll" Source="$(var.OutputDir)\avformat-57.dll" KeyPath="yes" Checksum="yes" />
+      <Component Id="ComponentF12" Guid="{a359b2e1-cc59-4e3c-acad-90f2d04a0b3a}">
+        <File Id="avformat58.dll" Source="$(var.OutputDir)\avformat-58.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Id="Component13" Guid="{DCA89F21-D790-428C-832D-C3D4914739A8}">
-        <File Id="avutil55.dll" Source="$(var.OutputDir)\avutil-55.dll" KeyPath="yes" Checksum="yes" />
+      <Component Id="ComponentF13" Guid="{3ad96c55-08c0-4e8a-9571-81df42337b9f}">
+        <File Id="avutil56.dll" Source="$(var.OutputDir)\avutil-56.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Id="Component15" Guid="{30C799E8-EB65-4F9A-9333-554745F39F56}">
+      <Component Id="ComponentF15" Guid="{8f0fa2b7-e09f-4be8-a55a-01142a0ebc32}">
         <File Id="ffmpeg.exe" Source="$(var.OutputDir)\ffmpeg.exe" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Id="Component72" Guid="{1DDD9335-862A-4395-AE01-4E10288B9AC9}">
-        <File Id="postproc54.dll" Source="$(var.OutputDir)\postproc-54.dll" KeyPath="yes" Checksum="yes" />
+      <Component Id="ComponentF72" Guid="{fd655c6c-c123-4ffc-9a97-c5bc33be4967}">
+        <File Id="postproc55.dll" Source="$(var.OutputDir)\postproc-55.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Id="Component81" Guid="{44B7CDF3-8D34-40FE-9A59-C7A268CA6B08}">
-        <File Id="swresample2.dll" Source="$(var.OutputDir)\swresample-2.dll" KeyPath="yes" Checksum="yes" />
+      <Component Id="ComponentF81" Guid="{17fa2399-e4f2-4342-ad66-134ea986c702}">
+        <File Id="swresample3.dll" Source="$(var.OutputDir)\swresample-3.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Id="Component82" Guid="{C23B1DE6-7CF6-4EC8-B4B2-9C64D1F33E7C}">
-        <File Id="swscale4.dll" Source="$(var.OutputDir)\swscale-4.dll" KeyPath="yes" Checksum="yes" />
+      <Component Id="ComponentF82" Guid="{a16f5f5e-c70e-43e3-84e7-e9f3a34536f3}">
+        <File Id="swscale5.dll" Source="$(var.OutputDir)\swscale-5.dll" KeyPath="yes" Checksum="yes" />
       </Component>
     </ComponentGroup>
     <ComponentGroup Id="XML" Directory="XML">

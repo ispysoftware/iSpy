@@ -162,6 +162,7 @@ namespace iSpyApplication
             this.button7 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.chkUseGPU = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numBorderTimeout)).BeginInit();
             this.tcSource.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -590,6 +591,7 @@ namespace iSpyApplication
             this.tableLayoutPanel3.Controls.Add(this.btnTest, 1, 6);
             this.tableLayoutPanel3.Controls.Add(this.label8, 0, 5);
             this.tableLayoutPanel3.Controls.Add(this.ddlRTSP, 1, 5);
+            this.tableLayoutPanel3.Controls.Add(this.chkUseGPU, 2, 5);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(6, 6);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -1718,6 +1720,17 @@ namespace iSpyApplication
             this.panel2.Size = new System.Drawing.Size(733, 35);
             this.panel2.TabIndex = 61;
             // 
+            // chkUseGPU
+            // 
+            this.chkUseGPU.AutoSize = true;
+            this.chkUseGPU.Location = new System.Drawing.Point(193, 108);
+            this.chkUseGPU.Name = "chkUseGPU";
+            this.chkUseGPU.Size = new System.Drawing.Size(71, 17);
+            this.chkUseGPU.TabIndex = 94;
+            this.chkUseGPU.Text = "Use GPU";
+            this.chkUseGPU.UseVisualStyleBackColor = true;
+            this.chkUseGPU.CheckedChanged += new System.EventHandler(this.chkUseGPU_CheckedChanged);
+            // 
             // VideoSource
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1930,5 +1943,6 @@ namespace iSpyApplication
         private System.Windows.Forms.RadioButton rdoCaptureVideo;
         private System.Windows.Forms.RadioButton rdoCaptureSnapshots;
         private ONVIFWizard onvifWizard1;
+        private System.Windows.Forms.CheckBox chkUseGPU;
     }
 }

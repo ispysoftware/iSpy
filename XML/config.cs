@@ -1928,9 +1928,12 @@ public partial class configurationGPU {
     
     private bool quickSyncField;
     
+    private bool amdField;
+    
     public configurationGPU() {
         this.nVidiaField = false;
         this.quickSyncField = false;
+        this.amdField = false;
     }
     
     /// <remarks/>
@@ -1954,6 +1957,18 @@ public partial class configurationGPU {
         }
         set {
             this.quickSyncField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute(false)]
+    public bool amd {
+        get {
+            return this.amdField;
+        }
+        set {
+            this.amdField = value;
         }
     }
 }

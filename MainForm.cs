@@ -897,10 +897,6 @@ namespace iSpyApplication
             try
             {
                 ffmpeg.avdevice_register_all();
-                ffmpeg.avcodec_register_all();
-                ffmpeg.avfilter_register_all();
-                ffmpeg.avformat_network_init();
-                ffmpeg.av_register_all();
                 Program.SetFfmpegLogging();
             }
             catch (Exception ex)

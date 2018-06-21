@@ -182,6 +182,8 @@
                                                 <xs:attribute name="resizeHeight" type="xs:int" default="-1"/>
                                                 <xs:attribute name="vlcWidth" type="xs:int" default="-1"/>
                                                 <xs:attribute name="vlcHeight" type="xs:int" default="-1"/>
+                                                <xs:attribute name="useGPU" type="xs:boolean" default="false"/>
+                                                <xs:attribute name="encoder" type="xs:string" default="software"/>
                                             </xs:complexType>
                                         </xs:element>
                                         <xs:element name="ftp">

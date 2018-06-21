@@ -13,6 +13,7 @@ using iSpyApplication.Cloud;
 using iSpyApplication.Controls;
 using iSpyApplication.Kinect;
 using iSpyApplication.Pelco;
+using iSpyApplication.Realtime;
 using iSpyApplication.Sources;
 using iSpyApplication.Sources.Audio;
 using iSpyApplication.Sources.Video;
@@ -465,6 +466,12 @@ namespace iSpyApplication
             chkFTPRecordingsEnabled.Checked = CameraControl.Camobject.recorder.ftpenabled;
             txtFTPRecordingFilename.Text = CameraControl.Camobject.recorder.ftpfilename;
             numFTPRecordingCounterMax.Value = CameraControl.Camobject.recorder.ftpcountermax;
+
+            comboBox1.Items.Add("software");
+            foreach (var gpu in MediaWriter.Encoders)
+                comboBox1.Items.Add(gpu.Name);
+            comboBox1.SelectedItem = CameraControl.Camobject.settings.encoder;
+
             _loaded = true;
         }
 
@@ -1271,6 +1278,7 @@ namespace iSpyApplication
             CameraControl.Camobject.settings.cloudprovider.recordings = chkUploadRecordings.Checked;
             CameraControl.Camobject.settings.cloudprovider.path = txtCloudPath.Text;
             CameraControl.Camobject.settings.messaging = chkMessaging.Checked;
+            CameraControl.Camobject.settings.encoder = comboBox1.SelectedItem.ToString();
 
             MainForm.NeedsSync = true;
             IsNew = false;
