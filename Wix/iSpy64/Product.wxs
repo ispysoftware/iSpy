@@ -244,32 +244,32 @@
       </Component>
     </ComponentGroup>
     <ComponentGroup Id="FFMPEG" Directory="INSTALLFOLDER">
-      <Component Win64="yes" Id="Component9" Guid="{18D43303-F6F9-4226-A84E-D9BCB6DB5030}">
-        <File Id="avcodec57.dll" Source="$(var.OutputDir)\avcodec-57.dll" KeyPath="yes" Checksum="yes" />
+      <Component Win64="yes" Id="ComponentF9" Guid="{d539aedd-fad8-421a-ab16-6f3fa73d4e51}">
+        <File Id="avcodec58.dll" Source="$(var.OutputDir)\avcodec-58.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Win64="yes" Id="Component10" Guid="{920D9C2C-4F53-40C4-89F1-5CF2DBE5A5B8}">
-        <File Id="avdevice57.dll" Source="$(var.OutputDir)\avdevice-57.dll" KeyPath="yes" Checksum="yes" />
+      <Component Win64="yes" Id="ComponentF10" Guid="{0333db2f-0995-48e5-b4b4-a49bfce1e81e}">
+        <File Id="avdevice58.dll" Source="$(var.OutputDir)\avdevice-58.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Win64="yes" Id="Component11" Guid="{6B16AD6E-12DE-475C-9736-9A0BA39073D6}">
-        <File Id="avfilter6.dll" Source="$(var.OutputDir)\avfilter-6.dll" KeyPath="yes" Checksum="yes" />
+      <Component Win64="yes" Id="ComponentF11" Guid="{c1551352-4d52-4d35-aca8-3ca17078fc08}">
+        <File Id="avfilter7.dll" Source="$(var.OutputDir)\avfilter-7.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Win64="yes" Id="Component12" Guid="{19AD3C2B-5303-42CC-A657-EE843A85A472}">
-        <File Id="avformat57.dll" Source="$(var.OutputDir)\avformat-57.dll" KeyPath="yes" Checksum="yes" />
+      <Component Win64="yes" Id="ComponentF12" Guid="{6be6482d-af43-4db4-9d04-e09ee6861284}">
+        <File Id="avformat58.dll" Source="$(var.OutputDir)\avformat-58.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Win64="yes" Id="Component13" Guid="{DCA89F21-D790-428C-832D-C3D4914739A8}">
-        <File Id="avutil55.dll" Source="$(var.OutputDir)\avutil-55.dll" KeyPath="yes" Checksum="yes" />
+      <Component Win64="yes" Id="ComponentF13" Guid="{efc1c63d-a379-4db4-8508-216af2de10b6}">
+        <File Id="avutil56.dll" Source="$(var.OutputDir)\avutil-56.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Win64="yes" Id="Component15" Guid="{30C799E8-EB65-4F9A-9333-554745F39F56}">
+      <Component Win64="yes" Id="ComponentF15" Guid="{3ab9b0d7-cbc5-49ef-9b65-46a91b8ad4d6}">
         <File Id="ffmpeg.exe" Source="$(var.OutputDir)\ffmpeg.exe" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Win64="yes" Id="Component72" Guid="{1DDD9335-862A-4395-AE01-4E10288B9AC9}">
-        <File Id="postproc54.dll" Source="$(var.OutputDir)\postproc-54.dll" KeyPath="yes" Checksum="yes" />
+      <Component Win64="yes" Id="ComponentF72" Guid="{ed73239a-0b67-49ab-99eb-11849d0f6a1f}">
+        <File Id="postproc55.dll" Source="$(var.OutputDir)\postproc-55.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Win64="yes" Id="Component81" Guid="{44B7CDF3-8D34-40FE-9A59-C7A268CA6B08}">
-        <File Id="swresample2.dll" Source="$(var.OutputDir)\swresample-2.dll" KeyPath="yes" Checksum="yes" />
+      <Component Win64="yes" Id="ComponentF81" Guid="{327d6b2f-f6d9-402a-a7f0-9fd58c037ee1}">
+        <File Id="swresample3.dll" Source="$(var.OutputDir)\swresample-3.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Win64="yes" Id="Component82" Guid="{C23B1DE6-7CF6-4EC8-B4B2-9C64D1F33E7C}">
-        <File Id="swscale4.dll" Source="$(var.OutputDir)\swscale-4.dll" KeyPath="yes" Checksum="yes" />
+      <Component Win64="yes" Id="ComponentF82" Guid="{a0255309-84dd-4e6f-9690-26af8fb94594}">
+        <File Id="swscale5.dll" Source="$(var.OutputDir)\swscale-5.dll" KeyPath="yes" Checksum="yes" />
       </Component>
     </ComponentGroup>
     <ComponentGroup Id="XML" Directory="XML">

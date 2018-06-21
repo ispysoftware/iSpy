@@ -518,7 +518,7 @@
     <Compile Include="Sources\Audio\talk\TalkFoscam.cs" />
     <Compile Include="Sources\Audio\talk\WaveFormatConverter.cs" />
     <Compile Include="Sources\Video\FFmpegBase.cs" />
-    <Compile Include="Sources\Video\MediaStream-gpu.cs" />
+    <Compile Include="Sources\Video\MediaStream.cs" />
     <Compile Include="Sources\Video\Tokeniser.cs" />
     <Compile Include="Sources\Video\VideoBase.cs" />
     <Compile Include="TagConfigure.cs">
