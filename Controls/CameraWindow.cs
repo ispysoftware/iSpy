@@ -2950,7 +2950,7 @@ namespace iSpyApplication.Controls
                         if (fa.TimeStamp < dt)
                         {
                             if (Buffer.TryDequeue(out fa))
-                                fa.Nullify();
+                                fa.Dispose();
                         }
                         else
                         {
@@ -2961,13 +2961,17 @@ namespace iSpyApplication.Controls
 
                 
                 
-                if (Camobject.recorder.bufferseconds > 0)
-                    EnqueueAsync.BeginInvoke(Buffer, new Bitmap(e.Frame), Camera.MotionLevel, Helper.Now, null,null);
-                else
-                {
-                    if (Recording)
-                        EnqueueAsync.BeginInvoke(Buffer, new Bitmap(e.Frame), Camera.MotionLevel, Helper.Now, null,null);
-                }
+                if (Camobject.recorder.bufferseconds > 0 || Recording)
+                    Buffer.Enqueue(new Helper.FrameAction(e.Frame, Camera.MotionLevel, Helper.Now));
+                //EnqueueAsync.BeginInvoke(Buffer, new Bitmap(e.Frame), Camera.MotionLevel, Helper.Now, null,null);
+                //else
+                //{
+                //    if (Recording)
+                //    {
+                //        Buffer.Enqueue(new Helper.FrameAction(e.Frame, Camera.MotionLevel, Helper.Now));
+                //    }
+                //        //EnqueueAsync.BeginInvoke(Buffer, new Bitmap(e.Frame), Camera.MotionLevel, Helper.Now, null,null);
+                //}
 
 
 
@@ -3398,23 +3402,15 @@ namespace iSpyApplication.Controls
             switch (fa.FrameType)
             {
                 case Enums.FrameType.Video:
-                    using (var ms = new MemoryStream(fa.Content))
+                    _writer.WriteFrame(ResizeBitmap(fa.Frame), fa.TimeStamp);
+                    if (fa.Level > maxAlarm || peakFrame == null)
                     {
-                        using (var bmp = (Bitmap) Image.FromStream(ms))
-                        {
-                            _writer.WriteFrame(ResizeBitmap(bmp), fa.TimeStamp);
-                        }
-
-                        if (fa.Level > maxAlarm || peakFrame == null)
-                        {
-                            maxAlarm = fa.Level;
-                            peakFrame = fa;
-                        }
-
-                        _motionData.Append(string.Format(CultureInfo.InvariantCulture, "{0:0.000}", Math.Min(fa.Level * 100, 100)));                     
-                        _motionData.Append(",");
-                        ms.Close();
+                        maxAlarm = fa.Level;
+                        peakFrame = fa;
                     }
+
+                    _motionData.Append(string.Format(CultureInfo.InvariantCulture, "{0:0.000}", Math.Min(fa.Level * 100, 100)));
+                    _motionData.Append(",");
                     break;
                 case Enums.FrameType.Audio:
                 {
@@ -3423,7 +3419,7 @@ namespace iSpyApplication.Controls
 
                     break;
             }
-            fa.Nullify();
+            fa.Dispose();
         }
 
         
@@ -4223,7 +4219,7 @@ namespace iSpyApplication.Controls
                 Helper.FrameAction fa;
                 while (Buffer.TryDequeue(out fa))
                 {
-                    fa.Nullify();
+                    fa.Dispose();
                 }
             }
             

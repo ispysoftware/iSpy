@@ -80,19 +80,19 @@ namespace iSpyApplication
         }
         public static Size CalcResizeSize(bool resize, Size nativeSize, Size resizeSize)
         {
-            if (!resize)
-                return MakeEven(new Size(nativeSize.Width, nativeSize.Height));
+            var es = MakeEven(new Size(nativeSize.Width, nativeSize.Height));
+
+            if (!resize || (resizeSize.Width < 1 && resizeSize.Height < 1))
+                return es;
+            
 
             int w = nativeSize.Width;
             if (resizeSize.Width > 0)
-                w = Math.Min(w, resizeSize.Width);
+                w = resizeSize.Width;
 
             int h = nativeSize.Height;
             if (resizeSize.Height > 0)
-                h = Math.Min(h, resizeSize.Height);
-
-            if (resizeSize.Width < 1 && resizeSize.Height < 1)
-                return MakeEven(new Size(w, h));
+                h = resizeSize.Height;
 
             var ar = Convert.ToDouble(nativeSize.Width) / Convert.ToDouble(nativeSize.Height);
 
@@ -1105,18 +1105,22 @@ namespace iSpyApplication
             public readonly double Level;
             public readonly DateTime TimeStamp;
             public readonly Enums.FrameType FrameType;
+            public Bitmap Frame;
 
             public FrameAction(Bitmap frame, double level, DateTime timeStamp)
             {
                 Level = level;
                 TimeStamp = timeStamp;
-                using (var ms = new MemoryStream())
-                {
-                    frame.Save(ms, MainForm.Encoder, MainForm.EncoderParams);
-                    Content = ms.GetBuffer();
-                }
+                //using (var ms = new MemoryStream())
+                //{
+                //    frame.Save(ms, MainForm.Encoder, MainForm.EncoderParams);
+                //    Content = ms.GetBuffer();
+                //}
                 FrameType = Enums.FrameType.Video;
-                DataLength = Content.Length;
+                //DataLength = Content.Length;
+                Frame = frame;
+                DataLength = 0;
+                Content = null;
             }
 
             public FrameAction(byte[] frame,  int bytesRecorded, double level, DateTime timeStamp)
@@ -1126,12 +1130,18 @@ namespace iSpyApplication
                 TimeStamp = timeStamp;
                 FrameType = Enums.FrameType.Audio;
                 DataLength = bytesRecorded;
+                Frame = null;
             }
 
-            public void Nullify()
+            public void Dispose()
             {
                 Content = null;
                 DataLength = 0;
+                if (Frame != null)
+                {
+                    Frame.Dispose();
+                    Frame = null;
+                }
             }
 
         }

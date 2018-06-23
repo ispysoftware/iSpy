@@ -27,8 +27,6 @@ namespace iSpyApplication.Realtime
         private AVFrame* _audioFrame, _videoFrame;
 
         private AVIOInterruptCB_callback_func _aviocb;
-        private AVPixelFormat _avPixelFormat = AVPixelFormat.AV_PIX_FMT_YUV420P;
-
         private bool _closing;
         private GCHandle _convHandle;
         private AVFormatContext* _formatContext;
@@ -381,9 +379,9 @@ namespace iSpyApplication.Realtime
             }
 
             var bitmapData = frame.LockBits(new Rectangle(0, 0, _width, _height), ImageLockMode.ReadOnly,
-                frame.PixelFormat == PixelFormat.Format8bppIndexed
-                    ? PixelFormat.Format8bppIndexed
-                    : PixelFormat.Format24bppRgb);
+            frame.PixelFormat == PixelFormat.Format8bppIndexed
+                ? PixelFormat.Format8bppIndexed
+                : PixelFormat.Format24bppRgb);
 
             byte*[] srcData = {(byte*) bitmapData.Scan0};
             int[] srcLinesize = {bitmapData.Stride};
@@ -397,9 +395,9 @@ namespace iSpyApplication.Realtime
                     pfmt = AVPixelFormat.AV_PIX_FMT_GRAY8;
                 }
 
-                _pConvertContext = ffmpeg.sws_getCachedContext(_pConvertContext, _videoCodecContext->width,
-                    _videoCodecContext->height, pfmt, _videoCodecContext->width, _videoCodecContext->height,
-                    _videoCodecContext->pix_fmt, ffmpeg.SWS_FAST_BILINEAR, null, null, null);
+                int w = _videoCodecContext->width;
+                int h = _videoCodecContext->height;
+                _pConvertContext = ffmpeg.sws_getContext(w, h, pfmt, w, h,_videoCodecContext->pix_fmt, ffmpeg.SWS_FAST_BILINEAR, null, null, null);
             }
 
 
@@ -647,8 +645,6 @@ namespace iSpyApplication.Realtime
             if (Gpu != null)
             {
                 _videoCodec = ffmpeg.avcodec_find_encoder_by_name(Gpu.Codec);
-                _avPixelFormat = AVPixelFormat.AV_PIX_FMT_NV12;
-
                 if (_videoCodec != null)
                 {
                     if (TryOpenVideoCodec(baseCodec, Gpu))
@@ -671,7 +667,6 @@ namespace iSpyApplication.Realtime
 
             
             _videoCodec = ffmpeg.avcodec_find_encoder(baseCodec);
-            _avPixelFormat = AVPixelFormat.AV_PIX_FMT_YUV420P;
 
             if (TryOpenVideoCodec(baseCodec, null))
             {
@@ -708,11 +703,9 @@ namespace iSpyApplication.Realtime
                         break;
                 }
             }
-
-            _videoCodecContext->pix_fmt = _avPixelFormat;
-
+            
             //ffmpeg.av_opt_set(_videoCodecContext->priv_data, "tune", "zerolatency", 0);
-
+            _videoCodecContext->pix_fmt = AVPixelFormat.AV_PIX_FMT_YUV420P;
             switch (_videoCodecContext->codec_id)
             {
                 case AVCodecID.AV_CODEC_ID_MPEG1VIDEO:
@@ -729,29 +722,21 @@ namespace iSpyApplication.Realtime
                     if (gpu != null)
                     {
                         ffmpeg.av_opt_set_int(_videoCodecContext->priv_data, "hwaccel_device", GpuIndex, ffmpeg.AV_OPT_SEARCH_CHILDREN);
-                        if (gpu.Name == "amd")
+                        ffmpeg.av_opt_set(_videoCodecContext->priv_data, "preset", "fast", ffmpeg.AV_OPT_SEARCH_CHILDREN);
+                        _videoCodecContext->bit_rate = 100000000;
+                        switch (gpu.Name)
                         {
-                            //amf doesn't support "baseline" only "constrained_baseline";
-                            ffmpeg.av_opt_set(_videoCodecContext->priv_data, "profile", "constrained_baseline", ffmpeg.AV_OPT_SEARCH_CHILDREN);
-                            ffmpeg.av_opt_set(_videoCodecContext->priv_data, "preset", "fast", ffmpeg.AV_OPT_SEARCH_CHILDREN);
-                            ffmpeg.av_opt_set_int(_videoCodecContext->priv_data, "crf", _crf, ffmpeg.AV_OPT_SEARCH_CHILDREN);
-
-                            // https://github.com/GPUOpen-LibrariesAndSDKs/AMF/blob/master/amf/doc/AMF_Video_Encode_API.pdf
-                            // https://stackoverflow.com/questions/45181730/ffmpeg-encode-x264-with-amd-gpu-on-windows
-
-                            _videoCodecContext->bit_rate = 100000000;
-                            _videoCodecContext->rc_max_rate = 100000000;
-                            _videoCodecContext->rc_min_rate = 50000000;
-                            _videoCodecContext->qmin = 18;
-                            _videoCodecContext->qmax = 46;
-                            _videoCodecContext->max_qdiff = 4;
-                        }
-                        else
-                        {
-
-                            //only fast and slow available
-                            ffmpeg.av_opt_set(_videoCodecContext->priv_data, "preset", "fast", ffmpeg.AV_OPT_SEARCH_CHILDREN);
-                            _videoCodecContext->bit_rate = 10000000;
+                            case "amd":
+                                ffmpeg.av_opt_set_int(_videoCodecContext->priv_data, "crf", _crf, ffmpeg.AV_OPT_SEARCH_CHILDREN);
+                                _videoCodecContext->rc_max_rate = 100000000;
+                                _videoCodecContext->rc_min_rate = 50000000;
+                                _videoCodecContext->qmin = 18;
+                                _videoCodecContext->qmax = 46;
+                                _videoCodecContext->max_qdiff = 4;
+                                break;
+                            case "qsv":
+                                _videoCodecContext->pix_fmt = AVPixelFormat.AV_PIX_FMT_NV12;
+                                break;
                         }
                     }
                     else
@@ -773,6 +758,8 @@ namespace iSpyApplication.Realtime
                     //_videoCodecContext->bit_rate = _bitRate;
                     break;
             }
+
+            
 
             if ((_formatContext->oformat->flags & ffmpeg.AVFMT_GLOBALHEADER) == ffmpeg.AVFMT_GLOBALHEADER)
             {

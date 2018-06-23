@@ -4948,6 +4948,7 @@
   <Camera id="187">
     <Makes>
       <Make Name="Foscam" Model="FI9821W" />
+      <Make Name="Foscam" Model="FI9831P" />
     </Makes>
     <CommandURL>/cgi-bin/CGIProxy.fcgi?usr=[USERNAME]&amp;pwd=[PASSWORD]</CommandURL>
     <Commands>

@@ -905,49 +905,11 @@ namespace iSpyApplication.Controls
             _pluginTrigger = true;
         }
 
-        private int ResizeWidth(Size originalSize)
-        {
-            var w = originalSize.Width;
-
-            if (CW.Camobject.settings.resizeWidth > 0)
-                w = CW.Camobject.settings.resizeWidth;
-            else
-            {
-                if (CW.Camobject.settings.resizeHeight > 0)
-                {
-                    var ar = Convert.ToDouble(originalSize.Width)/Convert.ToDouble(originalSize.Height);
-                    w = Convert.ToInt32(CW.Camobject.settings.resizeHeight * ar);
-                }
-            }
-            return w%2 == 0 ? w : w + 1;
-        }
-
-        private int ResizeHeight(Size originalSize)
-        {
-            var h = originalSize.Height;
-
-            if (CW.Camobject.settings.resizeHeight > 0)
-                h = CW.Camobject.settings.resizeHeight;
-            else
-            {
-                if (CW.Camobject.settings.resizeWidth > 0)
-                {
-                    var ar = Convert.ToDouble(originalSize.Width)/Convert.ToDouble(originalSize.Height);
-                    h = Convert.ToInt32(CW.Camobject.settings.resizeWidth / ar);
-                }
-            }
-
-            return h%2==0?h:h+1;
-        }
-
-        private Size ResizeSize(Size originalSize)
-        {
-            return new Size(ResizeWidth(originalSize),ResizeHeight(originalSize));
-        }
-
+        
         private Bitmap ResizeBmOrig(Bitmap f)
         {
-            var sz = ResizeSize(f.Size);
+            var sz = Helper.CalcResizeSize(CW.Camobject.settings.resize, f.Size,
+                new Size(CW.Camobject.settings.resizeWidth, CW.Camobject.settings.resizeHeight));
             if (CW.Camobject.settings.resize && f.Size!=sz)
             {
 

@@ -1684,7 +1684,7 @@ namespace iSpyApplication.Controls
                                     }
                                     finally
                                     {
-                                        fa.Nullify();
+                                        fa.Dispose();
                                     }
                                 }
                                 else
@@ -1824,7 +1824,7 @@ namespace iSpyApplication.Controls
                 Helper.FrameAction fa;
                 while (Buffer.TryDequeue(out fa))
                 {
-                    fa.Nullify();
+                    fa.Dispose();
                 }
                 Buffer = new ConcurrentQueue<Helper.FrameAction>();
             }
@@ -2249,7 +2249,7 @@ namespace iSpyApplication.Controls
                                 if (fa.TimeStamp < dt)
                                 {
                                     if (Buffer.TryDequeue(out fa))
-                                        fa.Nullify();
+                                        fa.Dispose();
                                 }
                                 else
                                 {
