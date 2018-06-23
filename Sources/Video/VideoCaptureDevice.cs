@@ -85,6 +85,7 @@ namespace iSpyApplication.Sources.Video
 
         // flag specifying if IAMCrossbar interface is supported by the running graph/source object
         private bool? _isCrossbarAvailable;
+        private DateTime _lastFrame;
 
         private VideoInput[] _crossbarVideoInputs;
         private VideoInput _crossbarVideoInput = VideoInput.Default;
@@ -1332,6 +1333,7 @@ namespace iSpyApplication.Sources.Video
                         videoControl.SetMode(pinStillImage, VideoControlFlags.ExternalTriggerEnable);
                     }
 
+                    _lastFrame = DateTime.UtcNow;
                     do
                     {
                         if (mediaEvent != null)
@@ -1392,6 +1394,12 @@ namespace iSpyApplication.Sources.Video
                                 DisplayPropertyPage(_parentWindowForPropertyPage, crossbar);
                                 _crossbarVideoInput = GetCurrentCrossbarInput(crossbar);
                             }
+                        }
+
+                        if (_lastFrame < DateTime.UtcNow.AddSeconds(-10))
+                        {
+                            _res = ReasonToFinishPlaying.DeviceLost;
+                            _abort?.Set();
                         }
                     }
                     while (!_abort.WaitOne(20, false) && !MainForm.ShuttingDown);
@@ -1730,6 +1738,7 @@ namespace iSpyApplication.Sources.Video
             }
             
             var dae = new NewFrameEventArgs(bmp);
+            _lastFrame = DateTime.UtcNow;
             nf.Invoke(this, dae);
             bmp.Dispose();
 
@@ -1750,7 +1759,10 @@ namespace iSpyApplication.Sources.Video
             {
                 var sf = SnapshotFrame;
                 if (sf != null && !_abort.WaitOne(0) && !MainForm.ShuttingDown)
+                {
                     sf(this, new NewFrameEventArgs(image));
+                    _lastFrame = DateTime.UtcNow;
+                }
             }
         }
 
