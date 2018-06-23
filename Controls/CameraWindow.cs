@@ -3199,7 +3199,7 @@ namespace iSpyApplication.Controls
 
                             DoAlert("recordingstarted", linktofile);
                            
-                            Helper.FrameAction? peakFrame = null;
+                            Helper.FrameAction peakFrame = null;
 
                             while (!_stopWrite.WaitOne(5))
                             {
@@ -3220,36 +3220,34 @@ namespace iSpyApplication.Controls
                             if (!Directory.Exists(folder + @"thumbs\"))
                                 Directory.CreateDirectory(folder + @"thumbs\");
 
-                            if (peakFrame != null && peakFrame.Value.Content != null)
+                            var bmp = peakFrame?.Frame;
+                            if (bmp != null)
                             {
                                 try
                                 {
-                                    using (var ms = new MemoryStream(peakFrame.Value.Content))
+                                    bmp.Save(folder + @"thumbs\" + VideoFileName + "_large.jpg",
+                                        MainForm.Encoder,
+                                        MainForm.EncoderParams);
+                                    Image.GetThumbnailImageAbort myCallback = ThumbnailCallback;
+                                    using (
+                                        var myThumbnail = bmp.GetThumbnailImage(96, 72, myCallback, IntPtr.Zero)
+                                        )
                                     {
-                                        using (var bmp = (Bitmap) Image.FromStream(ms))
-                                        {
-                                            bmp.Save(folder + @"thumbs\" + VideoFileName + "_large.jpg",
-                                                MainForm.Encoder,
-                                                MainForm.EncoderParams);
-                                            Image.GetThumbnailImageAbort myCallback = ThumbnailCallback;
-                                            using (
-                                                var myThumbnail = bmp.GetThumbnailImage(96, 72, myCallback, IntPtr.Zero)
-                                                )
-                                            {
-                                                myThumbnail.Save(folder + @"thumbs\" + VideoFileName + ".jpg",
-                                                    MainForm.Encoder,
-                                                    MainForm.EncoderParams);
-                                            }
-                                        }
-                                        previewImage = folder + @"thumbs\" + VideoFileName + ".jpg";
-                                        ms.Close();
+                                        myThumbnail.Save(folder + @"thumbs\" + VideoFileName + ".jpg",
+                                            MainForm.Encoder,
+                                            MainForm.EncoderParams);
                                     }
+                               
+                                    previewImage = folder + @"thumbs\" + VideoFileName + ".jpg";
+                                    
+
                                 }
                                 catch (Exception ex)
                                 {
                                     ErrorHandler?.Invoke(ex.Message + ": " + ex.StackTrace);
                                 }
                             }
+                            peakFrame?.Dispose();
                         }
                         catch (Exception ex)
                         {
@@ -3397,8 +3395,9 @@ namespace iSpyApplication.Controls
 
 
         [HandleProcessCorruptedStateExceptions]
-        private void WriteFrame(Helper.FrameAction fa, ref double maxAlarm, ref Helper.FrameAction? peakFrame)
+        private void WriteFrame(Helper.FrameAction fa, ref double maxAlarm, ref Helper.FrameAction peakFrame)
         {
+            bool keepFrame = false;
             switch (fa.FrameType)
             {
                 case Enums.FrameType.Video:
@@ -3406,7 +3405,9 @@ namespace iSpyApplication.Controls
                     if (fa.Level > maxAlarm || peakFrame == null)
                     {
                         maxAlarm = fa.Level;
+                        peakFrame?.Dispose();
                         peakFrame = fa;
+                        keepFrame = true;
                     }
 
                     _motionData.Append(string.Format(CultureInfo.InvariantCulture, "{0:0.000}", Math.Min(fa.Level * 100, 100)));
@@ -3419,7 +3420,8 @@ namespace iSpyApplication.Controls
 
                     break;
             }
-            fa.Dispose();
+            if (!keepFrame)
+                fa.Dispose();
         }
 
         

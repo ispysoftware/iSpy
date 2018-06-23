@@ -1098,7 +1098,7 @@ namespace iSpyApplication
 
         #region Nested type: FrameAction
 
-        public struct FrameAction
+        public class FrameAction
         {
             public byte[] Content;
             public int DataLength;
