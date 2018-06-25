@@ -734,7 +734,7 @@ namespace iSpyApplication.Realtime
                                 _videoCodecContext->qmax = 46;
                                 _videoCodecContext->max_qdiff = 4;
                                 break;
-                            case "qsv":
+                            case "quicksync":
                                 _videoCodecContext->pix_fmt = AVPixelFormat.AV_PIX_FMT_NV12;
                                 break;
                         }
