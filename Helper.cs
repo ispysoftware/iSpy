@@ -1111,14 +1111,8 @@ namespace iSpyApplication
             {
                 Level = level;
                 TimeStamp = timeStamp;
-                //using (var ms = new MemoryStream())
-                //{
-                //    frame.Save(ms, MainForm.Encoder, MainForm.EncoderParams);
-                //    Content = ms.GetBuffer();
-                //}
                 FrameType = Enums.FrameType.Video;
-                //DataLength = Content.Length;
-                Frame = frame;
+                Frame = new Bitmap(frame);
                 DataLength = 0;
                 Content = null;
             }

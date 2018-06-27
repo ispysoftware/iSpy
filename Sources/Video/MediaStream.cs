@@ -281,7 +281,7 @@ namespace iSpyApplication.Sources.Video
                         {
                             ffmpeg.av_dict_set(&options, "rtsp_transport", _modeRTSP, 0);
                         }
-                        //ffmpeg.av_dict_set(&options, "rtsp_flags", "prefer_tcp", 0);
+                        ffmpeg.av_dict_set(&options, "rtsp_flags", "prefer_tcp", 0);
                         break;
                     default:
                         ffmpeg.av_dict_set_int(&options, "timeout", _timeoutMicroSeconds, 0);
