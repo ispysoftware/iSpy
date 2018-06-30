@@ -544,16 +544,14 @@ namespace iSpyApplication.Server
                         try
                         {
                             var dev = new ONVIFDevice(url, un, pwd);
-                            int i = 0;
-
-                            foreach (var p in dev.Profiles)
+                            for (int i = 0; i < dev.Profiles.Length; i++)
                             {
-                                var b = p?.VideoEncoderConfiguration?.Resolution;
-                                if (b != null && b.Width > 0)
+                                dev.SelectProfile(i);
+                                var ep = dev.Endpoint;
+                                if (ep != null && ep.Width > 0)
                                 {
-                                    resp += string.Format(template, b.Width + "x" + b.Height, i);
+                                    resp += string.Format(template, dev.Profile.Name + " (" + ep.Width + "x" + ep.Height + ")", i);
                                 }
-                                i++;
                             }
                         }
                         catch (Exception ex)

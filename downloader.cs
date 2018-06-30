@@ -76,7 +76,7 @@ namespace iSpyApplication
                             var ms = new MemoryStream(byteBuffer);
                             var doc = new XmlDocument();
                             try
-                            {
+                            {                               
                                 doc.Load(ms);
                                 doc.Save(SaveLocation);
                                 success = true;

@@ -656,10 +656,10 @@ namespace iSpyApplication.Realtime
                     switch (Gpu.Name)
                     {
                         case "quicksync":
-                            Logger.LogError("Install Intel Media Server Studio to use QSV encoder");
+                            Logger.LogMessage("Install Intel Media Server Studio to use QSV encoder");
                             break;
                         default:
-                            Logger.LogError("Update graphics driver to use " + Gpu.Name + " encoder");
+                            Logger.LogMessage("Update graphics driver to use " + Gpu.Name + " encoder");
                             break;
                     }
                 }

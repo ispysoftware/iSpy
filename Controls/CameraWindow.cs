@@ -114,7 +114,6 @@ namespace iSpyApplication.Controls
         private bool _requestRefresh;
         private readonly StringBuilder _motionData = new StringBuilder(100000);
 
-        public volatile bool AbortedAudio;
         private const int ButtonCount = 8;
         private Rectangle ButtonPanel
         {
@@ -232,7 +231,7 @@ namespace iSpyApplication.Controls
             {
                 try
                 {
-                    return _recordingThread != null && !_recordingThread.Join(TimeSpan.Zero);
+                    return _recordingThread != null;
                 }
                 catch
                 {
@@ -1976,8 +1975,6 @@ namespace iSpyApplication.Controls
                 g.InterpolationMode = InterpolationMode.Default;
                 g.DrawImage(LastFrame, r);
             }
-
-            frame.Dispose();
             return b;
         }
 
@@ -2942,6 +2939,7 @@ namespace iSpyApplication.Controls
                     
                 var dt = Helper.Now.AddSeconds(0 - Camobject.recorder.bufferseconds);
                     
+                if (!Recording) { 
                 while (Buffer.Count > 0)
                 {
                     Helper.FrameAction fa;
@@ -2957,7 +2955,7 @@ namespace iSpyApplication.Controls
                             break;
                         }
                     }
-                }
+                }}
 
                 
                 
@@ -3105,7 +3103,6 @@ namespace iSpyApplication.Controls
             try
             {
                 MainForm.RecordingThreads++;
-                AbortedAudio = false;
                 LogToPlugin("Recording Started");
                 string linktofile = "";
                 _stopWrite.Reset();
@@ -3340,7 +3337,6 @@ namespace iSpyApplication.Controls
                                 FtpRecording(path + CodecExtension);
                             }
                         }
-                        AbortedAudio = false;
 
                     }
                     catch (Exception ex)
@@ -3390,6 +3386,7 @@ namespace iSpyApplication.Controls
             {
                 Logger.LogException(ex);
             }
+            _recordingThread = null;
             _writerStopped.Set();
         }
 
@@ -5283,24 +5280,6 @@ namespace iSpyApplication.Controls
             if (Recording)
             {
                 _stopWrite.Set();
-                var t = 0;
-                while (Recording && t < 20)
-                {
-                    _writerStopped.WaitOne(200);
-                    t++;
-                }
-                if (t == 20)
-                {
-                    try
-                    {
-                        _recordingThread?.Abort();
-                        Logger.LogError("cam: aborted writing thread");
-                    }
-                    catch
-                    {
-
-                    }
-                }
             }
         }
 

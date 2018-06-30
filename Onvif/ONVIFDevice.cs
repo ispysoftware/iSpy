@@ -11,6 +11,7 @@ using iSpyApplication.DevicePTZ;
 using iSpyApplication.Utilities;
 using DateTime = System.DateTime;
 using VideoEncoderConfiguration = iSpyApplication.DeviceMedia.VideoEncoderConfiguration;
+using VideoSourceConfiguration = iSpyApplication.DeviceMedia.VideoSourceConfiguration;
 
 namespace iSpyApplication.Onvif
 {
@@ -62,29 +63,43 @@ namespace iSpyApplication.Onvif
                                               Transport = new Transport {Protocol = TransportProtocol.RTSP}
                                           };
                         List<MediaEndpoint> uris = new List<MediaEndpoint>();
-                        foreach (var p in Profiles)
+                        var profiles = Profiles;
+                        if (profiles != null)
                         {
-                            try
+                            foreach (var p in Profiles)
                             {
-                                var l = mc.GetStreamUri(streamSetup, p.token);
-                                //make sure using correct ip address (for external access)
-                                var u = new UriBuilder(l.Uri) {Host = URL.Host};
-                                l.Uri = u.ToString();
-                                if (!string.IsNullOrEmpty(Username))
+                                try
                                 {
-                                    l.Uri = l.Uri.ReplaceFirst("://", "://" + Uri.EscapeDataString(Username) + ":" + Uri.EscapeDataString(Password) + "@");
-                                }
+                                    var l = mc.GetStreamUri(streamSetup, p.token);
+                                    //make sure using correct ip address (for external access)
+                                    var u = new UriBuilder(l.Uri) {Host = URL.Host};
+                                    l.Uri = u.ToString();
+                                    if (!string.IsNullOrEmpty(Username))
+                                    {
+                                        l.Uri = l.Uri.ReplaceFirst("://",
+                                            "://" + Uri.EscapeDataString(Username) + ":" +
+                                            Uri.EscapeDataString(Password) + "@");
+                                    }
 
-                                var s = p?.VideoEncoderConfiguration;
-                                uris.Add(new MediaEndpoint(l,s));
+                                    var s = p?.VideoEncoderConfiguration;
+                                    if (s != null)
+                                        uris.Add(new MediaEndpoint(l, s));
+                                    else
+                                    {
+                                        var e = p?.VideoSourceConfiguration;
+                                        if (e != null)
+                                            uris.Add(new MediaEndpoint(l, e));
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logger.LogException(ex, "Onvif device (1)");
+                                    break;
+                                }
                             }
-                            catch (Exception ex)
-                            {
-                                Logger.LogException(ex, "Onvif device (1)");
-                                break;
-                            }
+
+                            _mediaEndpoints = uris.ToArray();
                         }
-                        _mediaEndpoints = uris.ToArray();
                     }
                     catch (Exception ex)
                     {
@@ -102,17 +117,25 @@ namespace iSpyApplication.Onvif
         public class MediaEndpoint
         {
             public MediaUri URI;
-            public VideoEncoderConfiguration Config;
+            public int Width,Height;
 
             public MediaEndpoint(MediaUri uri, VideoEncoderConfiguration config)
             {
                 URI = uri;
-                Config = config;
+                Width = config.Resolution.Width;
+                Height = config.Resolution.Height;
+            }
+
+            public MediaEndpoint(MediaUri uri, VideoSourceConfiguration config)
+            {
+                URI = uri;
+                Width = config.Bounds.width;
+                Height = config.Bounds.height;
             }
 
             public override string ToString()
             {
-                return Config.Resolution.Width + "x" + Config.Resolution.Height + ": " + URI.Uri;
+                return Width + "x" + Height + ": " + URI.Uri;
             }
         }
 
@@ -130,6 +153,7 @@ namespace iSpyApplication.Onvif
                 
         }
 
+        private bool _useDigest = false;
         private Profile[] _profiles;
         public Profile[] Profiles
         {
@@ -138,16 +162,27 @@ namespace iSpyApplication.Onvif
                 if (_profiles != null)
                     return _profiles;
 
-                var mc = MediaClient;
-                if (mc != null)
+                if (MediaClient != null)
                 {
-                    try
+                    while (true)
                     {
-                        _profiles = mc.GetProfiles().ToArray();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.LogException(ex);
+                        try
+                        {
+                            _profiles = MediaClient.GetProfiles().ToArray();
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            if (!_useDigest)
+                            {
+                                _mediaClient = null;
+                                _useDigest = true;
+                                continue;
+                            }
+                            _useDigest = false;
+                            Logger.LogException(ex);
+                            break;
+                        }
                     }
                 }
                 return _profiles;
@@ -169,17 +204,16 @@ namespace iSpyApplication.Onvif
                 try
                 {
                     EndpointAddress serviceAddress = new EndpointAddress(_svcURL);
+
                     HttpTransportBindingElement httpBinding = new HttpTransportBindingElement
-                                                              {
-                                                                  AuthenticationScheme = AuthenticationSchemes.Digest
-                                                              };
+                    {
+                        AuthenticationScheme = AuthenticationSchemes.Digest
+                    };
 
                     var messageElement = new TextMessageEncodingBindingElement
-                                         {
-                                             MessageVersion =
-                                                 MessageVersion.CreateVersion(EnvelopeVersion.Soap12,
-                                                     AddressingVersion.None)
-                                         };
+                     {
+                         MessageVersion = MessageVersion.CreateVersion(EnvelopeVersion.Soap12, AddressingVersion.None)
+                     };
 
                     CustomBinding binder = new CustomBinding(messageElement, httpBinding);
                     Client = new DeviceClient.DeviceClient(binder, serviceAddress);
@@ -210,18 +244,25 @@ namespace iSpyApplication.Onvif
                     }
                     
                     PasswordDigestBehavior digest = new PasswordDigestBehavior(Username, Password, diff);
-                    Client.Endpoint.Behaviors.Add(digest);
+                    if (_useDigest)
+                        Client.Endpoint.Behaviors.Add(digest);
 
                     var caps = Client.GetCapabilities(new[] { CapabilityCategory.All});
-                    _mediaClient = new MediaClient(binder, new EndpointAddress(GetEndPointUri(serviceAddress.Uri, caps.Media.XAddr, caps)));
-                    PTZClient = new PTZClient(binder, new EndpointAddress(GetEndPointUri(serviceAddress.Uri, caps.PTZ.XAddr, caps)));
 
+                    _mediaClient = new MediaClient(binder, new EndpointAddress(GetEndPointUri(serviceAddress.Uri, caps.Media.XAddr, caps)));
 
                     _mediaClient.Endpoint.Behaviors.Add(basic);
-                    PTZClient.Endpoint.Behaviors.Add(basic);
+                    if (_useDigest)
+                        _mediaClient.Endpoint.Behaviors.Add(digest);
 
-                    _mediaClient.Endpoint.Behaviors.Add(digest);
-                    PTZClient.Endpoint.Behaviors.Add(digest);
+                    if (caps.PTZ != null)
+                    {
+                        PTZClient = new PTZClient(binder,
+                            new EndpointAddress(GetEndPointUri(serviceAddress.Uri, caps.PTZ.XAddr, caps)));
+                        PTZClient.Endpoint.Behaviors.Add(basic);
+                        if (_useDigest)
+                            PTZClient.Endpoint.Behaviors.Add(digest);
+                    }
                 }
                 catch (Exception ex)
                 {

@@ -3405,11 +3405,7 @@ namespace iSpyApplication
             var window = ContextTarget as CameraWindow;
             if (window != null)
             {
-                var cameraControl = window;
-                string fn = cameraControl.SaveFrame();
-                if (fn != "" && Conf.OpenGrabs)
-                    OpenUrl(fn);
-                //OpenUrl("http://" + IPAddress + ":" + Conf.LANPort + "/livefeed?oid=" + cameraControl.Camobject.id + "&r=" + Random.NextDouble() + "&full=1&auth=" + Identifier);
+                window?.Snapshot();
             }
         }
 

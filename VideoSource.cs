@@ -793,7 +793,7 @@ namespace iSpyApplication
                     CameraControl.Camobject.ptz = -5;//onvif
                     CameraControl.Camobject.settings.rtspmode = onvifWizard1.ddlTransport.SelectedIndex;
                     
-                    SetVideoSize(new Size(cfg.Config.Resolution.Width, cfg.Config.Resolution.Height));
+                    SetVideoSize(new Size(cfg.Width, cfg.Height));
 
                     if (onvifWizard1.ddlConnectWith.SelectedIndex==1)
                     {
