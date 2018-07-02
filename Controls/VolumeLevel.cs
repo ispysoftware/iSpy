@@ -1560,7 +1560,6 @@ namespace iSpyApplication.Controls
             string linktofile = "";
             try
             {
-                _stopWrite.Reset();
                 _writerStopped.Reset();
                 if (!string.IsNullOrEmpty(Micobject.recorder.trigger))
                 {
@@ -1759,6 +1758,7 @@ namespace iSpyApplication.Controls
 
             _recordingThread = null;
             _writerStopped.Set();
+            _stopWrite.Reset();
         }
 
        

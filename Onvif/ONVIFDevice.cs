@@ -272,7 +272,7 @@ namespace iSpyApplication.Onvif
             }
         }
 
-        public Uri GetEndPointUri(Uri deviceUri, string xAddr, DeviceClient.Capabilities caps)
+        private Uri GetEndPointUri(Uri deviceUri, string xAddr, DeviceClient.Capabilities caps)
         {
             if (string.IsNullOrEmpty(xAddr))
                 return deviceUri;
@@ -301,7 +301,7 @@ namespace iSpyApplication.Onvif
             return url;
         }
 
-        public static Uri Relocate(Uri uri, string host)
+        private static Uri Relocate(Uri uri, string host)
         {
             if (!uri.IsAbsoluteUri)
             {
@@ -314,7 +314,7 @@ namespace iSpyApplication.Onvif
                      };
             return ub.Uri;
         }
-        public static Uri Relocate(Uri uri, string host, int port)
+        private static Uri Relocate(Uri uri, string host, int port)
         {
             if (!uri.IsAbsoluteUri)
             {

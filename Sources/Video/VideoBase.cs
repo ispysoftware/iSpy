@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Generic;
+using System.Linq;
 using iSpyApplication.Controls;
 
 namespace iSpyApplication.Sources.Video
@@ -29,47 +30,129 @@ namespace iSpyApplication.Sources.Video
         {
             _cw = cw;
         }
-        
-        private DateTime _nextFrameTarget = DateTime.MinValue;
-        public bool EmitFrame
+
+        public double RealFramerate = 0;
+        private readonly List<DateTime> _timeStamps = new List<DateTime>();
+        private readonly List<DateTime> _emittimeStamps = new List<DateTime>();
+        private const int TimeStampSampleDuration = 3000;
+        private long _frameCount = 0;
+        private double _refCount = 0;
+        public bool ShouldEmitFrame
         {
             get
             {
                 if (_cw == null)
                     return true;
-                var d = Helper.Now;
-                if (d < _nextFrameTarget)
+                if (_timeStamps.Count > 0)
                 {
-                    return false;
+                    if ((DateTime.UtcNow - _timeStamps.Last()).TotalMilliseconds > 2000)
+                    {
+                        _timeStamps.Clear();
+                        _emittimeStamps.Clear();
+                        _frameCount = 0;
+                        _refCount = 0;
+                    }
                 }
 
-                double dMin = FrameInterval;
-                _nextFrameTarget = _nextFrameTarget.AddMilliseconds(dMin);
+                _timeStamps.Add(DateTime.UtcNow);
 
-                if (_nextFrameTarget < d)
+                var avgint = (_timeStamps.Last() - _timeStamps.First()).TotalMilliseconds / _timeStamps.Count;
+                if (avgint > 0)
+                    RealFramerate = 1000d / avgint;
+                else
                 {
-                    _nextFrameTarget = d;
+                    RealFramerate = 1;
                 }
 
-                return true;
+                FilterTimestamps(_timeStamps);
+
+
+                var tfr = TargetFrameRate;
+
+                if (tfr > 0)
+                {
+                    _frameCount++;
+                    var r = RealFramerate / tfr;
+                    _refCount = Math.Max(_refCount, r);
+
+                    if (_frameCount < _refCount)
+                    {
+                        return false;
+                    }
+                    _refCount += r;
+                    _emittimeStamps.Add(DateTime.UtcNow);
+                    FilterTimestamps(_emittimeStamps);
+                    return true;
+                }
+
+
+                return false;
             }
         }
 
-        public int FrameInterval
+        private void FilterTimestamps(List<DateTime> timestamps)
+        {
+            while (timestamps.Count > 1 && (timestamps.Last() - timestamps.First()).TotalMilliseconds > TimeStampSampleDuration)
+                timestamps.RemoveAt(0);
+        }
+
+        public double TargetFrameRate
         {
             get
             {
                 if (_cw == null)
-                    return 200;
+                    return 5;
 
-                decimal r = _cw.Camobject.settings.maxframerate;
+                double r = Convert.ToDouble(_cw.Camobject.settings.maxframerate);
                 if (_cw.Recording)
-                    r = _cw.Camobject.settings.maxframeraterecord;
+                    r = Convert.ToDouble(_cw.Camobject.settings.maxframeraterecord);
 
-                r = Math.Max(0.01m,Math.Min(r, MainForm.ThrottleFramerate));
-                return Convert.ToInt32(1000m/r);
+                r = ThrottleFramerate(r);
+
+                return r;
 
             }
+        }
+
+        //public int FrameInterval
+        //{
+        //    get
+        //    {
+        //        if (_cw == null)
+        //            return 200;
+
+        //        decimal r = _cw.Camobject.settings.maxframerate;
+        //        if (_cw.Recording)
+        //            r = _cw.Camobject.settings.maxframeraterecord;
+
+        //        r = Math.Max(0.01m,Math.Min(r, MainForm.ThrottleFramerate));
+        //        return Convert.ToInt32(1000m/r);
+
+        //    }
+        //}
+
+        private int _throttleAdjust;
+        private DateTime _lastFrAdjust;
+        public double ThrottleFramerate(double rate)
+        {
+            if (_lastFrAdjust < DateTime.UtcNow.AddSeconds(-1))
+            {
+                if (MainForm.HighCPU)
+                {
+                    if (_throttleAdjust < rate)
+                        _throttleAdjust++;
+                }
+                else
+                {
+                    if (_throttleAdjust > 0)
+                        _throttleAdjust--;
+
+                }
+
+                _lastFrAdjust = DateTime.UtcNow;
+            }
+
+            return Math.Max(rate - _throttleAdjust, 2);
         }
 
     }

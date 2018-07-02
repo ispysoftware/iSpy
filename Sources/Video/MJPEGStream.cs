@@ -457,7 +457,7 @@ namespace iSpyApplication.Sources.Video
                                 // image at stop
                                 if (nf != null)
                                 {
-                                    if (EmitFrame)
+                                    if (ShouldEmitFrame)
                                     {
                                         if (decode)
                                         {

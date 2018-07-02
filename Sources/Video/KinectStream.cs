@@ -320,7 +320,7 @@ namespace iSpyApplication.Sources.Video
             {
                 if (depthFrame != null)
                 {
-                    if (EmitFrame)
+                    if (ShouldEmitFrame)
                     {
                         // Copy the pixel data from the image to a temporary array
                         depthFrame.CopyPixelDataTo(_depthPixels);
@@ -411,7 +411,7 @@ namespace iSpyApplication.Sources.Video
 
         void SensorColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
         {
-            if (EmitFrame)
+            if (ShouldEmitFrame)
             {
                 using (ColorImageFrame imageFrame = e.OpenColorImageFrame())
                 {

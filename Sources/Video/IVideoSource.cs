@@ -44,8 +44,6 @@ namespace iSpyApplication.Sources.Video
         /// 
         string Source { get; }
 
-        int FrameInterval { get; }
-
         /// <summary>
         /// State of the video source.
         /// </summary>

@@ -448,7 +448,7 @@ namespace iSpyApplication.Sources.Video
                                     case "image/jpeg":
                                         try
                                         {
-                                            if (EmitFrame)
+                                            if (ShouldEmitFrame)
                                             {
                                                 using (var ms = new MemoryStream(buffer, br + 4, endPacket - br - 8))
                                                 {

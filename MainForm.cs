@@ -90,8 +90,8 @@ namespace iSpyApplication
         public static int Affiliateid = 0;
         public static string EmailAddress = "", MobileNumber = "";
         public static string Group="";
-        public static int ThrottleFramerate = 40;
         public static float CpuUsage, CpuTotal;
+        public static bool HighCPU;
         public static int RecordingThreads;
         public static List<string> Plugins = new List<string>();
         public static bool NeedsResourceUpdate;
@@ -1828,16 +1828,8 @@ namespace iSpyApplication
                     // _cputotalCounter = null;
                     Logger.LogException(ex);
                 }
-                if (CpuTotal > _conf.CPUMax)
-                {
-                    if (ThrottleFramerate > 1)
-                        ThrottleFramerate--;
-                }
-                else
-                {
-                    if (ThrottleFramerate < 40)
-                        ThrottleFramerate++;
-                }
+
+                HighCPU = CpuTotal > _conf.CPUMax;
             }
             else
             {

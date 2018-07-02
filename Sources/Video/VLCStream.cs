@@ -578,7 +578,7 @@ namespace iSpyApplication.Sources.Video
         private void FrameCallback(Bitmap frame)
         {
             var nf = NewFrame;
-            if (nf == null || _abort.WaitOne(0) || !EmitFrame)
+            if (nf == null || _abort.WaitOne(0) || !ShouldEmitFrame)
             {
                 frame.Dispose();
                 return;

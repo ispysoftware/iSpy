@@ -628,7 +628,7 @@ namespace iSpyApplication.Sources.Video
                     _videoCodecContext != null)
                 {
                     
-                    var ef = EmitFrame;
+                    var ef = ShouldEmitFrame;
                     ffmpeg.avcodec_send_packet(_videoCodecContext, &packet);
                     do
                     {

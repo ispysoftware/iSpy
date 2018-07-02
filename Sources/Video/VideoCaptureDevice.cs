@@ -1796,7 +1796,7 @@ namespace iSpyApplication.Sources.Video
             // Callback method that receives a pointer to the sample buffer
             public int BufferCB(double sampleTime, IntPtr buffer, int bufferLen)
             {
-                if (_parent.NewFrame != null && _parent.EmitFrame)
+                if (_parent.NewFrame != null && _parent.ShouldEmitFrame)
                 {
                     // create new image
                     using (var image = new Bitmap(Width, Height, PixelFormat.Format24bppRgb))

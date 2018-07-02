@@ -51,7 +51,7 @@ namespace iSpyApplication.Controls
         private Color _customColor = Color.Black;
         private DateTime _lastRedraw = DateTime.MinValue;
         private DateTime _recordingStartTime;
-        private ManualResetEvent _stopWrite = new ManualResetEvent(false);
+        private readonly ManualResetEvent _stopWrite = new ManualResetEvent(false);
         private readonly ManualResetEvent _writerStopped = new ManualResetEvent(false); 
         private double _autoofftimer;
         private bool _raiseStop;
@@ -3105,7 +3105,6 @@ namespace iSpyApplication.Controls
                 MainForm.RecordingThreads++;
                 LogToPlugin("Recording Started");
                 string linktofile = "";
-                _stopWrite.Reset();
                 _writerStopped.Reset();
 
                 string previewImage = "";
@@ -3197,15 +3196,16 @@ namespace iSpyApplication.Controls
                             DoAlert("recordingstarted", linktofile);
                            
                             Helper.FrameAction peakFrame = null;
-
+                            bool _writtenVideo = false;
                             while (!_stopWrite.WaitOne(5))
                             {
                                 if (Buffer.TryDequeue(out fa))
                                 {
                                     WriteFrame(fa, ref maxAlarm, ref peakFrame);
+                                    _writtenVideo = true;
                                 }
 
-                                if (bAudio)
+                                if (bAudio && _writtenVideo)
                                 {
                                     if (vc.Buffer.TryDequeue(out fa))
                                     {
@@ -3266,8 +3266,7 @@ namespace iSpyApplication.Controls
                                 
                                 _writer = null;
                             }
-                            if (bAudio)
-                                vc.StopSaving();
+                            vc?.StopSaving();
                         }
                         if (_firstFrame)
                         {
@@ -3388,6 +3387,7 @@ namespace iSpyApplication.Controls
             }
             _recordingThread = null;
             _writerStopped.Set();
+            _stopWrite.Reset();
         }
 
 
