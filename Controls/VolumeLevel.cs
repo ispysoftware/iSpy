@@ -43,7 +43,7 @@ namespace iSpyApplication.Controls
         private DateTime _recordingStartTime = DateTime.MinValue;
         private Point _mouseLoc;
         private readonly ManualResetEvent _stopWrite = new ManualResetEvent(false);
-        private readonly ManualResetEvent _writerStopped = new ManualResetEvent(false);
+        private readonly ManualResetEvent _writerStopped = new ManualResetEvent(true);
         private volatile float[] _levels;
         private readonly ToolTip _toolTipMic;
         private int _ttind = -1;
@@ -1761,10 +1761,12 @@ namespace iSpyApplication.Controls
             _stopWrite.Reset();
         }
 
-       
 
+        private bool _disposed;
         protected override void Dispose(bool disposing)
         {
+            if (_disposed)
+                return;
             if (disposing)
             {
                 Invalidate();              
@@ -1777,11 +1779,14 @@ namespace iSpyApplication.Controls
             }
             _toolTipMic.RemoveAll();
             _toolTipMic.Dispose();
+            if (_stopWrite.WaitOne(0))
+                _writerStopped.WaitOne(2000);
             _writerStopped.Close();
             _stopWrite.Close();
             _vline.Dispose();
             ClearBuffer();
             base.Dispose(disposing);
+            _disposed = true;
         }
 
         public void ClearBuffer()

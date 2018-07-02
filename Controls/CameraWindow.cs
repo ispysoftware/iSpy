@@ -52,7 +52,7 @@ namespace iSpyApplication.Controls
         private DateTime _lastRedraw = DateTime.MinValue;
         private DateTime _recordingStartTime;
         private readonly ManualResetEvent _stopWrite = new ManualResetEvent(false);
-        private readonly ManualResetEvent _writerStopped = new ManualResetEvent(false); 
+        private readonly ManualResetEvent _writerStopped = new ManualResetEvent(true); 
         private double _autoofftimer;
         private bool _raiseStop;
         private double _timeLapse;
@@ -1419,8 +1419,14 @@ namespace iSpyApplication.Controls
 
             _toolTipCam.RemoveAll();
             _toolTipCam.Dispose();
+            if (_stopWrite.WaitOne(0))
+                _writerStopped.WaitOne(2000);
+   
             _stopWrite.Close();
             _writerStopped.Close();
+        
+                
+
             _camera?.Dispose();
             _timeLapseWriter = null;
             _writer = null;
