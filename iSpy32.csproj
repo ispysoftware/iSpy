@@ -371,6 +371,8 @@
     </Compile>
     <Compile Include="CameraDiscovery\CameraScanner.cs" />
     <Compile Include="CameraDiscovery\URLDiscovery.cs" />
+    <Compile Include="Onvif\AuthBehaviour.cs" />
+    <Compile Include="Onvif\AuthMessageInspector.cs" />
     <Compile Include="PlayerVLC.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -822,8 +824,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="LayoutItem.cs" />
-    <Compile Include="Onvif\BasicAuthBehaviour.cs" />
-    <Compile Include="Onvif\BasicAuthMessageInspector.cs" />
     <Compile Include="Onvif\Discovery.cs" />
     <Compile Include="Onvif\MulticastCapabilitiesBindingElement.cs" />
     <Compile Include="Onvif\ONVIFDevice.cs" />
@@ -833,8 +833,6 @@
     <Compile Include="Controls\ONVIFWizard.Designer.cs">
       <DependentUpon>ONVIFWizard.cs</DependentUpon>
     </Compile>
-    <Compile Include="Onvif\PasswordDigestBehaviour.cs" />
-    <Compile Include="Onvif\PasswordDigestMessageInspector.cs" />
     <Compile Include="Realtime\MediaWriter.cs" />
     <Compile Include="Sources\Audio\talk\TalkFoscam.cs" />
     <Compile Include="Sources\Video\VideoBase.cs" />

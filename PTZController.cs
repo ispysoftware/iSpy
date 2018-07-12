@@ -37,6 +37,7 @@ namespace iSpyApplication
         private readonly CameraWindow _cameraControl;
         private Enums.PtzCommand _previousCommand;
         private SerialPort _serialPort;
+        private Enums.PtzCommand _lastCommand = Enums.PtzCommand.Stop;
 
         public void CheckSendStop()
         {
@@ -218,6 +219,15 @@ namespace iSpyApplication
                     cmd = Enums.PtzCommand.DownLeft;
                 }
 
+                if (IsContinuous)
+                {
+                    if (cmd != Enums.PtzCommand.Stop)
+                    {
+                        //ignore - continuous
+                        if (_lastCommand == cmd)
+                            return;
+                    }
+                }
                 switch (_cameraControl.Camobject.ptz)
                 {
                     default:
@@ -731,8 +741,10 @@ namespace iSpyApplication
 
         }
 
+        
         void ProcessOnvif(Enums.PtzCommand command)
         {
+            
             var ptz = _cameraControl?.ONVIFDevice?.PTZClient;
             if (ptz != null)
             {
@@ -740,41 +752,42 @@ namespace iSpyApplication
                 //string spacePT = PTZProfile.ptzConfiguration.defaultContinuousPanTiltVelocitySpace;
                 //string spaceZ = PTZProfile.ptzConfiguration.defaultContinuousZoomVelocitySpace;
 
-                DevicePTZ.Vector2D panTilt = null;
-                DevicePTZ.Vector1D zoom = null;
+                Vector2D panTilt = null;
+                Vector1D zoom = null;
                 try
                 {
+                    _lastCommand = command;
                     switch (command)
                     {
                         case Enums.PtzCommand.Left:
-                            panTilt = new DevicePTZ.Vector2D { space = null, x = -0.5f, y = 0 };
+                            panTilt = new Vector2D { space = null, x = -0.5f, y = 0 };
                             break;
                         case Enums.PtzCommand.Upleft:
-                            panTilt = new DevicePTZ.Vector2D { space = null, x = -0.5f, y = 0.5f };
+                            panTilt = new Vector2D { space = null, x = -0.5f, y = 0.5f };
                             break;
                         case Enums.PtzCommand.Up:
-                            panTilt = new DevicePTZ.Vector2D { space = null, x = 0, y = 0.5f };
+                            panTilt = new Vector2D { space = null, x = 0, y = 0.5f };
                             break;
                         case Enums.PtzCommand.UpRight:
-                            panTilt = new DevicePTZ.Vector2D { space = null, x = 0.5f, y = 0.5f };
+                            panTilt = new Vector2D { space = null, x = 0.5f, y = 0.5f };
                             break;
                         case Enums.PtzCommand.Right:
-                            panTilt = new DevicePTZ.Vector2D { space = null, x = 0.5f, y = 0 };
+                            panTilt = new Vector2D { space = null, x = 0.5f, y = 0 };
                             break;
                         case Enums.PtzCommand.DownRight:
-                            panTilt = new DevicePTZ.Vector2D { space = null, x = 0.5f, y = -0.5f };
+                            panTilt = new Vector2D { space = null, x = 0.5f, y = -0.5f };
                             break;
                         case Enums.PtzCommand.Down:
-                            panTilt = new DevicePTZ.Vector2D { space = null, x = 0, y = -0.5f };
+                            panTilt = new Vector2D { space = null, x = 0, y = -0.5f };
                             break;
                         case Enums.PtzCommand.DownLeft:
-                            panTilt = new DevicePTZ.Vector2D { space = null, x = -0.5f, y = -0.5f };
+                            panTilt = new Vector2D { space = null, x = -0.5f, y = -0.5f };
                             break;
                         case Enums.PtzCommand.ZoomIn:
-                            zoom = new DevicePTZ.Vector1D { space = null, x = 0.5f };
+                            zoom = new Vector1D { space = null, x = 0.5f };
                             break;
                         case Enums.PtzCommand.ZoomOut:
-                            zoom = new DevicePTZ.Vector1D { space = null, x = -0.5f };
+                            zoom = new Vector1D { space = null, x = -0.5f };
                             break;
                         case Enums.PtzCommand.Center:
                             //ProcessOnvifCommand(_cameraControl.CameraObject.settings.ptzautohomecommand);
@@ -783,8 +796,8 @@ namespace iSpyApplication
                             ptz.Stop(PTZToken, true, true);
                             return;
                     }
-                    var ptzSpeed = new DevicePTZ.PTZSpeed() { PanTilt = panTilt, Zoom = zoom };
-                    ptz.ContinuousMove(PTZToken, ptzSpeed, null);
+                    var ptzSpeed = new PTZSpeed() { PanTilt = panTilt, Zoom = zoom };
+                    ptz.ContinuousMove(PTZToken, ptzSpeed, "PT10S");
                 }
                 catch (Exception ex)
                 {
@@ -878,6 +891,8 @@ namespace iSpyApplication
             }
             if (_serialPort == null || !_serialPort.IsOpen)
                 return;
+
+            _lastCommand = command;
 
             if (usePelcoP)
             {
@@ -1006,6 +1021,7 @@ namespace iSpyApplication
             }
             if (_serialPort == null || !_serialPort.IsOpen)
                 return;
+
             if (usePelcoP)
             {
                 var pelcoP = new P();

@@ -2915,7 +2915,7 @@ namespace iSpyApplication
             // 
             // numSaveInterval
             // 
-            this.numSaveInterval.DecimalPlaces = 1;
+            this.numSaveInterval.DecimalPlaces = 3;
             this.numSaveInterval.Location = new System.Drawing.Point(6, 6);
             this.numSaveInterval.Margin = new System.Windows.Forms.Padding(6);
             this.numSaveInterval.Maximum = new decimal(new int[] {
@@ -2924,13 +2924,13 @@ namespace iSpyApplication
             0,
             0});
             this.numSaveInterval.Name = "numSaveInterval";
-            this.numSaveInterval.Size = new System.Drawing.Size(41, 20);
+            this.numSaveInterval.Size = new System.Drawing.Size(65, 20);
             this.numSaveInterval.TabIndex = 18;
             // 
             // label99
             // 
             this.label99.AutoSize = true;
-            this.label99.Location = new System.Drawing.Point(59, 8);
+            this.label99.Location = new System.Drawing.Point(83, 8);
             this.label99.Margin = new System.Windows.Forms.Padding(6, 8, 6, 0);
             this.label99.Name = "label99";
             this.label99.Size = new System.Drawing.Size(49, 13);

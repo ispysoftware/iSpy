@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.Text;
+using System.Text.RegularExpressions;
 using iSpyApplication.DeviceClient;
 using iSpyApplication.DeviceMedia;
 using iSpyApplication.DevicePTZ;
@@ -17,22 +17,24 @@ namespace iSpyApplication.Onvif
 {
     public class ONVIFDevice
     {
-        public ONVIFDevice(string url, string username, string password)
+        public ONVIFDevice(string url, string username, string password, int rtspPort = 0)
         {
             Uri uri;
             if (!Uri.TryCreate(url, UriKind.Absolute, out uri))
                 throw new ApplicationException("Uri: " + url + " not recognised.");
 
-            _svcURL = uri.Scheme + "://" + uri.Authority + "/onvif/device_service";
+            _svcURL = url;//uri.Scheme + "://" + uri.Authority + "/onvif/device_service";
 
             Username = username;
             Password = password;
             URL = uri;
-
+            RtspPort = rtspPort;
         }
 
         private readonly string _svcURL;
         private MediaEndpoint[] _mediaEndpoints;
+        private string realm, nonce, qop, opaque, cnonce;
+        private int RtspPort;
 
         public DeviceClient.DeviceClient Client;
         public PTZClient PTZClient;
@@ -42,6 +44,9 @@ namespace iSpyApplication.Onvif
             _mediaEndpoints = null;
             _profiles = null;
             _mediaClient = null;
+            _timeOffset = -1;
+            nonce = realm = qop = opaque = cnonce = null;
+            _auth = OnvifAuthMode.None;
 
         }
         public MediaEndpoint[] MediaEndpoints
@@ -51,63 +56,8 @@ namespace iSpyApplication.Onvif
                 if (_mediaEndpoints != null)
                     return _mediaEndpoints;
 
-
-                var mc = MediaClient;
-                if (mc != null)
-                {
-                    try
-                    {
-                        var streamSetup = new StreamSetup
-                                          {
-                                              Stream = StreamType.RTPUnicast,
-                                              Transport = new Transport {Protocol = TransportProtocol.RTSP}
-                                          };
-                        List<MediaEndpoint> uris = new List<MediaEndpoint>();
-                        var profiles = Profiles;
-                        if (profiles != null)
-                        {
-                            foreach (var p in Profiles)
-                            {
-                                try
-                                {
-                                    var l = mc.GetStreamUri(streamSetup, p.token);
-                                    //make sure using correct ip address (for external access)
-                                    var u = new UriBuilder(l.Uri) {Host = URL.Host};
-                                    l.Uri = u.ToString();
-                                    if (!string.IsNullOrEmpty(Username))
-                                    {
-                                        l.Uri = l.Uri.ReplaceFirst("://",
-                                            "://" + Uri.EscapeDataString(Username) + ":" +
-                                            Uri.EscapeDataString(Password) + "@");
-                                    }
-
-                                    var s = p?.VideoEncoderConfiguration;
-                                    if (s != null)
-                                        uris.Add(new MediaEndpoint(l, s));
-                                    else
-                                    {
-                                        var e = p?.VideoSourceConfiguration;
-                                        if (e != null)
-                                            uris.Add(new MediaEndpoint(l, e));
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-                                    Logger.LogException(ex, "Onvif device (1)");
-                                    break;
-                                }
-                            }
-
-                            _mediaEndpoints = uris.ToArray();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.LogException(ex, "Onvif device (2)");
-                    }
-                }
+                Connect();
                 return _mediaEndpoints;
-
             }
         }
 
@@ -152,9 +102,134 @@ namespace iSpyApplication.Onvif
             }
                 
         }
+        public enum OnvifAuthMode
+        {
+            None,UsernameToken,Basic,Digest
+        }
 
-        private bool _useDigest = false;
+        private OnvifAuthMode _auth = OnvifAuthMode.None;
+
         private Profile[] _profiles;
+
+        private string GetDigestHeaderAttribute(string attributeName, string digestAuthHeader)
+        {
+            var regHeader = new Regex($@"{attributeName}=""([^""]*)""");
+            var matchHeader = regHeader.Match(digestAuthHeader);
+            if (matchHeader.Success)
+                return matchHeader.Groups[1].Value;
+            throw new ApplicationException($"Header {attributeName} not found");
+        }
+
+        
+
+        private void Connect()
+        {
+            while (true)
+            {
+                try
+                {
+                    try
+                    {
+                        var profiles = MediaClient.GetProfiles().ToArray();                        
+                        var streamSetup = new StreamSetup
+                        {
+                            Stream = StreamType.RTPUnicast,
+                            Transport = new Transport { Protocol = TransportProtocol.RTSP }
+                        };
+                        List<MediaEndpoint> uris = new List<MediaEndpoint>();
+
+                        foreach (var p in profiles)
+                        {
+                            
+                            var l = MediaClient.GetStreamUri(streamSetup, p.token);
+                            //make sure using correct ip address (for external access)
+                            var u = new UriBuilder(l.Uri) { Host = URL.Host };
+                            if (RtspPort > 0)
+                                u.Port = RtspPort;
+
+                            l.Uri = u.ToString();
+                            if (!string.IsNullOrEmpty(Username))
+                            {
+                                l.Uri = l.Uri.ReplaceFirst("://","://" + Uri.EscapeDataString(Username) + ":" +Uri.EscapeDataString(Password) + "@");
+                            }
+
+                            var s = p?.VideoEncoderConfiguration;
+                            if (s != null)
+                                uris.Add(new MediaEndpoint(l, s));
+                            else
+                            {
+                                var e = p?.VideoSourceConfiguration;
+                                if (e != null)
+                                    uris.Add(new MediaEndpoint(l, e));
+                            }
+                        
+                        }
+                        _mediaEndpoints = uris.ToArray();
+                        _profiles = profiles;
+                    }
+                    catch (ProtocolException pex)
+                    {
+                        var wex = pex.InnerException as WebException;
+                        if (wex != null)
+                            throw wex;
+                    }
+
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    _mediaClient = null;
+                    if (!(ex is TimeoutException))
+                    {
+                        var wex = ex as WebException;
+                        var wwwAuthenticateHeader = wex?.Response?.Headers["WWW-Authenticate"];
+                        if (!string.IsNullOrEmpty(wwwAuthenticateHeader) && _auth != OnvifAuthMode.Digest)
+                        {
+                            try
+                            {
+                                realm = GetDigestHeaderAttribute("realm", wwwAuthenticateHeader);
+                                nonce = GetDigestHeaderAttribute("nonce", wwwAuthenticateHeader);
+                                qop = GetDigestHeaderAttribute("qop", wwwAuthenticateHeader);
+                                opaque = GetDigestHeaderAttribute("opaque", wwwAuthenticateHeader);
+                                cnonce = new Random().Next(123400, 9999999).ToString();
+                                if (!string.IsNullOrEmpty(nonce))
+                                {
+                                    _auth = OnvifAuthMode.Digest;
+                                    continue;
+                                }
+                            }
+                            catch (ApplicationException aex)
+                            {
+                                //not a digest request
+                            }
+
+                        }
+
+                        switch (_auth)
+                        {
+                            case OnvifAuthMode.None:
+                                _auth = OnvifAuthMode.Basic;
+                                continue;
+                            case OnvifAuthMode.Basic:
+                                _auth = OnvifAuthMode.UsernameToken;
+                                continue;
+                            case OnvifAuthMode.UsernameToken:
+                                if (!string.IsNullOrEmpty(realm))
+                                {
+                                    _auth = OnvifAuthMode.Digest;
+                                    continue;
+                                }
+
+                                break;
+                        }
+                    }
+
+                    _auth = OnvifAuthMode.None;
+                    Logger.LogException(ex,"Onvif Auth");
+                    break;
+                }
+            }
+        }
         public Profile[] Profiles
         {
             get
@@ -162,29 +237,7 @@ namespace iSpyApplication.Onvif
                 if (_profiles != null)
                     return _profiles;
 
-                if (MediaClient != null)
-                {
-                    while (true)
-                    {
-                        try
-                        {
-                            _profiles = MediaClient.GetProfiles().ToArray();
-                            break;
-                        }
-                        catch (Exception ex)
-                        {
-                            if (!_useDigest)
-                            {
-                                _mediaClient = null;
-                                _useDigest = true;
-                                continue;
-                            }
-                            _useDigest = false;
-                            Logger.LogException(ex);
-                            break;
-                        }
-                    }
-                }
+                Connect();
                 return _profiles;
             }
         }
@@ -193,7 +246,8 @@ namespace iSpyApplication.Onvif
         public Uri URL { get; set; }
 
         private MediaClient _mediaClient;
-        public MediaClient MediaClient
+        private double _timeOffset = -1;
+        private MediaClient MediaClient
         {
             get
             {
@@ -201,32 +255,27 @@ namespace iSpyApplication.Onvif
                 {
                     return _mediaClient;
                 }
-                try
+
+                EndpointAddress serviceAddress = new EndpointAddress(_svcURL);
+
+                var httpBinding = new HttpTransportBindingElement
+                                     {
+                                         AuthenticationScheme = AuthenticationSchemes.Digest
+                                     };
+
+                var messageElement = new TextMessageEncodingBindingElement
+                                     {
+                                         MessageVersion = MessageVersion.CreateVersion(EnvelopeVersion.Soap12, AddressingVersion.None)
+                                     };
+
+                CustomBinding binder = new CustomBinding(messageElement, httpBinding);
+                Client = new DeviceClient.DeviceClient(binder, serviceAddress);
+                binder.SendTimeout = binder.CloseTimeout = binder.ReceiveTimeout = binder.OpenTimeout = TimeSpan.FromSeconds(8);
+
+                AuthBehavior behaviour = GenerateBehaviour();
+                Client.Endpoint.Behaviors.Add(behaviour);
+                if (_timeOffset < 0)
                 {
-                    EndpointAddress serviceAddress = new EndpointAddress(_svcURL);
-
-                    HttpTransportBindingElement httpBinding = new HttpTransportBindingElement
-                    {
-                        AuthenticationScheme = AuthenticationSchemes.Digest
-                    };
-
-                    var messageElement = new TextMessageEncodingBindingElement
-                     {
-                         MessageVersion = MessageVersion.CreateVersion(EnvelopeVersion.Soap12, AddressingVersion.None)
-                     };
-
-                    CustomBinding binder = new CustomBinding(messageElement, httpBinding);
-                    Client = new DeviceClient.DeviceClient(binder, serviceAddress);
-                    binder.SendTimeout = binder.CloseTimeout = binder.ReceiveTimeout = binder.OpenTimeout = TimeSpan.FromSeconds(5);
-                    
-                    double diff = 0;
-
-                    var basic = new BasicAuthBehaviour(Username, Password);
-                    bool useAuth = !string.IsNullOrEmpty(Username);
-                    if (useAuth)
-                    {
-                        Client.Endpoint.Behaviors.Add(basic);
-                    }
                     try
                     {
                         //ensure date and time are in sync
@@ -236,41 +285,42 @@ namespace iSpyApplication.Onvif
                         var t = sdt.UTCDateTime.Time;
 
                         var dt = new DateTime(d.Year, d.Month, d.Day, t.Hour, t.Minute, t.Second);
-                        diff = (DateTime.UtcNow - dt).TotalSeconds;
+                        _timeOffset = behaviour.TimeOffset = (DateTime.UtcNow - dt).TotalSeconds;
                     }
                     catch (Exception ex)
                     {
                         Logger.LogException(ex, "ONVIF time query");
                     }
-                    
-                    PasswordDigestBehavior digest = new PasswordDigestBehavior(Username, Password, diff);
-                    if (_useDigest)
-                        Client.Endpoint.Behaviors.Add(digest);
-
-                    var caps = Client.GetCapabilities(new[] { CapabilityCategory.All});
-
-                    _mediaClient = new MediaClient(binder, new EndpointAddress(GetEndPointUri(serviceAddress.Uri, caps.Media.XAddr, caps)));
-
-                    _mediaClient.Endpoint.Behaviors.Add(basic);
-                    if (_useDigest)
-                        _mediaClient.Endpoint.Behaviors.Add(digest);
-
-                    if (caps.PTZ != null)
-                    {
-                        PTZClient = new PTZClient(binder,
-                            new EndpointAddress(GetEndPointUri(serviceAddress.Uri, caps.PTZ.XAddr, caps)));
-                        PTZClient.Endpoint.Behaviors.Add(basic);
-                        if (_useDigest)
-                            PTZClient.Endpoint.Behaviors.Add(digest);
-                    }
                 }
-                catch (Exception ex)
+
+                var caps = Client.GetCapabilities(new[] {CapabilityCategory.All});
+                var ep = new EndpointAddress(GetEndPointUri(serviceAddress.Uri, caps.Media.XAddr, caps));
+                _mediaClient = new MediaClient(binder, ep);
+                _mediaClient.Endpoint.Behaviors.Add(GenerateBehaviour(ep));
+
+                if (caps.PTZ != null)
                 {
-                    Logger.LogException(ex, "Onvif auth");
+                    ep = new EndpointAddress(GetEndPointUri(serviceAddress.Uri, caps.PTZ.XAddr, caps));
+                    PTZClient = new PTZClient(binder, ep );
+                    PTZClient.Endpoint.Behaviors.Add(GenerateBehaviour(ep));
                 }
                 return _mediaClient;
             }
         }
+
+        private AuthBehavior GenerateBehaviour(EndpointAddress ep = null)
+        {
+            return new AuthBehavior(Username, Password, _timeOffset, ep)
+                   {
+                       nonce = nonce,
+                       realm = realm,
+                       qop = qop,
+                       opaque = opaque,
+                       cnonce = cnonce,
+                       AuthMode = _auth
+                   };
+        }
+
 
         private Uri GetEndPointUri(Uri deviceUri, string xAddr, DeviceClient.Capabilities caps)
         {

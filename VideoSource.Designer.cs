@@ -70,6 +70,7 @@ namespace iSpyApplication
             this.btnTest = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.ddlRTSP = new System.Windows.Forms.ComboBox();
+            this.chkUseGPU = new System.Windows.Forms.CheckBox();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.flowLayoutPanel12 = new System.Windows.Forms.FlowLayoutPanel();
             this.label40 = new System.Windows.Forms.Label();
@@ -162,7 +163,6 @@ namespace iSpyApplication
             this.button7 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.chkUseGPU = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numBorderTimeout)).BeginInit();
             this.tcSource.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -571,7 +571,7 @@ namespace iSpyApplication
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(6);
-            this.tabPage3.Size = new System.Drawing.Size(725, 288);
+            this.tabPage3.Size = new System.Drawing.Size(192, 74);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "FFMPEG (H264)";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -603,7 +603,7 @@ namespace iSpyApplication
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(713, 159);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(163, 159);
             this.tableLayoutPanel3.TabIndex = 25;
             // 
             // label4
@@ -613,7 +613,7 @@ namespace iSpyApplication
             this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label4.Location = new System.Drawing.Point(75, 27);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(635, 78);
+            this.label4.Size = new System.Drawing.Size(320, 78);
             this.label4.TabIndex = 25;
             this.label4.Text = "Enter a URL to a stream.\r\n\r\nexamples:\r\n\r\nmmsh://live1.wm.skynews.servecast.net/sk" +
     "ynews_wmlz_live300k\r\nhttp://username:password@192.168.1.33/videostream.asf\r\n";
@@ -654,6 +654,17 @@ namespace iSpyApplication
             this.ddlRTSP.Name = "ddlRTSP";
             this.ddlRTSP.Size = new System.Drawing.Size(112, 21);
             this.ddlRTSP.TabIndex = 93;
+            // 
+            // chkUseGPU
+            // 
+            this.chkUseGPU.AutoSize = true;
+            this.chkUseGPU.Location = new System.Drawing.Point(193, 108);
+            this.chkUseGPU.Name = "chkUseGPU";
+            this.chkUseGPU.Size = new System.Drawing.Size(71, 17);
+            this.chkUseGPU.TabIndex = 94;
+            this.chkUseGPU.Text = "Use GPU";
+            this.chkUseGPU.UseVisualStyleBackColor = true;
+            this.chkUseGPU.CheckedChanged += new System.EventHandler(this.chkUseGPU_CheckedChanged);
             // 
             // tabPage6
             // 
@@ -1508,7 +1519,7 @@ namespace iSpyApplication
             this.tabPage10.Controls.Add(this.splitter1);
             this.tabPage10.Location = new System.Drawing.Point(4, 22);
             this.tabPage10.Name = "tabPage10";
-            this.tabPage10.Size = new System.Drawing.Size(192, 74);
+            this.tabPage10.Size = new System.Drawing.Size(725, 288);
             this.tabPage10.TabIndex = 9;
             this.tabPage10.Text = "ONVIF";
             this.tabPage10.UseVisualStyleBackColor = true;
@@ -1518,14 +1529,14 @@ namespace iSpyApplication
             this.onvifWizard1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.onvifWizard1.Location = new System.Drawing.Point(3, 0);
             this.onvifWizard1.Name = "onvifWizard1";
-            this.onvifWizard1.Size = new System.Drawing.Size(189, 74);
+            this.onvifWizard1.Size = new System.Drawing.Size(722, 288);
             this.onvifWizard1.TabIndex = 59;
             // 
             // splitter1
             // 
             this.splitter1.Location = new System.Drawing.Point(0, 0);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(3, 74);
+            this.splitter1.Size = new System.Drawing.Size(3, 288);
             this.splitter1.TabIndex = 58;
             this.splitter1.TabStop = false;
             // 
@@ -1719,17 +1730,6 @@ namespace iSpyApplication
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(733, 35);
             this.panel2.TabIndex = 61;
-            // 
-            // chkUseGPU
-            // 
-            this.chkUseGPU.AutoSize = true;
-            this.chkUseGPU.Location = new System.Drawing.Point(193, 108);
-            this.chkUseGPU.Name = "chkUseGPU";
-            this.chkUseGPU.Size = new System.Drawing.Size(71, 17);
-            this.chkUseGPU.TabIndex = 94;
-            this.chkUseGPU.Text = "Use GPU";
-            this.chkUseGPU.UseVisualStyleBackColor = true;
-            this.chkUseGPU.CheckedChanged += new System.EventHandler(this.chkUseGPU_CheckedChanged);
             // 
             // VideoSource
             // 

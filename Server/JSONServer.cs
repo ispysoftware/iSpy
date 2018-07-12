@@ -544,7 +544,10 @@ namespace iSpyApplication.Server
                         try
                         {
                             var dev = new ONVIFDevice(url, un, pwd);
-                            for (int i = 0; i < dev.Profiles.Length; i++)
+                            var p = dev.Profiles;
+                            if (p == null)
+                                throw new ApplicationException("ONVIF failed to connect");
+                            for (int i = 0; i < p.Length; i++)
                             {
                                 dev.SelectProfile(i);
                                 var ep = dev.Endpoint;

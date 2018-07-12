@@ -1554,8 +1554,6 @@ namespace iSpyApplication.Controls
                         _tickThrottle = 0;
 
                     }
-                    CheckFTP();
-                    CheckSaveFrame();
                 }
 
                 if (!Calibrating)
@@ -2991,6 +2989,10 @@ namespace iSpyApplication.Controls
                     _rtindex = 0;
                     DoAlert("reconnect");
                 }
+
+                CheckSaveFrame();
+                CheckFTP();
+
 
                 NewFrame?.Invoke(this, e);
 
