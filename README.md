@@ -6,7 +6,7 @@ iSpy is the world’s most popular open source video surveillance application. I
 
 ![iSpyInterface](https://www.ispyconnect.com/content/ebook/ispysurface.jpg)
 
-# About iSpy
+## About iSpy
 
 Started back in 2007 the software has continually evolved and improved to become a robust, feature rich solution.
 
@@ -19,8 +19,12 @@ Getting started with iSpy is easy: all you need is a webcam or IP camera connect
 iSpy connects to the camera and shows the live view. You can then define specific areas of the video that iSpy should watch for movement, and set a threshold value for the amount of motion that would trigger automatic recording. iSpy can also operate in always-recording or manual-recording modes and supports scheduling and remote access (with an iSpyConnect subscription)
 
 iSpy was designed to provide a low-cost alternative to expensive surveillance systems. It has become a highly scalable application that can be tailored to record and take actions on specific incidents as defined by the user either locally or remotely.
- 
-# Compiling iSpy
+
+## Installing iSpy
+
+https://www.ispyconnect.com/download.aspx
+
+## Compiling iSpy
 The 32 bit and 64 bit solutions require **Visual Studio 2015** to build.
 
 For building the Setup project [Wix Toolset 3.10+](http://wixtoolset.org/) must be installed. (Make sure you restart Visual Studio after installing)
