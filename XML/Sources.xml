@@ -12985,6 +12985,7 @@
     <url version="WVC54GCA" prefix="rtsp://" Source="FFMPEG" url="/live1.sdp" />
     <url version="WVC54GCA" prefix="http://" Source="JPEG" url="img/snapshot.cgi?size=3" />
     <url version="WVC54GCA" prefix="http://" Source="VLC" url="img/video.asf" />
+  <url version="DCS-8525LH" prefix="http://" Source="FFMPEG" url="video/flv.cgi" />
   </Manufacturer>
   <Manufacturer name="DM">
     <url version="bs232" prefix="rtsp://" Source="FFMPEG" url="/Onvif/Streaming/2" />

@@ -784,10 +784,10 @@ namespace iSpyApplication
                             panTilt = new Vector2D { space = null, x = -0.5f, y = -0.5f };
                             break;
                         case Enums.PtzCommand.ZoomIn:
-                            zoom = new Vector1D { space = null, x = 0.5f };
+                            zoom = new Vector1D { space = null, x = 1f };
                             break;
                         case Enums.PtzCommand.ZoomOut:
-                            zoom = new Vector1D { space = null, x = -0.5f };
+                            zoom = new Vector1D { space = null, x = -1f };
                             break;
                         case Enums.PtzCommand.Center:
                             //ProcessOnvifCommand(_cameraControl.CameraObject.settings.ptzautohomecommand);

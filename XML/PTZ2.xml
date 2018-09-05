@@ -297,6 +297,7 @@
   <Camera id="9">
     <Makes>
       <Make Name="D-Link" Model="DCS-5605" />
+      <Make Name="D-Link" Model="DCS-8525LH" />
       <Make Name="TrendNet" Model="TV-IP672PI" />
       <Make Name="TrendNet" Model="TV-IP862IC" />
     </Makes>
