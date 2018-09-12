@@ -7,12 +7,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using iSpyApplication.Controls;
-using iSpyApplication.DevicePTZ;
+using iSpyApplication.OnvifServices;
 using iSpyApplication.Pelco;
 using iSpyApplication.Sources.Video;
 using iSpyApplication.Utilities;
 using iSpyPRO.DirectShow;
+using DateTime = System.DateTime;
 using Rectangle = System.Drawing.Rectangle;
+using SerialPort = System.IO.Ports.SerialPort;
 
 namespace iSpyApplication
 {
@@ -117,20 +119,19 @@ namespace iSpyApplication
             _cameraControl = cameraControl;
         }
 
-        public void SendPTZDirection(double angle, int repeat)
-        {
-            for (int i = 0; i < repeat; i++)
-            {
-                SendPTZDirection(angle);
-            }
-        }
-
-        public void AddPreset(string name)
+        public void AddPreset(string name, string presetToken)
         {
             try
             {
-                string pt="";
-                _cameraControl?.ONVIFDevice?.PTZClient?.SetPreset(PTZToken, name, ref pt);
+                if (PTZToken != null)
+                {
+                    var ptz = _cameraControl.ONVIFDevice?.PTZ;
+                    if (ptz != null)
+                    {
+                        var ptzSetRequest = new SetPresetRequest(PTZToken, name, presetToken);
+                        var r = ptz?.SetPreset(ptzSetRequest);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -138,11 +139,18 @@ namespace iSpyApplication
             }
         }
 
-        public void DeletePreset(string name)
+        public void DeletePreset(string presetToken)
         {
             try
             {
-                _cameraControl?.ONVIFDevice?.PTZClient?.RemovePreset(PTZToken, name);
+                if (PTZToken != null)
+                {
+                    var ptz = _cameraControl.ONVIFDevice?.PTZ;
+                    if (ptz != null)
+                    {
+                        ptz?.RemovePreset(PTZToken, presetToken);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -741,11 +749,17 @@ namespace iSpyApplication
 
         }
 
-        
+        private Enums.PtzCommand _lastOnvifCommand = Enums.PtzCommand.Center;
+        private DateTime _lastOnvifCommandSent = DateTime.MinValue;
+
         void ProcessOnvif(Enums.PtzCommand command)
         {
-            
-            var ptz = _cameraControl?.ONVIFDevice?.PTZClient;
+            if (command == _lastOnvifCommand && _lastOnvifCommandSent > DateTime.UtcNow.AddSeconds(-4))
+                return;
+            _lastOnvifCommand = command;
+            _lastOnvifCommandSent = DateTime.UtcNow;
+
+            var ptz = _cameraControl?.ONVIFDevice?.PTZ;
             if (ptz != null)
             {
                 //var speed = PTZProfile.ptzConfiguration.defaultPTZSpeed;
@@ -796,8 +810,9 @@ namespace iSpyApplication
                             ptz.Stop(PTZToken, true, true);
                             return;
                     }
-                    var ptzSpeed = new PTZSpeed() { PanTilt = panTilt, Zoom = zoom };
-                    ptz.ContinuousMove(PTZToken, ptzSpeed, "PT10S");
+                    var ptzSpeed = new PTZSpeed { PanTilt = panTilt, Zoom = zoom };
+                    var cmr = new ContinuousMoveRequest(PTZToken, ptzSpeed, "PT10S");
+                    ptz.ContinuousMoveAsync(cmr);
                 }
                 catch (Exception ex)
                 {
@@ -806,25 +821,18 @@ namespace iSpyApplication
             }
         }
 
-        void ProcessOnvifCommand(string name)
+        void ProcessOnvifCommand(string ptzToken)
         {
             if (PTZToken != null)
             {
                 try
                 {
-                    var ptz = _cameraControl?.ONVIFDevice?.PTZClient;
+                    var ptz = _cameraControl.ONVIFDevice?.PTZ;
                     if (ptz != null)
                     {
-                        var presets = ptz.GetPresets(PTZToken);
-                        foreach (var p in presets)
-                        {
-                            if (p.Name == name)
-                            {
-                                ptz.GotoPreset(PTZToken, p.token, null);
-                                break;
-                            }
-                        }
+                        ptz.GotoPresetAsync(PTZToken, ptzToken, null);
                     }
+                    
                 }
                 catch (Exception ex)
                 {
@@ -843,16 +851,15 @@ namespace iSpyApplication
         {
             get
             {
-                var pl = new List<PTZPreset>();
                 try
                 {
                     if (PTZToken != null)
                     {
-                        var ptz = _cameraControl?.ONVIFDevice?.PTZClient;
+                        var ptz = _cameraControl?.ONVIFDevice?.PTZ;
                         if (ptz != null)
                         {
-                            var presets = ptz.GetPresets(PTZToken);
-                            pl.AddRange(presets);
+                            var gpr = new GetPresetsRequest(PTZToken);
+                            return ptz.GetPresets(gpr).Preset;
                         }
                     }
                 }
@@ -860,7 +867,7 @@ namespace iSpyApplication
                 {
                     Logger.LogException(ex);
                 }
-                return pl.ToArray();
+                return new PTZPreset[] { };
             }
         }
 

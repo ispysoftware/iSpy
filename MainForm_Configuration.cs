@@ -1158,6 +1158,10 @@ namespace iSpyApplication
                 {
                     cam.settings.pip = new objectsCameraSettingsPip {enabled = false, config = ""};
                 }
+                if (cam.settings.onvif == null)
+                {
+                    cam.settings.onvif = new objectsCameraSettingsOnvif();
+                }
 
                 if (cam.settings.cloudprovider.provider.ToLower() == "google drive")
                     cam.settings.cloudprovider.provider = "drive";
@@ -2586,7 +2590,7 @@ namespace iSpyApplication
                 notifications = new objectsCameraNotifications(),
                 recorder = new objectsCameraRecorder(),
                 schedule = new objectsCameraSchedule { entries = new objectsCameraScheduleEntry[0] },
-                settings = new objectsCameraSettings { pip = new objectsCameraSettingsPip { enabled = false, config = ""}},
+                settings = new objectsCameraSettings { pip = new objectsCameraSettingsPip { enabled = false, config = ""}, onvif = new objectsCameraSettingsOnvif() },
                 ftp = new objectsCameraFtp(),
                 savelocal = new objectsCameraSavelocal(),
                 id = -1,

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:import namespace="http://www.onvif.org/ver10/device/wsdl" location="http://www.onvif.org/onvif/ver10/device/wsdl/devicemgmt.wsdl" />
+  <wsdl:import namespace="http://www.onvif.org/ver10/media/wsdl" location="http://www.onvif.org/onvif/ver10/media/wsdl/media.wsdl" />
+  <wsdl:import namespace="http://www.onvif.org/ver20/ptz/wsdl" location="http://www.onvif.org/onvif/ver20/ptz/wsdl/ptz.wsdl" />
+  <wsdl:import namespace="http://www.onvif.org/ver10/events/wsdl" location="http://www.onvif.org/onvif/ver10/events/wsdl/event-vs.wsdl" />
+  <wsdl:import namespace="http://www.onvif.org/ver20/imaging/wsdl" location="http://www.onvif.org/onvif/ver20/imaging/wsdl/imaging.wsdl" />
+  <wsdl:import namespace="http://www.onvif.org/ver10/deviceIO/wsdl" location="http://www.onvif.org/onvif/ver10/deviceio.wsdl" />
+  <wsdl:import namespace="http://www.onvif.org/ver20/analytics/wsdl" location="http://www.onvif.org/onvif/ver20/analytics/wsdl/analytics.wsdl" />
+  <wsdl:import namespace="http://www.onvif.org/ver10/network/wsdl" location="http://www.onvif.org/onvif/ver10/network/wsdl/remotediscovery.wsdl" />
+  <wsdl:import namespace="http://www.onvif.org/ver10/analyticsdevice/wsdl" location="http://www.onvif.org/onvif/ver10/analyticsdevice.wsdl" />
+  <wsdl:import namespace="http://www.onvif.org/ver10/display/wsdl" location="http://www.onvif.org/onvif/ver10/display.wsdl" />
+  <wsdl:import namespace="http://www.onvif.org/ver10/receiver/wsdl" location="http://www.onvif.org/onvif/ver10/receiver.wsdl" />
+  <wsdl:import namespace="http://www.onvif.org/ver10/recording/wsdl" location="http://www.onvif.org/onvif/ver10/recording.wsdl" />
+  <wsdl:import namespace="http://www.onvif.org/ver10/search/wsdl" location="http://www.onvif.org/onvif/ver10/search.wsdl" />
+  <wsdl:import namespace="http://www.onvif.org/ver10/replay/wsdl" location="http://www.onvif.org/onvif/ver10/replay.wsdl" />
+  <wsdl:types />
+</wsdl:definitions>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="714cab4c-a046-4330-8a0e-031c78304f48" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="D:\Projects\iSpy\iSpy\Services\Schemas\onvif.wsdl" Protocol="file" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="media.wsdl" MetadataType="Wsdl" ID="3e3edb3c-21fc-4550-8211-ae7794906e45" SourceId="1" SourceUrl="https://www.onvif.org/onvif/ver10/media/wsdl/media.wsdl" />
+    <MetadataFile FileName="common.xsd" MetadataType="Schema" ID="11391f5b-f255-4aeb-a299-061cd17c7f21" SourceId="1" SourceUrl="https://www.onvif.org/onvif/ver10/schema/common.xsd" />
+    <MetadataFile FileName="item.xsd" MetadataType="Schema" ID="3ee20ebe-3697-498e-9067-9727bb6fe0ba" SourceId="1" SourceUrl="http://www.w3.org/2003/05/soap-envelope/" />
+    <MetadataFile FileName="r-2.xsd" MetadataType="Schema" ID="2baabc2d-7d4c-464f-8979-18c20ab4018a" SourceId="1" SourceUrl="http://docs.oasis-open.org/wsrf/r-2.xsd" />
+    <MetadataFile FileName="search.wsdl" MetadataType="Wsdl" ID="bb187ac7-c293-4680-8e8c-ee1a7d87e5f7" SourceId="1" SourceUrl="https://www.onvif.org/onvif/ver10/search.wsdl" />
+    <MetadataFile FileName="item1.xsd" MetadataType="Schema" ID="dd24a09f-34d1-4cf7-ac5d-a670281189b4" SourceId="1" SourceUrl="http://schemas.xmlsoap.org/ws/2004/08/addressing/" />
+    <MetadataFile FileName="ws-addr.xsd" MetadataType="Schema" ID="f0e2d1cf-af9b-43ab-8530-de670ae0b05f" SourceId="1" SourceUrl="http://www.w3.org/2005/08/addressing/ws-addr.xsd" />
+    <MetadataFile FileName="xmlmime.xsd" MetadataType="Schema" ID="a137e1c6-9589-4b38-a421-7774a0f09311" SourceId="1" SourceUrl="http://www.w3.org/2005/05/xmlmime.xsd" />
+    <MetadataFile FileName="recording.wsdl" MetadataType="Wsdl" ID="c5fa6464-ab21-4b21-a9a1-ed70dad14816" SourceId="1" SourceUrl="https://www.onvif.org/onvif/ver10/recording.wsdl" />
+    <MetadataFile FileName="ws-discovery.xsd" MetadataType="Schema" ID="ee789793-0703-48fc-86ed-5e9c06fa7f85" SourceId="1" SourceUrl="http://schemas.xmlsoap.org/ws/2005/04/discovery/ws-discovery.xsd" />
+    <MetadataFile FileName="WS-Resource.wsdl" MetadataType="Wsdl" ID="508cc837-da3c-4c58-a025-8b66ac556b97" SourceId="1" SourceUrl="http://docs.oasis-open.org/wsrf/rw-2.wsdl" />
+    <MetadataFile FileName="b-2.xsd" MetadataType="Schema" ID="a49f3e21-c385-4528-9969-d2c08a56f88e" SourceId="1" SourceUrl="http://docs.oasis-open.org/wsn/b-2.xsd" />
+    <MetadataFile FileName="xml.xsd" MetadataType="Schema" ID="6c6cbd81-e6e9-488d-815a-b44d2c40b02b" SourceId="1" SourceUrl="http://www.w3.org/2001/xml.xsd" />
+    <MetadataFile FileName="bf-2.xsd" MetadataType="Schema" ID="d4683b76-c0ca-47d0-8f14-a4efab6682d5" SourceId="1" SourceUrl="http://docs.oasis-open.org/wsrf/bf-2.xsd" />
+    <MetadataFile FileName="PTZService.wsdl" MetadataType="Wsdl" ID="93bcbd3f-0b37-4a2f-a213-7d1babb1c18f" SourceId="1" SourceUrl="https://www.onvif.org/onvif/ver20/ptz/wsdl/ptz.wsdl" />
+    <MetadataFile FileName="WS-BaseNotification.wsdl" MetadataType="Wsdl" ID="055f280c-5bbf-44f6-9c26-51712ba9842a" SourceId="1" SourceUrl="https://www.onvif.org/onvif/ver10/events/wsdl/bw-2-vs-mod.wsdl" />
+    <MetadataFile FileName="analyticsdevice.wsdl" MetadataType="Wsdl" ID="015a6869-67a1-4c70-96fb-6c31f973c241" SourceId="1" SourceUrl="https://www.onvif.org/onvif/ver10/analyticsdevice.wsdl" />
+    <MetadataFile FileName="onvif.xsd" MetadataType="Schema" ID="defb708e-03c5-4941-8e65-ae5b98bda0bc" SourceId="1" SourceUrl="https://www.onvif.org/onvif/ver10/schema/onvif.xsd" />
+    <MetadataFile FileName="include.xsd" MetadataType="Schema" ID="7061881e-4ad0-4232-abad-6131b8995bb8" SourceId="1" SourceUrl="http://www.w3.org/2004/08/xop/include.xsd" />
+    <MetadataFile FileName="t-1.xsd" MetadataType="Schema" ID="a8cb835e-5f9e-4ac4-8725-ad8dffc8f94e" SourceId="1" SourceUrl="http://docs.oasis-open.org/wsn/t-1.xsd" />
+    <MetadataFile FileName="remotediscovery.wsdl" MetadataType="Wsdl" ID="8f7ab319-5f2f-4cd0-9f60-c2d707477c12" SourceId="1" SourceUrl="https://www.onvif.org/onvif/ver10/network/wsdl/remotediscovery.wsdl" />
+    <MetadataFile FileName="receiver.wsdl" MetadataType="Wsdl" ID="27535714-df3d-4f41-966c-e1eb7b60a43e" SourceId="1" SourceUrl="https://www.onvif.org/onvif/ver10/receiver.wsdl" />
+    <MetadataFile FileName="display.wsdl" MetadataType="Wsdl" ID="1096886b-f783-4dad-b924-639f3afce5ea" SourceId="1" SourceUrl="https://www.onvif.org/onvif/ver10/display.wsdl" />
+    <MetadataFile FileName="replay.wsdl" MetadataType="Wsdl" ID="bc9b0ee2-db23-41a3-9f70-a823c0dbd666" SourceId="1" SourceUrl="https://www.onvif.org/onvif/ver10/replay.wsdl" />
+    <MetadataFile FileName="ImagingService.wsdl" MetadataType="Wsdl" ID="46f00223-e018-4927-b208-9bcd66e66741" SourceId="1" SourceUrl="https://www.onvif.org/onvif/ver20/imaging/wsdl/imaging.wsdl" />
+    <MetadataFile FileName="onvif.wsdl" MetadataType="Wsdl" ID="701815a8-a858-4637-965c-348c1352c110" SourceId="1" SourceUrl="file:///D:/Projects/iSpy/iSpy/Services/Schemas/onvif.wsdl" />
+    <MetadataFile FileName="analytics.wsdl" MetadataType="Wsdl" ID="cf2fb72c-3a9a-4047-8e02-69378adc4952" SourceId="1" SourceUrl="https://www.onvif.org/onvif/ver20/analytics/wsdl/analytics.wsdl" />
+    <MetadataFile FileName="deviceio.wsdl" MetadataType="Wsdl" ID="8624405f-f89b-4419-afa7-e2476a6d386e" SourceId="1" SourceUrl="https://www.onvif.org/onvif/ver10/deviceio.wsdl" />
+    <MetadataFile FileName="event-vs.wsdl" MetadataType="Wsdl" ID="a047c259-afbd-4602-8f81-554f83b067a1" SourceId="1" SourceUrl="https://www.onvif.org/onvif/ver10/events/wsdl/event-vs.wsdl" />
+    <MetadataFile FileName="devicemgmt.wsdl" MetadataType="Wsdl" ID="b10c3b96-2315-44c0-b098-605ae466e939" SourceId="1" SourceUrl="https://www.onvif.org/onvif/ver10/device/wsdl/devicemgmt.wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

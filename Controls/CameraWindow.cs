@@ -90,7 +90,15 @@ namespace iSpyApplication.Controls
             {
                 if (_onvifDevice != null)
                     return _onvifDevice;
-                initONVIF();
+                var p = Camobject.settings.onvifident.Split('|');
+                if (p.Length == 2)
+                {
+                    _onvifDevice = new ONVIFDevice(p[0], Camobject.settings.login,
+                        Camobject.settings.password, Camobject.settings.onvif.rtspport,
+                        Camobject.settings.onvif.timeout);
+                    _onvifDevice.SelectProfile(Convert.ToInt32(p[1]));
+                }
+
                 return _onvifDevice;
             }
         }
@@ -866,6 +874,20 @@ namespace iSpyApplication.Controls
                     break;
                 case 24:
                     Camobject.settings.ptzautotrack = false;
+                    break;
+                case 25:
+                    if (VolumeControl != null && VolumeControl.IsEnabled)
+                    {
+                        VolumeControl.Listening = true;
+                        LogToPlugin(VolumeControl.Listening ? "Listening Started" : "Listening Finished");
+                    }
+                    break;
+                case 26:
+                    if (VolumeControl != null && VolumeControl.IsEnabled)
+                    {
+                        VolumeControl.Listening = false;
+                        LogToPlugin(VolumeControl.Listening ? "Listening Started" : "Listening Finished");
+                    }
                     break;
             }
         }
@@ -3997,6 +4019,7 @@ namespace iSpyApplication.Controls
 
         private void VideoDeviceVideoFinished(object sender, PlayingFinishedEventArgs e)
         {
+            _onvifDevice = null;
             switch (e.ReasonToFinishPlaying)
             {
                 case ReasonToFinishPlaying.DeviceLost:
@@ -4309,48 +4332,6 @@ namespace iSpyApplication.Controls
             }
         }
 
-        private void initONVIF()
-        {
-            ONVIFDevice oDev = null;
-            if (Camobject.settings.onvifident == null)
-                return;
-            var cfg = Camobject.settings.onvifident.Split('|');
-            try
-            {               
-                oDev = new ONVIFDevice(cfg[0], Camobject.settings.login, Camobject.settings.password);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogException(ex);
-            }
-            if (oDev != null)
-            {
-                var urls = oDev.MediaEndpoints;
-                if (urls != null)
-                {
-                    int di;
-                    if (int.TryParse(cfg[1], out di))
-                    {
-                        if (di > urls.Length)
-                        {
-                            di = 0;
-                        }
-                    }
-                    else
-                    {
-                        di = 0;
-                    }
-                    if (urls.Length > di)
-                    {
-                        Camobject.settings.videosourcestring = urls[di].URI.Uri;
-                        oDev.SelectProfile(di);
-                        _onvifDevice = oDev;
-                    }
-                }
-
-            }
-        }
-
         public void Restart()
         {
             Camera?.VideoSource?.Restart();
@@ -4374,7 +4355,7 @@ namespace iSpyApplication.Controls
                 IsEnabled = true;
             }
             _enabling = true;
-
+            _onvifDevice = null;
             try
             {
                 Seekable = false;
@@ -4624,9 +4605,6 @@ namespace iSpyApplication.Controls
                 SetVideoSize();
 
                 CameraEnabled?.Invoke(this, EventArgs.Empty);
-
-                if (Camobject.ptz == -5)
-                    Task.Factory.StartNew(initONVIF);
             }
             catch (Exception ex)
             {

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using iSpyApplication.Onvif;
 using iSpyApplication.Utilities;
+using iSpyPRO.DirectShow;
 
 namespace iSpyApplication.Controls
 {
@@ -66,6 +67,7 @@ namespace iSpyApplication.Controls
             {
                 txtOnvifUsername.Text = CameraControl.Camobject.settings.login;
                 txtOnvifPassword.Text = CameraControl.Camobject.settings.password;
+                numRTSP.Value = CameraControl.Camobject.settings.onvif.rtspport;
             }
         }
         #region Nested type: UISync
@@ -137,7 +139,7 @@ namespace iSpyApplication.Controls
             int port = 0;
             if (chkOverrideRTSPPort.Checked)
                 port = Convert.ToInt32(numRTSP.Value);
-            var od = new ONVIFDevice(dev, txtOnvifUsername.Text, txtOnvifPassword.Text, port);
+            var od = new ONVIFDevice(dev, txtOnvifUsername.Text, txtOnvifPassword.Text, port, 15);
 
             if (od.Profiles == null)
             {

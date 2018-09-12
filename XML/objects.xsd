@@ -166,6 +166,14 @@
                                                         </xs:sequence>
                                                       </xs:complexType>
                                                     </xs:element>
+                                                    <xs:element name="onvif">
+                                                      <xs:complexType>
+                                                        <xs:sequence>
+                                                          <xs:element name="rtspport" type="xs:int" default="0" />
+                                                          <xs:element name="timeout" type="xs:int" default="15" />
+                                                        </xs:sequence>
+                                                      </xs:complexType>
+                                                    </xs:element>
                                                 </xs:sequence>
                                                 <xs:attribute name="desktopresizewidth" type="xs:int" use="required"/>
                                                 <xs:attribute name="desktopresizeheight" type="xs:int" use="required"/>

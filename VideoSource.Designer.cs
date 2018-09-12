@@ -1531,6 +1531,7 @@ namespace iSpyApplication
             this.onvifWizard1.Name = "onvifWizard1";
             this.onvifWizard1.Size = new System.Drawing.Size(722, 288);
             this.onvifWizard1.TabIndex = 59;
+            this.onvifWizard1.Load += new System.EventHandler(this.onvifWizard1_Load);
             // 
             // splitter1
             // 

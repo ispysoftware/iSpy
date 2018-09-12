@@ -99,11 +99,11 @@
             this.pnlStep1.Controls.Add(this.ddlTransport, 1, 4);
             this.pnlStep1.Controls.Add(this.btnConnect, 1, 6);
             this.pnlStep1.Controls.Add(this.ddlDeviceURL, 1, 2);
-            this.pnlStep1.Controls.Add(this.label1, 1, 3);
             this.pnlStep1.Controls.Add(this.lblPassword, 0, 1);
             this.pnlStep1.Controls.Add(this.label2, 2, 1);
             this.pnlStep1.Controls.Add(this.numRTSP, 3, 1);
             this.pnlStep1.Controls.Add(this.chkOverrideRTSPPort, 3, 0);
+            this.pnlStep1.Controls.Add(this.label1, 1, 3);
             this.pnlStep1.Location = new System.Drawing.Point(29, 12);
             this.pnlStep1.Name = "pnlStep1";
             this.pnlStep1.RowCount = 7;
@@ -209,16 +209,18 @@
             this.ddlDeviceURL.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ddlDeviceURL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
             this.ddlDeviceURL.FormattingEnabled = true;
-            this.ddlDeviceURL.Location = new System.Drawing.Point(153, 65);
+            this.ddlDeviceURL.Location = new System.Drawing.Point(150, 62);
+            this.ddlDeviceURL.Margin = new System.Windows.Forms.Padding(0);
             this.ddlDeviceURL.Name = "ddlDeviceURL";
-            this.ddlDeviceURL.Size = new System.Drawing.Size(483, 74);
+            this.ddlDeviceURL.Size = new System.Drawing.Size(489, 80);
             this.ddlDeviceURL.TabIndex = 45;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.pnlStep1.SetColumnSpan(this.label1, 3);
-            this.label1.Location = new System.Drawing.Point(153, 142);
+            this.label1.Location = new System.Drawing.Point(153, 145);
+            this.label1.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(188, 13);
             this.label1.TabIndex = 46;
@@ -393,6 +395,6 @@
         private System.Windows.Forms.Label lblPassword;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox chkOverrideRTSPPort;
-        private System.Windows.Forms.NumericUpDown numRTSP;
+        public System.Windows.Forms.NumericUpDown numRTSP;
     }
 }

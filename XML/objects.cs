@@ -668,6 +668,8 @@ public partial class objectsCameraSettings {
     
     private objectsCameraSettingsPip pipField;
     
+    private objectsCameraSettingsOnvif onvifField;
+    
     private int desktopresizewidthField;
     
     private int desktopresizeheightField;
@@ -1518,6 +1520,16 @@ public partial class objectsCameraSettings {
     }
     
     /// <remarks/>
+    public objectsCameraSettingsOnvif onvif {
+        get {
+            return this.onvifField;
+        }
+        set {
+            this.onvifField = value;
+        }
+    }
+    
+    /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
     public int desktopresizewidth {
         get {
@@ -1977,6 +1989,44 @@ public partial class objectsCameraSettingsPip {
         }
         set {
             this.configField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+public partial class objectsCameraSettingsOnvif {
+    
+    private int rtspportField;
+    
+    private int timeoutField;
+    
+    public objectsCameraSettingsOnvif() {
+        this.rtspportField = 0;
+        this.timeoutField = 15;
+    }
+    
+    /// <remarks/>
+    public int rtspport {
+        get {
+            return this.rtspportField;
+        }
+        set {
+            this.rtspportField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public int timeout {
+        get {
+            return this.timeoutField;
+        }
+        set {
+            this.timeoutField = value;
         }
     }
 }

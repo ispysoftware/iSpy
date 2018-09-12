@@ -80,7 +80,7 @@ namespace iSpyApplication.CameraDiscovery
                 }
 
                 var onvifurl = httpUri + "onvif/device_service";
-                var dev = new ONVIFDevice(onvifurl, Username, Password);
+                var dev = new ONVIFDevice(onvifurl, Username, Password,0,15);
                 if (dev.Profiles != null)
                 {
                     foreach (var p in dev.Profiles)

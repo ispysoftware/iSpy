@@ -655,6 +655,18 @@ namespace iSpyApplication.Controls
                 case 22:
                     Micobject.settings.messaging = false;
                     break;
+                case 25:
+                    if (IsEnabled)
+                    {
+                        Listening = true;
+                    }
+                    break;
+                case 26:
+                    if (IsEnabled)
+                    {
+                        Listening = false;
+                    }
+                    break;
             }
         }
         #endregion

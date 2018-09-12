@@ -1030,7 +1030,9 @@ namespace iSpyApplication
                 new ScheduleAction("Messaging: ON",21,ScheduleAction.ActionTypeID.All),
                 new ScheduleAction("Messaging: OFF",22,ScheduleAction.ActionTypeID.All),
                 new ScheduleAction("PTZ Tracking: ON",23,ScheduleAction.ActionTypeID.CameraOnly),
-                new ScheduleAction("PTZ Tracking: OFF",24,ScheduleAction.ActionTypeID.CameraOnly)
+                new ScheduleAction("PTZ Tracking: OFF",24,ScheduleAction.ActionTypeID.CameraOnly),
+                new ScheduleAction("Listen: ON",25,ScheduleAction.ActionTypeID.All),
+                new ScheduleAction("Listen: OFF",26,ScheduleAction.ActionTypeID.All)
             };
         public static string[] WebRestrictedAlertTypes = { "S", "EXE" };
         public static string ScheduleDescription(int id)

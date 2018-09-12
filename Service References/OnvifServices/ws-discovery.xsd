@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.xmlsoap.org/ws/2005/04/discovery" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" blockDefault="#all" elementFormDefault="qualified" targetNamespace="http://schemas.xmlsoap.org/ws/2005/04/discovery" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://schemas.xmlsoap.org/ws/2004/08/addressing" namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing" />
+  <xs:element name="Hello" type="tns:HelloType" />
+  <xs:complexType name="HelloType">
+    <xs:sequence>
+      <xs:element ref="wsa:EndpointReference" />
+      <xs:element minOccurs="0" ref="tns:Types" />
+      <xs:element minOccurs="0" ref="tns:Scopes" />
+      <xs:element minOccurs="0" ref="tns:XAddrs" />
+      <xs:element ref="tns:MetadataVersion" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" processContents="lax" />
+    </xs:sequence>
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+  <xs:simpleType name="RelationshipType">
+    <xs:restriction base="xs:QName">
+      <xs:enumeration value="tns:Suppression" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="OpenRelationshipType">
+    <xs:union memberTypes="tns:RelationshipType xs:QName" />
+  </xs:simpleType>
+  <xs:element name="Bye" type="tns:ByeType" />
+  <xs:complexType name="ByeType">
+    <xs:sequence>
+      <xs:element ref="wsa:EndpointReference" />
+      <xs:element minOccurs="0" ref="tns:Types" />
+      <xs:element minOccurs="0" ref="tns:Scopes" />
+      <xs:element minOccurs="0" ref="tns:XAddrs" />
+      <xs:element minOccurs="0" ref="tns:MetadataVersion" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" processContents="lax" />
+    </xs:sequence>
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+  <xs:element name="Probe" type="tns:ProbeType" />
+  <xs:complexType name="ProbeType">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="tns:Types" />
+      <xs:element minOccurs="0" ref="tns:Scopes" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" processContents="lax" />
+    </xs:sequence>
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+  <xs:element name="ProbeMatches" type="tns:ProbeMatchesType" />
+  <xs:complexType name="ProbeMatchesType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ProbeMatch" type="tns:ProbeMatchType" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" processContents="lax" />
+    </xs:sequence>
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+  <xs:complexType name="ProbeMatchType">
+    <xs:sequence>
+      <xs:element ref="wsa:EndpointReference" />
+      <xs:element minOccurs="0" ref="tns:Types" />
+      <xs:element minOccurs="0" ref="tns:Scopes" />
+      <xs:element minOccurs="0" ref="tns:XAddrs" />
+      <xs:element ref="tns:MetadataVersion" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" processContents="lax" />
+    </xs:sequence>
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+  <xs:element name="Resolve" type="tns:ResolveType" />
+  <xs:complexType name="ResolveType">
+    <xs:sequence>
+      <xs:element ref="wsa:EndpointReference" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" processContents="lax" />
+    </xs:sequence>
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+  <xs:element name="ResolveMatches" type="tns:ResolveMatchesType" />
+  <xs:complexType name="ResolveMatchesType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ResolveMatch" type="tns:ResolveMatchType" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" processContents="lax" />
+    </xs:sequence>
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+  <xs:complexType name="ResolveMatchType">
+    <xs:sequence>
+      <xs:element ref="wsa:EndpointReference" />
+      <xs:element minOccurs="0" ref="tns:Types" />
+      <xs:element minOccurs="0" ref="tns:Scopes" />
+      <xs:element ref="tns:XAddrs" />
+      <xs:element ref="tns:MetadataVersion" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" processContents="lax" />
+    </xs:sequence>
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+  <xs:element name="Types" type="tns:QNameListType" />
+  <xs:simpleType name="QNameListType">
+    <xs:list itemType="xs:QName" />
+  </xs:simpleType>
+  <xs:element name="Scopes" type="tns:ScopesType" />
+  <xs:complexType name="ScopesType">
+    <xs:simpleContent>
+      <xs:extension base="tns:UriListType">
+        <xs:attribute name="MatchBy" type="xs:anyURI" />
+        <xs:anyAttribute namespace="##other" processContents="lax" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:element name="XAddrs" type="tns:UriListType" />
+  <xs:simpleType name="UriListType">
+    <xs:list itemType="xs:anyURI" />
+  </xs:simpleType>
+  <xs:element name="MetadataVersion" type="xs:unsignedInt" />
+  <xs:simpleType name="FaultCodeType">
+    <xs:restriction base="xs:QName">
+      <xs:enumeration value="tns:MatchingRuleNotSupported" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="FaultCodeOpenType">
+    <xs:union memberTypes="tns:FaultCodeType xs:QName" />
+  </xs:simpleType>
+  <xs:element name="SupportedMatchingRules" type="tns:UriListType" />
+  <xs:attribute name="Id" type="xs:ID" />
+  <xs:element name="Security" type="tns:SecurityType" />
+  <xs:complexType name="SecurityType">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="tns:Sig" />
+    </xs:sequence>
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+  <xs:element name="Sig" type="tns:SigType" />
+  <xs:complexType name="SigType">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" processContents="lax" />
+    </xs:sequence>
+    <xs:attribute name="Scheme" type="xs:anyURI" use="required" />
+    <xs:attribute name="KeyId" type="xs:base64Binary" />
+    <xs:attribute name="Refs" type="xs:IDREFS" use="required" />
+    <xs:attribute name="Sig" type="xs:base64Binary" use="required" />
+    <xs:anyAttribute namespace="##other" processContents="lax" />
+  </xs:complexType>
+  <xs:element name="AppSequence" type="tns:AppSequenceType" />
+  <xs:complexType name="AppSequenceType">
+    <xs:complexContent mixed="false">
+      <xs:restriction base="xs:anyType">
+        <xs:attribute name="InstanceId" type="xs:unsignedInt" use="required" />
+        <xs:attribute name="SequenceId" type="xs:anyURI" />
+        <xs:attribute name="MessageNumber" type="xs:unsignedInt" use="required" />
+        <xs:anyAttribute namespace="##other" processContents="lax" />
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>

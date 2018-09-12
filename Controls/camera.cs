@@ -843,7 +843,7 @@ namespace iSpyApplication.Controls
 
                 if (dratio > dratiomin)
                 {
-                    CW.PTZ.SendPTZDirection(angle, 1);
+                    CW.PTZ.SendPTZDirection(angle);
                     CW.LastAutoTrackSent = Helper.Now;
                     CW.Ptzneedsstop = true;
                 }

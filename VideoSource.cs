@@ -784,15 +784,15 @@ namespace iSpyApplication
                         return;
                     }
 
-                    url = cfg.URI.Uri;
+                    url = cfg.Uri.Uri;
 
                     CameraLogin = onvifWizard1.txtOnvifUsername.Text;
                     CameraPassword = onvifWizard1.txtOnvifPassword.Text;
                     VideoSourceString = url;
-                    CameraControl.Camobject.settings.onvifident = onvifWizard1.ddlDeviceURL.Text + "|" + onvifWizard1.lbOnvifURLs.SelectedIndex;
+                    CameraControl.Camobject.settings.onvifident = onvifWizard1.ddlDeviceURL.Text+ "|" + onvifWizard1.lbOnvifURLs.SelectedIndex;
                     CameraControl.Camobject.ptz = -5;//onvif
                     CameraControl.Camobject.settings.rtspmode = onvifWizard1.ddlTransport.SelectedIndex;
-                    
+                    CameraControl.Camobject.settings.onvif.rtspport = (int)onvifWizard1.numRTSP.Value;
                     SetVideoSize(new Size(cfg.Width, cfg.Height));
 
                     if (onvifWizard1.ddlConnectWith.SelectedIndex==1)
@@ -1693,6 +1693,11 @@ namespace iSpyApplication
         private void chkUseGPU_CheckedChanged(object sender, EventArgs e)
         {
             CameraControl.Camobject.settings.useGPU = chkUseGPU.Checked;
+        }
+
+        private void onvifWizard1_Load(object sender, EventArgs e)
+        {
+
         }
     }
     

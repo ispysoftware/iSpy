@@ -543,14 +543,14 @@ namespace iSpyApplication.Server
 
                         try
                         {
-                            var dev = new ONVIFDevice(url, un, pwd);
+                            var dev = new ONVIFDevice(url, un, pwd,0,15);
                             var p = dev.Profiles;
                             if (p == null)
                                 throw new ApplicationException("ONVIF failed to connect");
                             for (int i = 0; i < p.Length; i++)
                             {
                                 dev.SelectProfile(i);
-                                var ep = dev.Endpoint;
+                                var ep = dev.StreamEndpoint;
                                 if (ep != null && ep.Width > 0)
                                 {
                                     resp += string.Format(template, dev.Profile.Name + " (" + ep.Width + "x" + ep.Height + ")", i);
@@ -737,15 +737,15 @@ namespace iSpyApplication.Server
                                             if (oc.settings.namevaluesettings.IndexOf("use=", StringComparison.Ordinal) == -1)
                                                 oc.settings.namevaluesettings = "use=ffmpeg,transport=RTSP";
 
-                                            if (oc.settings.onvifident != null)
-                                            {
-                                                string[] cfg = oc.settings.onvifident.Split('|');
-                                                if (cfg.Length == 2)
-                                                {
-                                                    oc.settings.namevaluesettings += ",profileid=" + cfg[1];
-                                                    oc.settings.onvifident = cfg[0];
-                                                }
-                                            }
+                                            //if (oc.settings.onvifident != null)
+                                            //{
+                                            //    string[] cfg = oc.settings.onvifident.Split('|');
+                                            //    if (cfg.Length == 2)
+                                            //    {
+                                            //        oc.settings.namevaluesettings += ",profileid=" + cfg[1];
+                                            //        oc.settings.onvifident = cfg[0];
+                                            //    }
+                                            //}
 
                                             string svlc = "";
                                             if (VlcHelper.VlcInstalled)

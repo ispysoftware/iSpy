@@ -2225,7 +2225,7 @@ namespace iSpyApplication
                     {
                         try
                         {
-                            CameraControl.PTZ.AddPreset(s);
+                            CameraControl.PTZ.AddPreset(s,null);
                         }
                         catch (Exception ex)
                         {
