@@ -18,6 +18,7 @@ using iSpyApplication.Utilities;
 using NAudio.Wave;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SharpDX.DirectInput;
 using DateTime = System.DateTime;
 using File = System.IO.File;
 using IPAddress = System.Net.IPAddress;
@@ -537,9 +538,9 @@ namespace iSpyApplication.Server
                     break;
                 case "onvifdiscover":
                     {
-                        string un = GetVar(cmd, "un");
-                        string pwd = GetVar(cmd, "pwd");
-                        string url = GetVar(cmd, "surl");
+                        string un = GetVar(sRequest, "un");
+                        string pwd = GetVar(sRequest, "pwd");
+                        string url = GetVar(sRequest, "surl");
 
                         try
                         {
@@ -736,16 +737,6 @@ namespace iSpyApplication.Server
                                         case "9":
                                             if (oc.settings.namevaluesettings.IndexOf("use=", StringComparison.Ordinal) == -1)
                                                 oc.settings.namevaluesettings = "use=ffmpeg,transport=RTSP";
-
-                                            //if (oc.settings.onvifident != null)
-                                            //{
-                                            //    string[] cfg = oc.settings.onvifident.Split('|');
-                                            //    if (cfg.Length == 2)
-                                            //    {
-                                            //        oc.settings.namevaluesettings += ",profileid=" + cfg[1];
-                                            //        oc.settings.onvifident = cfg[0];
-                                            //    }
-                                            //}
 
                                             string svlc = "";
                                             if (VlcHelper.VlcInstalled)
@@ -2374,6 +2365,11 @@ namespace iSpyApplication.Server
                                 if (c.settings.sourceindex == 9)
                                 {
                                     c.ptz = -5;
+                                    var ss = NV(c.settings.namevaluesettings, "use");
+                                    //c.settings.sourceindex = ss == "VLC" ? 5 : 2;
+                                    int pi = 0;
+                                    int.TryParse(NV(c.settings.namevaluesettings, "profilename"), out pi);
+                                    c.settings.videosourcestring = "";
                                 }
 
                                 var cw = MainForm.InstanceReference.GetCameraWindow(c.id);

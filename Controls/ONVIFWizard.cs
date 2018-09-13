@@ -68,7 +68,16 @@ namespace iSpyApplication.Controls
                 txtOnvifUsername.Text = CameraControl.Camobject.settings.login;
                 txtOnvifPassword.Text = CameraControl.Camobject.settings.password;
                 numRTSP.Value = CameraControl.Camobject.settings.onvif.rtspport;
+                ddlDeviceURL.Text = CameraControl.Camobject.settings.onvifident;
+                ddlTransport.SelectedIndex = CameraControl.Camobject.settings.rtspmode;
+
+                string conn = CameraControl.Nv("use");
+                if (!string.IsNullOrEmpty(conn) && VlcHelper.VlcInstalled)
+                    ddlConnectWith.SelectedItem = conn;
+                chkOverrideRTSPPort.Checked = numRTSP.Value != 0;
             }
+
+
         }
         #region Nested type: UISync
 
@@ -169,6 +178,10 @@ namespace iSpyApplication.Controls
         private void chkOverrideRTSPPort_CheckedChanged(object sender, EventArgs e)
         {
             numRTSP.Enabled = chkOverrideRTSPPort.Checked;
+            if (!numRTSP.Enabled)
+            {
+                numRTSP.Value = 0;
+            }
         }
     }
 }

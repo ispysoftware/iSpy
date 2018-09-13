@@ -133,7 +133,7 @@ namespace iSpyApplication.Sources.Video
             {
                 if (_modeAudio)
                     return _audiosource.settings.sourcename;
-                return _source.settings.videosourcestring;
+                return _cw.Source;
             }
         }
 

@@ -148,7 +148,7 @@ namespace iSpyApplication.Sources.Video
                 if (IsAudio)
                     return _audiosource.settings.sourcename;
 
-                return _source.settings.videosourcestring;
+                return _cw.Source;
             }
         }
 

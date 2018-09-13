@@ -7,7 +7,7 @@ namespace iSpyApplication.Sources.Video
 {
     internal class VideoBase: FFmpegBase
     {
-        private readonly CameraWindow _cw;
+        internal readonly CameraWindow _cw;
         public string Tokenise(string sourcestring)
         {
             if (_cw == null)

@@ -596,18 +596,28 @@ namespace iSpyApplication
 
         private void AddCamera(ConnectionOption e)
         {
-            string st = e.Source+":";
-            if (!string.IsNullOrEmpty(e.MmUrl.version))
-                st += e.MmUrl.version;
-            else
-                st += "Other";
             string source = e.Source;
-            if (source == "VLC" && !_vlc)
-                source = "FFMPEG";
-            st += ": " + source +" " + e.URL.Replace("&", "&&");
+            string st = source + ":";
+
+            if (e.MmUrl == null)
+            {
+                //onvif
+                st += ": " + e.URL.Replace("&", "&&");
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(e.MmUrl.version))
+                    st += e.MmUrl.version;
+                else
+                    st += "Other";
+                
+                if (source == "VLC" && !_vlc)
+                    source = "FFMPEG";
+                st += ": " + e.URL.Replace("&", "&&");
+            }
 
             var rb = new RadioButton { Text = st, AutoSize = true, Tag = e };
-            if (source == "FFMPEG" || source == "VLC")
+            if (source == "FFMPEG" || source == "VLC" || source=="ONVIF")
                 rb.Font = new Font(rb.Font, FontStyle.Bold);
 
             UISync.Execute(() => pnlOptions.Controls.Add(rb));
@@ -754,6 +764,7 @@ namespace iSpyApplication
                         model = mm[1].Trim().ToUpper();
                 }
 
+                
                 ConnectionOption s = null;
                 for (int j = 0; j < pnlOptions.Controls.Count; j++)
                 {

@@ -247,6 +247,21 @@ namespace iSpyApplication
 
         }
 
+        public static void NVSet(CameraWindow c, string name, string val)
+        {
+            var t = c.Camobject.settings.namevaluesettings.Split(',').ToList();
+            var nv = t.FirstOrDefault(p => p.ToLowerInvariant().StartsWith(name.ToLowerInvariant() + "="));
+            if (nv == null)
+            {
+                t.Add(name + "=" + val);
+            }
+            else
+            {
+                nv = name + "=" + val;
+            }
+            c.Camobject.settings.namevaluesettings = string.Join(",", t);
+        }
+
         public static string GetLevelDataPoints(StringBuilder motionData)
         {
             var elements = motionData.ToString().Trim(',').Split(',');

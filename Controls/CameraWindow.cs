@@ -22,6 +22,7 @@ using System.Xml.Serialization;
 using FFmpeg.AutoGen;
 using iSpyApplication.Cloud;
 using iSpyApplication.Onvif;
+using iSpyApplication.Pelco;
 using iSpyApplication.Realtime;
 using iSpyApplication.Server;
 using iSpyApplication.Sources;
@@ -90,16 +91,40 @@ namespace iSpyApplication.Controls
             {
                 if (_onvifDevice != null)
                     return _onvifDevice;
-                var p = Camobject.settings.onvifident.Split('|');
-                if (p.Length == 2)
+
+                try
                 {
+                    var p = Camobject.settings.onvifident.Split('|');
+                    if (p.Length > 1)
+                    {
+                        Camobject.settings.onvifident = p[0];
+                        Helper.NVSet(this, "profilename", p[1]);
+                    }
+
+                    string url = Camobject.settings.onvifident;
+                    string pn = Nv("profilename");
+                    int pi = 0;
+                    int.TryParse(pn, out pi);
+
                     _onvifDevice = new ONVIFDevice(p[0], Camobject.settings.login,
                         Camobject.settings.password, Camobject.settings.onvif.rtspport,
                         Camobject.settings.onvif.timeout);
-                    _onvifDevice.SelectProfile(Convert.ToInt32(p[1]));
-                }
 
-                return _onvifDevice;
+                    _onvifDevice.SelectProfile(pi);
+
+
+                    return _onvifDevice;
+                }
+                catch(Exception ex)
+                {
+                    Logger.LogException(ex,"Onvif discovery");
+                    _onvifDevice = null;
+                    return null;
+                }
+            }
+            set
+            {
+                _onvifDevice = null;
             }
         }
 
@@ -4337,6 +4362,16 @@ namespace iSpyApplication.Controls
             Camera?.VideoSource?.Restart();
         }
 
+        private string _sourceOverload = "";
+        public string Source
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(_sourceOverload))
+                    return _sourceOverload;
+                return Camobject.settings.videosourcestring;
+            }
+        }
         public void Enable()
         {
             if (_enabling)
@@ -4356,6 +4391,7 @@ namespace iSpyApplication.Controls
             }
             _enabling = true;
             _onvifDevice = null;
+            _sourceOverload = null;
             try
             {
                 Seekable = false;
@@ -4417,7 +4453,13 @@ namespace iSpyApplication.Controls
                         }
                         break;
                     case 9:
-                        
+                        _sourceOverload = ONVIFDevice.StreamEndpoint.Uri.Uri.ToString();
+                        if (Nv("use")=="VLC")
+                        {
+                            OpenVideoSource(new VlcStream(this), true);
+                        }
+                        else
+                            OpenVideoSource(new MediaStream(this), true);
                         break;
                     case 10:
                         int icam;

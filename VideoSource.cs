@@ -253,6 +253,7 @@ namespace iSpyApplication
                     }
                     break;
             }
+            onvifWizard1.CameraControl = CameraControl;
 
             if (!string.IsNullOrEmpty(CameraControl.Camobject.decodekey))
                 txtDecodeKey.Text = CameraControl.Camobject.decodekey;
@@ -788,21 +789,15 @@ namespace iSpyApplication
 
                     CameraLogin = onvifWizard1.txtOnvifUsername.Text;
                     CameraPassword = onvifWizard1.txtOnvifPassword.Text;
-                    VideoSourceString = url;
-                    CameraControl.Camobject.settings.onvifident = onvifWizard1.ddlDeviceURL.Text+ "|" + onvifWizard1.lbOnvifURLs.SelectedIndex;
+                    VideoSourceString = CameraControl.Camobject.settings.onvifident = onvifWizard1.ddlDeviceURL.Text;
+                    nv = "profilename=" + onvifWizard1.lbOnvifURLs.SelectedIndex.ToString() + ",use=" + (onvifWizard1.ddlConnectWith.SelectedIndex == 0 ? "FFMPEG" : "VLC");
+                    
                     CameraControl.Camobject.ptz = -5;//onvif
                     CameraControl.Camobject.settings.rtspmode = onvifWizard1.ddlTransport.SelectedIndex;
                     CameraControl.Camobject.settings.onvif.rtspport = (int)onvifWizard1.numRTSP.Value;
                     SetVideoSize(new Size(cfg.Width, cfg.Height));
 
-                    if (onvifWizard1.ddlConnectWith.SelectedIndex==1)
-                    {
-                        SourceIndex = 5;
-                        CameraControl.Camobject.settings.vlcargs = txtVLCArgs.Text.Trim();
-                    }
-                    else
-                        SourceIndex = 2;
-
+                    CameraControl.Camobject.settings.vlcargs = txtVLCArgs.Text.Trim();
                     break;
                 case 10:
                     if (ddlCloneCamera.SelectedIndex>-1)
