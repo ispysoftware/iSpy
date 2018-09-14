@@ -4741,6 +4741,7 @@ namespace iSpyApplication.Controls
                     vl.Micobject.detector.recordonalert = false;
                     vl.Micobject.detector.recordondetect = false;
                     SetVolumeLevel(vl.Micobject.id);
+                    MainForm.NeedsSync = true;
                 }
 
                 var m = vl.Micobject;
@@ -4757,6 +4758,7 @@ namespace iSpyApplication.Controls
                     m.settings.bits = 16;
                     vl.Enable();
                 }
+                
             }
         }
 

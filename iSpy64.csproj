@@ -459,13 +459,19 @@
     <Compile Include="Importer.Designer.cs">
       <DependentUpon>Importer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Onvif\BasicAuthBehaviour.cs" />
-    <Compile Include="Onvif\BasicAuthMessageInspector.cs" />
+    <Compile Include="Onvif\Behaviour\CustomAddressHeader.cs" />
+    <Compile Include="Onvif\Behaviour\CustomEndpointBehavior.cs" />
+    <Compile Include="Onvif\Behaviour\CustomMessageInspector.cs" />
+    <Compile Include="Onvif\ConnectionParameters.cs" />
+    <Compile Include="Onvif\ConnectionStateInfo.cs" />
     <Compile Include="Onvif\Discovery.cs" />
+    <Compile Include="Onvif\IOnvifClientFactory.cs" />
     <Compile Include="Onvif\MulticastCapabilitiesBindingElement.cs" />
+    <Compile Include="Onvif\NetworkCredentialExtensions.cs" />
+    <Compile Include="Onvif\OnvifClientFactory.cs" />
     <Compile Include="Onvif\ONVIFDevice.cs" />
-    <Compile Include="Onvif\PasswordDigestBehaviour.cs" />
-    <Compile Include="Onvif\PasswordDigestMessageInspector.cs" />
+    <Compile Include="Onvif\Security\DigestSecurityHeader.cs" />
+    <Compile Include="Onvif\Security\SecurityToken.cs" />
     <Compile Include="PTZConfig.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -484,32 +490,7 @@
     <Compile Include="Server\WebSocketConnection.cs" />
     <Compile Include="Server\WebSocketServer.cs" />
     <Compile Include="Server\X509.cs" />
-    <Compile Include="Service References\DeviceClient\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\DeviceClient\Reference1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\DeviceMedia\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\DeviceMedia\Reference1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\DevicePTZ\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\DevicePTZ\Reference1.cs">
+    <Compile Include="Service References\OnvifServices\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -1255,25 +1236,924 @@
     <Content Include="redist\WindowsServer2003-KB942288-v4-x64.exe" />
     <Content Include="redist\WindowsServer2003-KB942288-v4-x86.exe" />
     <Content Include="redist\WindowsXP-KB942288-v3-x86.exe" />
-    <Content Include="Service References\DeviceClient\configuration.svcinfo" />
-    <Content Include="Service References\DeviceClient\configuration91.svcinfo" />
-    <Content Include="Service References\DeviceClient\Reference.svcmap">
+    <None Include="Service References\OnvifServices\configuration91.svcinfo" />
+    <None Include="Service References\OnvifServices\configuration.svcinfo" />
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AddScopesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AnalyticsEngine.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AnalyticsEngineControl.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AnalyticsEngineInput.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AnalyticsModuleConfigOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AnalyticsStateInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ArrayOfFileProgress.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AudioDecoderConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AudioDecoderConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AudioEncoderConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AudioEncoderConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AudioOutput.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AudioOutputConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AudioOutputConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AudioSource.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AudioSourceConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AudioSourceConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.BackupFile.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.BinaryData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ByeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities10.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities11.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities12.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities2.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities3.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities4.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities5.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities6.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities7.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities8.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities9.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Certificate.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CertificateInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CertificateStatus.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CodingCapabilities.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Config.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ConfigOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ContinuousMoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreateAnalyticsEngineControlResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreateAnalyticsEngineInputsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreateAnalyticsModulesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreateCertificateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreateOSDResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreatePaneConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreatePullPointResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreatePullPointResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreatePullPointSubscriptionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreateRecordingJobResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreateRulesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreateUsersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DeleteAnalyticsEngineInputsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DeleteAnalyticsModulesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DeleteCertificatesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DeleteDot1XConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DeleteGeoLocationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DeleteOSDResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DeletePaneConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DeleteRulesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DeleteUsersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DestroyPullPointResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DestroyPullPointResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DeviceServiceCapabilities.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DigitalInput.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DigitalInputConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DiscoveryMode.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DNSInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Dot11AvailableNetworks.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Dot11Capabilities.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Dot11Status.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Dot1XConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DynamicDNSInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.EndpointReferenceType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.EndpointReferenceType1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ExportRecordedDataResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.FindEventResultList.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.FindEventsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.FindMetadataResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.FindMetadataResultList.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.FindPTZPositionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.FindPTZPositionResultList.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.FindRecordingResultList.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.FindRecordingsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAnalyticsDeviceStreamUriResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAnalyticsEngineControlsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAnalyticsEngineInputsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAnalyticsEnginesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAnalyticsModuleOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAnalyticsModulesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioDecoderConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioEncoderConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioOutputConfigurationOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioOutputConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioOutputConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioOutputsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioOutputsResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioSourceConfigurationOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioSourceConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioSourceConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioSourcesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioSourcesResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCACertificatesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCapabilitiesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCertificateInformationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCertificatesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCertificatesStatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCompatibleAudioDecoderConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCompatibleAudioEncoderConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCompatibleAudioOutputConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCompatibleAudioSourceConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCompatibleConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCompatibleMetadataConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCompatibleVideoAnalyticsConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCompatibleVideoEncoderConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCompatibleVideoSourceConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCurrentMessageResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCurrentMessageResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetDeviceInformationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetDigitalInputsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetDisplayOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetDot11CapabilitiesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetDot1XConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetDPAddressesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetEndpointReferenceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetEventPropertiesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetEventSearchResultsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetExportRecordedDataStateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetGeoLocationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetGuaranteedNumberOfVideoEncoderInstancesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetLayoutResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetMediaAttributesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetMessagesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetMessagesResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetMetadataConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetMetadataSearchResultsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetNetworkInterfacesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetNetworkProtocolsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetNodesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetOSDOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetOSDResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetOSDsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetPaneConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetPaneConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetPkcs10RequestResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetPresetsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetPresetsResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetPresetToursResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetProfilesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetPTZPositionSearchResultsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetReceiversResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetRecordingJobsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetRecordingJobsResponseItem.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetRecordingSearchResultsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetRecordingsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetRecordingsResponseItem.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetRelayOutputOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetRelayOutputsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetRelayOutputsResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetReplayUriResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetRuleOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetRulesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetScopesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetSerialPortsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetServicesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetStorageConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetSystemBackupResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetSystemUrisResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetSystemUrisResponseExtension.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetUsersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoAnalyticsConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoEncoderConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoOutputConfigurationOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoOutputConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoOutputsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoSourceConfigurationOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoSourceConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoSourceConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoSourceModesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoSourcesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoSourcesResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetWsdlUrlResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.HelloResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.HostnameInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ImagingOptions20.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ImagingPreset.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ImagingSettings20.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ImagingStatus20.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.IPAddressFilter.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Layout.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.LayoutOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.LoadCACertificatesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.LoadCertificatesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.LoadCertificateWithPrivateKeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.LocationEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.MediaAttributes.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.MediaUri.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.MetadataConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.MetadataConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ModifyAnalyticsModulesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ModifyRulesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.MoveOptions20.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.NetworkGateway.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.NetworkHost.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.NetworkInterface.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.NetworkProtocol.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.NetworkZeroConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.NotificationMessageHolderType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.NTPInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.OSDConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.OSDConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PaneConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PauseSubscriptionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PauseSubscriptionResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PresetTour.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ProbeMatchType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ProbeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Profile.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PTZConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PTZConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PTZNode.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PTZPreset.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PTZPresetTourOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PTZStatus.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PullMessagesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Receiver.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ReceiverStateInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RecordingConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RecordingInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RecordingJobConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RecordingJobStateInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RecordingOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RecordingSummary.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RelayOutput.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RelayOutputOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RemoteUser.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RemoveScopesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RenewResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RenewResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ReplayConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RestoreSystemResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ResumeSubscriptionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ResumeSubscriptionResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ScanAvailableDot11NetworksResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Scope.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SearchState.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SeekResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SendReceiveSerialCommandResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SerialData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SerialPort.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SerialPortConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SerialPortConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Service.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetAudioOutputConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetAudioSourceConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetCertificatesStatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetDigitalInputConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetDNSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetDPAddressesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetDynamicDNSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetGeoLocationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetHostnameResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetLayoutResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetNetworkDefaultGatewayResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetNetworkProtocolsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetNTPResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetOSDResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetPaneConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetPaneConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetPresetResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetRecordingJobConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetRelayOutputStateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetScopesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetUserResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetVideoOutputConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetVideoSourceConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.StartFirmwareUpgradeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.StartSystemRestoreResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.StopExportRecordedDataResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.StorageConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SubscribeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SubscribeResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SupportedAnalyticsModules.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SupportedRules.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SupportInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SystemDateTime.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SystemLog.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SystemLogUri.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.TopicSetType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.TrackConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.UnsubscribeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.UnsubscribeResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.User.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.VideoAnalyticsConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.VideoEncoderConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.VideoEncoderConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.VideoOutput.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.VideoOutputConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.VideoOutputConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.VideoSource.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.VideoSourceConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.VideoSourceConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.VideoSourceMode.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference1.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Service References\DeviceMedia\configuration.svcinfo" />
-    <Content Include="Service References\DeviceMedia\configuration91.svcinfo" />
-    <Content Include="Service References\DeviceMedia\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference1.cs</LastGenOutput>
-    </Content>
-    <Content Include="Service References\DevicePTZ\configuration.svcinfo" />
-    <Content Include="Service References\DevicePTZ\configuration91.svcinfo" />
-    <Content Include="Service References\DevicePTZ\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference1.cs</LastGenOutput>
-    </Content>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="sounds\alsationxsiberian_bark.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1386,156 +2266,65 @@
     <Content Include="sounds\wiggle.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Service References\DeviceClient\b-2.xsd">
+    <None Include="Service References\OnvifServices\analytics.wsdl" />
+    <None Include="Service References\OnvifServices\analyticsdevice.wsdl" />
+    <None Include="Service References\OnvifServices\b-2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DeviceClient\bf-2.xsd">
+    <None Include="Service References\OnvifServices\bf-2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DeviceClient\devicemgmt.wsdl" />
-    <None Include="Service References\DeviceClient\include.xsd">
+    <None Include="Service References\OnvifServices\common.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.BackupFile.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.BinaryData.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.Capabilities.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.Certificate.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.CertificateInformation.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.CertificateStatus.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.DeviceServiceCapabilities.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.DiscoveryMode.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.DNSInformation.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.Dot11AvailableNetworks.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.Dot11Capabilities.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.Dot11Status.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.Dot1XConfiguration.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.DynamicDNSInformation.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.GetSystemUrisResponseExtension.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.HostnameInformation.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.IPAddressFilter.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.NetworkGateway.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.NetworkHost.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.NetworkInterface.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.NetworkProtocol.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.NetworkZeroConfiguration.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.NTPInformation.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.RelayOutput.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.RemoteUser.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.Scope.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.Service.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.StorageConfiguration.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.SupportInformation.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.SystemDateTime.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.SystemLog.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.SystemLogUri.datasource" />
-    <None Include="Service References\DeviceClient\iSpyApplication.DeviceClient.User.datasource" />
-    <None Include="Service References\DeviceClient\item.xsd">
+    <None Include="Service References\OnvifServices\deviceio.wsdl" />
+    <None Include="Service References\OnvifServices\devicemgmt.wsdl" />
+    <None Include="Service References\OnvifServices\display.wsdl" />
+    <None Include="Service References\OnvifServices\event-vs.wsdl" />
+    <None Include="Service References\OnvifServices\ImagingService.wsdl" />
+    <None Include="Service References\OnvifServices\include.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DeviceClient\onvif.xsd">
+    <None Include="Service References\OnvifServices\item.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DeviceClient\t-1.xsd">
+    <None Include="Service References\OnvifServices\item1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DeviceClient\ws-addr.xsd">
+    <None Include="Service References\OnvifServices\media.wsdl" />
+    <None Include="Service References\OnvifServices\onvif.wsdl" />
+    <None Include="Service References\OnvifServices\onvif.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DeviceClient\xml.xsd">
+    <None Include="Service References\OnvifServices\PTZService.wsdl" />
+    <None Include="Service References\OnvifServices\r-2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DeviceClient\xmlmime.xsd">
+    <None Include="Service References\OnvifServices\receiver.wsdl" />
+    <None Include="Service References\OnvifServices\recording.wsdl" />
+    <None Include="Service References\OnvifServices\remotediscovery.wsdl" />
+    <None Include="Service References\OnvifServices\replay.wsdl" />
+    <None Include="Service References\OnvifServices\search.wsdl" />
+    <None Include="Service References\OnvifServices\t-1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DeviceMedia\b-2.xsd">
+    <None Include="Service References\OnvifServices\ws-addr.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DeviceMedia\bf-2.xsd">
+    <None Include="Service References\OnvifServices\WS-BaseNotification.wsdl" />
+    <None Include="Service References\OnvifServices\ws-discovery.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DeviceMedia\include.xsd">
+    <None Include="Service References\OnvifServices\WS-Resource.wsdl" />
+    <None Include="Service References\OnvifServices\xml.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.AudioDecoderConfiguration.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.AudioDecoderConfigurationOptions.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.AudioEncoderConfiguration.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.AudioEncoderConfigurationOptions.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.AudioOutput.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.AudioOutputConfiguration.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.AudioOutputConfigurationOptions.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.AudioSource.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.AudioSourceConfiguration.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.AudioSourceConfigurationOptions.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.Capabilities.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.MediaUri.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.MetadataConfiguration.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.MetadataConfigurationOptions.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.OSDConfiguration.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.OSDConfigurationOptions.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.Profile.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.VideoAnalyticsConfiguration.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.VideoEncoderConfiguration.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.VideoEncoderConfigurationOptions.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.VideoSource.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.VideoSourceConfiguration.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.VideoSourceConfigurationOptions.datasource" />
-    <None Include="Service References\DeviceMedia\iSpyApplication.DeviceMedia.VideoSourceMode.datasource" />
-    <None Include="Service References\DeviceMedia\item.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DeviceMedia\media.wsdl" />
-    <None Include="Service References\DeviceMedia\onvif.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DeviceMedia\t-1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DeviceMedia\ws-addr.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DeviceMedia\xml.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DeviceMedia\xmlmime.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DevicePTZ\b-2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DevicePTZ\bf-2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DevicePTZ\include.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DevicePTZ\iSpyApplication.DevicePTZ.Capabilities.datasource" />
-    <None Include="Service References\DevicePTZ\iSpyApplication.DevicePTZ.PresetTour.datasource" />
-    <None Include="Service References\DevicePTZ\iSpyApplication.DevicePTZ.PTZConfiguration.datasource" />
-    <None Include="Service References\DevicePTZ\iSpyApplication.DevicePTZ.PTZConfigurationOptions.datasource" />
-    <None Include="Service References\DevicePTZ\iSpyApplication.DevicePTZ.PTZNode.datasource" />
-    <None Include="Service References\DevicePTZ\iSpyApplication.DevicePTZ.PTZPreset.datasource" />
-    <None Include="Service References\DevicePTZ\iSpyApplication.DevicePTZ.PTZPresetTourOptions.datasource" />
-    <None Include="Service References\DevicePTZ\iSpyApplication.DevicePTZ.PTZStatus.datasource" />
-    <None Include="Service References\DevicePTZ\item.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DevicePTZ\onvif.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DevicePTZ\PTZService.wsdl" />
-    <None Include="Service References\DevicePTZ\t-1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DevicePTZ\ws-addr.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DevicePTZ\xml.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DevicePTZ\xmlmime.xsd">
+    <None Include="Service References\OnvifServices\xmlmime.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Supporting\iSpyServerSetup.msi" />
+    <None Include="System.Xml.XmlAttribute.datasource" />
+    <None Include="System.Xml.XmlElement.datasource" />
     <None Include="Web References\iSpyWS\ispysecure.disco" />
     <Content Include="Supporting\iSpyMonitor.exe" />
     <Content Include="VLC64\readme.txt">
@@ -2154,6 +2943,9 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\OnvifServices\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

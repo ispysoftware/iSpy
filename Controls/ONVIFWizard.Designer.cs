@@ -41,11 +41,11 @@
             this.ddlTransport = new System.Windows.Forms.ComboBox();
             this.btnConnect = new System.Windows.Forms.Button();
             this.ddlDeviceURL = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.lblPassword = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.numRTSP = new System.Windows.Forms.NumericUpDown();
             this.chkOverrideRTSPPort = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.pnlStep2 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.btnBack = new System.Windows.Forms.Button();
@@ -215,17 +215,6 @@
             this.ddlDeviceURL.Size = new System.Drawing.Size(489, 80);
             this.ddlDeviceURL.TabIndex = 45;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.pnlStep1.SetColumnSpan(this.label1, 3);
-            this.label1.Location = new System.Drawing.Point(153, 145);
-            this.label1.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(188, 13);
-            this.label1.TabIndex = 46;
-            this.label1.Text = "http://ipaddress/onvif/device_service";
-            // 
             // lblPassword
             // 
             this.lblPassword.AutoSize = true;
@@ -273,6 +262,17 @@
             this.chkOverrideRTSPPort.Text = "Override RTSP Port";
             this.chkOverrideRTSPPort.UseVisualStyleBackColor = true;
             this.chkOverrideRTSPPort.CheckedChanged += new System.EventHandler(this.chkOverrideRTSPPort_CheckedChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.pnlStep1.SetColumnSpan(this.label1, 3);
+            this.label1.Location = new System.Drawing.Point(153, 145);
+            this.label1.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(188, 13);
+            this.label1.TabIndex = 46;
+            this.label1.Text = "http://ipaddress/onvif/device_service";
             // 
             // pnlStep2
             // 
