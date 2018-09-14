@@ -754,11 +754,14 @@ namespace iSpyApplication
 
         void ProcessOnvif(Enums.PtzCommand command)
         {
+            if (!_cameraControl.ONVIFConnected)
+                return;
+
             if (command == _lastOnvifCommand && _lastOnvifCommandSent > DateTime.UtcNow.AddSeconds(-4))
                 return;
             _lastOnvifCommand = command;
             _lastOnvifCommandSent = DateTime.UtcNow;
-
+            
             var ptz = _cameraControl?.ONVIFDevice?.PTZ;
             if (ptz != null)
             {
@@ -844,7 +847,11 @@ namespace iSpyApplication
 
         private string PTZToken
         {
-            get { return _cameraControl?.ONVIFDevice?.Profile?.token; }
+            get {
+                if (!_cameraControl.ONVIFConnected)
+                    return null;
+                return _cameraControl?.ONVIFDevice?.Profile?.token;
+            }
         }
 
         public PTZPreset[] ONVIFPresets

@@ -85,6 +85,13 @@ namespace iSpyApplication.Controls
         public int ObjectTypeID => 2;
 
         private ONVIFDevice _onvifDevice = null;
+        public bool ONVIFConnected
+        {
+            get
+            {
+                return _onvifDevice != null;
+            }
+        }
         public ONVIFDevice ONVIFDevice
         {
             get
@@ -4368,7 +4375,14 @@ namespace iSpyApplication.Controls
             get
             {
                 if (!string.IsNullOrEmpty(_sourceOverload))
+                {
+                    switch(_sourceOverload)
+                    {
+                        case "onvif":
+                            return ONVIFDevice?.StreamEndpoint?.Uri?.Uri.ToString();
+                    }
                     return _sourceOverload;
+                }
                 return Camobject.settings.videosourcestring;
             }
         }
@@ -4453,7 +4467,8 @@ namespace iSpyApplication.Controls
                         }
                         break;
                     case 9:
-                        _sourceOverload = ONVIFDevice.StreamEndpoint.Uri.Uri.ToString();
+                        _sourceOverload = "onvif";
+                        
                         if (Nv("use")=="VLC")
                         {
                             OpenVideoSource(new VlcStream(this), true);

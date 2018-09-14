@@ -176,9 +176,6 @@ namespace iSpyApplication.Sources.Video
             if (!VlcHelper.VlcInstalled)
                 return;
 
-            if (string.IsNullOrEmpty(Source))
-                throw new ArgumentException("Source is not specified.");
-
             if (IsRunning) return;
 
             _res = ReasonToFinishPlaying.DeviceLost;
@@ -194,6 +191,14 @@ namespace iSpyApplication.Sources.Video
         private void WorkerThread()
         {
             bool file = false;
+            if (string.IsNullOrEmpty(Source))
+            {
+                Logger.LogError("Source not found", "VLC");
+                _res = ReasonToFinishPlaying.VideoSourceError;
+                PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
+                AudioFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
+                return;
+            }
             try
             {
                 if (File.Exists(Source))

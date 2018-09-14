@@ -252,6 +252,15 @@ namespace iSpyApplication.Sources.Video
             if (!IsAudio)
                 vss = Tokenise(vss);
 
+            if (string.IsNullOrEmpty(vss))
+            {
+                ErrorHandler?.Invoke("Source not found");
+                _res = ReasonToFinishPlaying.VideoSourceError;
+                CleanUp();
+                _starting = false;
+                return;
+            }
+
             AVDictionary* options = null;
             if (_inputFormat == null)
             {
