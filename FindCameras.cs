@@ -835,7 +835,7 @@ namespace iSpyApplication
                 MainForm.IPCHANNEL = txtChannel.Text.Trim();
 
 
-                LastConfig.PromptSave = !MainForm.IPLISTED && MainForm.IPMODEL.Trim() != "";
+                LastConfig.PromptSave = !MainForm.IPLISTED && MainForm.IPMODEL.Trim() != "" && VideoSourceType!=9;
 
                 LastConfig.Iptype = MainForm.IPTYPE;
                 LastConfig.Ipmodel = MainForm.IPMODEL;

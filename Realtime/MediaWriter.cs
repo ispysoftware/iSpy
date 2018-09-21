@@ -17,7 +17,6 @@ namespace iSpyApplication.Realtime
         public delegate int AvInterruptCb(void* ctx);
 
         public delegate int InterruptCallback();
-        private const int Iframeinterval = 3000;
         private readonly byte[] _convOut = new byte[44100];
         private readonly bool _isAudio;
         private bool _abort;
@@ -31,11 +30,8 @@ namespace iSpyApplication.Realtime
         private GCHandle _convHandle;
         private AVFormatContext* _formatContext;
         private int _frameNumber;
-        private bool _firstFrame = true;
         private bool _ignoreAudio;
         private AvInterruptCb _interruptCallback;
-        private DateTime _keyframeInterval;
-
         private IntPtr _interruptCallbackAddress;
 
         private bool _isConstantFramerate;
@@ -222,7 +218,6 @@ namespace iSpyApplication.Realtime
             ffmpeg.av_dict_free(&opts);
 
             _frameNumber = 0;
-            _keyframeInterval = created;
             _opened = true;
         }
 
@@ -429,13 +424,6 @@ namespace iSpyApplication.Realtime
 
             packet.data = null;
             packet.size = 0;
-
-            if (_firstFrame || Convert.ToInt32((timestamp - _keyframeInterval).TotalMilliseconds) >= Iframeinterval)
-            {
-                _firstFrame = false;
-                _videoFrame->pict_type = AVPictureType.AV_PICTURE_TYPE_I;
-                _keyframeInterval = timestamp;
-            }
 
             var ret = ffmpeg.avcodec_send_frame(_videoCodecContext, _videoFrame);
             while (ret >= 0)

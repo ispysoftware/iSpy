@@ -1223,6 +1223,7 @@
     </Content>
     <None Include="Merge Modules\Microsoft_VC100_CRT_x64.msm" />
     <None Include="packages.config" />
+    <None Include="README.md" />
     <None Include="redist\Windows6.0-KB942288-v2-x64.msu" />
     <None Include="redist\Windows6.0-KB942288-v2-x86.msu" />
     <None Include="Resources\cam_connecting.png" />
@@ -2247,7 +2248,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\icon_pointer.png" />
-    <Content Include="readme.txt" />
     <Content Include="sounds\airhorn.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
