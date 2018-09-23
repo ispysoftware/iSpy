@@ -10,6 +10,7 @@ using iSpyApplication.Sources.Audio;
 using iSpyApplication.Utilities;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
+using System.Runtime.ExceptionServices;
 
 namespace iSpyApplication.Sources.Video
 {
@@ -60,6 +61,7 @@ namespace iSpyApplication.Sources.Video
         private SwrContext* _swrContext;
         private Thread _thread;
         private int _timeoutMicroSeconds;
+        private bool _ignoreAudio;
         private AVCodecContext* _videoCodecContext;
         private AVStream* _videoStream, _audioStream;
 
@@ -82,6 +84,7 @@ namespace iSpyApplication.Sources.Video
             _headers = _source.settings.headers;
             _modeRTSP = Helper.RTSPMode(_source.settings.rtspmode);
             _useGPU = _source.settings.useGPU;
+            _ignoreAudio = _source.settings.ignoreaudio;
         }
 
         public MediaStream(objectsMicrophone source) : base(null)
@@ -487,22 +490,6 @@ namespace iSpyApplication.Sources.Video
                     _audioCodecContext->request_sample_fmt = AVSampleFormat.AV_SAMPLE_FMT_S16;
                     _audioCodecContext->request_channel_layout = (ulong) outlayout;
 
-
-                    //var chans = 1;
-                    //if (_audioCodecContext->channels > 1) //downmix
-                    //    chans = 2;
-
-                    _swrContext = ffmpeg.swr_alloc_set_opts(null,
-                        outlayout,
-                        AVSampleFormat.AV_SAMPLE_FMT_S16,
-                        OutFormat.SampleRate,
-                        ffmpeg.av_get_default_channel_layout(_audioCodecContext->channels),
-                        _audioCodecContext->sample_fmt,
-                        _audioCodecContext->sample_rate,
-                        0,
-                        null);
-
-                    Throw("SWR_INIT", ffmpeg.swr_init(_swrContext));
                 }
             }
 
@@ -516,6 +503,22 @@ namespace iSpyApplication.Sources.Video
             _thread.Start();
         }
 
+        private void initSWR()
+        {
+            _swrContext = ffmpeg.swr_alloc_set_opts(null,
+                        ffmpeg.av_get_default_channel_layout(OutFormat.Channels),
+                        AVSampleFormat.AV_SAMPLE_FMT_S16,
+                        OutFormat.SampleRate,
+                        ffmpeg.av_get_default_channel_layout(_audioCodecContext->channels),
+                        _audioCodecContext->sample_fmt,
+                        _audioCodecContext->sample_rate,
+                        0,
+                        null);
+
+            Throw("SWR_INIT", ffmpeg.swr_init(_swrContext));
+        }
+
+        [HandleProcessCorruptedStateExceptions]
         private void ReadFrames()
         {
             pConvertedFrameBuffer = IntPtr.Zero;
@@ -550,7 +553,7 @@ namespace iSpyApplication.Sources.Video
                 _lastPacket = DateTime.UtcNow;
 
                 var ret = -11; //EAGAIN
-                if (_audioStream != null && packet.stream_index == _audioStream->index && _audioCodecContext != null)
+                if (_audioStream != null && packet.stream_index == _audioStream->index && _audioCodecContext != null && !_ignoreAudio)
                 {
                     if (HasAudioStream != null)
                     {
@@ -571,27 +574,44 @@ namespace iSpyApplication.Sources.Video
                                 do
                                 {
                                     ret = ffmpeg.avcodec_receive_frame(_audioCodecContext, af);
+                                    
                                     if (ret == 0)
-                                        fixed (byte** datptr = af->data.ToArray())
+                                    {
+                                        int numSamplesOut = 0;
+                                        try
                                         {
-                                            var numSamplesOut = ffmpeg.swr_convert(_swrContext,
+                                            if (_swrContext == null)
+                                            {
+                                                //need to do this here as send_packet can change channel layout and throw an exception below
+                                                initSWR();
+                                            }
+                                            var dat = af->data[0];
+                                        
+                                            numSamplesOut = ffmpeg.swr_convert(_swrContext,
                                                 outPtrs,
                                                 _audioCodecContext->sample_rate,
-                                                datptr,
+                                                &dat,
                                                 af->nb_samples);
-
-                                            if (numSamplesOut > 0)
-                                            {
-                                                var l = numSamplesOut * 2 * OutFormat.Channels;
-                                                Buffer.BlockCopy(tbuffer, 0, buffer, s, l);
-                                                s += l;
-                                            }
-                                            else
-                                            {
-                                                ret = numSamplesOut; //(error)
-                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Logger.LogException(ex, "MediaStream - Audio Read");
+                                            _ignoreAudio = true;
+                                            break;
                                         }
 
+                                        if (numSamplesOut > 0)
+                                        {
+                                            var l = numSamplesOut * 2 * OutFormat.Channels;
+                                            Buffer.BlockCopy(tbuffer, 0, buffer, s, l);
+                                            s += l;
+                                        }
+                                        else
+                                        {
+                                            ret = numSamplesOut; //(error)
+                                        }
+                                        
+                                    }
                                     if (af->decode_error_flags > 0) break;
                                 } while (ret == 0);
                                 ffmpeg.av_frame_free(&af);
