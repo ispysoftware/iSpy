@@ -1641,7 +1641,7 @@ namespace iSpyApplication.Controls
 
                         try
                         {
-                            while (!_stopWrite.WaitOne(0))
+                            while (!_stopWrite.WaitOne(50))
                             {
                                 
                                 if (Buffer.TryDequeue(out fa))

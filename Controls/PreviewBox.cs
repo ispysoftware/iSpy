@@ -205,7 +205,7 @@ namespace iSpyApplication.Controls
             switch (mode)
             {
                 case Enums.PlaybackMode.Website:
-                    string url = MainForm.Webserver + "/MediaViewer.aspx?oid=" + Oid + "&ot=2&fn=" + fn + "&port=" + MainForm.Conf.ServerPort;
+                    string url = MainForm.Webserver + "/MediaViewer.aspx?oid=" + Oid + "&ot="+ Otid + "&fn=" + fn + "&port=" + MainForm.Conf.ServerPort;
                     if (WsWrapper.WebsiteLive && MainForm.Conf.ServicesEnabled)
                     {
                         MainForm.OpenUrl(url);

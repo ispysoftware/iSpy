@@ -184,7 +184,7 @@ namespace iSpyApplication
 
         
         
-        private static string _browser = String.Empty;
+        private static string _browser = string.Empty;
 
         
         private MenuItem menuItem37;
