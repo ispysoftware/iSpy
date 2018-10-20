@@ -12,7 +12,7 @@ namespace iSpyApplication
         private readonly Controls.GridView _gv;
         private readonly configurationGrid _layout;
         public configurationGrid Cg;
-
+        private PersistWindowState _mWindowState;
 
         public GridView(MainForm parent, ref configurationGrid layout)
         {
@@ -25,13 +25,19 @@ namespace iSpyApplication
             fullScreenToolStripMenuItem.Checked = layout.FullScreen;
             alwaysOnTopToolStripMenuItem.Checked = layout.AlwaysOnTop;
             Cg = layout;
-
+            Disposed += (s, a) =>
+                             {
+                                 _mWindowState?.Dispose();
+                             };
+            _mWindowState = new PersistWindowState { Parent = this, RegistryPath = @"Software\ispy\grid_" + _layout.name };
         }
 
 
 
         private void GridView_Load(object sender, EventArgs e)
         {
+            
+
             Text = _gv.Text;
 
             var screen = Screen.AllScreens.Where(s => s.DeviceName == _layout.Display).DefaultIfEmpty(Screen.PrimaryScreen).First();
@@ -209,5 +215,6 @@ namespace iSpyApplication
         {
 
         }
+        
     }
 }
