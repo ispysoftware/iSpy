@@ -15,7 +15,7 @@ namespace iSpyApplication
         {
             Center,
             Left,
-            Upleft,
+            UpLeft,
             Up,
             UpRight,
             Right,

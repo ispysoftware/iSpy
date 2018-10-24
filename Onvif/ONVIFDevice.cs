@@ -39,8 +39,8 @@ namespace iSpyApplication.Onvif
         public Profile Profile;
         public MediaEndpoint StreamEndpoint;
         public PTZ PTZ;
-        public Vector1D DefaultZSpeed;
-        public Vector2D DefaultPTSpeed;
+        public Space1DDescription DefaultZSpeed;
+        public Space2DDescription DefaultPTSpeed;
 
         public ONVIFDevice(string serviceUrl, string username, string password, int rtspPort, int timeout)
         {
@@ -195,6 +195,17 @@ namespace iSpyApplication.Onvif
                 _mediaEndpoints = uris.ToArray();
                 _profiles = profiles.ToArray();
 
+                DefaultPTSpeed = new Space2DDescription
+                                 {
+                                     XRange = { Max = 1, Min = -1 },
+                                     YRange = { Max = 1, Min = -1 },
+                                     URI = null
+                                 };
+                DefaultZSpeed = new Space1DDescription
+                                {
+                                    XRange = { Max = 1, Min = -1 },
+                                    URI = null
+                                };
                 try
                 {
                     if (_deviceCapabilities.PTZ != null)
@@ -204,22 +215,18 @@ namespace iSpyApplication.Onvif
                         PTZ = _onvifClientFactory.CreateClient<PTZ>(ep, _connectionParameters, MessageVersion.Soap12,
                             _timeout);
 
-                        //try
-                        //{
-                        //    var cfgptz = PTZ.GetCompatibleConfigurations(new GetCompatibleConfigurationsRequest());
-                        //    if (cfgptz.PTZConfiguration.Length > 0)
-                        //    {
-                        //        var ptzc = cfgptz.PTZConfiguration[0];
-
-                        //        DefaultPTSpeed = ptzc.DefaultPTZSpeed.PanTilt;
-                        //        DefaultZSpeed = ptzc.DefaultPTZSpeed.Zoom;
-
-                        //    }
-                        //}
-                        //catch (Exception ex)
-                        //{
-                        //    Logger.LogException(ex);
-                        //}
+                        try
+                        {
+                            var gc = PTZ.GetConfigurationsAsync(new GetConfigurationsRequest()).Result;
+                            var ptzcfg = PTZ.GetConfigurationOptions(gc.PTZConfiguration[0].NodeToken);
+                            DefaultPTSpeed = ptzcfg.Spaces.ContinuousPanTiltVelocitySpace[0];
+                            DefaultZSpeed = ptzcfg.Spaces.ContinuousZoomVelocitySpace[0];
+                        }
+                        catch (Exception ex)
+                        {
+                            //ignore - use defaults
+                            Logger.LogException(ex);
+                        }
                     }
                 }
                 catch (Exception ex)

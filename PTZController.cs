@@ -200,7 +200,7 @@ namespace iSpyApplication
                 }
                 if (angle >= Arc && angle < 3 * Arc)
                 {
-                    cmd = Enums.PtzCommand.Upleft;
+                    cmd = Enums.PtzCommand.UpLeft;
                 }
                 if (angle >= 3 * Arc && angle < 5 * Arc)
                 {
@@ -388,7 +388,7 @@ namespace iSpyApplication
                         case Enums.PtzCommand.Left:
                             SendPTZDirection(0d);
                             break;
-                        case Enums.PtzCommand.Upleft:
+                        case Enums.PtzCommand.UpLeft:
                             SendPTZDirection(Math.PI / 4);
                             break;
                         case Enums.PtzCommand.Up:
@@ -421,7 +421,7 @@ namespace iSpyApplication
                         case Enums.PtzCommand.Left:
                             SendPTZDirection(0d);
                             break;
-                        case Enums.PtzCommand.Upleft:
+                        case Enums.PtzCommand.UpLeft:
                             SendPTZDirection(Math.PI / 4);
                             break;
                         case Enums.PtzCommand.Up:
@@ -454,7 +454,7 @@ namespace iSpyApplication
                         case Enums.PtzCommand.Left:
                             SendPTZDirection(0d);
                             break;
-                        case Enums.PtzCommand.Upleft:
+                        case Enums.PtzCommand.UpLeft:
                             SendPTZDirection(Math.PI / 4);
                             break;
                         case Enums.PtzCommand.Up:
@@ -487,7 +487,7 @@ namespace iSpyApplication
                         case Enums.PtzCommand.Left:
                             SendPTZDirection(0d);
                             break;
-                        case Enums.PtzCommand.Upleft:
+                        case Enums.PtzCommand.UpLeft:
                             SendPTZDirection(Math.PI / 4);
                             break;
                         case Enums.PtzCommand.Up:
@@ -544,7 +544,7 @@ namespace iSpyApplication
                     case Enums.PtzCommand.Left:
                         SendPTZDirection(0d);
                         break;
-                    case Enums.PtzCommand.Upleft:
+                    case Enums.PtzCommand.UpLeft:
                         SendPTZDirection(Math.PI / 4);
                         break;
                     case Enums.PtzCommand.Up:
@@ -608,7 +608,7 @@ namespace iSpyApplication
                         case Enums.PtzCommand.Left:
                             angle = 0;
                             break;
-                        case Enums.PtzCommand.Upleft:
+                        case Enums.PtzCommand.UpLeft:
                             angle = Math.PI / 4;
                             break;
                         case Enums.PtzCommand.Up:
@@ -674,7 +674,7 @@ namespace iSpyApplication
                         case Enums.PtzCommand.Left:
                             IAMMove(d, CameraControlProperty.Pan, -1);
                             break;
-                        case Enums.PtzCommand.Upleft:
+                        case Enums.PtzCommand.UpLeft:
                             IAMMove(d, CameraControlProperty.Pan, -1);
                             IAMMove(d, CameraControlProperty.Tilt, 1);
                             break;
@@ -761,8 +761,9 @@ namespace iSpyApplication
                 return;
             _lastOnvifCommand = command;
             _lastOnvifCommandSent = DateTime.UtcNow;
-            
-            var ptz = _cameraControl?.ONVIFDevice?.PTZ;
+
+            var od = _cameraControl?.ONVIFDevice;
+            var ptz = od?.PTZ;
             if (ptz != null)
             {
                 //var speed = PTZProfile.ptzConfiguration.defaultPTZSpeed;
@@ -774,43 +775,47 @@ namespace iSpyApplication
                 try
                 {
                     _lastCommand = command;
+                    var panSpeed = (float)0.5;
+                    var tiltSpeed = (float)0.5;
+                    var zoomSpeed = (float)1;
                     switch (command)
                     {
                         case Enums.PtzCommand.Left:
-                            panTilt = new Vector2D { space = null, x = -0.5f, y = 0 };
+                            panTilt = new Vector2D { space = od.DefaultPTSpeed.URI, x = panSpeed * (od.DefaultPTSpeed.XRange.Min), y = 0 };
                             break;
-                        case Enums.PtzCommand.Upleft:
-                            panTilt = new Vector2D { space = null, x = -0.5f, y = 0.5f };
+                        case Enums.PtzCommand.UpLeft:
+                            panTilt = new Vector2D { space = od.DefaultPTSpeed.URI, x = panSpeed * (od.DefaultPTSpeed.XRange.Min), y = tiltSpeed * (od.DefaultPTSpeed.YRange.Max) };
                             break;
                         case Enums.PtzCommand.Up:
-                            panTilt = new Vector2D { space = null, x = 0, y = 0.5f };
+                            panTilt = new Vector2D { space = od.DefaultPTSpeed.URI, x = 0, y = tiltSpeed * (od.DefaultPTSpeed.YRange.Max) };
                             break;
                         case Enums.PtzCommand.UpRight:
-                            panTilt = new Vector2D { space = null, x = 0.5f, y = 0.5f };
+                            panTilt = new Vector2D { space = od.DefaultPTSpeed.URI, x = panSpeed * (od.DefaultPTSpeed.XRange.Max), y = tiltSpeed * (od.DefaultPTSpeed.YRange.Max) };
                             break;
                         case Enums.PtzCommand.Right:
-                            panTilt = new Vector2D { space = null, x = 0.5f, y = 0 };
+                            panTilt = new Vector2D { space = od.DefaultPTSpeed.URI, x = panSpeed * (od.DefaultPTSpeed.XRange.Max), y = 0 };
                             break;
                         case Enums.PtzCommand.DownRight:
-                            panTilt = new Vector2D { space = null, x = 0.5f, y = -0.5f };
+                            panTilt = new Vector2D { space = od.DefaultPTSpeed.URI, x = panSpeed * (od.DefaultPTSpeed.XRange.Max), y = tiltSpeed * (od.DefaultPTSpeed.YRange.Min) };
                             break;
                         case Enums.PtzCommand.Down:
-                            panTilt = new Vector2D { space = null, x = 0, y = -0.5f };
+                            panTilt = new Vector2D { space = od.DefaultPTSpeed.URI, x = 0, y = tiltSpeed * (od.DefaultPTSpeed.YRange.Min) };
                             break;
                         case Enums.PtzCommand.DownLeft:
-                            panTilt = new Vector2D { space = null, x = -0.5f, y = -0.5f };
+                            panTilt = new Vector2D { space = od.DefaultPTSpeed.URI, x = -panSpeed, y = tiltSpeed * (od.DefaultPTSpeed.YRange.Min) };
                             break;
                         case Enums.PtzCommand.ZoomIn:
-                            zoom = new Vector1D { space = null, x = 1f };
+                            zoom = new Vector1D { space = od.DefaultZSpeed.URI, x = zoomSpeed * (od.DefaultZSpeed.XRange.Max) };
                             break;
                         case Enums.PtzCommand.ZoomOut:
-                            zoom = new Vector1D { space = null, x = -1f };
+                            zoom = new Vector1D { space = od.DefaultZSpeed.URI, x = zoomSpeed * (od.DefaultZSpeed.XRange.Min) };
                             break;
                         case Enums.PtzCommand.Center:
-                            //ProcessOnvifCommand(_cameraControl.CameraObject.settings.ptzautohomecommand);
+                            //ProcessOnvifCommand(_cameraObject.settings.ptzautohomecommand);
                             return;
                         case Enums.PtzCommand.Stop:
-                            ptz.Stop(PTZToken, true, true);
+
+                            ptz.StopAsync(PTZToken, true, true);
                             return;
                     }
                     var ptzSpeed = new PTZSpeed { PanTilt = panTilt, Zoom = zoom };
@@ -916,7 +921,7 @@ namespace iSpyApplication
                     case Enums.PtzCommand.Left:
                         SendPelco(pelcoP.CameraPan(_addr, P.Pan.Left, 1));
                         break;
-                    case Enums.PtzCommand.Upleft:
+                    case Enums.PtzCommand.UpLeft:
                         SendPelco(pelcoP.CameraTilt(_addr, P.Tilt.Up, 1));
                         SendPelco(pelcoP.CameraPan(_addr, P.Pan.Left, 1));
                         break;
@@ -963,7 +968,7 @@ namespace iSpyApplication
                     case Enums.PtzCommand.Left:
                         SendPelco(pelcoD.CameraPan(_addr, D.Pan.Left, 1));
                         break;
-                    case Enums.PtzCommand.Upleft:
+                    case Enums.PtzCommand.UpLeft:
                         SendPelco(pelcoD.CameraTilt(_addr, D.Tilt.Up, 1));
                         SendPelco(pelcoD.CameraPan(_addr, D.Pan.Left, 1));
                         break;
