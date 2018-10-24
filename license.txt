@@ -8,4 +8,8 @@ The framework is provided under LGPL v.3 license, which exact definition
 may be found in lgpl-3.0.txt file provided with the framework or on the
 next web page: http://www.gnu.org/licenses/lgpl.html
 
+
+The camera connection database is copyright protected. No part of it may be publicly republished without our express permission.
 Copyright © DeveloperInABox, 2016
+
+
