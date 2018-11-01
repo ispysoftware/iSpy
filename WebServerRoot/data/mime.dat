@@ -28,3 +28,4 @@
 .mjpeg; video/mjpeg
 .mjpg; video/mjpeg
 .json; application/json
+.cgi; text/javascript

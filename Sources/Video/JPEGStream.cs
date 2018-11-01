@@ -209,7 +209,7 @@ namespace iSpyApplication.Sources.Video
             // download start time and duration
             var err = 0;
             var connectionFactory = new ConnectionFactory();
-            while (!_abort.WaitOne(0) && !MainForm.ShuttingDown)
+            while (!_abort.WaitOne(10) && !MainForm.ShuttingDown)
             {
                 var total = 0;
                 if (ShouldEmitFrame)

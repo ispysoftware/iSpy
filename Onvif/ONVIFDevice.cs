@@ -197,13 +197,13 @@ namespace iSpyApplication.Onvif
 
                 DefaultPTSpeed = new Space2DDescription
                                  {
-                                     XRange = { Max = 1, Min = -1 },
-                                     YRange = { Max = 1, Min = -1 },
+                                     XRange = new FloatRange { Max = 1, Min = -1 },
+                                     YRange = new FloatRange { Max = 1, Min = -1 },
                                      URI = null
                                  };
                 DefaultZSpeed = new Space1DDescription
                                 {
-                                    XRange = { Max = 1, Min = -1 },
+                                    XRange = new FloatRange { Max = 1, Min = -1 },
                                     URI = null
                                 };
                 try

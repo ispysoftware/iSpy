@@ -246,7 +246,17 @@ namespace iSpyApplication.Controls
         public string TimeLapseVideoFileName = "";
         public string VideoFileName = "";
         public string VideoSourceErrorMessage = "";
-        public bool VideoSourceErrorState;
+
+        private bool _videoSourceErrorState;
+        public bool VideoSourceErrorState
+        {
+            get { return _videoSourceErrorState; }
+            set
+            {
+                _videoSourceErrorState = value;
+                _requestRefresh = true;
+            }
+        }
         public DateTime TimelapseStart = DateTime.MinValue;
         public objectsCamera Camobject;
         public bool Seekable;
@@ -4003,7 +4013,7 @@ namespace iSpyApplication.Controls
                                 message += MainForm.Conf.AppendLinkText;
 
 
-                                if (includeGrab)
+                                if (includeGrab && rawgrab!=null)
                                     WsWrapper.SendAlertWithImage(param1, subject, message, rawgrab);
                                 else
                                     WsWrapper.SendAlert(param1, subject, message);
@@ -4918,7 +4928,6 @@ namespace iSpyApplication.Controls
             {
                 SetErrorState("Source camera offline");
                 VideoSourceErrorState = true;
-                _requestRefresh = true;
             }
         }
 

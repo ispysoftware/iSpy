@@ -55,7 +55,7 @@ call "D:\Projects\iSpy\signing\Wix_iSpyBurn64.bat"
 :end</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>ee</PreBuildEvent>
+    <PreBuildEvent />
   </PropertyGroup>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.

@@ -2984,6 +2984,7 @@ namespace iSpyApplication.Server
                                     cfg = "ot: 1, oid:" + oid + ", port: " + MainForm.Conf.ServerPort + ", online: " +
                                           ie.ToString().ToLower() + ",recording: " +
                                           fr.ToString().ToLower() + ", width:320, height:40";
+                                    cfg += ", errorState:" + vl.AudioSourceErrorState.ToString().ToLowerInvariant();
                                 }
                                 break;
                             case 2:
@@ -3001,6 +3002,7 @@ namespace iSpyApplication.Server
                                           ",recording: " + fr.ToString().ToLower() + ", width:" + res[0] +
                                           ", height:" + res[1] + ", talk:" +
                                           (cw.Camobject.settings.audiomodel != "None").ToString().ToLower();
+                                    cfg += ", errorState:" + cw.VideoSourceErrorState.ToString().ToLowerInvariant();
                                 }
                                 break;
                         }
@@ -4024,7 +4026,7 @@ namespace iSpyApplication.Server
                         resp += "1," + om.id + "," + onlinestatus.ToString().ToLower() + "," +
                             om.name.Replace(",", "&comma;") + "," + GetStatus(onlinestatus) + "," +
                             om.description.Replace(",", "&comma;").Replace("\n", " ") + "," +
-                            om.settings.accessgroups.Replace(",", "&comma;").Replace("\n", " ") + ","+recording.ToString().ToLowerInvariant()+Environment.NewLine;
+                            om.settings.accessgroups.Replace(",", "&comma;").Replace("\n", " ") + ","+recording.ToString().ToLowerInvariant()+ Environment.NewLine;
                     }
                 }
             }

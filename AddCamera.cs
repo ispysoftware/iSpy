@@ -364,10 +364,7 @@ namespace iSpyApplication
             
 
             txtAccessGroups.Text = CameraControl.Camobject.settings.accessgroups;
-            
-
-            
-
+            chkResize.Checked = CameraControl.Camobject.settings.resize;
 
             ddlCopyFrom.Items.Clear();
             ddlCopyFrom.Items.Add(new ListItem(LocRm.GetString("CopyFrom"), "-1"));
@@ -703,6 +700,7 @@ namespace iSpyApplication
             llblHelp.Text = LocRm.GetString("help");
             
             chkColourProcessing.Text = LocRm.GetString("Apply");
+            chkResize.Text = LocRm.GetString("json.resize");
             Text = LocRm.GetString("AddCamera");
             
             lblAccessGroups.Text = LocRm.GetString("AccessGroups");
@@ -2590,6 +2588,16 @@ namespace iSpyApplication
         private void rdoTrigger_CheckedChanged(object sender, EventArgs e)
         {
             CameraControl.Camobject.alerts.processmode = "trigger";
+        }
+        
+
+        private void chkResize_CheckedChanged(object sender, EventArgs e)
+        {
+            CameraControl.Camobject.settings.resize = chkResize.Checked;
+            if (chkActive.Checked)
+            {
+                CameraControl.Restart();
+            }
         }
     }
 }

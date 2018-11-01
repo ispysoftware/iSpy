@@ -17,7 +17,6 @@ namespace iSpyApplication
             txtUserAgent.Text = Camobject.settings.useragent;
             txtResizeWidth.Value = Camobject.settings.resizeWidth;
             txtResizeHeight.Value = Camobject.settings.resizeHeight;
-            chkNoResize.Checked = !Camobject.settings.resize;
             chkHttp10.Checked = Camobject.settings.usehttp10;
             chkFBA.Checked = Camobject.settings.forcebasic;
             txtReconnect.Value = Camobject.settings.reconnectinterval;
@@ -50,7 +49,6 @@ namespace iSpyApplication
             chkFBA.Text = LocRm.GetString("ForceBasic");
             chkHttp10.Text = LocRm.GetString("UseHTTP10");
             LocRm.SetString(label1, "Cookies");
-            LocRm.SetString(chkNoResize, "NoResize");
             LocRm.SetString(chkCalibrate, "CalibrateOnReconnect");
             Text = LocRm.GetString("Advanced");
             tabPage1.Text = LocRm.GetString("Options");
@@ -86,7 +84,7 @@ namespace iSpyApplication
                 h++;
 
             Camobject.settings.resizeHeight = h;
-            Camobject.settings.resize = !chkNoResize.Checked;
+
 
             Camobject.settings.usehttp10 = chkHttp10.Checked;
             Camobject.settings.cookies = txtCookies.Text;
@@ -99,10 +97,6 @@ namespace iSpyApplication
             Close();
         }
 
-        private void chkNoResize_CheckedChanged(object sender, EventArgs e)
-        {
-            txtResizeHeight.Enabled = txtResizeWidth.Enabled = !chkNoResize.Checked;        
-        }
 
         private void chkFishEyeActive_CheckedChanged(object sender, EventArgs e)
         {
