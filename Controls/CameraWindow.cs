@@ -1601,7 +1601,7 @@ namespace iSpyApplication.Controls
                         if (MovementDetected)
                             LastActivity = DateTime.UtcNow;
 
-                        if (Camera != null && GotImage)
+                        if (Camera != null && GotImage && !VideoSourceErrorState)
                         {
                             if (Calibrating)
                             {

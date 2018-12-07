@@ -284,6 +284,7 @@ namespace iSpyApplication.Sources.Video
                         if (!string.IsNullOrEmpty(_userAgent))
                             ffmpeg.av_dict_set(&options, "user_agent", _userAgent, 0);
                         break;
+                    case "ws":
                     case "rtsp":
                     case "rtmp":
                         ffmpeg.av_dict_set_int(&options, "stimeout", _timeoutMicroSeconds, 0);

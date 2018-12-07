@@ -3161,7 +3161,7 @@ namespace iSpyApplication
         {
             if (WindowState == FormWindowState.Minimized)
             {
-                if (Conf.Enable_Password_Protect)
+                if (Conf.Enable_Password_Protect || _locked)
                 {
                     _unlockToolstripMenuItem.Visible = true;
                     _showToolstripMenuItem.Visible =

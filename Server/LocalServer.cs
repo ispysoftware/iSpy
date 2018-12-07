@@ -4002,7 +4002,6 @@ namespace iSpyApplication.Server
                     if (cw != null)
                     {
                         bool onlinestatus = cw.IsEnabled;
-                        bool recording = cw.Recording;
                         bool talkconfigured = oc.settings.audiomodel != "None";
                         resp += "2," + oc.id + "," + onlinestatus.ToString().ToLower() + "," +
                                 oc.name.Replace(",", "&comma;") + "," + GetStatus(onlinestatus) + "," +
