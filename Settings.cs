@@ -139,11 +139,6 @@ namespace iSpyApplication
             {
                 if (!MainForm.Conf.Archive.EndsWith(@"\"))
                     MainForm.Conf.Archive += @"\";
-                if (!Directory.Exists(MainForm.Conf.Archive))
-                {
-                    MainForm.Conf.Archive = "";
-                    Logger.LogError("Archive directory ignored - couldn't be found on disk");
-                }
             }
 
             MainForm.Iconfont = new Font(FontFamily.GenericSansSerif, MainForm.Conf.BigButtons ? 22 : 15, FontStyle.Bold, GraphicsUnit.Pixel);

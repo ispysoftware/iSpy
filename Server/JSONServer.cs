@@ -1766,7 +1766,7 @@ namespace iSpyApplication.Server
                                 var files = new List<string>();
                                 foreach (var file in d.files)
                                 {
-                                    success = Helper.ArchiveFile(folderpath + file.name.ToString());
+                                    success = Helper.ArchiveFile(io, folderpath + file.name.ToString())!="NOK";
                                     if (!success)
                                     {
                                         t = LocRm.GetString("ArchiveFailed", lc);

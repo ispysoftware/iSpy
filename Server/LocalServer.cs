@@ -1842,7 +1842,7 @@ namespace iSpyApplication.Server
 
                     foreach (string fn3 in files)
                     {
-                        if (Helper.ArchiveFile(folderpath + fn3))
+                        if (Helper.ArchiveFile(io, folderpath + fn3)!="NOK")
                             resp = "OK";
                         else
                             break;

@@ -111,8 +111,9 @@
                         { "text": "Foscam", "value": "Foscam", "noTranslate": true  },
                         { "text": "iSpy Server", "value": "iSpy Server", "noTranslate": true  },
                         { "text": "Network Kinect", "value": "Network Kinect", "noTranslate": true  },
-                        { "text": "IP Webcam (Android)", "value": "IP Webcam (Android)", "noTranslate": true  }
-                    ],
+                        { "text": "IP Webcam (Android)", "value": "IP Webcam (Android)", "noTranslate": true  },
+                        { "text": "Amcrest", "value": "Amcrest", "noTranslate": true  }
+                      ],
                     "help": "Controls where audio is played back when talking"
                 }
             ]

@@ -503,19 +503,36 @@ namespace iSpyApplication
 
         }
 
-        internal static bool ArchiveFile(string filename)
+        internal static string ArchiveFile(ISpyControl ctrl, string filename)
         {
 
-            if (!string.IsNullOrEmpty(MainForm.Conf.Archive) && Directory.Exists(MainForm.Conf.Archive))
+            if (!string.IsNullOrEmpty(MainForm.Conf.Archive))
             {
                 string fn = filename.Substring(filename.LastIndexOf("\\", StringComparison.Ordinal) + 1);
                 if (File.Exists(filename))
                 {
                     try
                     {
-                        if (!File.Exists(MainForm.Conf.Archive + fn))
-                            File.Copy(filename, MainForm.Conf.Archive + fn);
-                        return true;
+                        string ap = MainForm.Conf.Archive;
+                        ap = ap.Replace("{NAME}", (ctrl!=null?ctrl.ObjectName:"Unknown"));
+                        ap = ap.Replace("{DIR}", (ctrl != null ? ctrl.Folder: "Unknown"));
+                        int j = 0;
+                        while (ap.IndexOf("{", StringComparison.Ordinal) != -1 && j<20)
+                        {
+                            ap = string.Format(CultureInfo.InvariantCulture, ap, DateTime.Now);
+                            j++;
+                        }
+
+                        if (!ap.EndsWith(@"\"))
+                            ap += @"\";
+
+                        if (!File.Exists(ap + fn))
+                        {
+                            DirectoryInfo di = Directory.CreateDirectory(ap);
+                            File.Copy(filename, ap + fn);
+                        }
+
+                        return ap;
                     }
                     catch (Exception ex)
                     {
@@ -523,7 +540,7 @@ namespace iSpyApplication
                     }
                 }
             }
-            return false;
+            return "NOK";
 
         }
 
@@ -1065,16 +1082,7 @@ namespace iSpyApplication
             {
                 if (!string.IsNullOrEmpty(MainForm.Conf.Archive))
                 {
-                    try
-                    {
-                        if (Directory.Exists(MainForm.Conf.Archive))
-                            return true;
-                    }
-                    catch
-                    {
-                        //invalid location
-                    }
-
+                   return true;
                 }
                 return false;
             }

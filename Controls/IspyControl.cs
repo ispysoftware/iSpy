@@ -20,7 +20,7 @@ namespace iSpyApplication.Controls
         bool CanGrab { get; }
         bool HasFiles { get; }
         string ObjectName { get; }
-
+        string Folder { get; }
         void Disable(bool stopSource=true);
         void Enable();
         string RecordSwitch(bool record);

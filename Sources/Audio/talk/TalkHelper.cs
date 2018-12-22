@@ -35,6 +35,9 @@ namespace iSpyApplication.Sources.Audio.talk
                 case "IP Webcam (Android)":
                     talkTarget = new TalkIPWebcamAndroid(new Uri(cam.settings.videosourcestring), source);
                     break;
+                case "Amcrest":
+                    talkTarget = new TalkAmcrest(cam.settings.audioip, cam.settings.audioport, source);
+                    break;
             }
             return talkTarget;
         }

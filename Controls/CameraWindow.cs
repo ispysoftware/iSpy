@@ -293,6 +293,7 @@ namespace iSpyApplication.Controls
         } 
 
         public string ObjectName => Camobject.name;
+        public string Folder => Camobject.directory;
 
         public bool CanTalk => IsEnabled && Camobject.settings.audiomodel != "None";
 

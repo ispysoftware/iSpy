@@ -2153,7 +2153,7 @@ namespace iSpyApplication
 
         private void PopulateTalkDevices()
         {
-            var models = new [] {"None", "Local Playback","Axis", "Foscam", "iSpyServer", "NetworkKinect", "IP Webcam (Android)"};
+            var models = new [] {"None", "Local Playback","Axis", "Foscam", "iSpyServer", "NetworkKinect", "IP Webcam (Android)", "Amcrest" };
             foreach(string m in models)
             {
                 ddlTalkModel.Items.Add(m);

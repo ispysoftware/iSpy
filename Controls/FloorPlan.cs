@@ -351,6 +351,7 @@ namespace iSpyApplication.Controls
         
         #endregion
 
+        public string Folder { get; set; }
         public FloorPlanControl(objectsFloorplan ofp, MainForm mainForm)
         {
             MainClass = mainForm;

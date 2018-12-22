@@ -435,7 +435,7 @@ namespace iSpyApplication.Controls
 
         }
 
-
+        public string Folder => Micobject.directory;
         public string ObjectName => Micobject.name;
 
         public bool CanTalk => false;

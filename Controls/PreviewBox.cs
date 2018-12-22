@@ -24,6 +24,11 @@ namespace iSpyApplication.Controls
         public MainForm MainClass;
         public bool IsMerged;
 
+        public ISpyControl Control
+        {
+            get { return MainClass.GetISpyControl(Otid, Oid); }
+        }
+
         public PreviewBox(int otid, int oid, MainForm mainForm)
         {
             Otid = otid;
