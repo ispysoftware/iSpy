@@ -261,7 +261,7 @@ namespace iSpyApplication.Controls
             {
                 if (_plugin != null)
                 {
-                    try {_plugin.GetType().GetMethod("Dispose").Invoke(_plugin, null);}
+                    try {_plugin.GetType().GetMethod("Dispose")?.Invoke(_plugin, null);}
                     catch
                     {
                         // ignored

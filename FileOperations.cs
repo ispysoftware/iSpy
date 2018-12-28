@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using iSpyApplication.Controls;
 using iSpyApplication.Utilities;
 
 namespace iSpyApplication
@@ -178,12 +179,12 @@ namespace iSpyApplication
             return true;
         }
 
-        public static bool DeleteOrArchive(string filePath, bool archive)
+        public static bool DeleteOrArchive(ISpyControl ctrl, string filePath, bool archive)
         {
             if (!archive || filePath.EndsWith(".jpg"))
                 return Delete(filePath);
 
-            Helper.ArchiveAndDelete(filePath);
+            Helper.ArchiveAndDelete(ctrl,filePath);
 
             return true;
         }

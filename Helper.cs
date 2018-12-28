@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
@@ -505,12 +506,11 @@ namespace iSpyApplication
 
         internal static string ArchiveFile(ISpyControl ctrl, string filename)
         {
-
-            if (!string.IsNullOrEmpty(MainForm.Conf.Archive))
+            if (ctrl == null || !string.IsNullOrEmpty(MainForm.Conf.Archive))
             {
-                string fn = filename.Substring(filename.LastIndexOf("\\", StringComparison.Ordinal) + 1);
                 if (File.Exists(filename))
                 {
+                    string fn = filename.Substring(filename.LastIndexOf("\\", StringComparison.Ordinal) + 1);
                     try
                     {
                         string ap = MainForm.Conf.Archive;
@@ -528,7 +528,7 @@ namespace iSpyApplication
 
                         if (!File.Exists(ap + fn))
                         {
-                            DirectoryInfo di = Directory.CreateDirectory(ap);
+                            Directory.CreateDirectory(ap);
                             File.Copy(filename, ap + fn);
                         }
 
@@ -543,30 +543,22 @@ namespace iSpyApplication
             return "NOK";
 
         }
-
-        internal static bool ArchiveAndDelete(string filename)
+        
+        internal static bool ArchiveAndDelete(ISpyControl ctrl, string filename)
         {
-
-            if (!string.IsNullOrEmpty(MainForm.Conf.Archive) && Directory.Exists(MainForm.Conf.Archive))
+            if (ArchiveFile(ctrl, filename) != "NOK")
             {
-                string fn = filename.Substring(filename.LastIndexOf("\\", StringComparison.Ordinal) + 1);
-                if (File.Exists(filename))
+                try
                 {
-                    try
-                    {
-                        if (!File.Exists(MainForm.Conf.Archive + fn))
-                            File.Copy(filename, MainForm.Conf.Archive + fn);
-                        File.Delete(filename);
-                        return true;
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.LogException(ex);
-                    }
+                    File.Delete(filename);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogException(ex);
                 }
             }
             return false;
-
         }
 
         internal static string GetMediaDirectory(int ot, int oid)

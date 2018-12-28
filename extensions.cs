@@ -9,6 +9,45 @@ namespace iSpyApplication
 {
     public static class Extensions
     {
+        public static string Replace(this string str, string oldValue, string newValue, StringComparison comparisonType, int maxIterations=Int32.MaxValue)
+        {
+            StringBuilder resultStringBuilder = new StringBuilder(str.Length);
+            bool isReplacementNullOrEmpty = string.IsNullOrEmpty(newValue);
+
+            const int valueNotFound = -1;
+            int foundAt;
+            int startSearchFromIndex = 0;
+            int iter = 0;
+            while ((foundAt = str.IndexOf(oldValue, startSearchFromIndex, comparisonType)) != valueNotFound && iter<maxIterations)
+            {
+                int charsUntilReplacment = foundAt - startSearchFromIndex;
+                bool isNothingToAppend = charsUntilReplacment == 0;
+                if (!isNothingToAppend)
+                {
+                    resultStringBuilder.Append(str, startSearchFromIndex, charsUntilReplacment);
+                }
+
+                if (!isReplacementNullOrEmpty)
+                {
+                    resultStringBuilder.Append(newValue);
+                }
+
+                startSearchFromIndex = foundAt + oldValue.Length;
+                if (startSearchFromIndex == str.Length)
+                {
+                    return resultStringBuilder.ToString();
+                }
+
+                iter++;
+            }
+            int charsUntilStringEnd = str.Length - startSearchFromIndex;
+            resultStringBuilder.Append(str, startSearchFromIndex, charsUntilStringEnd);
+
+
+            return resultStringBuilder.ToString();
+
+        }
+
         public static Uri SetPort(this Uri uri, int newPort)
         {
             var builder = new UriBuilder(uri) { Port = newPort };

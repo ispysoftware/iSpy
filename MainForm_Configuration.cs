@@ -1824,7 +1824,7 @@ namespace iSpyApplication
                                 for (int i = 0; i < lFi.Count; i++)
                                 {
                                     var fi = lFi[i];
-                                    if (FileOperations.DeleteOrArchive(fi.FullName, archive))
+                                    if (FileOperations.DeleteOrArchive(cw, fi.FullName, archive))
                                     {
                                         try
                                         {
@@ -1850,7 +1850,7 @@ namespace iSpyApplication
                             for (int i = 0; i < lFi.Count; i++)
                             {
                                 var fi = lFi[i];
-                                if (FileOperations.DeleteOrArchive(fi.FullName, archive))
+                                if (FileOperations.DeleteOrArchive(cw, fi.FullName, archive))
                                 {
                                     try
                                     {
@@ -1908,7 +1908,7 @@ namespace iSpyApplication
                                 for (int i = 0; i < lFi.Count; i++)
                                 {
                                     var fi = lFi[i];
-                                    if (FileOperations.DeleteOrArchive(fi.FullName, archive))
+                                    if (FileOperations.DeleteOrArchive(vl,fi.FullName, archive))
                                     {
                                         try
                                         {
@@ -1931,7 +1931,7 @@ namespace iSpyApplication
                             for (int i = 0; i < lFi.Count; i++)
                             {
                                 var fi = lFi[i];
-                                if (FileOperations.DeleteOrArchive(fi.FullName, archive))
+                                if (FileOperations.DeleteOrArchive(vl, fi.FullName, archive))
                                 {
                                     try
                                     {
@@ -1961,7 +1961,6 @@ namespace iSpyApplication
             {
                 UISync.Execute(RefreshControls);
             }
-
             //run storage management on each directory
             foreach (var d in Conf.MediaDirectories)
             {
@@ -2009,25 +2008,36 @@ namespace iSpyApplication
                     for (int i = 0; i < lCan.Count; i++)
                     {
                         var fi = lCan[i];
-                        if (size > targetSize)
+                        string folder = "";
+                        try
                         {
-                            if (FileOperations.DeleteOrArchive(fi.FullName, archive))
-                            {
-                                size -= fi.Length;
-                                fileschanged = true;
-                                lCan.Remove(fi);
-                                i--;
-                                lock (ThreadLock)
-                                {
-                                    Masterfilelist.RemoveAll(p => p.Filename.EndsWith(fi.Name));
-                                }
-                                if (size < targetSize)
-                                {
-                                    break;
-                                }
-                                Thread.Sleep(5);
-                            }
+                            folder = fi.FullName.Replace(d.Entry, "", StringComparison.CurrentCultureIgnoreCase, 1)
+                                .Split('\\')[1];
                         }
+                        catch (Exception ex)
+                        {
+                            Logger.LogException(ex,"Storage Management - couldn't find control");
+                            continue;
+                        }
+
+                        var ctrl = ControlList.FirstOrDefault(p => p.Folder == folder);
+                        if (ctrl!=null && FileOperations.DeleteOrArchive(ctrl,fi.FullName, archive))
+                        {
+                            size -= fi.Length;
+                            fileschanged = true;
+                            lCan.Remove(fi);
+                            i--;
+                            lock (ThreadLock)
+                            {
+                                Masterfilelist.RemoveAll(p => p.Filename.EndsWith(fi.Name));
+                            }
+                            if (size < targetSize)
+                            {
+                                break;
+                            }
+                            Thread.Sleep(5);
+                        }
+                    
                     }
                     if (lCan.Count > 0)
                         _oldestFile = lCan.First().CreationTime;

@@ -2444,7 +2444,7 @@ namespace iSpyApplication.Server
                     string grabs = "";
                     foreach (objectsCamera oc1 in MainForm.Cameras)
                     {
-                        var dirinfo = new DirectoryInfo(Helper.GetMediaDirectory(2, oid) + "video\\" +
+                        var dirinfo = new DirectoryInfo(Helper.GetMediaDirectory(2, oc1.id) + "video\\" +
                                                         oc1.directory + "\\grabs\\");
 
                         var lFi = new List<FileInfo>();
