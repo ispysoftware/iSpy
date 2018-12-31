@@ -385,7 +385,6 @@ namespace iSpyApplication
         private MenuItem menuItem10;
         private MenuItem menuItem11;
         private MenuItem menuItem12;
-        private MenuItem menuItem13;
         private MenuItem menuItem14;
         private MenuItem menuItem15;
         private MenuItem menuItem16;
@@ -1697,7 +1696,6 @@ namespace iSpyApplication
             alwaysOnTopToolStripMenuItem1.Text = LocRm.GetString("AlwaysOnTop");
             menuItem8.Text = LocRm.GetString("AlwaysOnTop");
            
-            menuItem13.Text = LocRm.GetString("PurchaseMoreCameras");
             _exitToolStripMenuItem.Text = LocRm.GetString("Exit");
 
             layoutToolStripMenuItem.Text = LocRm.GetString("Layout");
@@ -1772,9 +1770,7 @@ namespace iSpyApplication
             if (!Helper.HasFeature(Enums.Features.Access_Media))
                 splitContainer1.Panel2Collapsed = true;
 
-            menuItem13.Visible =
-                _menuItem26.Visible =
-                    tsslPerformance.Visible = tsslPRO.Visible = Helper.HasFeature(Enums.Features.View_Ispy_Links);
+            _menuItem26.Visible = tsslPerformance.Visible = tsslPRO.Visible = Helper.HasFeature(Enums.Features.View_Ispy_Links);
 
             statusStrip1.Visible = Conf.ShowStatus && Helper.HasFeature(Enums.Features.View_Status_Bar);
             menuItem38.Visible = menuItem15.Visible = Helper.HasFeature(Enums.Features.View_Layout_Options);
@@ -4578,7 +4574,6 @@ namespace iSpyApplication
             this.menuItem36 = new System.Windows.Forms.MenuItem();
             this.menuItem28 = new System.Windows.Forms.MenuItem();
             this._menuItem1 = new System.Windows.Forms.MenuItem();
-            this.menuItem13 = new System.Windows.Forms.MenuItem();
             this.menuItem33 = new System.Windows.Forms.MenuItem();
             this._exitFileItem = new System.Windows.Forms.MenuItem();
             this._menuItem36 = new System.Windows.Forms.MenuItem();
@@ -4813,7 +4808,6 @@ namespace iSpyApplication
             this.menuItem36,
             this.menuItem28,
             this._menuItem1,
-            this.menuItem13,
             this.menuItem33,
             this._exitFileItem});
             this._fileItem.Text = "&File";
@@ -4847,21 +4841,15 @@ namespace iSpyApplication
             this._menuItem1.Index = 4;
             this._menuItem1.Text = "-";
             // 
-            // menuItem13
-            // 
-            this.menuItem13.Index = 5;
-            this.menuItem13.Text = "Purchase More Cameras";
-            this.menuItem13.Click += new System.EventHandler(this.menuItem13_Click);
-            // 
             // menuItem33
             // 
-            this.menuItem33.Index = 6;
+            this.menuItem33.Index = 5;
             this.menuItem33.Text = "Lock";
             this.menuItem33.Click += new System.EventHandler(this.menuItem33_Click);
             // 
             // _exitFileItem
             // 
-            this._exitFileItem.Index = 7;
+            this._exitFileItem.Index = 6;
             this._exitFileItem.Text = "E&xit";
             this._exitFileItem.Click += new System.EventHandler(this.ExitFileItemClick);
             // 
@@ -5434,14 +5422,14 @@ namespace iSpyApplication
             this.maximiseToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.ctxtMainForm.Name = "_ctxtMainForm";
-            this.ctxtMainForm.Size = new System.Drawing.Size(185, 316);
+            this.ctxtMainForm.Size = new System.Drawing.Size(214, 316);
             this.ctxtMainForm.Opening += new System.ComponentModel.CancelEventHandler(this.CtxtMainFormOpening);
             // 
             // _addCameraToolStripMenuItem
             // 
             this._addCameraToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_addCameraToolStripMenuItem.Image")));
             this._addCameraToolStripMenuItem.Name = "_addCameraToolStripMenuItem";
-            this._addCameraToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this._addCameraToolStripMenuItem.Size = new System.Drawing.Size(213, 26);
             this._addCameraToolStripMenuItem.Text = "Add &Camera";
             this._addCameraToolStripMenuItem.Click += new System.EventHandler(this.AddCameraToolStripMenuItemClick);
             // 
@@ -5449,7 +5437,7 @@ namespace iSpyApplication
             // 
             this._addMicrophoneToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_addMicrophoneToolStripMenuItem.Image")));
             this._addMicrophoneToolStripMenuItem.Name = "_addMicrophoneToolStripMenuItem";
-            this._addMicrophoneToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this._addMicrophoneToolStripMenuItem.Size = new System.Drawing.Size(213, 26);
             this._addMicrophoneToolStripMenuItem.Text = "Add &Microphone";
             this._addMicrophoneToolStripMenuItem.Click += new System.EventHandler(this.AddMicrophoneToolStripMenuItemClick);
             // 
@@ -5457,7 +5445,7 @@ namespace iSpyApplication
             // 
             this._addFloorPlanToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_addFloorPlanToolStripMenuItem.Image")));
             this._addFloorPlanToolStripMenuItem.Name = "_addFloorPlanToolStripMenuItem";
-            this._addFloorPlanToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this._addFloorPlanToolStripMenuItem.Size = new System.Drawing.Size(213, 26);
             this._addFloorPlanToolStripMenuItem.Text = "Add Floor &Plan";
             this._addFloorPlanToolStripMenuItem.Click += new System.EventHandler(this.AddFloorPlanToolStripMenuItemClick);
             // 
@@ -5465,7 +5453,7 @@ namespace iSpyApplication
             // 
             this._remoteCommandsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_remoteCommandsToolStripMenuItem.Image")));
             this._remoteCommandsToolStripMenuItem.Name = "_remoteCommandsToolStripMenuItem";
-            this._remoteCommandsToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this._remoteCommandsToolStripMenuItem.Size = new System.Drawing.Size(213, 26);
             this._remoteCommandsToolStripMenuItem.Text = "Remote Commands";
             this._remoteCommandsToolStripMenuItem.Click += new System.EventHandler(this.RemoteCommandsToolStripMenuItemClick);
             // 
@@ -5473,7 +5461,7 @@ namespace iSpyApplication
             // 
             this._settingsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_settingsToolStripMenuItem.Image")));
             this._settingsToolStripMenuItem.Name = "_settingsToolStripMenuItem";
-            this._settingsToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this._settingsToolStripMenuItem.Size = new System.Drawing.Size(213, 26);
             this._settingsToolStripMenuItem.Text = "&Settings";
             this._settingsToolStripMenuItem.Click += new System.EventHandler(this.SettingsToolStripMenuItemClick);
             // 
@@ -5481,7 +5469,7 @@ namespace iSpyApplication
             // 
             this._applyScheduleToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_applyScheduleToolStripMenuItem.Image")));
             this._applyScheduleToolStripMenuItem.Name = "_applyScheduleToolStripMenuItem";
-            this._applyScheduleToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this._applyScheduleToolStripMenuItem.Size = new System.Drawing.Size(213, 26);
             this._applyScheduleToolStripMenuItem.Text = "Apply Schedule";
             this._applyScheduleToolStripMenuItem.Click += new System.EventHandler(this.ApplyScheduleToolStripMenuItemClick1);
             // 
@@ -5492,27 +5480,27 @@ namespace iSpyApplication
             this.opacityToolStripMenuItem2,
             this.opacityToolStripMenuItem3});
             this.opacityToolStripMenuItem.Name = "opacityToolStripMenuItem";
-            this.opacityToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.opacityToolStripMenuItem.Size = new System.Drawing.Size(213, 26);
             this.opacityToolStripMenuItem.Text = "Opacity";
             // 
             // opacityToolStripMenuItem1
             // 
             this.opacityToolStripMenuItem1.Name = "opacityToolStripMenuItem1";
-            this.opacityToolStripMenuItem1.Size = new System.Drawing.Size(146, 22);
+            this.opacityToolStripMenuItem1.Size = new System.Drawing.Size(175, 26);
             this.opacityToolStripMenuItem1.Text = "10% Opacity";
             this.opacityToolStripMenuItem1.Click += new System.EventHandler(this.opacityToolStripMenuItem1_Click);
             // 
             // opacityToolStripMenuItem2
             // 
             this.opacityToolStripMenuItem2.Name = "opacityToolStripMenuItem2";
-            this.opacityToolStripMenuItem2.Size = new System.Drawing.Size(146, 22);
+            this.opacityToolStripMenuItem2.Size = new System.Drawing.Size(175, 26);
             this.opacityToolStripMenuItem2.Text = "30% Opacity";
             this.opacityToolStripMenuItem2.Click += new System.EventHandler(this.opacityToolStripMenuItem2_Click);
             // 
             // opacityToolStripMenuItem3
             // 
             this.opacityToolStripMenuItem3.Name = "opacityToolStripMenuItem3";
-            this.opacityToolStripMenuItem3.Size = new System.Drawing.Size(146, 22);
+            this.opacityToolStripMenuItem3.Size = new System.Drawing.Size(175, 26);
             this.opacityToolStripMenuItem3.Text = "100% Opacity";
             this.opacityToolStripMenuItem3.Click += new System.EventHandler(this.opacityToolStripMenuItem3_Click);
             // 
@@ -5523,27 +5511,27 @@ namespace iSpyApplication
             this.saveLayoutToolStripMenuItem1,
             this.resetLayoutToolStripMenuItem1});
             this.layoutToolStripMenuItem.Name = "layoutToolStripMenuItem";
-            this.layoutToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.layoutToolStripMenuItem.Size = new System.Drawing.Size(213, 26);
             this.layoutToolStripMenuItem.Text = "Layout";
             // 
             // autoLayoutToolStripMenuItem
             // 
             this.autoLayoutToolStripMenuItem.Name = "autoLayoutToolStripMenuItem";
-            this.autoLayoutToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.autoLayoutToolStripMenuItem.Size = new System.Drawing.Size(168, 26);
             this.autoLayoutToolStripMenuItem.Text = "Auto Layout";
             this.autoLayoutToolStripMenuItem.Click += new System.EventHandler(this.autoLayoutToolStripMenuItem_Click);
             // 
             // saveLayoutToolStripMenuItem1
             // 
             this.saveLayoutToolStripMenuItem1.Name = "saveLayoutToolStripMenuItem1";
-            this.saveLayoutToolStripMenuItem1.Size = new System.Drawing.Size(141, 22);
+            this.saveLayoutToolStripMenuItem1.Size = new System.Drawing.Size(168, 26);
             this.saveLayoutToolStripMenuItem1.Text = "Save Layout";
             this.saveLayoutToolStripMenuItem1.Click += new System.EventHandler(this.saveLayoutToolStripMenuItem1_Click);
             // 
             // resetLayoutToolStripMenuItem1
             // 
             this.resetLayoutToolStripMenuItem1.Name = "resetLayoutToolStripMenuItem1";
-            this.resetLayoutToolStripMenuItem1.Size = new System.Drawing.Size(141, 22);
+            this.resetLayoutToolStripMenuItem1.Size = new System.Drawing.Size(168, 26);
             this.resetLayoutToolStripMenuItem1.Text = "Reset Layout";
             this.resetLayoutToolStripMenuItem1.Click += new System.EventHandler(this.resetLayoutToolStripMenuItem1_Click);
             // 
@@ -5559,7 +5547,7 @@ namespace iSpyApplication
             this.viewControllerToolStripMenuItem,
             this.alwaysOnTopToolStripMenuItem1});
             this.displayToolStripMenuItem.Name = "displayToolStripMenuItem";
-            this.displayToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.displayToolStripMenuItem.Size = new System.Drawing.Size(213, 26);
             this.displayToolStripMenuItem.Text = "Display";
             // 
             // fullScreenToolStripMenuItem1
@@ -5567,7 +5555,7 @@ namespace iSpyApplication
             this.fullScreenToolStripMenuItem1.Checked = true;
             this.fullScreenToolStripMenuItem1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.fullScreenToolStripMenuItem1.Name = "fullScreenToolStripMenuItem1";
-            this.fullScreenToolStripMenuItem1.Size = new System.Drawing.Size(155, 22);
+            this.fullScreenToolStripMenuItem1.Size = new System.Drawing.Size(186, 26);
             this.fullScreenToolStripMenuItem1.Text = "Full Screen";
             this.fullScreenToolStripMenuItem1.Click += new System.EventHandler(this.fullScreenToolStripMenuItem1_Click);
             // 
@@ -5576,7 +5564,7 @@ namespace iSpyApplication
             this.statusBarToolStripMenuItem.Checked = true;
             this.statusBarToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.statusBarToolStripMenuItem.Name = "statusBarToolStripMenuItem";
-            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
             this.statusBarToolStripMenuItem.Text = "Status Bar";
             this.statusBarToolStripMenuItem.Click += new System.EventHandler(this.statusBarToolStripMenuItem_Click);
             // 
@@ -5585,7 +5573,7 @@ namespace iSpyApplication
             this.fileMenuToolStripMenuItem.Checked = true;
             this.fileMenuToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.fileMenuToolStripMenuItem.Name = "fileMenuToolStripMenuItem";
-            this.fileMenuToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.fileMenuToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
             this.fileMenuToolStripMenuItem.Text = "File Menu";
             this.fileMenuToolStripMenuItem.Click += new System.EventHandler(this.fileMenuToolStripMenuItem_Click);
             // 
@@ -5594,7 +5582,7 @@ namespace iSpyApplication
             this.toolStripToolStripMenuItem.Checked = true;
             this.toolStripToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.toolStripToolStripMenuItem.Name = "toolStripToolStripMenuItem";
-            this.toolStripToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.toolStripToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
             this.toolStripToolStripMenuItem.Text = "Tool Strip";
             this.toolStripToolStripMenuItem.Click += new System.EventHandler(this.toolStripToolStripMenuItem_Click);
             // 
@@ -5603,7 +5591,7 @@ namespace iSpyApplication
             this.mediaPaneToolStripMenuItem.Checked = true;
             this.mediaPaneToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.mediaPaneToolStripMenuItem.Name = "mediaPaneToolStripMenuItem";
-            this.mediaPaneToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.mediaPaneToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
             this.mediaPaneToolStripMenuItem.Text = "Media Pane";
             this.mediaPaneToolStripMenuItem.Click += new System.EventHandler(this.mediaPaneToolStripMenuItem_Click);
             // 
@@ -5612,7 +5600,7 @@ namespace iSpyApplication
             this.pTZControllerToolStripMenuItem.Checked = true;
             this.pTZControllerToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.pTZControllerToolStripMenuItem.Name = "pTZControllerToolStripMenuItem";
-            this.pTZControllerToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.pTZControllerToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
             this.pTZControllerToolStripMenuItem.Text = "PTZ Controller";
             this.pTZControllerToolStripMenuItem.Click += new System.EventHandler(this.pTZControllerToolStripMenuItem_Click);
             // 
@@ -5621,7 +5609,7 @@ namespace iSpyApplication
             this.viewControllerToolStripMenuItem.Checked = true;
             this.viewControllerToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.viewControllerToolStripMenuItem.Name = "viewControllerToolStripMenuItem";
-            this.viewControllerToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.viewControllerToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
             this.viewControllerToolStripMenuItem.Text = "View Controller";
             this.viewControllerToolStripMenuItem.Click += new System.EventHandler(this.viewControllerToolStripMenuItem_Click);
             // 
@@ -5630,27 +5618,27 @@ namespace iSpyApplication
             this.alwaysOnTopToolStripMenuItem1.Checked = true;
             this.alwaysOnTopToolStripMenuItem1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.alwaysOnTopToolStripMenuItem1.Name = "alwaysOnTopToolStripMenuItem1";
-            this.alwaysOnTopToolStripMenuItem1.Size = new System.Drawing.Size(155, 22);
+            this.alwaysOnTopToolStripMenuItem1.Size = new System.Drawing.Size(186, 26);
             this.alwaysOnTopToolStripMenuItem1.Text = "Always on Top";
             this.alwaysOnTopToolStripMenuItem1.Click += new System.EventHandler(this.alwaysOnTopToolStripMenuItem1_Click);
             // 
             // gridViewsToolStripMenuItem
             // 
             this.gridViewsToolStripMenuItem.Name = "gridViewsToolStripMenuItem";
-            this.gridViewsToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.gridViewsToolStripMenuItem.Size = new System.Drawing.Size(213, 26);
             this.gridViewsToolStripMenuItem.Text = "Grid Views";
             this.gridViewsToolStripMenuItem.Click += new System.EventHandler(this.gridViewsToolStripMenuItem_Click);
             // 
             // maximiseToolStripMenuItem
             // 
             this.maximiseToolStripMenuItem.Name = "maximiseToolStripMenuItem";
-            this.maximiseToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.maximiseToolStripMenuItem.Size = new System.Drawing.Size(213, 26);
             this.maximiseToolStripMenuItem.Text = "Maximise";
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(213, 26);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -5688,7 +5676,7 @@ namespace iSpyApplication
             this._toolStripDropDownButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._toolStripDropDownButton2.Name = "_toolStripDropDownButton2";
             this._toolStripDropDownButton2.ShowDropDownArrow = false;
-            this._toolStripDropDownButton2.Size = new System.Drawing.Size(74, 36);
+            this._toolStripDropDownButton2.Size = new System.Drawing.Size(82, 36);
             this._toolStripDropDownButton2.Text = "Add...";
             this._toolStripDropDownButton2.Click += new System.EventHandler(this._toolStripDropDownButton2_Click);
             // 
@@ -5698,7 +5686,7 @@ namespace iSpyApplication
             this._localCameraToolStripMenuItem.Margin = new System.Windows.Forms.Padding(0, 4, 0, 0);
             this._localCameraToolStripMenuItem.Name = "_localCameraToolStripMenuItem";
             this._localCameraToolStripMenuItem.Padding = new System.Windows.Forms.Padding(0);
-            this._localCameraToolStripMenuItem.Size = new System.Drawing.Size(331, 20);
+            this._localCameraToolStripMenuItem.Size = new System.Drawing.Size(402, 24);
             this._localCameraToolStripMenuItem.Text = "Local Camera";
             this._localCameraToolStripMenuItem.Click += new System.EventHandler(this.LocalCameraToolStripMenuItemClick);
             // 
@@ -5708,7 +5696,7 @@ namespace iSpyApplication
             this._iPCameraToolStripMenuItem.Margin = new System.Windows.Forms.Padding(0, 4, 0, 0);
             this._iPCameraToolStripMenuItem.Name = "_iPCameraToolStripMenuItem";
             this._iPCameraToolStripMenuItem.Padding = new System.Windows.Forms.Padding(0);
-            this._iPCameraToolStripMenuItem.Size = new System.Drawing.Size(331, 20);
+            this._iPCameraToolStripMenuItem.Size = new System.Drawing.Size(402, 24);
             this._iPCameraToolStripMenuItem.Text = "IP Camera";
             this._iPCameraToolStripMenuItem.Click += new System.EventHandler(this.IpCameraToolStripMenuItemClick);
             // 
@@ -5716,7 +5704,7 @@ namespace iSpyApplication
             // 
             this.iPCameraWithWizardToolStripMenuItem.Image = global::iSpyApplication.Properties.Resources.Computer;
             this.iPCameraWithWizardToolStripMenuItem.Name = "iPCameraWithWizardToolStripMenuItem";
-            this.iPCameraWithWizardToolStripMenuItem.Size = new System.Drawing.Size(331, 22);
+            this.iPCameraWithWizardToolStripMenuItem.Size = new System.Drawing.Size(402, 26);
             this.iPCameraWithWizardToolStripMenuItem.Text = "IP Camera With Wizard";
             this.iPCameraWithWizardToolStripMenuItem.Click += new System.EventHandler(this.iPCameraWithWizardToolStripMenuItem_Click);
             // 
@@ -5724,7 +5712,7 @@ namespace iSpyApplication
             // 
             this.oNVIFCameraToolStripMenuItem.Image = global::iSpyApplication.Properties.Resources.onvif;
             this.oNVIFCameraToolStripMenuItem.Name = "oNVIFCameraToolStripMenuItem";
-            this.oNVIFCameraToolStripMenuItem.Size = new System.Drawing.Size(331, 22);
+            this.oNVIFCameraToolStripMenuItem.Size = new System.Drawing.Size(402, 26);
             this.oNVIFCameraToolStripMenuItem.Text = "ONVIF Camera";
             this.oNVIFCameraToolStripMenuItem.Click += new System.EventHandler(this.oNVIFCameraToolStripMenuItem_Click);
             // 
@@ -5734,7 +5722,7 @@ namespace iSpyApplication
             this._floorPlanToolStripMenuItem.Margin = new System.Windows.Forms.Padding(0, 4, 0, 0);
             this._floorPlanToolStripMenuItem.Name = "_floorPlanToolStripMenuItem";
             this._floorPlanToolStripMenuItem.Padding = new System.Windows.Forms.Padding(0);
-            this._floorPlanToolStripMenuItem.Size = new System.Drawing.Size(331, 20);
+            this._floorPlanToolStripMenuItem.Size = new System.Drawing.Size(402, 24);
             this._floorPlanToolStripMenuItem.Text = "Floor Plan";
             this._floorPlanToolStripMenuItem.Click += new System.EventHandler(this.FloorPlanToolStripMenuItemClick);
             // 
@@ -5742,7 +5730,7 @@ namespace iSpyApplication
             // 
             this.videoFileToolStripMenuItem.Image = global::iSpyApplication.Properties.Resources.HardDrive;
             this.videoFileToolStripMenuItem.Name = "videoFileToolStripMenuItem";
-            this.videoFileToolStripMenuItem.Size = new System.Drawing.Size(331, 22);
+            this.videoFileToolStripMenuItem.Size = new System.Drawing.Size(402, 26);
             this.videoFileToolStripMenuItem.Text = "Video File";
             this.videoFileToolStripMenuItem.Click += new System.EventHandler(this.videoFileToolStripMenuItem_Click);
             // 
@@ -5750,7 +5738,7 @@ namespace iSpyApplication
             // 
             this.otherVideoSourceToolStripMenuItem.Image = global::iSpyApplication.Properties.Resources.Music;
             this.otherVideoSourceToolStripMenuItem.Name = "otherVideoSourceToolStripMenuItem";
-            this.otherVideoSourceToolStripMenuItem.Size = new System.Drawing.Size(331, 22);
+            this.otherVideoSourceToolStripMenuItem.Size = new System.Drawing.Size(402, 26);
             this.otherVideoSourceToolStripMenuItem.Text = "Other Video Source";
             this.otherVideoSourceToolStripMenuItem.Click += new System.EventHandler(this.otherVideoSourceToolStripMenuItem_Click);
             // 
@@ -5760,7 +5748,7 @@ namespace iSpyApplication
             this._microphoneToolStripMenuItem.Margin = new System.Windows.Forms.Padding(0, 4, 0, 0);
             this._microphoneToolStripMenuItem.Name = "_microphoneToolStripMenuItem";
             this._microphoneToolStripMenuItem.Padding = new System.Windows.Forms.Padding(0);
-            this._microphoneToolStripMenuItem.Size = new System.Drawing.Size(331, 20);
+            this._microphoneToolStripMenuItem.Size = new System.Drawing.Size(402, 24);
             this._microphoneToolStripMenuItem.Text = "Microphone";
             this._microphoneToolStripMenuItem.Click += new System.EventHandler(this.MicrophoneToolStripMenuItemClick);
             // 
@@ -5770,7 +5758,7 @@ namespace iSpyApplication
             this._uSbCamerasAndMicrophonesOnOtherToolStripMenuItem.Margin = new System.Windows.Forms.Padding(0, 4, 0, 0);
             this._uSbCamerasAndMicrophonesOnOtherToolStripMenuItem.Name = "_uSbCamerasAndMicrophonesOnOtherToolStripMenuItem";
             this._uSbCamerasAndMicrophonesOnOtherToolStripMenuItem.Padding = new System.Windows.Forms.Padding(0);
-            this._uSbCamerasAndMicrophonesOnOtherToolStripMenuItem.Size = new System.Drawing.Size(331, 20);
+            this._uSbCamerasAndMicrophonesOnOtherToolStripMenuItem.Size = new System.Drawing.Size(402, 24);
             this._uSbCamerasAndMicrophonesOnOtherToolStripMenuItem.Text = "Cameras and Microphones on Other Computers ";
             this._uSbCamerasAndMicrophonesOnOtherToolStripMenuItem.Click += new System.EventHandler(this.USbCamerasAndMicrophonesOnOtherToolStripMenuItemClick);
             // 
@@ -5784,7 +5772,7 @@ namespace iSpyApplication
             this._toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._toolStripDropDownButton1.Name = "_toolStripDropDownButton1";
             this._toolStripDropDownButton1.ShowDropDownArrow = false;
-            this._toolStripDropDownButton1.Size = new System.Drawing.Size(115, 36);
+            this._toolStripDropDownButton1.Size = new System.Drawing.Size(135, 36);
             this._toolStripDropDownButton1.Text = "Access Media";
             this._toolStripDropDownButton1.Click += new System.EventHandler(this.ToolStripDropDownButton1Click);
             // 
@@ -5794,7 +5782,7 @@ namespace iSpyApplication
             this._thruWebsiteToolStripMenuItem.Margin = new System.Windows.Forms.Padding(0, 4, 0, 0);
             this._thruWebsiteToolStripMenuItem.Name = "_thruWebsiteToolStripMenuItem";
             this._thruWebsiteToolStripMenuItem.Padding = new System.Windows.Forms.Padding(0);
-            this._thruWebsiteToolStripMenuItem.Size = new System.Drawing.Size(154, 20);
+            this._thruWebsiteToolStripMenuItem.Size = new System.Drawing.Size(186, 24);
             this._thruWebsiteToolStripMenuItem.Text = "Online";
             this._thruWebsiteToolStripMenuItem.Click += new System.EventHandler(this.ThruWebsiteToolStripMenuItemClick);
             // 
@@ -5804,7 +5792,7 @@ namespace iSpyApplication
             this._onMobileDevicesToolStripMenuItem.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this._onMobileDevicesToolStripMenuItem.Name = "_onMobileDevicesToolStripMenuItem";
             this._onMobileDevicesToolStripMenuItem.Padding = new System.Windows.Forms.Padding(0);
-            this._onMobileDevicesToolStripMenuItem.Size = new System.Drawing.Size(154, 20);
+            this._onMobileDevicesToolStripMenuItem.Size = new System.Drawing.Size(186, 24);
             this._onMobileDevicesToolStripMenuItem.Text = "Mobile Devices";
             this._onMobileDevicesToolStripMenuItem.Click += new System.EventHandler(this.OnMobileDevicesToolStripMenuItemClick);
             // 
@@ -5813,7 +5801,7 @@ namespace iSpyApplication
             this.inExplorerToolStripMenuItem.Image = global::iSpyApplication.Properties.Resources.HardDrive;
             this.inExplorerToolStripMenuItem.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.inExplorerToolStripMenuItem.Name = "inExplorerToolStripMenuItem";
-            this.inExplorerToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.inExplorerToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
             this.inExplorerToolStripMenuItem.Text = "Files";
             this.inExplorerToolStripMenuItem.Click += new System.EventHandler(this.inExplorerToolStripMenuItem_Click);
             // 
@@ -5825,13 +5813,13 @@ namespace iSpyApplication
             this.tssbGridViews.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tssbGridViews.Name = "tssbGridViews";
             this.tssbGridViews.ShowDropDownArrow = false;
-            this.tssbGridViews.Size = new System.Drawing.Size(98, 36);
+            this.tssbGridViews.Size = new System.Drawing.Size(115, 36);
             this.tssbGridViews.Text = "Grid Views";
             // 
             // manageToolStripMenuItem
             // 
             this.manageToolStripMenuItem.Name = "manageToolStripMenuItem";
-            this.manageToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.manageToolStripMenuItem.Size = new System.Drawing.Size(138, 26);
             this.manageToolStripMenuItem.Text = "Manage";
             this.manageToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
@@ -5840,7 +5828,7 @@ namespace iSpyApplication
             this._toolStripButton8.Image = global::iSpyApplication.Properties.Resources.Run;
             this._toolStripButton8.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._toolStripButton8.Name = "_toolStripButton8";
-            this._toolStripButton8.Size = new System.Drawing.Size(105, 36);
+            this._toolStripButton8.Size = new System.Drawing.Size(120, 36);
             this._toolStripButton8.Text = "Commands";
             this._toolStripButton8.Click += new System.EventHandler(this.ToolStripButton8Click1);
             // 
@@ -5849,7 +5837,7 @@ namespace iSpyApplication
             this._toolStripButton1.Image = global::iSpyApplication.Properties.Resources.Network;
             this._toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._toolStripButton1.Name = "_toolStripButton1";
-            this._toolStripButton1.Size = new System.Drawing.Size(112, 36);
+            this._toolStripButton1.Size = new System.Drawing.Size(132, 36);
             this._toolStripButton1.Text = "Web Settings";
             this._toolStripButton1.Click += new System.EventHandler(this.ToolStripButton1Click1);
             // 
@@ -5858,7 +5846,7 @@ namespace iSpyApplication
             this.tsbPlugins.Image = global::iSpyApplication.Properties.Resources.Desktop;
             this.tsbPlugins.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbPlugins.Name = "tsbPlugins";
-            this.tsbPlugins.Size = new System.Drawing.Size(82, 36);
+            this.tsbPlugins.Size = new System.Drawing.Size(92, 36);
             this.tsbPlugins.Text = "Plugins";
             this.tsbPlugins.Click += new System.EventHandler(this.tsbPlugins_Click);
             // 
@@ -5867,7 +5855,7 @@ namespace iSpyApplication
             this._toolStripButton4.Image = global::iSpyApplication.Properties.Resources.ControlPanel;
             this._toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
             this._toolStripButton4.Name = "_toolStripButton4";
-            this._toolStripButton4.Size = new System.Drawing.Size(85, 36);
+            this._toolStripButton4.Size = new System.Drawing.Size(98, 36);
             this._toolStripButton4.Text = "Settings";
             this._toolStripButton4.Click += new System.EventHandler(this.ToolStripButton4Click);
             // 
@@ -5903,7 +5891,7 @@ namespace iSpyApplication
             this._showFilesToolStripMenuItem,
             this._deleteToolStripMenuItem});
             this.ctxtMnu.Name = "_ctxtMnu";
-            this.ctxtMnu.Size = new System.Drawing.Size(244, 472);
+            this.ctxtMnu.Size = new System.Drawing.Size(294, 472);
             this.ctxtMnu.Opening += new System.ComponentModel.CancelEventHandler(this.ctxtMnu_Opening);
             // 
             // pluginCommandsToolStripMenuItem
@@ -5912,13 +5900,13 @@ namespace iSpyApplication
             this.configurePluginToolStripMenuItem});
             this.pluginCommandsToolStripMenuItem.Image = global::iSpyApplication.Properties.Resources.plugin;
             this.pluginCommandsToolStripMenuItem.Name = "pluginCommandsToolStripMenuItem";
-            this.pluginCommandsToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this.pluginCommandsToolStripMenuItem.Size = new System.Drawing.Size(293, 26);
             this.pluginCommandsToolStripMenuItem.Text = "Plugin";
             // 
             // configurePluginToolStripMenuItem
             // 
             this.configurePluginToolStripMenuItem.Name = "configurePluginToolStripMenuItem";
-            this.configurePluginToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.configurePluginToolStripMenuItem.Size = new System.Drawing.Size(194, 26);
             this.configurePluginToolStripMenuItem.Text = "Configure Plugin";
             this.configurePluginToolStripMenuItem.Click += new System.EventHandler(this.configurePluginToolStripMenuItem_Click);
             // 
@@ -5926,7 +5914,7 @@ namespace iSpyApplication
             // 
             this.openWebInterfaceToolStripMenuItem.Image = global::iSpyApplication.Properties.Resources.web;
             this.openWebInterfaceToolStripMenuItem.Name = "openWebInterfaceToolStripMenuItem";
-            this.openWebInterfaceToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this.openWebInterfaceToolStripMenuItem.Size = new System.Drawing.Size(293, 26);
             this.openWebInterfaceToolStripMenuItem.Text = "Open Web Interface";
             this.openWebInterfaceToolStripMenuItem.Click += new System.EventHandler(this.openWebInterfaceToolStripMenuItem_Click);
             // 
@@ -5934,7 +5922,7 @@ namespace iSpyApplication
             // 
             this._viewMediaToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_viewMediaToolStripMenuItem.Image")));
             this._viewMediaToolStripMenuItem.Name = "_viewMediaToolStripMenuItem";
-            this._viewMediaToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this._viewMediaToolStripMenuItem.Size = new System.Drawing.Size(293, 26);
             this._viewMediaToolStripMenuItem.Text = "View &Media ";
             this._viewMediaToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem1Click);
             // 
@@ -5942,7 +5930,7 @@ namespace iSpyApplication
             // 
             this._viewMediaOnAMobileDeviceToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_viewMediaOnAMobileDeviceToolStripMenuItem.Image")));
             this._viewMediaOnAMobileDeviceToolStripMenuItem.Name = "_viewMediaOnAMobileDeviceToolStripMenuItem";
-            this._viewMediaOnAMobileDeviceToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this._viewMediaOnAMobileDeviceToolStripMenuItem.Size = new System.Drawing.Size(293, 26);
             this._viewMediaOnAMobileDeviceToolStripMenuItem.Text = "View Media on a Mobile &Device";
             this._viewMediaOnAMobileDeviceToolStripMenuItem.Click += new System.EventHandler(this.ViewMediaOnAMobileDeviceToolStripMenuItemClick);
             // 
@@ -5959,62 +5947,62 @@ namespace iSpyApplication
             this.pTZScheduleOffToolStripMenuItem});
             this.switchToolStripMenuItem.Image = global::iSpyApplication.Properties.Resources._switch;
             this.switchToolStripMenuItem.Name = "switchToolStripMenuItem";
-            this.switchToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this.switchToolStripMenuItem.Size = new System.Drawing.Size(293, 26);
             this.switchToolStripMenuItem.Text = "Switch";
             // 
             // onToolStripMenuItem
             // 
             this.onToolStripMenuItem.Name = "onToolStripMenuItem";
-            this.onToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.onToolStripMenuItem.Size = new System.Drawing.Size(198, 26);
             this.onToolStripMenuItem.Text = "On";
             this.onToolStripMenuItem.Click += new System.EventHandler(this.onToolStripMenuItem_Click);
             // 
             // offToolStripMenuItem
             // 
             this.offToolStripMenuItem.Name = "offToolStripMenuItem";
-            this.offToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.offToolStripMenuItem.Size = new System.Drawing.Size(198, 26);
             this.offToolStripMenuItem.Text = "Off";
             this.offToolStripMenuItem.Click += new System.EventHandler(this.offToolStripMenuItem_Click);
             // 
             // alertsOnToolStripMenuItem1
             // 
             this.alertsOnToolStripMenuItem1.Name = "alertsOnToolStripMenuItem1";
-            this.alertsOnToolStripMenuItem1.Size = new System.Drawing.Size(166, 22);
+            this.alertsOnToolStripMenuItem1.Size = new System.Drawing.Size(198, 26);
             this.alertsOnToolStripMenuItem1.Text = "Alerts On";
             this.alertsOnToolStripMenuItem1.Click += new System.EventHandler(this.alertsOnToolStripMenuItem1_Click);
             // 
             // alertsOffToolStripMenuItem
             // 
             this.alertsOffToolStripMenuItem.Name = "alertsOffToolStripMenuItem";
-            this.alertsOffToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.alertsOffToolStripMenuItem.Size = new System.Drawing.Size(198, 26);
             this.alertsOffToolStripMenuItem.Text = "Alerts Off";
             this.alertsOffToolStripMenuItem.Click += new System.EventHandler(this.alertsOffToolStripMenuItem_Click);
             // 
             // scheduleOnToolStripMenuItem
             // 
             this.scheduleOnToolStripMenuItem.Name = "scheduleOnToolStripMenuItem";
-            this.scheduleOnToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.scheduleOnToolStripMenuItem.Size = new System.Drawing.Size(198, 26);
             this.scheduleOnToolStripMenuItem.Text = "Schedule On";
             this.scheduleOnToolStripMenuItem.Click += new System.EventHandler(this.scheduleOnToolStripMenuItem_Click);
             // 
             // scheduleOffToolStripMenuItem
             // 
             this.scheduleOffToolStripMenuItem.Name = "scheduleOffToolStripMenuItem";
-            this.scheduleOffToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.scheduleOffToolStripMenuItem.Size = new System.Drawing.Size(198, 26);
             this.scheduleOffToolStripMenuItem.Text = "Schedule Off";
             this.scheduleOffToolStripMenuItem.Click += new System.EventHandler(this.scheduleOffToolStripMenuItem_Click);
             // 
             // pTZScheduleOnToolStripMenuItem
             // 
             this.pTZScheduleOnToolStripMenuItem.Name = "pTZScheduleOnToolStripMenuItem";
-            this.pTZScheduleOnToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.pTZScheduleOnToolStripMenuItem.Size = new System.Drawing.Size(198, 26);
             this.pTZScheduleOnToolStripMenuItem.Text = "PTZ Schedule On";
             this.pTZScheduleOnToolStripMenuItem.Click += new System.EventHandler(this.pTZScheduleOnToolStripMenuItem_Click);
             // 
             // pTZScheduleOffToolStripMenuItem
             // 
             this.pTZScheduleOffToolStripMenuItem.Name = "pTZScheduleOffToolStripMenuItem";
-            this.pTZScheduleOffToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.pTZScheduleOffToolStripMenuItem.Size = new System.Drawing.Size(198, 26);
             this.pTZScheduleOffToolStripMenuItem.Text = "PTZ Schedule Off";
             this.pTZScheduleOffToolStripMenuItem.Click += new System.EventHandler(this.pTZScheduleOffToolStripMenuItem_Click);
             // 
@@ -6022,7 +6010,7 @@ namespace iSpyApplication
             // 
             this._recordNowToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_recordNowToolStripMenuItem.Image")));
             this._recordNowToolStripMenuItem.Name = "_recordNowToolStripMenuItem";
-            this._recordNowToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this._recordNowToolStripMenuItem.Size = new System.Drawing.Size(293, 26);
             this._recordNowToolStripMenuItem.Text = "Record Now";
             this._recordNowToolStripMenuItem.Click += new System.EventHandler(this.RecordNowToolStripMenuItemClick);
             // 
@@ -6030,7 +6018,7 @@ namespace iSpyApplication
             // 
             this._takePhotoToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_takePhotoToolStripMenuItem.Image")));
             this._takePhotoToolStripMenuItem.Name = "_takePhotoToolStripMenuItem";
-            this._takePhotoToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this._takePhotoToolStripMenuItem.Size = new System.Drawing.Size(293, 26);
             this._takePhotoToolStripMenuItem.Text = "Take Photo";
             this._takePhotoToolStripMenuItem.Click += new System.EventHandler(this.TakePhotoToolStripMenuItemClick);
             // 
@@ -6040,14 +6028,14 @@ namespace iSpyApplication
             this.pTZControllerToolStripMenuItem1});
             this.pTZToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("pTZToolStripMenuItem.Image")));
             this.pTZToolStripMenuItem.Name = "pTZToolStripMenuItem";
-            this.pTZToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this.pTZToolStripMenuItem.Size = new System.Drawing.Size(293, 26);
             this.pTZToolStripMenuItem.Text = "PTZ";
             this.pTZToolStripMenuItem.Click += new System.EventHandler(this.pTZToolStripMenuItem_Click);
             // 
             // pTZControllerToolStripMenuItem1
             // 
             this.pTZControllerToolStripMenuItem1.Name = "pTZControllerToolStripMenuItem1";
-            this.pTZControllerToolStripMenuItem1.Size = new System.Drawing.Size(151, 22);
+            this.pTZControllerToolStripMenuItem1.Size = new System.Drawing.Size(179, 26);
             this.pTZControllerToolStripMenuItem1.Text = "PTZ Controller";
             this.pTZControllerToolStripMenuItem1.Click += new System.EventHandler(this.pTZControllerToolStripMenuItem1_Click);
             // 
@@ -6055,7 +6043,7 @@ namespace iSpyApplication
             // 
             this._listenToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_listenToolStripMenuItem.Image")));
             this._listenToolStripMenuItem.Name = "_listenToolStripMenuItem";
-            this._listenToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this._listenToolStripMenuItem.Size = new System.Drawing.Size(293, 26);
             this._listenToolStripMenuItem.Text = "Listen";
             this._listenToolStripMenuItem.Click += new System.EventHandler(this.ListenToolStripMenuItemClick);
             // 
@@ -6063,7 +6051,7 @@ namespace iSpyApplication
             // 
             this._editToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_editToolStripMenuItem.Image")));
             this._editToolStripMenuItem.Name = "_editToolStripMenuItem";
-            this._editToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this._editToolStripMenuItem.Size = new System.Drawing.Size(293, 26);
             this._editToolStripMenuItem.Text = "&Edit";
             this._editToolStripMenuItem.Click += new System.EventHandler(this.EditToolStripMenuItemClick);
             // 
@@ -6071,7 +6059,7 @@ namespace iSpyApplication
             // 
             this.tagsToolStripMenuItem.Image = global::iSpyApplication.Properties.Resources.edit;
             this.tagsToolStripMenuItem.Name = "tagsToolStripMenuItem";
-            this.tagsToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this.tagsToolStripMenuItem.Size = new System.Drawing.Size(293, 26);
             this.tagsToolStripMenuItem.Text = "Tags";
             this.tagsToolStripMenuItem.Click += new System.EventHandler(this.tagsToolStripMenuItem_Click);
             // 
@@ -6079,7 +6067,7 @@ namespace iSpyApplication
             // 
             this._applyScheduleToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("_applyScheduleToolStripMenuItem1.Image")));
             this._applyScheduleToolStripMenuItem1.Name = "_applyScheduleToolStripMenuItem1";
-            this._applyScheduleToolStripMenuItem1.Size = new System.Drawing.Size(243, 26);
+            this._applyScheduleToolStripMenuItem1.Size = new System.Drawing.Size(293, 26);
             this._applyScheduleToolStripMenuItem1.Text = "Apply Schedule";
             this._applyScheduleToolStripMenuItem1.Click += new System.EventHandler(this.ApplyScheduleToolStripMenuItem1Click);
             // 
@@ -6087,7 +6075,7 @@ namespace iSpyApplication
             // 
             this._positionToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_positionToolStripMenuItem.Image")));
             this._positionToolStripMenuItem.Name = "_positionToolStripMenuItem";
-            this._positionToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this._positionToolStripMenuItem.Size = new System.Drawing.Size(293, 26);
             this._positionToolStripMenuItem.Text = "Position";
             this._positionToolStripMenuItem.Click += new System.EventHandler(this.PositionToolStripMenuItemClick);
             // 
@@ -6095,7 +6083,7 @@ namespace iSpyApplication
             // 
             this.fullScreenToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("fullScreenToolStripMenuItem.Image")));
             this.fullScreenToolStripMenuItem.Name = "fullScreenToolStripMenuItem";
-            this.fullScreenToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this.fullScreenToolStripMenuItem.Size = new System.Drawing.Size(293, 26);
             this.fullScreenToolStripMenuItem.Text = "Full Screen";
             this.fullScreenToolStripMenuItem.Click += new System.EventHandler(this.fullScreenToolStripMenuItem_Click);
             // 
@@ -6103,7 +6091,7 @@ namespace iSpyApplication
             // 
             this._resetSizeToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_resetSizeToolStripMenuItem.Image")));
             this._resetSizeToolStripMenuItem.Name = "_resetSizeToolStripMenuItem";
-            this._resetSizeToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this._resetSizeToolStripMenuItem.Size = new System.Drawing.Size(293, 26);
             this._resetSizeToolStripMenuItem.Text = "Reset Si&ze";
             this._resetSizeToolStripMenuItem.Click += new System.EventHandler(this.ResetSizeToolStripMenuItemClick);
             // 
@@ -6111,7 +6099,7 @@ namespace iSpyApplication
             // 
             this._resetRecordingCounterToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_resetRecordingCounterToolStripMenuItem.Image")));
             this._resetRecordingCounterToolStripMenuItem.Name = "_resetRecordingCounterToolStripMenuItem";
-            this._resetRecordingCounterToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this._resetRecordingCounterToolStripMenuItem.Size = new System.Drawing.Size(293, 26);
             this._resetRecordingCounterToolStripMenuItem.Text = "Reset Recording Counter";
             this._resetRecordingCounterToolStripMenuItem.Click += new System.EventHandler(this.ResetRecordingCounterToolStripMenuItemClick);
             // 
@@ -6119,7 +6107,7 @@ namespace iSpyApplication
             // 
             this._showFilesToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_showFilesToolStripMenuItem.Image")));
             this._showFilesToolStripMenuItem.Name = "_showFilesToolStripMenuItem";
-            this._showFilesToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this._showFilesToolStripMenuItem.Size = new System.Drawing.Size(293, 26);
             this._showFilesToolStripMenuItem.Text = "Show Files";
             this._showFilesToolStripMenuItem.Click += new System.EventHandler(this.ShowFilesToolStripMenuItemClick);
             // 
@@ -6127,7 +6115,7 @@ namespace iSpyApplication
             // 
             this._deleteToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_deleteToolStripMenuItem.Image")));
             this._deleteToolStripMenuItem.Name = "_deleteToolStripMenuItem";
-            this._deleteToolStripMenuItem.Size = new System.Drawing.Size(243, 26);
+            this._deleteToolStripMenuItem.Size = new System.Drawing.Size(293, 26);
             this._deleteToolStripMenuItem.Text = "&Remove";
             this._deleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItemClick);
             // 
@@ -6148,14 +6136,14 @@ namespace iSpyApplication
             this.viewLogFileToolStripMenuItem,
             this._exitToolStripMenuItem});
             this.ctxtTaskbar.Name = "_ctxtMnu";
-            this.ctxtTaskbar.Size = new System.Drawing.Size(223, 316);
+            this.ctxtTaskbar.Size = new System.Drawing.Size(266, 316);
             this.ctxtTaskbar.Opening += new System.ComponentModel.CancelEventHandler(this.CtxtTaskbarOpening);
             // 
             // _unlockToolstripMenuItem
             // 
             this._unlockToolstripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_unlockToolstripMenuItem.Image")));
             this._unlockToolstripMenuItem.Name = "_unlockToolstripMenuItem";
-            this._unlockToolstripMenuItem.Size = new System.Drawing.Size(222, 26);
+            this._unlockToolstripMenuItem.Size = new System.Drawing.Size(265, 26);
             this._unlockToolstripMenuItem.Text = "&Unlock";
             this._unlockToolstripMenuItem.Click += new System.EventHandler(this.UnlockToolstripMenuItemClick);
             // 
@@ -6163,7 +6151,7 @@ namespace iSpyApplication
             // 
             this._switchAllOnToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_switchAllOnToolStripMenuItem.Image")));
             this._switchAllOnToolStripMenuItem.Name = "_switchAllOnToolStripMenuItem";
-            this._switchAllOnToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
+            this._switchAllOnToolStripMenuItem.Size = new System.Drawing.Size(265, 26);
             this._switchAllOnToolStripMenuItem.Text = "Switch All On";
             this._switchAllOnToolStripMenuItem.Click += new System.EventHandler(this.SwitchAllOnToolStripMenuItemClick);
             // 
@@ -6171,7 +6159,7 @@ namespace iSpyApplication
             // 
             this._switchAllOffToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_switchAllOffToolStripMenuItem.Image")));
             this._switchAllOffToolStripMenuItem.Name = "_switchAllOffToolStripMenuItem";
-            this._switchAllOffToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
+            this._switchAllOffToolStripMenuItem.Size = new System.Drawing.Size(265, 26);
             this._switchAllOffToolStripMenuItem.Text = "Switch All Off";
             this._switchAllOffToolStripMenuItem.Click += new System.EventHandler(this.SwitchAllOffToolStripMenuItemClick);
             // 
@@ -6179,28 +6167,28 @@ namespace iSpyApplication
             // 
             this._showToolstripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_showToolstripMenuItem.Image")));
             this._showToolstripMenuItem.Name = "_showToolstripMenuItem";
-            this._showToolstripMenuItem.Size = new System.Drawing.Size(222, 26);
+            this._showToolstripMenuItem.Size = new System.Drawing.Size(265, 26);
             this._showToolstripMenuItem.Text = "&Show iSpy";
             this._showToolstripMenuItem.Click += new System.EventHandler(this.ShowToolstripMenuItemClick);
             // 
             // _showISpy10PercentOpacityToolStripMenuItem
             // 
             this._showISpy10PercentOpacityToolStripMenuItem.Name = "_showISpy10PercentOpacityToolStripMenuItem";
-            this._showISpy10PercentOpacityToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
+            this._showISpy10PercentOpacityToolStripMenuItem.Size = new System.Drawing.Size(265, 26);
             this._showISpy10PercentOpacityToolStripMenuItem.Text = "Show iSpy @ 10% opacity";
             this._showISpy10PercentOpacityToolStripMenuItem.Click += new System.EventHandler(this.ShowISpy10PercentOpacityToolStripMenuItemClick);
             // 
             // _showISpy30OpacityToolStripMenuItem
             // 
             this._showISpy30OpacityToolStripMenuItem.Name = "_showISpy30OpacityToolStripMenuItem";
-            this._showISpy30OpacityToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
+            this._showISpy30OpacityToolStripMenuItem.Size = new System.Drawing.Size(265, 26);
             this._showISpy30OpacityToolStripMenuItem.Text = "Show iSpy @ 30% opacity";
             this._showISpy30OpacityToolStripMenuItem.Click += new System.EventHandler(this.ShowISpy30OpacityToolStripMenuItemClick);
             // 
             // _showISpy100PercentOpacityToolStripMenuItem
             // 
             this._showISpy100PercentOpacityToolStripMenuItem.Name = "_showISpy100PercentOpacityToolStripMenuItem";
-            this._showISpy100PercentOpacityToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
+            this._showISpy100PercentOpacityToolStripMenuItem.Size = new System.Drawing.Size(265, 26);
             this._showISpy100PercentOpacityToolStripMenuItem.Text = "Show iSpy @ 100 % opacity";
             this._showISpy100PercentOpacityToolStripMenuItem.Click += new System.EventHandler(this.ShowISpy100PercentOpacityToolStripMenuItemClick);
             // 
@@ -6208,7 +6196,7 @@ namespace iSpyApplication
             // 
             this._helpToolstripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_helpToolstripMenuItem.Image")));
             this._helpToolstripMenuItem.Name = "_helpToolstripMenuItem";
-            this._helpToolstripMenuItem.Size = new System.Drawing.Size(222, 26);
+            this._helpToolstripMenuItem.Size = new System.Drawing.Size(265, 26);
             this._helpToolstripMenuItem.Text = "&Help";
             this._helpToolstripMenuItem.Click += new System.EventHandler(this.HelpToolstripMenuItemClick);
             // 
@@ -6216,27 +6204,27 @@ namespace iSpyApplication
             // 
             this._websiteToolstripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("_websiteToolstripMenuItem.Image")));
             this._websiteToolstripMenuItem.Name = "_websiteToolstripMenuItem";
-            this._websiteToolstripMenuItem.Size = new System.Drawing.Size(222, 26);
+            this._websiteToolstripMenuItem.Size = new System.Drawing.Size(265, 26);
             this._websiteToolstripMenuItem.Text = "&Website";
             this._websiteToolstripMenuItem.Click += new System.EventHandler(this.WebsiteToolstripMenuItemClick);
             // 
             // gridViewsToolStripMenuItem1
             // 
             this.gridViewsToolStripMenuItem1.Name = "gridViewsToolStripMenuItem1";
-            this.gridViewsToolStripMenuItem1.Size = new System.Drawing.Size(222, 26);
+            this.gridViewsToolStripMenuItem1.Size = new System.Drawing.Size(265, 26);
             this.gridViewsToolStripMenuItem1.Text = "Grid Views";
             // 
             // viewLogFileToolStripMenuItem
             // 
             this.viewLogFileToolStripMenuItem.Name = "viewLogFileToolStripMenuItem";
-            this.viewLogFileToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
+            this.viewLogFileToolStripMenuItem.Size = new System.Drawing.Size(265, 26);
             this.viewLogFileToolStripMenuItem.Text = "View &Log File";
             this.viewLogFileToolStripMenuItem.Click += new System.EventHandler(this.viewLogFileToolStripMenuItem_Click);
             // 
             // _exitToolStripMenuItem
             // 
             this._exitToolStripMenuItem.Name = "_exitToolStripMenuItem";
-            this._exitToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
+            this._exitToolStripMenuItem.Size = new System.Drawing.Size(265, 26);
             this._exitToolStripMenuItem.Text = "Exit";
             this._exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItemClick);
             // 
@@ -6262,7 +6250,7 @@ namespace iSpyApplication
             this._tsslStats.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this._tsslStats.LinkColor = System.Drawing.Color.Blue;
             this._tsslStats.Name = "_tsslStats";
-            this._tsslStats.Size = new System.Drawing.Size(59, 25);
+            this._tsslStats.Size = new System.Drawing.Size(72, 25);
             this._tsslStats.Text = "Loading...";
             this._tsslStats.VisitedLinkColor = System.Drawing.Color.Blue;
             this._tsslStats.Click += new System.EventHandler(this._tsslStats_Click);
@@ -6270,7 +6258,7 @@ namespace iSpyApplication
             // tsslMonitor
             // 
             this.tsslMonitor.Name = "tsslMonitor";
-            this.tsslMonitor.Size = new System.Drawing.Size(76, 25);
+            this.tsslMonitor.Size = new System.Drawing.Size(92, 25);
             this.tsslMonitor.Text = "Monitoring...";
             // 
             // tsslPerformance
@@ -6279,7 +6267,7 @@ namespace iSpyApplication
             this.tsslPerformance.IsLink = true;
             this.tsslPerformance.LinkColor = System.Drawing.Color.Blue;
             this.tsslPerformance.Name = "tsslPerformance";
-            this.tsslPerformance.Size = new System.Drawing.Size(56, 25);
+            this.tsslPerformance.Size = new System.Drawing.Size(68, 25);
             this.tsslPerformance.Text = "Perf. Tips";
             this.tsslPerformance.VisitedLinkColor = System.Drawing.Color.Blue;
             this.tsslPerformance.Click += new System.EventHandler(this.toolStripStatusLabel1_Click);
@@ -6295,7 +6283,7 @@ namespace iSpyApplication
             this.tsslPRO.IsLink = true;
             this.tsslPRO.LinkColor = System.Drawing.Color.Blue;
             this.tsslPRO.Name = "tsslPRO";
-            this.tsslPRO.Size = new System.Drawing.Size(58, 25);
+            this.tsslPRO.Size = new System.Drawing.Size(72, 25);
             this.tsslPRO.Text = "Try Agent";
             this.tsslPRO.VisitedLinkColor = System.Drawing.Color.Blue;
             this.tsslPRO.Click += new System.EventHandler(this.tsslPRO_Click);
@@ -6338,11 +6326,11 @@ namespace iSpyApplication
             this.flowPreview.BackColor = System.Drawing.Color.Transparent;
             this.flowPreview.ContextMenuStrip = this.ctxtMainForm;
             this.flowPreview.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowPreview.Location = new System.Drawing.Point(0, 32);
+            this.flowPreview.Location = new System.Drawing.Point(0, 39);
             this.flowPreview.Margin = new System.Windows.Forms.Padding(0);
             this.flowPreview.Name = "flowPreview";
             this.flowPreview.Padding = new System.Windows.Forms.Padding(2);
-            this.flowPreview.Size = new System.Drawing.Size(630, 114);
+            this.flowPreview.Size = new System.Drawing.Size(630, 107);
             this.flowPreview.TabIndex = 0;
             this.flowPreview.MouseDown += new System.Windows.Forms.MouseEventHandler(this.flowPreview_MouseDown);
             this.flowPreview.MouseEnter += new System.EventHandler(this.flowPreview_MouseEnter);
@@ -6356,7 +6344,7 @@ namespace iSpyApplication
             this.mediaPanelControl1.Margin = new System.Windows.Forms.Padding(0);
             this.mediaPanelControl1.Name = "mediaPanelControl1";
             this.mediaPanelControl1.Padding = new System.Windows.Forms.Padding(0, 0, 0, 2);
-            this.mediaPanelControl1.Size = new System.Drawing.Size(630, 32);
+            this.mediaPanelControl1.Size = new System.Drawing.Size(630, 39);
             this.mediaPanelControl1.TabIndex = 21;
             this.mediaPanelControl1.Load += new System.EventHandler(this.mediaPanelControl1_Load);
             // 
@@ -6405,7 +6393,6 @@ namespace iSpyApplication
             // 
             // _pnlCameras
             // 
-            this._pnlCameras.AutoScroll = true;
             this._pnlCameras.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this._pnlCameras.BackColor = System.Drawing.Color.DimGray;
             this._pnlCameras.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
@@ -6434,69 +6421,69 @@ namespace iSpyApplication
             this.saveToToolStripMenuItem,
             this.deleteToolStripMenuItem});
             this.ctxtPlayer.Name = "ctxPlayer";
-            this.ctxtPlayer.Size = new System.Drawing.Size(186, 202);
+            this.ctxtPlayer.Size = new System.Drawing.Size(219, 220);
             this.ctxtPlayer.Opening += new System.ComponentModel.CancelEventHandler(this.ctxtPlayer_Opening);
             // 
             // iSpyToolStripMenuItem
             // 
             this.iSpyToolStripMenuItem.Name = "iSpyToolStripMenuItem";
-            this.iSpyToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.iSpyToolStripMenuItem.Size = new System.Drawing.Size(218, 24);
             this.iSpyToolStripMenuItem.Text = "Play in iSpy";
             this.iSpyToolStripMenuItem.Click += new System.EventHandler(this.iSpyToolStripMenuItem_Click);
             // 
             // defaultPlayerToolStripMenuItem
             // 
             this.defaultPlayerToolStripMenuItem.Name = "defaultPlayerToolStripMenuItem";
-            this.defaultPlayerToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.defaultPlayerToolStripMenuItem.Size = new System.Drawing.Size(218, 24);
             this.defaultPlayerToolStripMenuItem.Text = "Play in Default Player";
             this.defaultPlayerToolStripMenuItem.Click += new System.EventHandler(this.defaultPlayerToolStripMenuItem_Click);
             // 
             // websiteToolStripMenuItem
             // 
             this.websiteToolStripMenuItem.Name = "websiteToolStripMenuItem";
-            this.websiteToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.websiteToolStripMenuItem.Size = new System.Drawing.Size(218, 24);
             this.websiteToolStripMenuItem.Text = "Play on Website";
             this.websiteToolStripMenuItem.Click += new System.EventHandler(this.websiteToolStripMenuItem_Click);
             // 
             // showInFolderToolStripMenuItem
             // 
             this.showInFolderToolStripMenuItem.Name = "showInFolderToolStripMenuItem";
-            this.showInFolderToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.showInFolderToolStripMenuItem.Size = new System.Drawing.Size(218, 24);
             this.showInFolderToolStripMenuItem.Text = "Show in Folder";
             this.showInFolderToolStripMenuItem.Click += new System.EventHandler(this.showInFolderToolStripMenuItem_Click);
             // 
             // uploadToYouTubePublicToolStripMenuItem
             // 
             this.uploadToYouTubePublicToolStripMenuItem.Name = "uploadToYouTubePublicToolStripMenuItem";
-            this.uploadToYouTubePublicToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.uploadToYouTubePublicToolStripMenuItem.Size = new System.Drawing.Size(218, 24);
             this.uploadToYouTubePublicToolStripMenuItem.Text = "Upload to YouTube";
             this.uploadToYouTubePublicToolStripMenuItem.Click += new System.EventHandler(this.uploadToYouTubePublicToolStripMenuItem_Click);
             // 
             // uploadToCloudToolStripMenuItem
             // 
             this.uploadToCloudToolStripMenuItem.Name = "uploadToCloudToolStripMenuItem";
-            this.uploadToCloudToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.uploadToCloudToolStripMenuItem.Size = new System.Drawing.Size(218, 24);
             this.uploadToCloudToolStripMenuItem.Text = "Upload to Cloud";
             this.uploadToCloudToolStripMenuItem.Click += new System.EventHandler(this.uploadToGoogleDriveToolStripMenuItem_Click);
             // 
             // archiveToolStripMenuItem
             // 
             this.archiveToolStripMenuItem.Name = "archiveToolStripMenuItem";
-            this.archiveToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.archiveToolStripMenuItem.Size = new System.Drawing.Size(218, 24);
             this.archiveToolStripMenuItem.Text = "Archive";
             this.archiveToolStripMenuItem.Click += new System.EventHandler(this.archiveToolStripMenuItem_Click);
             // 
             // saveToToolStripMenuItem
             // 
             this.saveToToolStripMenuItem.Name = "saveToToolStripMenuItem";
-            this.saveToToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.saveToToolStripMenuItem.Size = new System.Drawing.Size(218, 24);
             this.saveToToolStripMenuItem.Text = "Save to...";
             this.saveToToolStripMenuItem.Click += new System.EventHandler(this.saveToToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(218, 24);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 

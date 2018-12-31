@@ -1819,7 +1819,7 @@ namespace iSpyApplication
 
                             var size = lFi.Sum(p => p.Length);
                             var targetSize = (camobj.settings.storagemanagement.maxsize) * 1048576d;
-                            while (size > targetSize)
+                            if (size > targetSize)
                             {
                                 for (int i = 0; i < lFi.Count; i++)
                                 {
