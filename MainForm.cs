@@ -32,6 +32,7 @@ using Microsoft.Win32;
 using NATUPNPLib;
 using NAudio.Wave;
 using NETWORKLIST;
+using SharpDX.DirectInput;
 using PictureBox = iSpyApplication.Controls.PictureBox;
 using Timer = System.Timers.Timer;
 
@@ -6634,14 +6635,17 @@ namespace iSpyApplication
 
         private void menuItem29_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrWhiteSpace(Conf.Archive))
+            if (string.IsNullOrWhiteSpace(Conf.ArchiveNew))
             {
                 MessageBox.Show(this, LocRm.GetString("SpecifyArchiveLocation"));
                 ShowSettings(2);
             }
-            if (!String.IsNullOrWhiteSpace(Conf.Archive))
+            if (!string.IsNullOrWhiteSpace(Conf.ArchiveNew))
             {
-                Process.Start(Conf.Archive);
+                var dir = Conf.ArchiveNew;
+                if (dir.IndexOf("{")>-1)
+                    dir = dir.Substring(0, dir.IndexOf("{"));
+                Process.Start(dir);
             }
         }
 

@@ -113,12 +113,12 @@ namespace iSpyApplication
 
         public void MediaArchiveSelected()
         {
-            if (String.IsNullOrWhiteSpace(Conf.Archive))
+            if (String.IsNullOrWhiteSpace(Conf.ArchiveNew))
             {
                 MessageBox.Show(this, LocRm.GetString("SpecifyArchiveLocation"));
                 ShowSettings(2);
             }
-            if (!String.IsNullOrWhiteSpace(Conf.Archive))
+            if (!String.IsNullOrWhiteSpace(Conf.ArchiveNew))
             {
                 int j = 0;
                 string msg = "";

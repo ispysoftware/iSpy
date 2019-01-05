@@ -252,6 +252,8 @@ public partial class configuration {
     
     private string archiveField;
     
+    private string archiveNewField;
+    
     private string mailAlertSubjectField;
     
     private string mailAlertBodyField;
@@ -370,6 +372,7 @@ public partial class configuration {
         this.startupModeField = 0;
         this.disconnectNotificationDelayField = 60;
         this.archiveField = "";
+        this.archiveNewField = "";
         this.mailAlertSubjectField = "[EVENT]: [SERVER] [OBJECTNAME]";
         this.mailAlertBodyField = "[EVENT] at [DATE] [TIME]: [SERVER] [OBJECTNAME] [RECORDED] [PLUGIN]";
         this.sMSAlertField = "[EVENT] at [DATE] [TIME]: [SERVER] [OBJECTNAME] [RECORDED] [PLUGIN]";
@@ -1538,6 +1541,16 @@ public partial class configuration {
         }
         set {
             this.archiveField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public string ArchiveNew {
+        get {
+            return this.archiveNewField;
+        }
+        set {
+            this.archiveNewField = value;
         }
     }
     

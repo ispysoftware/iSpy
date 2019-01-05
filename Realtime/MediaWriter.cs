@@ -610,10 +610,11 @@ namespace iSpyApplication.Realtime
                                 return;
                             }
 
-                            cursor += srcSize;
-                            remaining -= srcSize;
+                            
                         }
                     }
+                    cursor += srcSize;
+                    remaining -= srcSize;
                     ffmpeg.av_packet_unref(&packet);
                     pts++;
                 }

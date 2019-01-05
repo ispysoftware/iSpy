@@ -1989,11 +1989,11 @@ namespace iSpyApplication.Server
                     case "settings":
                     {
                         PopulateObject(d, MainForm.Conf);
-                        if (!string.IsNullOrEmpty(MainForm.Conf.Archive))
+                        if (!string.IsNullOrEmpty(MainForm.Conf.ArchiveNew))
                         {
-                            MainForm.Conf.Archive = MainForm.Conf.Archive.Replace("/", @"\");
-                            if (!MainForm.Conf.Archive.EndsWith(@"\"))
-                                MainForm.Conf.Archive += @"\";
+                            MainForm.Conf.ArchiveNew = MainForm.Conf.ArchiveNew.Replace("/", @"\");
+                            if (!MainForm.Conf.ArchiveNew.EndsWith(@"\"))
+                                MainForm.Conf.ArchiveNew += @"\";
                         }
                         ReloadAllowedIPs();
                         ReloadAllowedReferrers();

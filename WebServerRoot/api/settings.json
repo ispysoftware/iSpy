@@ -11,7 +11,7 @@
                 { "text": "JPEG Quality", "value": 80, "type": "Int32", "min": 10, "max": 100, "bindto": "JPEGQuality" },
                 { "text": "Max CPU Target", "value": 100, "type": "Int32", "min": 10, "max": 100, "bindto": "CPUMax" },
                 { "text": "Delete to Recycle Bin", "value": false, "type": "Boolean", "bindto": "DeleteToRecycleBin" },
-                { "text": "Archive Location", "value": "", "type": "String", "bindto": "Archive", "help": "Directory to archive files to" },
+                { "text": "Archive Location", "value": "", "type": "String", "bindto": "ArchiveNew", "help": "Directory to archive files to" },
                 { "text": "Desktop Lock Actions", "value": "", "type": "String", "bindto": "SessionLockAction", "help": "iSpy command to execute when the computer is locked eg ALLON" },
                 { "text": "Desktop Lock Action Delay", "value": 0, "type": "Int32", "min": 0, "max": 9999, "bindto": "SessionLockActionDelay", "help": "Delay before executing actions on lock (s)" },
                 { "text": "Desktop Unlock Actions", "value": "", "type": "String", "bindto": "SessionUnlockAction", "help": "iSpy command to execute when the computer is unlocked eg ALLOFF" }

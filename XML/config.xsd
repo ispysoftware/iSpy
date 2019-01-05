@@ -117,6 +117,7 @@
         <xs:element name="StartupMode" type="xs:int" default="0"/>
         <xs:element name="DisconnectNotificationDelay" type="xs:int" default="60"/>
         <xs:element name="Archive" type="xs:string" default=""/>
+        <xs:element name="ArchiveNew" type="xs:string" default=""/>
         <xs:element name="MailAlertSubject" type="xs:string" default="[EVENT]: [SERVER] [OBJECTNAME]"/>
         <xs:element name="MailAlertBody" type="xs:string" default="[EVENT] at [DATE] [TIME]: [SERVER] [OBJECTNAME] [RECORDED] [PLUGIN]"/>
         <xs:element name="SMSAlert" type="xs:string" default="[EVENT] at [DATE] [TIME]: [SERVER] [OBJECTNAME] [RECORDED] [PLUGIN]"/>

@@ -506,16 +506,18 @@ namespace iSpyApplication
 
         internal static string ArchiveFile(ISpyControl ctrl, string filename)
         {
-            if (ctrl == null || !string.IsNullOrEmpty(MainForm.Conf.Archive))
+            if (ctrl == null || !string.IsNullOrEmpty(MainForm.Conf.ArchiveNew))
             {
                 if (File.Exists(filename))
                 {
                     string fn = filename.Substring(filename.LastIndexOf("\\", StringComparison.Ordinal) + 1);
+                    var isGrab = filename.EndsWith(".jpg") && filename.Contains(@"grabs\");
                     try
                     {
-                        string ap = MainForm.Conf.Archive;
+                        string ap = MainForm.Conf.ArchiveNew;
                         ap = ap.Replace("{NAME}", (ctrl!=null?ctrl.ObjectName:"Unknown"));
                         ap = ap.Replace("{DIR}", (ctrl != null ? ctrl.Folder: "Unknown"));
+                        ap = ap.Replace("{GRABS}", isGrab ? @"grabs\" : "");
                         int j = 0;
                         while (ap.IndexOf("{", StringComparison.Ordinal) != -1 && j<20)
                         {
@@ -1072,7 +1074,7 @@ namespace iSpyApplication
         {
             get
             {
-                if (!string.IsNullOrEmpty(MainForm.Conf.Archive))
+                if (!string.IsNullOrEmpty(MainForm.Conf.ArchiveNew))
                 {
                    return true;
                 }

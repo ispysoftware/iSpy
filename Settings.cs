@@ -134,11 +134,11 @@ namespace iSpyApplication
             MainForm.Conf.Password_Protect_Startup = chkPasswordProtectOnStart.Checked;
             SaveSMTPSettings();
 
-            MainForm.Conf.Archive = txtArchive.Text.Trim();
-            if (!string.IsNullOrEmpty(MainForm.Conf.Archive))
+            MainForm.Conf.ArchiveNew = txtArchive.Text.Trim();
+            if (!string.IsNullOrEmpty(MainForm.Conf.ArchiveNew))
             {
-                if (!MainForm.Conf.Archive.EndsWith(@"\"))
-                    MainForm.Conf.Archive += @"\";
+                if (!MainForm.Conf.ArchiveNew.EndsWith(@"\"))
+                    MainForm.Conf.ArchiveNew += @"\";
             }
 
             MainForm.Iconfont = new Font(FontFamily.GenericSansSerif, MainForm.Conf.BigButtons ? 22 : 15, FontStyle.Bold, GraphicsUnit.Pixel);
@@ -368,7 +368,7 @@ namespace iSpyApplication
             numMJPEGStreamInterval.Value = MainForm.Conf.MJPEGStreamInterval;
             txtAlertOnDisconnect.Text = MainForm.Conf.AlertOnDisconnect;
             txtAlertOnReconnect.Text = MainForm.Conf.AlertOnReconnect;
-            txtArchive.Text = MainForm.Conf.Archive;
+            txtArchive.Text = MainForm.Conf.ArchiveNew;
             SetSSLText();
             
 

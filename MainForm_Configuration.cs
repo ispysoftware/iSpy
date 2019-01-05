@@ -331,6 +331,15 @@ namespace iSpyApplication
                         _conf.Cloud.Drive = "{\"access_token\": \"\",\"token_type\": \"Bearer\",\"expires_in\": 3600,\"refresh_token\": \""+_conf.GoogleDriveConfig+"\"}";
                     }
                 }
+                if (_conf.ArchiveNew == null)
+                {
+                    if (!string.IsNullOrEmpty(_conf.Archive))
+                    {
+                        _conf.ArchiveNew = _conf.Archive;
+                        if (!_conf.ArchiveNew.Contains("{"))
+                            _conf.ArchiveNew = _conf.Archive + @"{DIR}\";
+                    }
+                }
 
                 if (!string.IsNullOrEmpty(_conf.WSPassword) && _conf.WSPasswordEncrypted)
                     _conf.WSPassword = EncDec.DecryptData(_conf.WSPassword, "582df37b-b7cc-43f7-a442-30a2b188a888");
