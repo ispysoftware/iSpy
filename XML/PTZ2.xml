@@ -6662,7 +6662,6 @@ in the camera's web interface-->
   </Camera>
   <Camera id="234">
     <Makes>
-      <Make Name="Floureon" Model="IPD-L26Y02-BS" />
       <Make Name="GTM-PTZ" Model="2162-3x"/>
     </Makes>
     <CommandURL>/form/setPTZCfg?ZFSpeed=0&amp;PTSpeed=0&amp;panSpeed=6&amp;tiltSpeed=6</CommandURL>
@@ -6695,9 +6694,9 @@ in the camera's web interface-->
       <Command Name="Go Preset 6">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=5</Command>
       <Command Name="Go Preset 7">/form/presetSet?flag=4&amp;existFlag=1&amp;language=cn&amp;presetNum=6</Command>
       <Command Name="Start Tour 1">/form/tourSet?flag=2&amp;existFlag=1&amp;presetValue=0&amp;tourNum=0</Command>
-      <Command Name="IR mode: Day">/form/IRset?IRmode=3&amp;c2bwthr=20&amp;bw2cthr=70&amp;IRenabled=1&amp;IRdelay=3</Command>
-      <Command Name="IR mode: Night">/form/IRset?IRmode=2&amp;c2bwthr=20&amp;bw2cthr=70&amp;IRenabled=1&amp;IRdelay=3</Command>
-      <Command Name="IR mode: Auto">/form/IRset?IRmode=4&amp;c2bwthr=20&amp;bw2cthr=70&amp;IRenabled=1&amp;IRdelay=3</Command>
+      <Command Name="IR mode: Day">/form/IRset?IRmode=3&amp;c2bwthr=20&amp;bw2cthr=70&amp;IRenable=1&amp;IRdelay=3</Command>
+      <Command Name="IR mode: Night">/form/IRset?IRmode=2&amp;c2bwthr=20&amp;bw2cthr=70&amp;IRenable=1&amp;IRdelay=3</Command>
+      <Command Name="IR mode: Auto">/form/IRset?IRmode=4&amp;c2bwthr=20&amp;bw2cthr=70&amp;IRenable=1&amp;IRdelay=3</Command>
     </ExtendedCommands>
   </Camera>
   <Camera id="235">
@@ -7373,6 +7372,8 @@ in the camera's web interface-->
   <Camera id="249">
     <Makes>
       <Make Name="Floureon" Model="IPD-E24Y02-BS series" />
+      <Make Name="Floureon" Model="IPD-L26Y02-BS" />
+      <Make Name="Floureon" Model="BT-HD54F"/>
     </Makes>
     <CommandURL>/form/setPTZCfg?ZFSpeed=0&amp;PTSpeed=0&amp;panSpeed=2&amp;tiltSpeed=2</CommandURL>
     <Commands>
@@ -7421,9 +7422,9 @@ in the camera's web interface-->
       <Command Name="Start Tour 1">/form/tourSet?flag=2&amp;existFlag=1&amp;presetValue=0&amp;tourNum=0</Command>
       <Command Name="Start Tour 2">/form/tourSet?flag=2&amp;existFlag=1&amp;presetValue=0&amp;tourNum=1</Command>
       <Command Name="Start Tour 3">/form/tourSet?flag=2&amp;existFlag=1&amp;presetValue=0&amp;tourNum=2</Command>
-      <Command Name="IR mode: Day">/form/IRset?IRmode=3&amp;c2bwthr=20&amp;bw2cthr=70&amp;IRenabled=1&amp;IRdelay=3</Command>
-      <Command Name="IR mode: Night">/form/IRset?IRmode=2&amp;c2bwthr=20&amp;bw2cthr=70&amp;IRenabled=1&amp;IRdelay=3</Command>
-      <Command Name="IR mode: Auto">/form/IRset?IRmode=4&amp;c2bwthr=20&amp;bw2cthr=70&amp;IRenabled=1&amp;IRdelay=3</Command>
+      <Command Name="IR mode: Day">/form/IRset?IRmode=3&amp;c2bwthr=20&amp;bw2cthr=70&amp;IRenable=1&amp;IRdelay=3</Command>
+      <Command Name="IR mode: Night">/form/IRset?IRmode=2&amp;c2bwthr=20&amp;bw2cthr=70&amp;IRenable=1&amp;IRdelay=3</Command>
+      <Command Name="IR mode: Auto">/form/IRset?IRmode=4&amp;c2bwthr=20&amp;bw2cthr=70&amp;IRenable=1&amp;IRdelay=3</Command>
     </ExtendedCommands>
   </Camera>
   <Camera id="250">
@@ -7620,6 +7621,27 @@ in the camera's web interface-->
       <Command Name="Up-Right">cmd=ptzctrl&amp;-step=0&amp;-act=upright&amp;-speed=45</Command>
       <Command Name="Down-Left">cmd=ptzctrl&amp;-step=0&amp;-act=downleft&amp;-speed=45</Command>
       <Command Name="Down-Right">cmd=ptzctrl&amp;-step=0&amp;-act=downright&amp;-speed=45</Command>
+    </ExtendedCommands>
+  </Camera>
+  <Camera id="257">
+    <Makes>
+      <Make Name="Hikvision" Model="DS-2DE4220W-AE" />
+    </Makes>
+    <CommandURL></CommandURL>
+    <Method>PUT</Method>
+    <Commands>
+      <Center>/ISAPI/PTZCtrl/channels/1/homeposition/goto</Center>
+      <Left><![CDATA[/ISAPI/PTZCtrl/channels/1/continuous?<?xml version="1.0" encoding="UTF-8"?><PTZData><pan>-60</pan><tilt>0</tilt></PTZData>]]></Left>
+      <Right><![CDATA[/ISAPI/PTZCtrl/channels/1/continuous?<?xml version="1.0" encoding="UTF-8"?><PTZData><pan>60</pan><tilt>0</tilt></PTZData>]]></Right>
+      <Up><![CDATA[/ISAPI/PTZCtrl/channels/1/continuous?<?xml version="1.0" encoding="UTF-8"?><PTZData><pan>0</pan><tilt>60</tilt></PTZData>]]></Up>
+      <Down><![CDATA[/ISAPI/PTZCtrl/channels/1/continuous?<?xml version="1.0" encoding="UTF-8"?><PTZData><pan>0</pan><tilt>-60</tilt></PTZData>]]></Down>
+      <Stop><![CDATA[/ISAPI/PTZCtrl/channels/1/continuous?<?xml version="1.0" encoding="UTF-8"?><PTZData><pan>0</pan><tilt>0</tilt></PTZData>]]></Stop>
+      <ZoomIn><![CDATA[/ISAPI/PTZCtrl/channels/1/continuous?<?xml version="1.0" encoding="UTF-8"?><PTZData><zoom>60</zoom><zoom>0</zoom></PTZData>]]></ZoomIn>
+      <ZoomOut><![CDATA[/ISAPI/PTZCtrl/channels/1/continuous?<?xml version="1.0" encoding="UTF-8"?><PTZData><zoom>-60</zoom><zoom>0</zoom></PTZData>]]></ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Go to Preset 1">/ISAPI/PTZCtrl/channels/1/presets/1/goto?</Command>
+      <Command Name="Go to Preset 2">/ISAPI/PTZCtrl/channels/1/presets/2/goto?</Command>
     </ExtendedCommands>
   </Camera>
 </PTZSettings2>
