@@ -3923,12 +3923,12 @@ namespace iSpyApplication.Server
 
                     switch (streamMode)
                     {
-                        //case Enums.AudioStreamMode.PCM:
-                        //    sResponse += "Content-Type: audio/x-wav\r\n";
-                        //    sResponse += "Transfer-Encoding: chunked\r\n";
-                        //    sResponse += "Connection: close\r\n";
-                        //    sResponse += "\r\n";
-                        //    break;
+                        case Enums.AudioStreamMode.PCM:
+                            sResponse += "Content-Type: audio/x-wav\r\n";
+                            sResponse += "Transfer-Encoding: chunked\r\n";
+                            sResponse += "Connection: close\r\n";
+                            sResponse += "\r\n";
+                            break;
                         case Enums.AudioStreamMode.MP3:
                             sResponse += "Content-Type: audio/mpeg\r\n";
                             sResponse += "Transfer-Encoding: chunked\r\n";

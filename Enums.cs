@@ -42,7 +42,7 @@ namespace iSpyApplication
 
         public enum AudioStreamMode
         {
-            //PCM,
+            PCM,
             MP3
             //,M4A
         }

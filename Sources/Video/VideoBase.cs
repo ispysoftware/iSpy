@@ -152,7 +152,7 @@ namespace iSpyApplication.Sources.Video
                 _lastFrAdjust = DateTime.UtcNow;
             }
 
-            return Math.Max(rate - _throttleAdjust, 2);
+            return Math.Max(rate - _throttleAdjust, 1);
         }
 
     }

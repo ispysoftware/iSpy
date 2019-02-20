@@ -2259,7 +2259,7 @@ namespace iSpyApplication.Controls
                 {
                     if (_mp3Writer == null)
                     {
-                        _audioStreamFormat = new WaveFormat(22050, 16, Micobject.settings.channels);
+                        _audioStreamFormat = new WaveFormat(Micobject.settings.samples, 16, Micobject.settings.channels);
                         var wf = new WaveFormat(_audioStreamFormat.SampleRate, _audioStreamFormat.BitsPerSample, _audioStreamFormat.Channels);
                         _mp3Writer = new LameMP3FileWriter(_outStream, wf, LAMEPreset.STANDARD);
                     }

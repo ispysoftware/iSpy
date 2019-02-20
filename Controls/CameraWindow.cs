@@ -3676,7 +3676,8 @@ namespace iSpyApplication.Controls
                 
 
                 int i = 0;
-                foreach (var ev in MainForm.Actions.Where(p => p.objectid == oid && p.objecttypeid == 2 && p.mode == mode && p.active))
+                var le = MainForm.Actions.Where(p => p.objectid == oid && p.objecttypeid == 2 && p.mode == mode && p.active).ToList();
+                foreach (var ev in le)
                 {
                     ProcessAlertEvent(ev.mode, rawgrab, msg, ev.type, ev.param1, ev.param2, ev.param3, ev.param4);
                 }
