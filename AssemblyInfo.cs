@@ -10,7 +10,7 @@ using System.Reflection;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("www.ispyconnect.com")]
 [assembly: AssemblyProduct("iSpy")]
-[assembly: AssemblyCopyright("DeveloperInABox 2018")]
+[assembly: AssemblyCopyright("DeveloperInABox 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 
@@ -25,7 +25,7 @@ using System.Reflection;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("7.1.9.0")]
+[assembly: AssemblyVersion("7.2.0.0")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -55,4 +55,4 @@ using System.Reflection;
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
-[assembly: AssemblyFileVersion("7.1.9.0")]
+[assembly: AssemblyFileVersion("7.2.0.0")]
