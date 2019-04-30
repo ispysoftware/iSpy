@@ -284,7 +284,8 @@ namespace iSpyApplication.Sources.Video
 
             _needsSetup = true;
             if (!_modeAudio)
-                _mPlayer.CustomRenderer.SetFormat(new BitmapFormat(_source.settings.vlcWidth, _source.settings.vlcHeight, ChromaType.RV24));
+                _mPlayer.CustomRenderer.SetFormat(new BitmapFormat(_source.settings.vlcWidth, _source.settings.vlcHeight, ChromaType.RV32));
+
             _mPlayer.Open(_mMedia);
             _mMedia.Parse(true);
 
@@ -588,7 +589,6 @@ namespace iSpyApplication.Sources.Video
                 frame.Dispose();
                 return;
             }
-            
             _videoQueue.Enqueue((Bitmap)frame.Clone());
         }
 
