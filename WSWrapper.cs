@@ -17,7 +17,7 @@ namespace iSpyApplication
         private static string _externalIP = "";
         private static bool _websitelive = true;
         internal static DateTime LastLiveCheck = Helper.Now;
-        private static readonly int[] PingDelays = { 600, 900, 1200, 2400 };
+        private static readonly int[] PingDelays = { 60, 90, 120, 240 };
         private static int _pingIndex = 0;
 
         public static iSpyAPI Wsa
