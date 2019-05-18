@@ -3379,9 +3379,9 @@ namespace iSpyApplication
             this.label92.Location = new System.Drawing.Point(59, 8);
             this.label92.Margin = new System.Windows.Forms.Padding(6, 8, 6, 0);
             this.label92.Name = "label92";
-            this.label92.Size = new System.Drawing.Size(63, 17);
+            this.label92.Size = new System.Drawing.Size(15, 17);
             this.label92.TabIndex = 15;
-            this.label92.Text = "Seconds";
+            this.label92.Text = "s";
             // 
             // lblQuality2
             // 
@@ -3867,6 +3867,7 @@ namespace iSpyApplication
             this.scheduleEditor1.Name = "scheduleEditor1";
             this.scheduleEditor1.Size = new System.Drawing.Size(637, 616);
             this.scheduleEditor1.TabIndex = 24;
+            this.scheduleEditor1.Load += new System.EventHandler(this.scheduleEditor1_Load);
             // 
             // panel7
             // 

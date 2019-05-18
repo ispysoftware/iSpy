@@ -23,9 +23,11 @@ namespace iSpyApplication
         {
             button3.Text = "...";
             label1.Text = LocRm.GetString("Name");
-            btnAddCommand.Text = LocRm.GetString("Add");
+            btnAddCommand.Text = LocRm.GetString("OK");
             label83.Text = LocRm.GetString("ExecuteFile");
             llblHelp.Text = LocRm.GetString("help");
+            linkLabel1.Text = LocRm.GetString("Example");
+            label2.Text = LocRm.GetString("Shortcut");
         }
 
         private void button3_Click(object sender, EventArgs e)

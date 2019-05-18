@@ -675,6 +675,7 @@ namespace iSpyApplication
             tabPage3.Text = rdoFTPMotion.Text = rdoSaveMotion.Text = LocRm.GetString("MotionDetection");
             tabPage4.Text = LocRm.GetString("Recording");
             tabPage5.Text = LocRm.GetString("Scheduling");
+            tabPage6.Text = LocRm.GetString("Storage");
             chkFTPRecordingsEnabled.Text = LocRm.GetString("Enabled");
             label9.Text = LocRm.GetString("Filename");
             label50.Text = LocRm.GetString("CounterMax");
@@ -700,7 +701,7 @@ namespace iSpyApplication
             llblHelp.Text = LocRm.GetString("help");
             
             chkColourProcessing.Text = LocRm.GetString("Apply");
-            chkResize.Text = LocRm.GetString("json.resize");
+            chkResize.Text = LocRm.GetString("Resize");
             Text = LocRm.GetString("AddCamera");
             
             lblAccessGroups.Text = LocRm.GetString("AccessGroups");
@@ -756,7 +757,9 @@ namespace iSpyApplication
             LocRm.SetString(btnPTZSchedule, "Scheduler");
             LocRm.SetString(label5, "PictureInPicture");
             LocRm.SetString(linkLabel4, "CopyTo");
-
+            LocRm.SetString(btnAuthorise, "Authorise");
+            LocRm.SetString(btnAuthoriseYouTube, "Authorise");
+            LocRm.SetString(linkLabel9, "SubscribeText");
 
             HideTab(tabPage3, Helper.HasFeature(Enums.Features.Motion_Detection));
             HideTab(tabPage2, Helper.HasFeature(Enums.Features.Alerts));
@@ -2598,6 +2601,11 @@ namespace iSpyApplication
             {
                 CameraControl.Restart();
             }
+        }
+
+        private void scheduleEditor1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

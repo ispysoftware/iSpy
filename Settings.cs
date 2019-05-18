@@ -571,8 +571,13 @@ namespace iSpyApplication
             label3.Text = LocRm.GetString("MediaDirectory");
             label4.Text = "ms";
             label7.Text = "ms";
+            label42.Text = "ms";
+            label49.Text = "ms";
+            label62.Text = "s";
+
             label8.Text = LocRm.GetString("MjpegReceiveTimeout");
-            
+            label47.Text = LocRm.GetString("StartupMode");
+
             label18.Text = LocRm.GetString("MaxRecordingThreads");
             label13.Text = LocRm.GetString("PlaybackMode");
             tabPage1.Text = LocRm.GetString("Colors");
@@ -657,6 +662,13 @@ namespace iSpyApplication
             LocRm.SetString(label10, "Plugins");
             LocRm.SetString(linkLabel3, "DownloadPlugins");
             LocRm.SetString(linkLabel4, "RefreshList");
+            LocRm.SetString(label12, "ArchiveLocation");
+            LocRm.SetString(button3, "RunNow");
+
+            LocRm.SetString(label66, "MaxLogSize");
+            LocRm.SetString(label65, "KeepLogsFor");
+            LocRm.SetString(label67, "Days");
+
             tabPage10.Text = LocRm.GetString("ConnectionAlerts");
             tabPage11.Text = LocRm.GetString("Plugins");
             tabPage14.Text = LocRm.GetString("Logging");
@@ -1306,6 +1318,11 @@ namespace iSpyApplication
         private void button3_Click(object sender, EventArgs e)
         {
             MainForm.InstanceReference.RunStorageManagement(true);
+        }
+
+        private void ddlStartupMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

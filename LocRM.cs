@@ -93,6 +93,10 @@ namespace iSpyApplication
         {
             ctrl.Text = GetString(identifier);
         }
+        public static void SetString(ToolStripMenuItem ctrl, string identifier)
+        {
+            ctrl.Text = GetString(identifier);
+        }
 
         public static void SetString(ToolStripStatusLabel ctrl, string identifier)
         {
@@ -118,7 +122,14 @@ namespace iSpyApplication
             {
                 foreach (var t in ls.Translation)
                 {
-                    Res.Add((ls.CultureCode+"."+t.Token.ToLower()),t.Value);
+                    try
+                    {
+                        Res.Add((ls.CultureCode + "." + t.Token.ToLower()), t.Value);
+                    }
+                    catch(Exception ex)
+                    {
+                        //ignore duplicates
+                    }
                 }
             }
             _inited = true;

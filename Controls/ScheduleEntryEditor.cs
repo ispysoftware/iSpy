@@ -21,6 +21,13 @@ namespace iSpyApplication.Controls
             label2.Text = LocRm.GetString("Days");
             label3.Text = LocRm.GetString("Action");
             btnOK.Text = LocRm.GetString("OK");
+            chkMon.Text = LocRm.GetString("DOWMon");
+            chkTue.Text = LocRm.GetString("DOWTue");
+            chkWed.Text = LocRm.GetString("DOWWed");
+            chkThu.Text = LocRm.GetString("DOWThu");
+            chkFri.Text = LocRm.GetString("DOWFri");
+            chkSat.Text = LocRm.GetString("DOWMat");
+            chkSun.Text = LocRm.GetString("DOWSun");
         }
 
         private void ScheduleEntryEditor_Load(object sender, EventArgs e)

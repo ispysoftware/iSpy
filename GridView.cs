@@ -30,9 +30,20 @@ namespace iSpyApplication
                                  _mWindowState?.Dispose();
                              };
             _mWindowState = new PersistWindowState { Parent = this, RegistryPath = @"Software\ispy\grid_" + _layout.name };
+
+            RenderResources();
+
         }
 
-
+        private void RenderResources()
+        {
+            LocRm.SetString(editToolStripMenuItem, "Edit");
+            LocRm.SetString(switchFillModeAltFToolStripMenuItem, "SwitchFillMode");
+            LocRm.SetString(quickSelectToolStripMenuItem, "QuickSelect");
+            LocRm.SetString(fullScreenToolStripMenuItem, "FullScreen");
+            LocRm.SetString(alwaysOnTopToolStripMenuItem, "AlwaysOnTop");
+            LocRm.SetString(closeGridViewToolStripMenuItem, "Close");
+        }
 
         private void GridView_Load(object sender, EventArgs e)
         {

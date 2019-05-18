@@ -440,11 +440,11 @@ namespace iSpyApplication
             
             _dt = new DataTable("Network");
 
-            _dt.Columns.Add(new DataColumn("IP Address"));
-            _dt.Columns.Add(new DataColumn("Port"));
-            _dt.Columns.Add(new DataColumn("Device Name"));
-            _dt.Columns.Add(new DataColumn("WebServer"));
-            _dt.Columns.Add(new DataColumn("MAC Address"));
+            _dt.Columns.Add(new DataColumn(LocRm.GetString("IPAddress")));
+            _dt.Columns.Add(new DataColumn(LocRm.GetString("Port")));
+            _dt.Columns.Add(new DataColumn(LocRm.GetString("Name")));
+            _dt.Columns.Add(new DataColumn(LocRm.GetString("WebServer")));
+            _dt.Columns.Add(new DataColumn("MAC"));
             _dt.AcceptChanges();
             dataGridView1.DataSource = _dt;
             string host = ddlHost.SelectedItem.ToString();
@@ -932,6 +932,10 @@ namespace iSpyApplication
         }
 
         private CameraScanner _scanner = new CameraScanner();
-        
+
+        private void pnlmain_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

@@ -169,25 +169,25 @@ namespace iSpyApplication.Controls
                     switch (day)
                     {
                         case "1":
-                            r += "Mon,";
+                            r += LocRm.GetString("DOWMon")+",";
                             break;
                         case "2":
-                            r += "Tue,";
+                            r += LocRm.GetString("DOWTue") + ",";
                             break;
                         case "3":
-                            r += "Wed,";
+                            r += LocRm.GetString("DOWWed") + ",";
                             break;
                         case "4":
-                            r += "Thu,";
+                            r += LocRm.GetString("DOWThu") + ",";
                             break;
                         case "5":
-                            r += "Fri,";
+                            r += LocRm.GetString("DOWFri") + ",";
                             break;
                         case "6":
-                            r += "Sat,";
+                            r += LocRm.GetString("DOWSat") + ",";
                             break;
                         case "0":
-                            r += "Sun,";
+                            r += LocRm.GetString("DOWSun") + ",";
                             break;
                     }
                 }

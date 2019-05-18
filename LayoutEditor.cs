@@ -33,10 +33,15 @@ namespace iSpyApplication
             numH.Value = H;
         }
 
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void RenderResources()
         {
             Text = LocRm.GetString("LayoutEditor");
-            button1.Text = LocRm.GetString("Update");
+            button1.Text = LocRm.GetString("OK");
             label1.Text = "X";
             label2.Text = "Y";
             label3.Text = LocRm.GetString("Width");

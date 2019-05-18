@@ -39,6 +39,10 @@
             this.numH = new System.Windows.Forms.NumericUpDown();
             this.button1 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numW)).BeginInit();
@@ -139,6 +143,7 @@
             // button1
             // 
             resources.ApplyResources(this.button1, "button1");
+            this.tableLayoutPanel1.SetColumnSpan(this.button1, 2);
             this.button1.Name = "button1";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1Click);
@@ -155,7 +160,32 @@
             this.tableLayoutPanel1.Controls.Add(this.label4, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.numY, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.numX, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label5, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label6, 2, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label7, 2, 2);
+            this.tableLayoutPanel1.Controls.Add(this.label8, 2, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
+            // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
+            // 
+            // label7
+            // 
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
+            // 
+            // label8
+            // 
+            resources.ApplyResources(this.label8, "label8");
+            this.label8.Name = "label8";
+            this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // LayoutEditor
             // 
@@ -187,5 +217,9 @@
         private System.Windows.Forms.NumericUpDown numH;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
     }
 }

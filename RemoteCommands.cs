@@ -25,7 +25,8 @@ namespace iSpyApplication
         {
             Text = LocRm.GetString("RemoteCommands");
             btnAddCommand.Text = LocRm.GetString("Add");
-            btnDelete.Text = LocRm.GetString("Delete");            
+            btnDelete.Text = LocRm.GetString("Delete");
+            btnEditCommand.Text = LocRm.GetString("Edit");
             label45.Text = LocRm.GetString("forExamples");
             label82.Text = LocRm.GetString("YouCanTriggerRemoteComman");
             linkLabel3.Text = LocRm.GetString("Reset");
