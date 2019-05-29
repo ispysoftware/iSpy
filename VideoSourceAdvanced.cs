@@ -58,6 +58,7 @@ namespace iSpyApplication
             LocRm.SetString(label9, "Limit");
             LocRm.SetString(label10, "ScaleSize");
             LocRm.SetString(label11, "SettingsAppliedLive");
+            LocRm.SetString(button1, "OK");
 
         }
 

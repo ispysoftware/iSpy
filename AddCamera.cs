@@ -658,7 +658,7 @@ namespace iSpyApplication
             label76.Text = LocRm.GetString("ExitThisToEnableAlertsAnd");
             label77.Text = LocRm.GetString("Tags");
             label79.Text = LocRm.GetString("UploadViaWebsite");
-            label83.Text = LocRm.GetString("ClickAndDragTodraw");
+            label83.Text = LocRm.GetString("ClickAndDragTodraw").Trim();
             label84.Text = LocRm.GetString("MaskImage");
             label86.Text = label100.Text = LocRm.GetString("OverlayText");
             linkLabel1.Text = LocRm.GetString("UsageTips");

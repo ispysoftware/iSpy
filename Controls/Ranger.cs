@@ -67,7 +67,7 @@ namespace iSpyApplication.Controls
 
         private void Ranger_Load(object sender, EventArgs e)
         {
-            
+            label2.Text = LocRm.GetString("GainCamera");
         }
 
         private void Ranger_SizeChanged(object sender, EventArgs e)

@@ -184,40 +184,39 @@
       <HintPath>packages\BouncyCastle.1.8.5\lib\BouncyCastle.Crypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FFmpeg.AutoGen, Version=4.1.0.4, Culture=neutral, PublicKeyToken=9b7632533a381715, processorArchitecture=MSIL">
-      <HintPath>packages\FFmpeg.AutoGen.4.1.0.4\lib\net45\FFmpeg.AutoGen.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="FFmpeg.AutoGen, Version=4.0.0.3, Culture=neutral, PublicKeyToken=9b7632533a381715, processorArchitecture=MSIL">
+      <HintPath>packages\FFmpeg.AutoGen.4.0.0.3\lib\net45\FFmpeg.AutoGen.dll</HintPath>
     </Reference>
     <Reference Include="FlickrNet, Version=3.24.0.0, Culture=neutral, PublicKeyToken=2491df59efa5d132, processorArchitecture=MSIL">
       <HintPath>packages\FlickrNet.3.24.0\lib\net20\FlickrNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Google.Apis, Version=1.38.2.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>packages\Google.Apis.1.38.2\lib\net45\Google.Apis.dll</HintPath>
+    <Reference Include="Google.Apis, Version=1.40.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.1.40.0\lib\net45\Google.Apis.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Google.Apis.Auth, Version=1.38.2.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>packages\Google.Apis.Auth.1.38.2\lib\net45\Google.Apis.Auth.dll</HintPath>
+    <Reference Include="Google.Apis.Auth, Version=1.40.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.Auth.1.40.0\lib\net45\Google.Apis.Auth.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.38.2.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>packages\Google.Apis.Auth.1.38.2\lib\net45\Google.Apis.Auth.PlatformServices.dll</HintPath>
+    <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.40.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.Auth.1.40.0\lib\net45\Google.Apis.Auth.PlatformServices.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Google.Apis.Core, Version=1.38.2.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>packages\Google.Apis.Core.1.38.2\lib\net45\Google.Apis.Core.dll</HintPath>
+    <Reference Include="Google.Apis.Core, Version=1.40.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.Core.1.40.0\lib\net45\Google.Apis.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Google.Apis.Drive.v3, Version=1.38.2.1566, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>packages\Google.Apis.Drive.v3.1.38.2.1566\lib\net45\Google.Apis.Drive.v3.dll</HintPath>
+    <Reference Include="Google.Apis.Drive.v3, Version=1.40.0.1596, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.Drive.v3.1.40.0.1596\lib\net45\Google.Apis.Drive.v3.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Google.Apis.PlatformServices, Version=1.38.2.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>packages\Google.Apis.1.38.2\lib\net45\Google.Apis.PlatformServices.dll</HintPath>
+    <Reference Include="Google.Apis.PlatformServices, Version=1.40.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.1.40.0\lib\net45\Google.Apis.PlatformServices.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Google.Apis.YouTube.v3, Version=1.38.2.1572, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>packages\Google.Apis.YouTube.v3.1.38.2.1572\lib\net45\Google.Apis.YouTube.v3.dll</HintPath>
+    <Reference Include="Google.Apis.YouTube.v3, Version=1.40.0.1593, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.YouTube.v3.1.40.0.1593\lib\net45\Google.Apis.YouTube.v3.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Interop.NATUPNPLib">
@@ -252,14 +251,14 @@
     <Reference Include="NAudio, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>DLLS\NAudio.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NAudio.Lame, Version=1.0.3.3048, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>DLLS\NAudio.Lame.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NSpeex">
       <HintPath>DLLS\NSpeex.dll</HintPath>
