@@ -126,6 +126,7 @@
   <FTPServers></FTPServers>
   <OpenGrabs>true</OpenGrabs>
   <TextSentences></TextSentences>
+  <PlayPaths></PlayPaths>
   <VLCFileCache>3000</VLCFileCache>
   <Referers></Referers>
   <EncryptCode></EncryptCode>
