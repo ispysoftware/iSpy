@@ -5340,6 +5340,7 @@ copy or delete as many lines as you need.-->
   <Camera id="199">
     <Makes>
       <Make Name="Dahua" Model="SD59230S" />
+      <Make Name="Lorex" Model="LNZ32P4B" />
     </Makes>
     <CommandURL>/cgi-bin/</CommandURL>
     <Commands>
@@ -5351,7 +5352,7 @@ copy or delete as many lines as you need.-->
       <Down>ptz.cgi?action=start&amp;channel=0&amp;code=Down&amp;arg1=0&amp;arg2=1&amp;arg3=0</Down>
       <LeftDown>ptz.cgi?action=start&amp;channel=0&amp;code=LeftDown&amp;arg1=0&amp;arg2=1&amp;arg3=0</LeftDown>
       <RightDown>ptz.cgi?action=start&amp;channel=0&amp;code=RightDown&amp;arg1=0&amp;arg2=1&amp;arg3=0</RightDown>
-      <Stop>ptz.cgi?action=stop&amp;channel=0&amp;code=Right&amp;arg1=0&amp;arg2=1&amp;arg3=0</Stop>
+      <Stop>ptz.cgi?action=stop&amp;channel=0&amp;code=ZoomWide&amp;arg1=0&amp;arg2=1&amp;arg3=0</Stop>
       <ZoomIn>ptz.cgi?action=start&amp;channel=0&amp;code=ZoomTele&amp;arg1=0&amp;arg2=1&amp;arg3=0</ZoomIn>
       <ZoomOut>ptz.cgi?action=start&amp;channel=0&amp;code=ZoomWide&amp;arg1=0&amp;arg2=1&amp;arg3=0</ZoomOut>
     </Commands>
@@ -5359,6 +5360,11 @@ copy or delete as many lines as you need.-->
       <Command Name="action=Preset 1">ptz.cgi?action=start&amp;channel=0&amp;code=GotoPreset&amp;arg1=0&amp;arg2=1&amp;arg3=0</Command>
       <Command Name="action=Preset 2">ptz.cgi?action=start&amp;channel=0&amp;code=GotoPreset&amp;arg1=0&amp;arg2=2&amp;arg3=0</Command>
       <Command Name="action=Preset 3">ptz.cgi?action=start&amp;channel=0&amp;code=GotoPreset&amp;arg1=0&amp;arg2=3&amp;arg3=0</Command>
+      <Command Name="action=Preset 4">ptz.cgi?action=start&amp;channel=0&amp;code=GotoPreset&amp;arg1=0&amp;arg2=4&amp;arg3=0</Command>
+      <Command Name="action=Preset 5">ptz.cgi?action=start&amp;channel=0&amp;code=GotoPreset&amp;arg1=0&amp;arg2=5&amp;arg3=0</Command>
+      <Command Name="action=Preset 6">ptz.cgi?action=start&amp;channel=0&amp;code=GotoPreset&amp;arg1=0&amp;arg2=6&amp;arg3=0</Command>
+      <Command Name="action=DigZoom Y">configManager.cgi?action=setConfig&amp;VideoInZoom[0][0].DigitalZoom=true</Command>
+      <Command Name="action=DigZoom N">configManager.cgi?action=setConfig&amp;VideoInZoom[0][0].DigitalZoom=false</Command>
     </ExtendedCommands>
   </Camera>
   <Camera id="200">
@@ -6643,21 +6649,26 @@ in the camera's web interface-->
     <CommandURL>/cgi-bin/</CommandURL>
     <Commands>
       <Left>ptz.cgi?action=start&amp;channel=0&amp;code=Left&amp;arg1=0&amp;arg2=1&amp;arg3=0</Left>
+      <LeftUp>ptz.cgi?action=start&amp;channel=0&amp;code=LeftUp&amp;arg1=0&amp;arg2=1&amp;arg3=0</LeftUp>
       <Right>ptz.cgi?action=start&amp;channel=0&amp;code=Right&amp;arg1=0&amp;arg2=1&amp;arg3=0</Right>
-      <Stop>ptz.cgi?action=stop&amp;channel=0&amp;code=Right&amp;arg1=0&amp;arg2=1&amp;arg3=0</Stop>
+      <RightUp>ptz.cgi?action=start&amp;channel=0&amp;code=RightUp&amp;arg1=0&amp;arg2=1&amp;arg3=0</RightUp>
       <Up>ptz.cgi?action=start&amp;channel=0&amp;code=Up&amp;arg1=0&amp;arg2=1&amp;arg3=0</Up>
       <Down>ptz.cgi?action=start&amp;channel=0&amp;code=Down&amp;arg1=0&amp;arg2=1&amp;arg3=0</Down>
-      <ZoomOut>ptz.cgi?action=start&amp;channel=0&amp;code=ZoomWide&amp;arg1=0&amp;arg2=1&amp;arg3=0</ZoomOut>
-      <ZoomIn>ptz.cgi?action=start&amp;channel=0&amp;code=ZoomTele&amp;arg1=0&amp;arg2=1&amp;arg3=0</ZoomIn>
       <LeftDown>ptz.cgi?action=start&amp;channel=0&amp;code=LeftDown&amp;arg1=0&amp;arg2=1&amp;arg3=0</LeftDown>
       <RightDown>ptz.cgi?action=start&amp;channel=0&amp;code=RightDown&amp;arg1=0&amp;arg2=1&amp;arg3=0</RightDown>
-      <LeftUp>ptz.cgi?action=start&amp;channel=0&amp;code=LeftUp&amp;arg1=0&amp;arg2=1&amp;arg3=0</LeftUp>
-      <RightUp>ptz.cgi?action=start&amp;channel=0&amp;code=RightUp&amp;arg1=0&amp;arg2=1&amp;arg3=0</RightUp>
+      <Stop>ptz.cgi?action=stop&amp;channel=0&amp;code=ZoomWide&amp;arg1=0&amp;arg2=1&amp;arg3=0</Stop>
+      <ZoomIn>ptz.cgi?action=start&amp;channel=0&amp;code=ZoomTele&amp;arg1=0&amp;arg2=1&amp;arg3=0</ZoomIn>
+      <ZoomOut>ptz.cgi?action=start&amp;channel=0&amp;code=ZoomWide&amp;arg1=0&amp;arg2=1&amp;arg3=0</ZoomOut>
     </Commands>
     <ExtendedCommands>
       <Command Name="action=Preset 1">ptz.cgi?action=start&amp;channel=0&amp;code=GotoPreset&amp;arg1=0&amp;arg2=1&amp;arg3=0</Command>
       <Command Name="action=Preset 2">ptz.cgi?action=start&amp;channel=0&amp;code=GotoPreset&amp;arg1=0&amp;arg2=2&amp;arg3=0</Command>
       <Command Name="action=Preset 3">ptz.cgi?action=start&amp;channel=0&amp;code=GotoPreset&amp;arg1=0&amp;arg2=3&amp;arg3=0</Command>
+      <Command Name="action=Preset 4">ptz.cgi?action=start&amp;channel=0&amp;code=GotoPreset&amp;arg1=0&amp;arg2=4&amp;arg3=0</Command>
+      <Command Name="action=Preset 5">ptz.cgi?action=start&amp;channel=0&amp;code=GotoPreset&amp;arg1=0&amp;arg2=5&amp;arg3=0</Command>
+      <Command Name="action=Preset 6">ptz.cgi?action=start&amp;channel=0&amp;code=GotoPreset&amp;arg1=0&amp;arg2=6&amp;arg3=0</Command>
+      <Command Name="action=DigZoom Y">configManager.cgi?action=setConfig&amp;VideoInZoom[0][0].DigitalZoom=true</Command>
+      <Command Name="action=DigZoom N">configManager.cgi?action=setConfig&amp;VideoInZoom[0][0].DigitalZoom=false</Command>
     </ExtendedCommands>
   </Camera>
   <Camera id="234">
