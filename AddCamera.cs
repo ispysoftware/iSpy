@@ -1364,15 +1364,13 @@ namespace iSpyApplication
             ddlProcessor.Enabled = rdoMotion.Enabled = (string) _detectortypes[ddlMotionDetector.SelectedIndex] != "None";
             if (!rdoMotion.Enabled)
                 rdoContinuous.Checked = true;
-
-            if (CameraControl.Camera != null && CameraControl.Camera.VideoSource != null)
+                        
+            if ((string) _detectortypes[ddlMotionDetector.SelectedIndex] != CameraControl.Camobject.detector.type)
             {
-                if ((string) _detectortypes[ddlMotionDetector.SelectedIndex] != CameraControl.Camobject.detector.type)
-                {
-                    CameraControl.Camobject.detector.type = (string) _detectortypes[ddlMotionDetector.SelectedIndex];
-                    CameraControl.SetDetector();
-                }
+                CameraControl.Camobject.detector.type = (string) _detectortypes[ddlMotionDetector.SelectedIndex];
+                CameraControl.SetDetector();
             }
+            
             CameraControl.Camobject.detector.type = (string) _detectortypes[ddlMotionDetector.SelectedIndex];
         }
 
