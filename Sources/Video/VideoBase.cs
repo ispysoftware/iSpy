@@ -65,7 +65,8 @@ namespace iSpyApplication.Sources.Video
                 }
 
                 FilterTimestamps(_timeStamps);
-
+                if (RealFramerate < TargetFrameRate)
+                    return true;
 
                 var tfr = TargetFrameRate;
 
