@@ -486,6 +486,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Sources\Audio\AudioReader.cs" />
     <Compile Include="Sources\Audio\talk\TalkAmcrest.cs" />
     <Compile Include="Sources\Audio\talk\TalkDoorbird.cs" />
     <Compile Include="Sources\Audio\talk\TalkFoscam.cs" />

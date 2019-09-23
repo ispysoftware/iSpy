@@ -3211,7 +3211,7 @@ namespace iSpyApplication.Controls
 
                     try
                     {
-                        DateTime date = DateTime.Now.AddHours(Convert.ToDouble(Camobject.settings.timestampoffset));
+                        DateTime date = DateTime.Now.AddHours(Convert.ToDouble(Camobject.settings.timestampoffset)).AddSeconds(0-Camobject.recorder.bufferseconds);
 
                         string filename =
                             $"{date.Year}-{Helper.ZeroPad(date.Month)}-{Helper.ZeroPad(date.Day)}_{Helper.ZeroPad(date.Hour)}-{Helper.ZeroPad(date.Minute)}-{Helper.ZeroPad(date.Second)}";

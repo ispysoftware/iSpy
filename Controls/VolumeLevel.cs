@@ -1603,7 +1603,7 @@ namespace iSpyApplication.Controls
                     {
                         #region mp3writer
 
-                        DateTime date = DateTime.Now;
+                        DateTime date = DateTime.Now.AddSeconds(0- Micobject.settings.buffer);
 
                         string filename =
                             $"{date.Year}-{Helper.ZeroPad(date.Month)}-{Helper.ZeroPad(date.Day)}_{Helper.ZeroPad(date.Hour)}-{Helper.ZeroPad(date.Minute)}-{Helper.ZeroPad(date.Second)}";
