@@ -6,7 +6,7 @@ using iSpyApplication.Onvif;
 using iSpyApplication.Server;
 using iSpyApplication.Utilities;
 
-namespace iSpyApplication.CameraDiscovery
+namespace eyesoneyes.CameraDiscovery
 {
     public class CameraScanner
     {
