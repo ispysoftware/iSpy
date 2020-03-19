@@ -1616,8 +1616,8 @@ namespace iSpyApplication
 
             var d = new downloader
             {
-                Url = MainForm.ContentSource + "/getcontent.aspx?name=PTZ2",
-                SaveLocation = Program.AppDataPath + @"XML\PTZ2.xml"
+                Url = MainForm.ContentSource + "PTZ2.zip",
+                UnzipTo = Program.AppDataPath + @"XML\"
             };
             d.ShowDialog(this);
             if (d.DialogResult == DialogResult.OK)

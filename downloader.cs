@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using System.IO.Compression;
 using System.Net;
 using System.Windows.Forms;
 using System.Xml;
@@ -11,10 +12,9 @@ namespace iSpyApplication
     public partial class downloader : Form
     {
         public string Url;
-        public string SaveLocation;
         public string Format;
-
-        private bool success;
+        public string UnzipTo;
+        public bool Success;
         private bool aborting;
         //private bool cancel;
 
@@ -71,26 +71,10 @@ namespace iSpyApplication
                     }
                     if (!backgroundWorker1.CancellationPending)
                     {
-                        if (SaveLocation.EndsWith(".xml"))
-                        {
-                            var ms = new MemoryStream(byteBuffer);
-                            var doc = new XmlDocument();
-                            try
-                            {                               
-                                doc.Load(ms);
-                                doc.Save(SaveLocation);
-                                success = true;
-
-                            }
-                            catch (Exception ex)
-                            {
-                                success = false;
-                                Logger.LogException(ex);
-                                DialogResult = DialogResult.Cancel;
-                                aborting = true;
-                            }
-                            ms.Dispose();
-                        }
+                        Directory.CreateDirectory(Path.GetDirectoryName(UnzipTo));
+                        File.WriteAllBytes(UnzipTo + "temp.zip", byteBuffer);
+                        Success = true;
+                        Unzip(UnzipTo + "temp.zip");
                     }
                     else
                     {
@@ -104,6 +88,35 @@ namespace iSpyApplication
             }
             response.Close();
             
+        }
+
+        private void Unzip(string zipPath)
+        {
+            Logger.LogMessage("Unzipping " + zipPath, "Downloader");
+            FileInfo fi = new FileInfo(zipPath);
+            using (var archive = ZipFile.OpenRead(zipPath))
+            {
+                foreach (ZipArchiveEntry entry in archive.Entries)
+                {
+                    try
+                    {
+                        entry.ExtractToFile(Path.Combine(fi.DirectoryName, entry.FullName), true);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogException(ex, "Unzip File");
+                        Success = false;
+                    }
+                }
+            }
+            try
+            {
+                File.Delete(zipPath);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex, "Delete zip file");
+            }
         }
 
         private class UISync
@@ -129,7 +142,7 @@ namespace iSpyApplication
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (success)
+            if (Success)
             {
                 DialogResult = DialogResult.OK;
             }

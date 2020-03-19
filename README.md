@@ -34,10 +34,10 @@ The solution requires **Visual Studio 2019** to build. Choose 32 or 64 bit versi
 
 For building the Setup project [Wix Toolset 3.11](http://wixtoolset.org/) must be installed. (Make sure you restart Visual Studio after installing)
 
-To build the full installer compile the Bootstrap32 or Bootstrap64 project
-If there is an error finding a merge module building the setup project then the merge modules are available in the Merge Modules directory
+To build the full installer select x86 or x64 Release mode and compile the Bootstrap project. Installer will be generated in  
+Wix\Bootstrap\bin\Release
 
-Remove the signing post build event command as the code signing certificate is not part of the source code of the project.
+***Remove the signing post build event command as the code signing certificate is not part of the source code of the project.***
 
 If you have dll reference errors when building you may need to go into the DLLS folder and right-click - unblock the DLLs. (Windows Security issue)
 

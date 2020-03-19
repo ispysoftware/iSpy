@@ -43,11 +43,11 @@ namespace iSpyApplication
     /// </summary>
     public partial class MainForm : Form, INetworkListManagerEvents
     {
-        public const string VLCx86 = "http://www.videolan.org/vlc/download-windows.html";
-        public const string VLCx64 = "http://download.videolan.org/pub/videolan/vlc/last/win64/";
+        public const string VLCx86 = "https://www.videolan.org/vlc/download-windows.html";
+        public const string VLCx64 = "https://download.videolan.org/pub/videolan/vlc/last/win64/";
 
-        public const string Website = "http://www.ispyconnect.com";
-        public const string ContentSource = Website;
+        public const string Website = "https://www.ispyconnect.com";
+        public const string ContentSource = "https://ispyrtcdata.blob.core.windows.net/downloads/";
         public static bool NeedsSync;
         private static DateTime _needsMediaRefresh = DateTime.MinValue;
         //private static Player _player = null;

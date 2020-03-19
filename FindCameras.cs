@@ -660,8 +660,8 @@ namespace iSpyApplication
 
             var d = new downloader
                         {
-                            Url = MainForm.ContentSource + "/getcontent.aspx?name=sources3",
-                            SaveLocation = Program.AppDataPath + @"XML\Sources.xml"
+                            Url = MainForm.ContentSource + "Sources.zip",
+                            UnzipTo = Program.AppDataPath + @"XML\"
                         };
             d.ShowDialog(this);
             if (d.DialogResult==DialogResult.OK)

@@ -2941,6 +2941,28 @@
       <Command Name="Go Preset 5">action=gopreset&amp;preset=5</Command>
     </ExtendedCommands>
   </Camera>
+  <Camera id="118">
+    <Makes>
+      <Make Name="Pelco" Model="Spectra PSP" />
+    </Makes>
+    <CommandURL>/content/ptz/inc.ptz.php</CommandURL>
+    <Commands>
+      <Center>action=gopreset&amp;preset=30</Center>
+      <Left>action=ptzmove&amp;xaxis=-12000&amp;yaxis=0</Left>
+      <Right>action=ptzmove&amp;xaxis=12000&amp;yaxis=0</Right>
+      <Up>action=ptzmove&amp;xaxis=0&amp;yaxis=3600</Up>
+      <Down>action=ptzmove&amp;xaxis=0&amp;yaxis=-3600</Down>
+      <ZoomIn>action=lenszoom&amp;zoom=2</ZoomIn>
+      <ZoomOut>action=lenszoom&amp;zoom=1</ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Go Preset 1">action=gopreset&amp;preset=1</Command>
+      <Command Name="Go Preset 2">action=gopreset&amp;preset=2</Command>
+      <Command Name="Go Preset 3">action=gopreset&amp;preset=3</Command>
+      <Command Name="Go Preset 4">action=gopreset&amp;preset=4</Command>
+      <Command Name="Go Preset 5">action=gopreset&amp;preset=5</Command>
+    </ExtendedCommands>
+  </Camera>
   <Camera id="119">
     <Makes>
       <Make Name="Piczel" Model="3500/3505" />
@@ -4516,6 +4538,7 @@
     <Makes>
       <Make Name="IPS" Model="IPS-EYE01W" />
       <Make Name="Digitus" Model="DN-16036" />
+      <Make Name="Wanscam" Model="K3D" />
     </Makes>
     <CommandURL>/cgi-bin/cmd.cgi</CommandURL>
     <Method>POST</Method>
@@ -7745,6 +7768,62 @@ in the camera's web interface-->
       <Command Name="Set Preset 6">cmd=preset&amp;-act=set&amp;-status=1&amp;-number=6</Command>
       <Command Name="Set Preset 7">cmd=preset&amp;-act=set&amp;-status=1&amp;-number=7</Command>
       <Command Name="Set Preset 8">cmd=preset&amp;-act=set&amp;-status=1&amp;-number=8</Command>
+    </ExtendedCommands>
+  </Camera>
+  <Camera id="260">
+    <Makes>
+      <Make Name="JideTech" Model="POE PTZ 2MP Dome" />
+    </Makes>
+    <CommandURL>/form/setPTZCfg?ZFSpeed=0&amp;PTSpeed=0&amp;panSpeed=4&amp;tiltSpeed=4&amp;focusSpeed=0&amp;zoomSpeed=0</CommandURL>
+    <Commands>
+      <Stop>command=0</Stop>
+      <Center>command=0</Center>
+      <Left>command=3</Left>
+      <LeftUp>command=6</LeftUp>
+      <Right>command=4</Right>
+      <RightUp>command=7</RightUp>
+      <Up>command=1</Up>
+      <Down>command=2</Down>
+      <LeftDown>command=5</LeftDown>
+      <RightDown>command=8</RightDown>
+      <ZoomIn>command=13</ZoomIn>
+      <ZoomOut>command=14</ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Go Preset 1">/form/presetSet?flag=4&amp;presetNum=0&amp;existFlag=1&amp;language=cn</Command>
+      <Command Name="Go Preset 2">/form/presetSet?flag=4&amp;presetNum=1&amp;existFlag=1&amp;language=cn</Command>
+      <Command Name="Go Preset 3">/form/presetSet?flag=4&amp;presetNum=2&amp;existFlag=1&amp;language=cn</Command>
+      <Command Name="Go Preset 4">/form/presetSet?flag=4&amp;presetNum=3&amp;existFlag=1&amp;language=cn</Command>
+      <Command Name="Set Preset 1">/form/presetSet?flag=3&amp;presetNum=0&amp;existFlag=1&amp;language=cn</Command>
+      <Command Name="Set Preset 2">/form/presetSet?flag=3&amp;presetNum=1&amp;existFlag=1&amp;language=cn</Command>
+      <Command Name="Set Preset 3">/form/presetSet?flag=3&amp;presetNum=2&amp;existFlag=1&amp;language=cn</Command>
+      <Command Name="Set Preset 4">/form/presetSet?flag=3&amp;presetNum=3&amp;existFlag=1&amp;language=cn</Command>
+    </ExtendedCommands>
+  </Camera>
+  <Camera id="261">
+    <Makes>
+      <Make Name="EarthCam" />
+    </Makes>
+    <CommandURL>/cgi/ptz.cgi?addr=1&amp;move=cont</CommandURL>
+    <Commands>
+      <Center>&amp;dir=center&amp;spd=2100&amp;td=300</Center>
+      <Left>&amp;dir=left&amp;spd=2100&amp;td=300</Left>
+      <LeftUp>&amp;dir=upleft&amp;spd=2100&amp;td=300</LeftUp>
+      <Right>&amp;dir=right&amp;spd=2100&amp;td=300</Right>
+      <RightUp>&amp;dir=upright&amp;spd=2100&amp;td=300</RightUp>
+      <Up>&amp;dir=up&amp;spd=2100&amp;td=300</Up>
+      <Down>&amp;dir=down&amp;spd=2100&amp;td=300</Down>
+      <LeftDown>&amp;dir=downleft&amp;spd=2100&amp;td=300</LeftDown>
+      <RightDown>&amp;dir=downright&amp;spd=2100&amp;td=300</RightDown>
+      <Stop>&amp;dir=stop&amp;spd=2100&amp;td=300</Stop>
+      <ZoomIn>
+      </ZoomIn>
+      <ZoomOut>
+      </ZoomOut>
+    </Commands>
+    <ExtendedCommands>
+      <Command Name="Zoom-In">/axis-cgi/com/ptz.cgi?camera=1&amp;rzoom=800</Command>
+      <Command Name="Zoom-Out">/axis-cgi/com/ptz.cgi?camera=1&amp;rzoom=-800</Command>
     </ExtendedCommands>
   </Camera>
 </PTZSettings2>
