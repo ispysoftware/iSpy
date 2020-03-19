@@ -6,11 +6,16 @@ iSpy is the world’s most popular open source video surveillance application. I
 
 ![iSpyInterface](https://www.ispyconnect.com/content/ebook/ispysurface.jpg)
 
+## Agent
+We have a new platform called Agent which runs as a service and has a full local and remote UI that works on all devices and doesn't require port forwarding for remote access. We've added everything in iSpy plus a lot more to Agent. Check it out on our downloads page
+
+https://www.ispyconnect.com/download.aspx
+
 ## About iSpy
 
 Started back in 2007 the software has continually evolved and improved to become a robust, feature rich solution.
 
-The number one use of iSpy is small business security, but home monitoring, neighborhood watch, checking in on the kids, desktop monitoring, nanny-watch and mobile access through a iSpyConnect.com are valued features.
+The number one use of iSpy is small business security, but home monitoring, neighborhood watch, checking in on the kids, desktop monitoring and mobile access through a iSpyConnect.com are valued features.
 
 Facial recognition and detection of changes in lighting and audio offer the subtleties that set the software apart from competitors.
 
@@ -25,14 +30,14 @@ iSpy was designed to provide a low-cost alternative to expensive surveillance sy
 https://www.ispyconnect.com/download.aspx
 
 ## Compiling iSpy
-The 32 bit and 64 bit solutions require **Visual Studio 2015** or **Visual Studio 2017** to build.
+The solution requires **Visual Studio 2019** to build. Choose 32 or 64 bit version to build.
 
-For building the Setup project [Wix Toolset 3.10+](http://wixtoolset.org/) must be installed. (Make sure you restart Visual Studio after installing)
+For building the Setup project [Wix Toolset 3.11](http://wixtoolset.org/) must be installed. (Make sure you restart Visual Studio after installing)
 
 To build the full installer compile the Bootstrap32 or Bootstrap64 project
 If there is an error finding a merge module building the setup project then the merge modules are available in the Merge Modules directory
 
-Remove the signing post build event command as the code signing certificate is not part of the project.
+Remove the signing post build event command as the code signing certificate is not part of the source code of the project.
 
 If you have dll reference errors when building you may need to go into the DLLS folder and right-click - unblock the DLLs. (Windows Security issue)
 

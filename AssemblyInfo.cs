@@ -10,7 +10,7 @@ using System.Reflection;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("www.ispyconnect.com")]
 [assembly: AssemblyProduct("iSpy")]
-[assembly: AssemblyCopyright("DeveloperInABox 2019")]
+[assembly: AssemblyCopyright("DeveloperInABox 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 

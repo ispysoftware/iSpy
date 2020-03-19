@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?if $(var.Platform) = x64 ?>
+<?define ProductName = "iSpy package installer (64 bit)" ?>
+<?define Win64 = "yes" ?>
+<?define UpgradeCode = "646aac21-26ad-49c0-a3d7-84d5d6b90a8c" ?>
+<?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+<?else ?>
+<?define ProductName = "iSpy package installer" ?>
+<?define Win64 = "no" ?>
+<?define UpgradeCode = "d161dc3f-2545-45e7-bb15-41e65095c009" ?>
+<?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+<?endif ?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Bundle Name="$(var.ProductName)" Version="!(bind.packageVersion.iSpy)" Manufacturer="DeveloperInABox" UpgradeCode="$(var.UpgradeCode)"
+    HelpUrl="https://www.ispyconnect.com/userguide.aspx"
+    Copyright="Copyright© 2020, DeveloperInABox" IconSourceFile="ispy.ico"
+    AboutUrl="http://www.ispyconnect.com/about.aspx" >
+    <Variable Name="InstallFolder" Type="string" Value="[$(var.PlatformProgramFilesFolder)]iSpy"/>
+    <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense">
+      <bal:WixStandardBootstrapperApplication
+        LogoFile="ispy.png"
+        LicenseFile="license.rtf"
+        xmlns:bal="http://schemas.microsoft.com/wix/BalExtension" SuppressOptionsUI="no"/>
+    </BootstrapperApplicationRef>
+    <Variable Name="LaunchTarget" Value="[InstallFolder]\iSpy.exe"/>
+    <Chain>
+      <PackageGroupRef Id="NetFx45Web"/>
+      <PackageGroupRef Id="WindowsInstaller45"/>
+      <RollbackBoundary />
+      <MsiPackage Id="iSpy" SourceFile="$(var.iSpySetup.TargetPath)" DisplayInternalUI="no" Compressed="yes" Vital="yes" Visible="yes">
+        <MsiProperty Name="INSTALLFOLDER" Value="[InstallFolder]" />
+        <MsiProperty Name='CONFIGFILELOCATION' Value='[WixBundleOriginalSourceFolder]' />
+      </MsiPackage>
+    </Chain>
+  </Bundle>
+  <!-- Windows Installer 4.5 -->
+  <Fragment>
+    <PackageGroup Id="WindowsInstaller45">
+      <ExePackage
+          Cache="no"
+          Compressed="no"
+          PerMachine="yes"
+          Permanent="yes"
+          Vital="yes"
+          SourceFile="..\..\redist\WindowsXP-KB942288-v3-x86.exe"
+          DownloadUrl="http://download.microsoft.com/download/2/6/1/261fca42-22c0-4f91-9451-0e0f2e08356d/WindowsXP-KB942288-v3-x86.exe"
+          InstallCondition="VersionNT=v5.1 AND NOT VersionNT64 AND VersionMsi &lt; v4.5"
+          InstallCommand="/quiet /norestart">
+        <ExitCode Behavior="forceReboot"/>
+      </ExePackage>
+      <ExePackage
+          Cache="no"
+          Compressed="no"
+          PerMachine="yes"
+          Permanent="yes"
+          Vital="yes"
+          SourceFile="..\..\redist\WindowsServer2003-KB942288-v4-x86.exe"
+          DownloadUrl="http://download.microsoft.com/download/2/6/1/261fca42-22c0-4f91-9451-0e0f2e08356d/WindowsServer2003-KB942288-v4-x86.exe"
+          InstallCondition="VersionNT=v5.2 AND NOT VersionNT64 AND VersionMsi &lt; v4.5"
+          InstallCommand="/quiet /norestart">
+        <ExitCode Behavior="forceReboot"/>
+      </ExePackage>
+      <ExePackage
+          Cache="no"
+          Compressed="no"
+          PerMachine="yes"
+          Permanent="yes"
+          Vital="yes"
+          SourceFile="..\..\redist\WindowsServer2003-KB942288-v4-x64.exe"
+          DownloadUrl="http://download.microsoft.com/download/2/6/1/261fca42-22c0-4f91-9451-0e0f2e08356d/WindowsServer2003-KB942288-v4-x64.exe"
+          InstallCondition="VersionNT=v5.2 AND VersionNT64 AND VersionMsi &lt; v4.5"
+          InstallCommand="/quiet /norestart">
+        <ExitCode Behavior="forceReboot"/>
+      </ExePackage>
+      <MsuPackage
+          Cache="no"
+          Compressed="no"
+          Permanent="yes"
+          Vital="yes"
+          KB="KB942288"
+          SourceFile="..\..\redist\Windows6.0-KB942288-v2-x86.msu"
+          DownloadUrl="http://download.microsoft.com/download/2/6/1/261fca42-22c0-4f91-9451-0e0f2e08356d/Windows6.0-KB942288-v2-x86.msu"
+          InstallCondition="VersionNT=v6.0 AND NOT VersionNT64 AND VersionMsi &lt; v4.5"/>
+      <MsuPackage
+          Cache="no"
+          Compressed="no"
+          Permanent="yes"
+          Vital="yes"
+          KB="KB942288"
+          SourceFile="..\..\redist\Windows6.0-KB942288-v2-x64.msu"
+          DownloadUrl="http://download.microsoft.com/download/2/6/1/261fca42-22c0-4f91-9451-0e0f2e08356d/Windows6.0-KB942288-v2-x64.msu"
+          InstallCondition="VersionNT=v6.0 AND VersionNT64 AND VersionMsi &lt; v4.5"/>
+    </PackageGroup>
+  </Fragment>
+</Wix>
+
