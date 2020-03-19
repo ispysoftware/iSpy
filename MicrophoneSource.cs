@@ -229,7 +229,7 @@ namespace iSpyApplication
         private void MicrophoneSourceLoad(object sender, EventArgs e)
         {
             UISync.Init(this);
-            tableLayoutPanel2.Enabled = VlcHelper.VlcInstalled;
+            tableLayoutPanel2.Enabled = VlcHelper.VLCAvailable;
             linkLabel3.Visible = lblInstallVLC.Visible = !tableLayoutPanel2.Enabled;
             cmbVLCURL.Text = MainForm.Conf.VLCURL;
             cmbVLCURL.Items.AddRange(ObjectList(MainForm.Conf.RecentVLCList));

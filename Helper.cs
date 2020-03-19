@@ -45,7 +45,7 @@ namespace iSpyApplication
 
         public static int GetSourceType(string source, int ot)
         {
-            var _vlc = VlcHelper.VlcInstalled;
+            var _vlc = VlcHelper.VLCAvailable;
             if (source == "VLC" && !_vlc)
                 source = "FFMPEG";
 

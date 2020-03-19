@@ -1308,7 +1308,6 @@ namespace iSpyApplication.Controls
             if (Micobject.settings.typeindex == 2)
             {
                 var vlc = AudioSource as VlcStream;
-                vlc?.CheckTimestamp();
             }
         }
 
@@ -1972,17 +1971,7 @@ namespace iSpyApplication.Controls
                                       {RecordingFormat = new WaveFormat(8000, 16, 1)};
                         break;
                     case 2: //VLC listener
-                        List<String> inargs = Micobject.settings.vlcargs.Split(Environment.NewLine.ToCharArray(),
-                            StringSplitOptions.RemoveEmptyEntries).
-                            ToList();
-                        //switch off video output
-                        inargs.Add(":sout=#transcode{vcodec=none}:Display");
-
-                        AudioSource = new VlcStream(Micobject, inargs.ToArray())
-                                      {
-                                          RecordingFormat = new WaveFormat(sampleRate, bitsPerSample, channels),
-                                          TimeOut = Micobject.settings.timeout
-                                      };
+                        AudioSource = new VlcStream(this);
                         break;
                     case 3: //FFMPEG listener
                         AudioSource = new MediaStream(Micobject);

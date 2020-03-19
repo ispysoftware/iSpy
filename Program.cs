@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Runtime.InteropServices;
+using System.Security.AccessControl;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
@@ -54,7 +55,7 @@ internal static class Program
 
     public static string ExecutableDirectory = "";   
     public static Mutex FfmpegMutex;
-
+    
     /// <summary>
     /// The main entry point for the application.
     /// </summary>
@@ -144,6 +145,8 @@ internal static class Program
                     Logger.LogException(ex, "startup");
                 }
             }
+
+            VlcHelper.FindVLC();
 
             bool silentstartup = false;
 

@@ -5,24 +5,16 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using Declarations;
-using Declarations.Events;
-using Declarations.Media;
-using Declarations.Players;
-using Implementation;
+using LibVLCSharp.WinForms;
 using iSpyApplication.Controls;
 using iSpyApplication.Utilities;
+using LibVLCSharp.Shared;
 
 namespace iSpyApplication
 {
     public partial class PlayerVLC : Form
     {
-        readonly IMediaPlayerFactory _mFactory;
-        readonly IDiskPlayer _mPlayer;
-        IMedia _mMedia;
         private readonly string _titleText;
-
-        private bool _needsSize = true;
         public int ObjectID = -1;
         public MainForm MF;
 
@@ -46,50 +38,107 @@ namespace iSpyApplication
          public PlayerVLC(string titleText, MainForm mf)
          {
             MF = mf;
-            InitializeComponent();
-            var arguments = new[] { "--file-caching="+MainForm.Conf.VLCFileCache };
-            _mFactory = new MediaPlayerFactory(arguments);
-            _mPlayer = _mFactory.CreatePlayer<IDiskPlayer>();
-
-            _mPlayer.Events.PlayerPositionChanged += EventsPlayerPositionChanged;
-            _mPlayer.Events.TimeChanged += EventsTimeChanged;
-            _mPlayer.Events.MediaEnded += EventsMediaEnded;
-            _mPlayer.Events.PlayerStopped += EventsPlayerStopped;
-
-            _mPlayer.WindowHandle = pnlMovie.Handle;
-            
-             if (_mPlayer.Volume>=trackBar2.Minimum && _mPlayer.Volume<=trackBar2.Maximum)
-                trackBar2.Value = _mPlayer.Volume;
-            
+            InitializeComponent();           
              RenderResources();
              _titleText = titleText;
              chkRepeatAll.Checked = MainForm.VLCRepeatAll;
 
-         }
+            try
+            {
+                videoView1.MediaPlayer = new MediaPlayer(LibVLC);
+            }
+            catch(Exception ex)
+            {
+                Logger.LogException(ex, "VLC");
+                Close();
+                return;
+            }
+            videoView1.MediaPlayer.PositionChanged += MediaPlayer_PositionChanged;
+            videoView1.MediaPlayer.TimeChanged += MediaPlayer_TimeChanged; ;
+            videoView1.MediaPlayer.EndReached += EventsMediaEnded;
+            videoView1.MediaPlayer.Stopped+= EventsPlayerStopped;
+
+        }
+
+        private void MediaPlayer_TimeChanged(object sender, MediaPlayerTimeChangedEventArgs e)
+        {
+            UISync.Execute(() => lblTime.Text = TimeSpan.FromMilliseconds(e.Time).ToString().Substring(0, 8));
+        }
+
+        private void MediaPlayer_PositionChanged(object sender, MediaPlayerPositionChangedEventArgs e)
+        {
+            var newpos = (int)(e.Position * 100);
+            if (newpos < 0)
+                newpos = 0;
+            if (newpos > 100)
+                newpos = 100;
+            UISync.Execute(() => vNav.Value = newpos);
+        }
 
         private void Player_Load(object sender, EventArgs e)
         {
             UISync.Init(this);
-            _mPlayer.MouseInputEnabled = true;
             vNav.Seek += vNav_Seek;
             Text = _titleText;
         }
 
         void vNav_Seek(object sender, float percent)
         {
-            if (!_mPlayer.IsPlaying)
+            if (!videoView1.MediaPlayer.IsPlaying)
             {
-                if (_mPlayer.PlayerWillPlay)
-                    _mPlayer.Play();
+                if (videoView1.MediaPlayer.WillPlay)
+                    videoView1.MediaPlayer.Play();
                 else
                     Play(_filename, Text);
             }
 
-            _mPlayer.Position = percent / 100;
+            videoView1.MediaPlayer.Position = percent / 100;
+        }
+
+        private LibVLC _libVLC = null;
+        private static bool _coreInitialized = false;
+        private static object _coreLock = new object();
+        private LibVLC LibVLC
+        {
+            get
+            {
+                if (_libVLC != null) return _libVLC;
+
+                if (!_coreInitialized)
+                {
+                    lock (_coreLock)
+                    {
+                        if (!_coreInitialized)
+                        {
+                            try
+                            {
+                                Core.Initialize(VlcHelper.VLCLocation);
+                                _coreInitialized = true;
+                            }
+                            catch (VLCException vlcex)
+                            {
+                                Logger.LogException(vlcex);
+                                throw new ApplicationException("VLC not found (v3). Set location in settings.");
+                            }
+                        }
+                    }
+
+
+                }
+                try
+                {
+                    _libVLC = new LibVLC();
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogException(ex, "VLC Setup");
+                    throw new ApplicationException("VLC not found (v3). Set location in settings.");
+                }
+                return _libVLC;
+            }
         }
 
         private string _filename = "";
-        private object _lock = new object();
 
         private delegate void PlayDelegate(string filename, string titleText);
         public void Play(string filename, string titleText)
@@ -103,28 +152,14 @@ namespace iSpyApplication
                     MessageBox.Show(this, LocRm.GetString("FileNotFound")+Environment.NewLine + filename);
                     return;
                 }
-                _needsSize = _filename != filename;
                 _filename = filename;
-                lock (_lock)
+                Media m = new Media(LibVLC, filename, FromType.FromPath);
+                if (!videoView1.MediaPlayer.Play(m))
                 {
-                    _mMedia = _mFactory.CreateMedia<IMediaFromFile>(filename);
-                    _mMedia.Events.DurationChanged += EventsDurationChanged;
-                    _mMedia.Events.StateChanged += EventsStateChanged;
-                    _mMedia.Events.ParsedChanged += Events_ParsedChanged;
-                    try
-                    {
-                        _mPlayer.Open(_mMedia);
-                        _mMedia.Parse(true);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.LogException(ex);
-                        MessageBox.Show(this, LocRm.GetString("CouldNotOpen")+Environment.NewLine + filename);
-                        return;
-                    }
-
-                    _mPlayer.Play();
+                    MessageBox.Show(this, LocRm.GetString("CouldNotOpen") + Environment.NewLine + filename);
+                    return;
                 }
+                
 
                 string[] parts = filename.Split('\\');
                 string fn = parts[parts.Length - 1];
@@ -137,7 +172,7 @@ namespace iSpyApplication
                         ff = vl.FileList.FirstOrDefault(p => p.Filename.EndsWith(fn));
                     }
                     vNav.IsAudio = true;
-                    pnlMovie.BackgroundImage = Properties.Resources.ispy1audio;
+                    videoView1.BackgroundImage = Properties.Resources.ispy1audio;
                 }
                 else
                 {
@@ -146,7 +181,7 @@ namespace iSpyApplication
                         ff = cw.FileList.FirstOrDefault(p => p.Filename.EndsWith(fn));
                     }
                     vNav.IsAudio = false;
-                    pnlMovie.BackgroundImage = Properties.Resources.ispy1;
+                    videoView1.BackgroundImage = Properties.Resources.ispy1;
                 }
                 
                 if (ff!=null)
@@ -169,96 +204,22 @@ namespace iSpyApplication
             lblTime.Text = "00:00:00";
         }
 
-        void EventsTimeChanged(object sender, MediaPlayerTimeChanged e)
-        {
-            UISync.Execute(() => lblTime.Text = TimeSpan.FromMilliseconds(e.NewTime).ToString().Substring(0, 8));
-        }
-
-        void EventsPlayerPositionChanged(object sender, MediaPlayerPositionChanged e)
-        {
-            var newpos = (int) (e.NewPosition*100);
-            if (newpos<0)
-                newpos = 0;
-            if (newpos>100)
-                newpos = 100;
-            UISync.Execute(() => vNav.Value = newpos);
-            if (_needsSize)
-            {
-                Size sz = _mPlayer.GetVideoSize(0);
-                if (sz.Width > 0)
-                {
-                    if (sz.Width < 320)
-                        sz.Width = 320;
-                    if (sz.Height < 240)
-                        sz.Height = 240;
-
-                    if (Width != sz.Width)
-                        UISync.Execute(() => Width = sz.Width);
-                    if (Height != sz.Height + tableLayoutPanel1.Height)
-                        UISync.Execute(() => Height = sz.Height + tableLayoutPanel1.Height);
-                    _needsSize = false;
-                }
-            }
-        }
-
-
-        void EventsStateChanged(object sender, MediaStateChange e)
-        {
-            UISync.Execute(() => label1.Text = e.NewState.ToString());
-            switch (e.NewState)
-            {
-                case MediaState.Playing:
-                    UISync.Execute(() => btnPlayPause.Text = "||");
-                    break;
-                case MediaState.Ended:
-                    if (chkRepeatAll.Checked)
-                        Go(1);
-
-                    UISync.Execute(() => btnPlayPause.Text = ">");
-                    break;
-                default:
-                    UISync.Execute(() => btnPlayPause.Text = ">");
-                    break;
-            }
-        }
-
-        void EventsDurationChanged(object sender, MediaDurationChange e)
-        {
-            //UISync.Execute(() => lblDuration.Text = TimeSpan.FromMilliseconds(e.NewDuration).ToString().Substring(0, 8));
-        }
-
-
-        void Events_ParsedChanged(object sender, MediaParseChange e)
-        {
-        }
-
         private void trackBar2_Scroll(object sender, EventArgs e)
         {
-            try
-            {
-                _mPlayer.Volume = trackBar2.Value;
-            }
-            catch{}
+            videoView1.MediaPlayer.Volume = trackBar2.Value;
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            _mPlayer.Stop();
+            
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (_mPlayer.IsPlaying)
-            {
-                _mPlayer.Pause();
-            }
+            if (videoView1.MediaPlayer.IsPlaying)
+                videoView1.MediaPlayer.Pause();
             else
-            {
-                if (_mPlayer.PlayerWillPlay)
-                    _mPlayer.Play();
-                else
-                    Play(_filename, Text);
-            }
+                videoView1.MediaPlayer.Play();
         }
 
         private class UISync
@@ -279,40 +240,12 @@ namespace iSpyApplication
 
         private void Player_FormClosing(object sender, FormClosingEventArgs e)
         {
-            lock (_lock)
-            {
-                if (_mPlayer != null)
-                {
-                    
-                    try
-                    {
-                        _mPlayer.Stop();
-                    }
-                    catch
-                    {
-                    }
-                }
-                try
-                {
-                    if (_mFactory != null)
-                        _mFactory.Dispose();
-                    if (_mMedia != null)
-                        _mMedia.Dispose();
-                    if (_mPlayer != null)
-                        _mPlayer.Dispose();
-                }
-                catch
-                {
-                    
-                }
-            }
-            if (vNav!=null)
-                vNav.ReleaseGraph();
+            
         }
 
         private void tbSpeed_Scroll(object sender, EventArgs e)
         {
-            _mPlayer.PlaybackRate = ((float) tbSpeed.Value)/10;
+            videoView1.MediaPlayer.SetRate(((float) tbSpeed.Value)/10);
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -350,7 +283,7 @@ namespace iSpyApplication
             lock (MF.flowPreview.Controls)
             {
                 var lb = (from Control c in MF.flowPreview.Controls select c as PreviewBox into pb where pb != null && pb.Selected select pb).ToList();
-
+                btnNext.Enabled = btnPrevious.Enabled = lb.Count > 1;
                 for (int i = lb.Count-1; i >-1 ; i--)
                 {
                     var pb = lb[i];
@@ -359,8 +292,8 @@ namespace iSpyApplication
                         j = i - n;
                         if (j < 0)
                         {
-                            //stop at the last movie
-                            return;
+                            j = lb.Count - 1;
+                            break;
                         }
                         if (j >= lb.Count)
                             j = 0;

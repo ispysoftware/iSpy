@@ -777,7 +777,7 @@ namespace iSpyApplication
                 c.remotecommands = GenerateRemoteCommands();
             }
 
-            bool bVlc = VlcHelper.VlcInstalled;
+            bool bVlc = VlcHelper.VLCAvailable;
             MaxOrderIndex = 0;
 
             bool bAlertVlc = false;
@@ -2877,7 +2877,7 @@ namespace iSpyApplication
             om.settings.active = false;
             om.settings.notifyondisconnect = false;
             om.settings.directoryIndex = Conf.MediaDirectories.First().ID;
-            om.settings.vlcargs = VlcHelper.VlcInstalled ? "--rtsp-caching=100" : "";
+            om.settings.vlcargs = VlcHelper.VLCAvailable ? "--rtsp-caching=100" : "";
 
             om.settings.storagemanagement = new objectsMicrophoneSettingsStoragemanagement
             {
@@ -3401,7 +3401,7 @@ namespace iSpyApplication
 
         public object AddObjectExternal(int objectTypeId, int sourceIndex, int width, int height, string name, string url)
         {
-            if (!VlcHelper.VlcInstalled && sourceIndex == 5)
+            if (!VlcHelper.VLCAvailable && sourceIndex == 5)
                 return null;
             object oret = null;
             switch (objectTypeId)

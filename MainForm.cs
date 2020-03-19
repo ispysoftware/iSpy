@@ -247,7 +247,7 @@ namespace iSpyApplication
 
         public object ContextTarget;
         //internal Player Player;
-        internal PlayerVLC PlayerVLC;
+        internal PlayerVLC _player;
         public McRemoteControlManager.RemoteControlDevice RemoteManager;
         public bool SilentStartup;
         
@@ -841,11 +841,11 @@ namespace iSpyApplication
                 Invoke(new Action(() => Play(filename,objectId,displayName)));
                 return;
             }
-            if (PlayerVLC == null)
+            if (_player == null)
             {
                 try
                 {
-                    PlayerVLC = new PlayerVLC(displayName, this);
+                    _player = new PlayerVLC(displayName, this);
                 }
                 catch (Exception ex)
                 {
@@ -856,22 +856,22 @@ namespace iSpyApplication
                     return;
                 }
 
-                PlayerVLC.Show(this);
-                PlayerVLC.Closed += PlayerClosed;
-                PlayerVLC.Activate();
-                PlayerVLC.BringToFront();
-                PlayerVLC.Owner = this;
+                _player.Show(this);
+                _player.Closed += PlayerClosed;
+                _player.Activate();
+                _player.BringToFront();
+                _player.Owner = this;
             }
 
-            PlayerVLC.ObjectID = objectId;
-            PlayerVLC.Play(filename, displayName);
+            _player.ObjectID = objectId;
+            _player.Play(filename, displayName);
 
         }
 
         private void PlayerClosed(object sender, EventArgs e)
         {
             //_player = null;
-            PlayerVLC = null;
+            _player = null;
         }
 
        
@@ -991,38 +991,17 @@ namespace iSpyApplication
                                Program.AppDataPath + @"WebServerRoot\Media\" + " in settings if it doesn't attach.");
             }
 
-            if (!VlcHelper.VlcInstalled)
+            if (!VlcHelper.VLCAvailable)
             {
                 Logger.LogWarningToFile(
                     "VLC not installed - install VLC (" + Program.Platform + ") for additional connectivity.");
                 if (Program.Platform == "x64")
                 {
-                    Logger.LogWarningToFile(
-                        "VLC64  must be unzipped so the dll files and folders including libvlc.dll and the plugins folder are in " +
-                        Program.AppPath + "VLC64\\");
                     Logger.LogWarningToFile("Download: <a href=\""+VLCx64+"\">"+VLCx64+"</a>");
                 }
                 else
                     Logger.LogWarningToFile("Download: <a href=\"" + VLCx86 + "\">" + VLCx86 + "</a>");
             }
-            else
-            {
-                Version v = VlcHelper.VlcVersion;
-                if (v.CompareTo(VlcHelper.VMin) < 0)
-                {
-                    Logger.LogWarningToFile(
-                        "Old VLC installed - update VLC (" + Program.Platform + ") for additional connectivity.");
-                }
-                else
-                {
-                    if (v.CompareTo(new Version(2, 0, 2)) == 0)
-                    {
-                        Logger.LogWarningToFile(
-                            "VLC v2.0.2 detected - there are known issues with this version of VLC (HTTP streaming is broken for a lot of cameras) - if you are having problems with VLC connectivity we recommend you install v2.0.1 ( http://download.videolan.org/pub/videolan/vlc/2.0.1/ ) or the latest (if available).");
-                    }
-                }
-            }
-
 
             _fsw = new FileSystemWatcher
                    {

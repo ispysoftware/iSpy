@@ -739,7 +739,7 @@ namespace iSpyApplication.Server
                                                 oc.settings.namevaluesettings = "use=ffmpeg,transport=RTSP";
 
                                             string svlc = "";
-                                            if (VlcHelper.VlcInstalled)
+                                            if (VlcHelper.VLCAvailable)
                                             {
                                                 svlc = ",{\"text\": \"VLC\", \"value\": \"vlc\", \"noTranslate\":true}";
                                             }

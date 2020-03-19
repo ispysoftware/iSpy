@@ -574,6 +574,7 @@ namespace iSpyApplication
             label42.Text = "ms";
             label49.Text = "ms";
             label62.Text = "s";
+            label69.Text = VlcHelper.VLCLocation;
 
             label8.Text = LocRm.GetString("MjpegReceiveTimeout");
             label47.Text = LocRm.GetString("StartupMode");
@@ -1305,6 +1306,22 @@ namespace iSpyApplication
         private void ddlStartupMode_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void label69_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click_1(object sender, EventArgs e)
+        {
+            folderBrowserDialog1.SelectedPath = MainForm.Conf.VLCLocation;
+            var dr = folderBrowserDialog1.ShowDialog(this);
+            if (dr == DialogResult.OK)
+            {
+                MainForm.Conf.VLCLocation = folderBrowserDialog1.SelectedPath;
+                label69.Text = MainForm.Conf.VLCLocation;
+            }
         }
     }
 }

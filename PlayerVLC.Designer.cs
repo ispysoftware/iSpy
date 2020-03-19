@@ -33,7 +33,6 @@ namespace iSpyApplication
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlayerVLC));
             this.lblTime = new System.Windows.Forms.Label();
-            this.pnlMovie = new System.Windows.Forms.Panel();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -50,12 +49,14 @@ namespace iSpyApplication
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.videoView1 = new LibVLCSharp.WinForms.VideoView();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.videoView1)).BeginInit();
             this.SuspendLayout();
             // 
             // lblTime
@@ -67,17 +68,6 @@ namespace iSpyApplication
             this.lblTime.Size = new System.Drawing.Size(49, 13);
             this.lblTime.TabIndex = 22;
             this.lblTime.Text = "00:00:00";
-            // 
-            // pnlMovie
-            // 
-            this.pnlMovie.BackColor = System.Drawing.Color.Black;
-            this.pnlMovie.BackgroundImage = global::iSpyApplication.Properties.Resources.ispy1;
-            this.pnlMovie.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pnlMovie.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlMovie.Location = new System.Drawing.Point(0, 24);
-            this.pnlMovie.Name = "pnlMovie";
-            this.pnlMovie.Size = new System.Drawing.Size(594, 443);
-            this.pnlMovie.TabIndex = 13;
             // 
             // errorProvider1
             // 
@@ -241,12 +231,25 @@ namespace iSpyApplication
             this.openFolderToolStripMenuItem.Text = "&Open Location";
             this.openFolderToolStripMenuItem.Click += new System.EventHandler(this.openFolderToolStripMenuItem_Click);
             // 
+            // videoView1
+            // 
+            this.videoView1.BackColor = System.Drawing.Color.Black;
+            this.videoView1.BackgroundImage = global::iSpyApplication.Properties.Resources.ispy1;
+            this.videoView1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.videoView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.videoView1.Location = new System.Drawing.Point(0, 24);
+            this.videoView1.MediaPlayer = null;
+            this.videoView1.Name = "videoView1";
+            this.videoView1.Size = new System.Drawing.Size(594, 443);
+            this.videoView1.TabIndex = 0;
+            this.videoView1.Text = "videoView1";
+            // 
             // PlayerVLC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(594, 554);
-            this.Controls.Add(this.pnlMovie);
+            this.Controls.Add(this.videoView1);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.label1);
@@ -265,6 +268,7 @@ namespace iSpyApplication
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.videoView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -273,7 +277,6 @@ namespace iSpyApplication
         #endregion
 
         private System.Windows.Forms.Label lblTime;
-        private System.Windows.Forms.Panel pnlMovie;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
@@ -290,6 +293,6 @@ namespace iSpyApplication
         private System.Windows.Forms.Button btnPrevious;
         private System.Windows.Forms.Button btnNext;
         private System.Windows.Forms.CheckBox chkRepeatAll;
-
+        private LibVLCSharp.WinForms.VideoView videoView1;
     }
 }

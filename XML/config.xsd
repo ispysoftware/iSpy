@@ -71,6 +71,7 @@
         <xs:element name="Language" type="xs:string" />
         <xs:element name="RecentVLCList" type="xs:string" />
         <xs:element name="VLCURL" type="xs:string" />
+        <xs:element name="VLCLocation" type="xs:string" default=""/>
         <xs:element name="AutoSchedule" type="xs:boolean" />
         <xs:element name="Fullscreen" type="xs:boolean" />
         <xs:element name="ShowStatus" type="xs:boolean" />

@@ -58,7 +58,7 @@ namespace iSpyApplication.Controls
             SetPanel(pnlStep1);
             ddlTransport.SelectedIndex = 0;
             ddlConnectWith.Items.Add("FFMPEG");
-            if (VlcHelper.VlcInstalled)
+            if (VlcHelper.VLCAvailable)
                 ddlConnectWith.Items.Add("VLC");
             ddlConnectWith.SelectedIndex = 0;
             BindDevices();
@@ -72,7 +72,7 @@ namespace iSpyApplication.Controls
                 ddlTransport.SelectedIndex = CameraControl.Camobject.settings.rtspmode;
 
                 string conn = CameraControl.Nv("use");
-                if (!string.IsNullOrEmpty(conn) && VlcHelper.VlcInstalled)
+                if (!string.IsNullOrEmpty(conn) && VlcHelper.VLCAvailable)
                     ddlConnectWith.SelectedItem = conn;
                 chkOverrideRTSPPort.Checked = numRTSP.Value != 0;
             }

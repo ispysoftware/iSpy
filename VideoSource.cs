@@ -6,11 +6,6 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-using Declarations;
-using Declarations.Events;
-using Declarations.Media;
-using Declarations.Players;
-using Implementation;
 using iSpyApplication.Controls;
 using iSpyApplication.Onvif;
 using iSpyApplication.Sources.Video;
@@ -24,9 +19,6 @@ namespace iSpyApplication
 {
     public partial class VideoSource : Form
     {
-        private IVideoPlayer _player;
-        private IMedia _media;
-        private MediaPlayerFactory _factory;
         public CameraWindow CameraControl;
         public string CameraLogin;
         public string CameraPassword;
@@ -180,7 +172,7 @@ namespace iSpyApplication
         private void VideoSourceLoad(object sender, EventArgs e)
         {
             UISync.Init(this);
-            tlpVLC.Enabled = VlcHelper.VlcInstalled;
+            tlpVLC.Enabled = VlcHelper.VLCAvailable;
             linkLabel3.Visible = !tlpVLC.Enabled;
             
             cmbJPEGURL.Text = MainForm.Conf.JPEGURL;
@@ -518,7 +510,6 @@ namespace iSpyApplication
             LocRm.SetString(label4, "FFMPEGHelp");
             LocRm.SetString(label42,"DesktopHelp");
             LocRm.SetString(chkMousePointer, "MousePointer");
-            LocRm.SetString(btnGetStreamSize, "GetStreamSize");
             LocRm.SetString(linkLabel5, "Help");
             LocRm.SetString(label18, "Arguments");
             LocRm.SetString(linkLabel3, "DownloadVLC");
@@ -579,7 +570,6 @@ namespace iSpyApplication
 
         private void SetupVideoSource()
         {
-            StopPlayer();
             MainForm.Conf.JPEGURL = cmbJPEGURL.Text.Trim();
             MainForm.Conf.MJPEGURL = cmbMJPEGURL.Text.Trim();
             MainForm.Conf.AVIFileName = cmbFile.Text.Trim();
@@ -692,15 +682,10 @@ namespace iSpyApplication
                     CameraControl.Camobject.settings.desktopmouse = chkMousePointer.Checked;
                 break;
                 case 5:
-                    if (!VlcHelper.VlcInstalled)
+                    if (!VlcHelper.VLCAvailable)
                     {
                         MessageBox.Show(LocRm.GetString("DownloadVLC"), LocRm.GetString("Note"));
                         return;
-                    }
-                    if (!_vlcStreamSizeSet)
-                    {
-                        CameraControl.Camobject.settings.vlcWidth = 640;
-                        CameraControl.Camobject.settings.vlcHeight = 480;
                     }
                     url = cmbVLCURL.Text.Trim();
                     if (url == string.Empty)
@@ -795,7 +780,6 @@ namespace iSpyApplication
                     CameraControl.Camobject.ptz = -5;//onvif
                     CameraControl.Camobject.settings.rtspmode = onvifWizard1.ddlTransport.SelectedIndex;
                     CameraControl.Camobject.settings.onvif.rtspport = (int)onvifWizard1.numRTSP.Value;
-                    SetVideoSize(new Size(cfg.Width, cfg.Height));
 
                     CameraControl.Camobject.settings.vlcargs = txtVLCArgs.Text.Trim();
                     break;
@@ -947,86 +931,9 @@ namespace iSpyApplication
 
         private void TestVLC()
         {
-            string url = cmbVLCURL.Text.Trim();
-            if (url == string.Empty)
-            {
-                MessageBox.Show(LocRm.GetString("Validate_SelectCamera"), LocRm.GetString("Note"));
-                return;
-            }
-
-            btnGetStreamSize.Enabled = false;
-            StopPlayer();
-            try
-            {
-                _factory = new MediaPlayerFactory();
-                _player = _factory.CreatePlayer<IVideoPlayer>();
-                _media = _factory.CreateMedia<IMedia>(url, txtVLCArgs.Text);
-                _player.Open(_media);
-                _player.Mute = true;
-                _player.Events.PlayerPositionChanged += EventsPlayerPositionChanged;
-                _player.Events.PlayerEncounteredError += EventsPlayerEncounteredError;
-                _player.CustomRenderer.SetCallback(bmp => bmp.Dispose());
-                _player.CustomRenderer.SetFormat(new BitmapFormat(100, 100, ChromaType.RV24));
-
-                _player.Play();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, LocRm.GetString("Error"));
-            }
-        }
-
-        private void EventsPlayerEncounteredError(object sender, EventArgs e)
-        {
-            _player.Events.PlayerPositionChanged -= EventsPlayerPositionChanged;
-            _player.Events.PlayerEncounteredError -= EventsPlayerEncounteredError;
-            UISync.Execute(StopPlayer);
-            MessageBox.Show("VLC Error", LocRm.GetString("Error"));
-            UISync.Execute(() => btnGetStreamSize.Enabled = true);
-        }
-
-        private void SetVideoSize(Size size)
-        {
-            CameraControl.Camobject.settings.vlcWidth = size.Width;
-            CameraControl.Camobject.settings.vlcHeight = size.Height;
-            _vlcStreamSizeSet = true;
-        }
-
-        private bool _vlcStreamSizeSet = false;
-
-        private void StopPlayer()
-        {
-            if (_player != null)
-            {
-                _player.Stop();
-                _player.Dispose();
-                _player = null;
-            }
-            if (_media!=null)
-            {
-                _media.Dispose();
-                _media = null;
-            }
-            if (_factory != null)
-            {
-                _factory.Dispose();
-                _factory = null;
-            }
 
         }
 
-        private void EventsPlayerPositionChanged(object sender, MediaPlayerPositionChanged e)
-        {
-            Size size = _player.GetVideoSize(0);
-            if (!size.IsEmpty)
-            {
-                _player.Events.PlayerPositionChanged -= EventsPlayerPositionChanged;
-                _player.Events.PlayerEncounteredError -= EventsPlayerEncounteredError;
-                UISync.Execute(() => SetVideoSize(size));
-                UISync.Execute(StopPlayer);
-                UISync.Execute(() => btnGetStreamSize.Enabled = true);
-            }
-        }
 
         #region Nested type: UISync
 

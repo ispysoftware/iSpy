@@ -1083,9 +1083,19 @@ namespace iSpyApplication.Controls
                             if (Seekable && _seeking && Camera?.VideoSource != null)
                             {
                                 //seek video bar
-                                var pc = (float)(Convert.ToDouble(_newSeek) / Convert.ToDouble(ButtonPanel.Width));
+                                float pc = 0;
+                                if (_newSeek == 0)
+                                {
+                                    var rBp = ButtonPanel;
+                                    _newSeek = e.Location.X - rBp.X;
+                                    if (_newSeek < 0.0001) _newSeek = 0.0001f;
+                                    if (_newSeek > rBp.Width)
+                                        _newSeek = rBp.Width;                                    
+                                }
+                                pc = (float)(Convert.ToDouble(_newSeek) / Convert.ToDouble(ButtonPanel.Width));
                                 var vlc = Camera.VideoSource as VlcStream;
                                 vlc?.Seek(pc);
+
                             }
                             _seeking = false;
                             _newSeek = 0;
@@ -1609,7 +1619,6 @@ namespace iSpyApplication.Controls
                                 DoCalibrate(_tickThrottle);
                             }
 
-                            CheckVLCTimeStamp();
                             CheckTimeLapse(_tickThrottle);
                         }
                         if (Helper.HasFeature(Enums.Features.Recording))
@@ -1637,15 +1646,6 @@ namespace iSpyApplication.Controls
             {
                 _requestRefresh = false;
                 Invalidate();
-            }
-        }
-
-        private void CheckVLCTimeStamp()
-        {
-            if (Camobject.settings.sourceindex == 5)
-            {
-                var vlc = Camera.VideoSource as VlcStream;
-                vlc?.CheckTimestamp();
             }
         }
 
@@ -5019,14 +5019,7 @@ namespace iSpyApplication.Controls
                 return;
             }
             var vlcStream = source as VlcStream;
-            if (vlcStream != null)
-            {
-                if (Camobject.settings.vlcWidth == -1)
-                {
-                    Camobject.settings.vlcWidth = 640;
-                    Camobject.settings.vlcHeight = 480;
-                }
-            }
+            
 
             var kinectStream = source as KinectStream;
             if (kinectStream != null)

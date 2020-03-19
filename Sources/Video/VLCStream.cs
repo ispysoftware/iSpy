@@ -7,472 +7,368 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Declarations;
-using Declarations.Events;
-using Declarations.Media;
-using Declarations.Players;
+using LibVLCSharp.Shared;
 using iSpyApplication.Controls;
 using iSpyApplication.Sources.Audio;
 using iSpyApplication.Utilities;
-using Implementation;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using File = System.IO.File;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using static iSpyApplication.Delegates;
+using System.Text;
 
 namespace iSpyApplication.Sources.Video
 {
     internal class VlcStream : VideoBase, IVideoSource, IAudioSource, ISupportsAudio
     {
-        private readonly string[] _arguments;
+        public string Source => _source;
+        private CameraWindow _camera;
 
-        IMediaPlayerFactory _mFactory;
-        IMedia _mMedia;
-        IVideoPlayer _mPlayer;
+        private bool _quit = false;
+        public bool IsRunning { get; set; }
+        public bool Seekable = false;
+        public long Time, Duration;
 
-        private ManualResetEvent _abort;
-        private ReasonToFinishPlaying _res = ReasonToFinishPlaying.DeviceLost;
+        public WaveFormat RecordingFormat
+        {
+            get
+            {
+                return new WaveFormat(22050, 16, 1);
+            }
+            set
+            {
+                //ignore
+            }
+        }
 
-        #region Audio
-        private float _gain;
+        public bool IsAudio => _isAudio;
         private bool _listening;
-
-        private bool _needsSetup = true;
-
-        public int BytePacket = 400;
-
-        private WaveFormat _recordingFormat;
-        private BufferedWaveProvider _waveProvider;
+        private bool _audioInited = false;
+        private BufferedWaveProvider _waveProvider = null;
         private SampleChannel _sampleChannel;
-        private Thread _thread;
 
-        public BufferedWaveProvider WaveOutProvider { get; set; }
-
-        #endregion
-
-        public DateTime LastFrame { get; set; } = DateTime.MinValue;
-
-        public int TimeOut = 8000;
-
-        // URL for VLCstream
-        private readonly objectsCamera _source;
-        private readonly objectsMicrophone _audiosource;
-
-        private readonly bool _modeAudio;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VlcStream"/> class.
-        /// </summary>
-        /// 
-        public VlcStream() : base(null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VlcStream"/> class.
-        /// </summary>
-        /// 
-        /// <param name="source">URL, which provides VLCstream.</param>
-        /// <param name="arguments"></param>
-        public VlcStream(CameraWindow source) : base(source)
-        {
-            _source = source.Camobject;
-            _arguments = _source.settings.vlcargs.Split(Environment.NewLine.ToCharArray(),
-                StringSplitOptions.RemoveEmptyEntries);
-            TimeOut = _source.settings.timeout;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VlcStream"/> class.
-        /// </summary>
-        /// 
-        /// <param name="source">URL, which provides VLCstream.</param>
-        /// <param name="arguments"></param>
-        public VlcStream(objectsMicrophone source, string[] arguments) : base(null)
-        {
-            _audiosource = source;
-            _arguments = arguments;
-            TimeOut = source.settings.timeout;
-            _modeAudio = true;
-        }
-
-        public IAudioSource OutAudio;
-
-        #region IVideoSource Members
-
-        /// <summary>
-        /// New frame event.
-        /// </summary>
-        /// 
-        /// <remarks><para>Notifies clients about new available frame from video source.</para>
-        /// 
-        /// <para><note>Since video source may have multiple clients, each client is responsible for
-        /// making a copy (cloning) of the passed video frame, because the video source disposes its
-        /// own original copy after notifying of clients.</note></para>
-        /// </remarks>
-        /// 
         public event NewFrameEventHandler NewFrame;
-
-        /// <summary>
-        /// Video playing finished event.
-        /// </summary>
-        /// 
-        /// <remarks><para>This event is used to notify clients that the video playing has finished.</para>
-        /// </remarks>
-        /// 
+        public event ErrorHandler ErrorHandler;
         public event PlayingFinishedEventHandler PlayingFinished;
+        public event DataAvailableEventHandler DataAvailable;
+        public event AudioFinishedEventHandler AudioFinished;
+        public event LevelChangedEventHandler LevelChanged;
+        public event HasAudioStreamEventHandler HasAudioStream;
 
-        /// <summary>
-        /// Video source.
-        /// </summary>
-        /// 
-        /// <remarks>URL, which provides VLCstream.</remarks>
-        /// 
-        public string Source
+        private string _source;
+        private int _timeoutMilliSeconds;
+        private int _connectMilliSeconds = 10000;
+        private bool _ignoreAudio;
+        private bool _disposed;
+        private bool _isAudio;
+        private List<string> _options;
+        private Size _size;
+        private GCHandle? _imageData = null;
+        private MediaPlayer _mediaPlayer = null;
+        private bool _connecting = false;
+        private IntPtr _formatPtr = IntPtr.Zero;
+
+        private LibVLC _libVLC = null;
+        private bool _failedLoad = false;
+        private static bool _coreInitialized = false;
+        private static object _coreLock = new object();
+        private LibVLC LibVLC
         {
             get
             {
-                if (_modeAudio)
-                    return _audiosource.settings.sourcename;
-                return _cw.Source;
-            }
-        }
+                if (_libVLC != null) return _libVLC;
 
-        /// <summary>
-        /// State of the video source.
-        /// </summary>
-        /// 
-        /// <remarks>Current state of video source object - running or not.</remarks>
-        /// 
-        public bool IsRunning
-        {
-            get
-            {
-                if (_thread == null)
-                    return false;
-
-                try
+                if (!_coreInitialized)
                 {
-                    return !_thread.Join(TimeSpan.Zero);
-                }
-                catch
-                {
-                    return true;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Start video source.
-        /// </summary>
-        /// 
-        /// <remarks>Starts video source and return execution to caller. Video source
-        /// object creates background thread and notifies about new frames with the
-        /// help of <see cref="NewFrame"/> event.</remarks>
-        /// 
-        /// <exception cref="ArgumentException">Video source is not specified.</exception>
-        /// 
-        public void Start()
-        {
-            if (!VlcHelper.VlcInstalled)
-                return;
-
-            if (IsRunning) return;
-
-            _res = ReasonToFinishPlaying.DeviceLost;
-
-            // create and start new thread
-
-            _thread = new Thread(WorkerThread) { Name = Source, IsBackground = true };
-            _thread.SetApartmentState(ApartmentState.MTA);
-            _thread.Start();
-        }
-
-
-        private void WorkerThread()
-        {
-            bool file = false;
-            if (string.IsNullOrEmpty(Source))
-            {
-                Logger.LogError("Source not found", "VLC");
-                _res = ReasonToFinishPlaying.VideoSourceError;
-                PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
-                AudioFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
-                return;
-            }
-            try
-            {
-                if (File.Exists(Source))
-                {
-                    file = true;
-                }
-            }
-            catch
-            {
-                // ignored
-            }
-
-            if (_mFactory == null)
-            {
-                var args = new List<string>
+                    lock (_coreLock)
                     {
-                        "-I",
-                        "dumy",
-                        "--ignore-config",
-                        "--no-osd",
-                        "--disable-screensaver",
-                        "--plugin-path=./plugins"
-                    };
-                if (file)
-                    args.Add("--file-caching=3000");
+                        if (!_coreInitialized)
+                        {
+                            try
+                            {
+                                Core.Initialize(VlcHelper.VLCLocation);
+                                _coreInitialized = true;
+                            }
+                            catch (VLCException vlcex)
+                            {
+                                Logger.LogException(vlcex);
+                                _failedLoad = true;
+                                throw new ApplicationException("VLC not found (v3). Set location in settings.");
+                            }
+                        }
+                    }
+
+
+                }
                 try
                 {
-                    var l2 = args.ToList();
-                    l2.AddRange(_arguments);
-
-                    l2 = l2.Distinct().ToList();
-                    _mFactory = new MediaPlayerFactory(l2.ToArray());
+                    _libVLC = new LibVLC(new string[]
+                    {
+                    "--ignore-config",
+                    "--no-osd"
+                    });
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogException(ex, "VLC Stream");
-                    Logger.LogMessage("VLC arguments are: " + string.Join(",", args.ToArray()), "VLC Stream");
-                    Logger.LogMessage("Using default VLC configuration.", "VLC Stream");
-                    return;
+                    Logger.LogException(ex, "VLC Setup");
+                    _failedLoad = true;
+                    throw new ApplicationException("VLC not found (v3). Set location in settings.");
                 }
-                GC.KeepAlive(_mFactory);
+                //_libVLC.Log += _libVLC_Log;
+                //GC.KeepAlive(_libVLC);
+                return _libVLC;
             }
+        }
 
-            var vss = Source;
-            if (!_modeAudio)
-                vss = Tokenise(vss);
+        private static void _libVLC_Log(object sender, LogEventArgs e)
+        {
+            Debug.WriteLine("vlc: " + e.Message);
+        }
 
-            _mMedia = file ? _mFactory.CreateMedia<IMediaFromFile>(vss) : _mFactory.CreateMedia<IMedia>(vss);
+        private MediaPlayer.LibVLCAudioPlayCb _processAudio;
+        private MediaPlayer.LibVLCAudioSetupCb _audioSetup;
+        private MediaPlayer.LibVLCAudioCleanupCb _cleanupAudio;
+        private MediaPlayer.LibVLCAudioDrainCb _drainAudio;
+        private MediaPlayer.LibVLCAudioFlushCb _flushAudio;
+        private MediaPlayer.LibVLCAudioPauseCb _pauseAudio;
+        private MediaPlayer.LibVLCAudioResumeCb _resumeAudio;
 
-            _mMedia.Events.DurationChanged += EventsDurationChanged;
-            _mMedia.Events.StateChanged += EventsStateChanged;
+        private MediaPlayer.LibVLCVideoFormatCb _videoFormat;
+        private MediaPlayer.LibVLCVideoLockCb _lockCB;
+        private MediaPlayer.LibVLCVideoUnlockCb _unlockCB;
+        private MediaPlayer.LibVLCVideoDisplayCb _displayCB;
+        private MediaPlayer.LibVLCVideoCleanupCb _cleanupVideoCB;
+        
+        private DateTime _lastFrame = DateTime.UtcNow;
+        private ReasonToFinishPlaying _res = ReasonToFinishPlaying.DeviceLost;
 
-            if (_mPlayer != null)
+        public VlcStream(CameraWindow source) : base(source)
+        {
+            _camera = source;
+            _source = source.Camobject.settings.videosourcestring.Trim();
+            _timeoutMilliSeconds = Math.Max(5000, source.Camobject.settings.timeout);
+            _connectMilliSeconds = Math.Max(_timeoutMilliSeconds, 15000);
+            _ignoreAudio = source.Camobject.settings.ignoreaudio;
+            _options = source.Camobject.settings.vlcargs.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            if (source.Camobject.settings.resize)
             {
-                try
+                if (source.Camobject.settings.resizeWidth > 0 && source.Camobject.settings.resizeHeight > 0)
                 {
-                    _mPlayer?.Dispose();
-                }
-                catch
-                {
-                    // ignored
-                }
-                _mPlayer = null;
-            }
-
-
-            _mPlayer = _mFactory.CreatePlayer<IVideoPlayer>();
-            _mPlayer.Events.TimeChanged += EventsTimeChanged;
-
-            var fc = new Func<SoundFormat, SoundFormat>(SoundFormatCallback);
-            _mPlayer.CustomAudioRenderer.SetFormatCallback(fc);
-            var ac = new AudioCallbacks { SoundCallback = SoundCallback };
-
-            _mPlayer.CustomAudioRenderer.SetCallbacks(ac);
-            _mPlayer.CustomAudioRenderer.SetExceptionHandler(Handler);
-
-            if (!_modeAudio)
-            {
-                _mPlayer.CustomRenderer.SetCallback(FrameCallback);
-                _mPlayer.CustomRenderer.SetExceptionHandler(Handler);
-            }
-            GC.KeepAlive(_mPlayer);
-
-            _needsSetup = true;
-            if (!_modeAudio)
-                _mPlayer.CustomRenderer.SetFormat(new BitmapFormat(_source.settings.vlcWidth, _source.settings.vlcHeight, ChromaType.RV32));
-
-            _mPlayer.Open(_mMedia);
-            _mMedia.Parse(true);
-
-            _mPlayer.Delay = 0;
-
-            Duration = Time = 0;
-            LastFrame = DateTime.MinValue;
-
-
-            //check if file source (isseekable in _mPlayer is not reliable)
-            Seekable = false;
-            try
-            {
-                var p = Path.GetFullPath(_mMedia.Input);
-                Seekable = !string.IsNullOrEmpty(p);
-            }
-            catch (Exception)
-            {
-                Seekable = false;
-            }
-
-            _videoQueue = new ConcurrentQueue<Bitmap>();
-            _audioQueue = new ConcurrentQueue<byte[]>();
-
-
-            _mPlayer.Play();
-            _abort = new ManualResetEvent(false);
-            EventManager();
-
-            if (Seekable)
-            {
-                PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(ReasonToFinishPlaying.StoppedByUser));
-                AudioFinished?.Invoke(this, new PlayingFinishedEventArgs(ReasonToFinishPlaying.StoppedByUser));
-            }
-            else
-            {
-                PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
-                AudioFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
-            }
-
-            DisposePlayer();
-            _abort.Close();
-        }
-
-        void DisposePlayer()
-        {
-            try
-            {
-                if (_sampleChannel != null)
-                {
-                    _sampleChannel.PreVolumeMeter -= SampleChannelPreVolumeMeter;
-                    _sampleChannel = null;
-                }
-
-                _mMedia.Events.DurationChanged -= EventsDurationChanged;
-                _mMedia.Events.StateChanged -= EventsStateChanged;
-
-                _mPlayer.Stop();
-
-                _mMedia.Dispose();
-                _mMedia = null;
-
-                if (_waveProvider?.BufferedBytes > 0)
-                {
-                    try
-                    {
-                        _waveProvider?.ClearBuffer();
-                    }
-                    catch
-                    {
-                        // ignored
-                    }
+                    _options.Add(":canvas-width=" + source.Camobject.settings.resizeWidth);
+                    _options.Add(":canvas-height=" + source.Camobject.settings.resizeHeight);
                 }
             }
-            catch (Exception ex)
-            {
-                Logger.LogException(ex, "VLC");
-            }
-            _waveProvider = null;
-
-            Listening = false;
         }
 
-        static void Handler(Exception ex)
+        public VlcStream(VolumeLevel source) : base(null)
         {
-            Logger.LogException(ex, "VLC Stream");
-
-        }
-
-        void EventsStateChanged(object sender, MediaStateChange e)
-        {
-            switch (e.NewState)
-            {
-                case MediaState.Ended:
-                case MediaState.Stopped:
-                case MediaState.Error:
-                    _abort?.Set();
-                    break;
-            }
-
-        }
-
-        public void CheckTimestamp()
-        {
-            //some feeds keep returning frames even when the connection is lost
-            //this detects that by comparing timestamps from the eventstimechanged event
-            //and signals an error if more than 8 seconds ago
-            if (LastFrame > DateTime.MinValue && (Helper.Now - LastFrame).TotalMilliseconds > TimeOut)
-            {
-                _res = ReasonToFinishPlaying.DeviceLost;
-                _abort?.Set();
-            }
-        }
-
-        /// <summary>
-        /// Stop video source.
-        /// </summary>
-        /// 
-        public void Stop()
-        {
-            if (IsRunning)
-            {
-                _res = ReasonToFinishPlaying.StoppedByUser;
-                _abort?.Set();
-            }
-            else
-            {
-                _res = ReasonToFinishPlaying.StoppedByUser;
-                PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
-            }
+            _source = source.Micobject.settings.sourcename;
+            _timeoutMilliSeconds = Math.Max(5000, source.Micobject.settings.timeout);
+            _connectMilliSeconds = Math.Max(_timeoutMilliSeconds, 10000);
+            _options = source.Micobject.settings.vlcargs.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            _isAudio = true;
         }
 
         public void Restart()
         {
-            if (!IsRunning) return;
+            Debug.WriteLine("RESTART");
             _res = ReasonToFinishPlaying.Restart;
-            _abort?.Set();
-        }
-
-
-        public bool Seekable;
-
-        public long Time, Duration;
-
-        void EventsDurationChanged(object sender, MediaDurationChange e)
-        {
-            Duration = e.NewDuration;
-        }
-
-
-        void EventsTimeChanged(object sender, MediaPlayerTimeChanged e)
-        {
-            Time = e.NewTime;
-            if (LastFrame == DateTime.MinValue && !_modeAudio)
+            if (_mediaPlayer != null)
             {
-                var sz = _mPlayer.GetVideoSize(0);
-                _source.settings.vlcWidth = sz.Width;
-                _source.settings.vlcHeight = sz.Height;
-            }
-            LastFrame = Helper.Now;
-
-        }
-
-        #region Audio Stuff
-        public event DataAvailableEventHandler DataAvailable;
-        public event LevelChangedEventHandler LevelChanged;
-        public event AudioFinishedEventHandler AudioFinished;
-        public event HasAudioStreamEventHandler HasAudioStream;
-
-        public float Gain
-        {
-            get { return _gain; }
-            set
-            {
-                _gain = value;
-                if (_sampleChannel != null)
+                if (!_mediaPlayer.IsPlaying)
                 {
-                    _sampleChannel.Volume = value;
+                    _res = ReasonToFinishPlaying.DeviceLost;
+                    Start();
+                    return;
+                }
+                _commands.Enqueue("stop");
+            }
+            else
+                Start();
+        }
+
+        public void Seek(float pc)
+        {
+            if (_mediaPlayer != null && _mediaPlayer.IsSeekable)
+            {
+                _mediaPlayer.Position = pc;
+            }
+        }
+        public void Start()
+        {
+            Debug.WriteLine("START");
+            if (IsRunning)
+                return;
+            IsRunning = true;
+            try
+            {
+                if (_failedLoad || string.IsNullOrEmpty(VlcHelper.VLCLocation))
+                {
+                    throw new ApplicationException("VLC not found. Set location in settings.");
+                }
+                _quit = false;
+                _commands.Clear();
+                
+                
+
+                Task.Run(async () => {
+                    while (!_quit)
+                    {
+                        string cmd;
+                        if (_commands.TryDequeue(out cmd))
+                        {
+                            switch (cmd)
+                            {
+                                case "init":
+                                    try
+                                    {
+                                        Init();
+                                    }
+                                    catch (ApplicationException ex)
+                                    {
+                                        Logger.LogException(ex, "VLC");
+                                        _res = ReasonToFinishPlaying.VideoSourceError;
+                                        _quit = true;
+                                    }
+                                    break;
+                                case "stop":
+                                    if (_mediaPlayer != null && _mediaPlayer.IsPlaying)
+                                    {
+                                        _mediaPlayer.Stop();
+                                    }
+                                    else
+                                        _quit = true;
+
+                                    break;
+                            }
+                        }
+                        await Task.Delay(500);
+                    }
+                    Cleanup();
+                });
+                _commands.Enqueue("init");
+                _lastFrame = DateTime.UtcNow;
+
+                _connecting = true;
+
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex, "VLCStream");
+
+                ErrorHandler?.Invoke("Invalid Source (" + Source + ")");
+                _connecting = false;
+                IsRunning = false;
+                _quit = false;
+                _res = ReasonToFinishPlaying.VideoSourceError;
+                PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
+                AudioFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
+            }
+        }
+
+
+        public void Stop()
+        {
+            Debug.WriteLine("STOP");
+            _res = ReasonToFinishPlaying.StoppedByUser;
+            _commands.Enqueue("stop");
+        }
+
+        public void Tick()
+        {
+            if (IsRunning && !_quit)
+            {
+                var ms = _connecting ? _connectMilliSeconds : _timeoutMilliSeconds;
+                if ((DateTime.UtcNow - _lastFrame).TotalMilliseconds > ms)
+                {
+                    Debug.WriteLine("TIMEOUT");
+                    _lastFrame = DateTime.MaxValue;
+                    Stop();
+                    _res = ReasonToFinishPlaying.DeviceLost;
                 }
             }
         }
+
+        #region Vlc audio callbacks
+        private void FlushAudio(IntPtr data, long pts) { }
+        private void CleanupAudio(IntPtr opaque) { }
+        private void ResumeAudio(IntPtr data, long pts) { }
+        private void PauseAudio(IntPtr data, long pts) { }
+        private void DrainAudio(IntPtr data) { }
+
+        private int AudioSetup(ref IntPtr opaque, ref IntPtr format, ref uint rate, ref uint channels)
+        {
+            Debug.WriteLine("AUDIO SETUP");
+            channels = 1;
+            rate = (uint)22050;
+            //Task.Run(EmitAudio);
+
+            //read format
+            //byte[] fmt = new byte[4];
+            //Marshal.Copy(format, fmt, 0, 4);
+            //var str = Encoding.ASCII.GetString(fmt);
+            //var audioFormat = Encoding.ASCII.GetBytes("S16N");
+            //_formatPtr = Marshal.AllocHGlobal(audioFormat.Length);
+            //Marshal.Copy(audioFormat, 0, _formatPtr, 4);
+            //format = _formatPtr;
+            return 0;
+
+        }
+        private void ProcessAudio(IntPtr data, IntPtr samples, uint count, long pts)
+        {
+            if (!IsRunning || _ignoreAudio || _quit) return;
+            _lastFrame = DateTime.UtcNow;
+            _connecting = false;
+            var da = DataAvailable;
+            int bytes = (int)count * 2;//(16 bit, 1 channel)
+
+            if (HasAudioStream != null)
+            {
+                HasAudioStream?.Invoke(this, EventArgs.Empty);
+                HasAudioStream = null;
+            }
+
+            if (da != null)
+            {
+                var buf = new byte[bytes];
+                Marshal.Copy(samples, buf, 0, bytes);
+
+                if (!_audioInited)
+                {
+                    _audioInited = true;
+                    _waveProvider = new BufferedWaveProvider(RecordingFormat)
+                    {
+                        DiscardOnBufferOverflow = true,
+                        BufferDuration = TimeSpan.FromMilliseconds(200)
+                    };
+                    _sampleChannel = new SampleChannel(_waveProvider);
+
+                    _sampleChannel.PreVolumeMeter += SampleChannelPreVolumeMeter;
+                }
+
+                _waveProvider.AddSamples(buf, 0, bytes);
+
+                var sampleBuffer = new float[bytes];
+                var read = _sampleChannel.Read(sampleBuffer, 0, bytes);
+
+                da(this, new DataAvailableEventArgs(buf, bytes));
+
+                if (Listening) WaveOutProvider?.AddSamples(buf, 0, bytes);
+            }
+        }
+
+        public BufferedWaveProvider WaveOutProvider { get; set; }
 
         public bool Listening
         {
             get
             {
-                return IsRunning && _listening;
+                if (IsRunning && _listening)
+                    return true;
+                return false;
             }
             set
             {
@@ -488,209 +384,275 @@ namespace iSpyApplication.Sources.Video
                     WaveOutProvider = null;
                 }
 
-
                 if (value)
-                {
-                    WaveOutProvider = new BufferedWaveProvider(RecordingFormat) { DiscardOnBufferOverflow = true, BufferDuration = TimeSpan.FromMilliseconds(500) };
-                }
-
+                    WaveOutProvider = new BufferedWaveProvider(RecordingFormat)
+                    {
+                        DiscardOnBufferOverflow = true,
+                        BufferDuration =
+                                              TimeSpan.FromMilliseconds(500)
+                    };
                 _listening = value;
             }
         }
 
-        public WaveFormat RecordingFormat
+        
+        #endregion
+
+        #region Vlc video callbacks
+        private void DisplayVideo(IntPtr userdata, IntPtr picture)
         {
-            get { return _recordingFormat; }
-            set
+            if (!IsRunning || _quit) return;
+            _lastFrame = DateTime.UtcNow;
+            _connecting = false;
+            if (ShouldEmitFrame)
             {
-                _recordingFormat = value;
-            }
-        }
-
-        private int _realChannels;
-        private SoundFormat SoundFormatCallback(SoundFormat sf)
-        {
-            if (!_needsSetup) return sf;
-            _needsSetup = false;
-
-            int chan = _realChannels = sf.Channels;
-            if (chan > 1)
-                chan = 2;//downmix
-            _recordingFormat = new WaveFormat(sf.Rate, 16, chan);
-            _waveProvider = new BufferedWaveProvider(RecordingFormat);
-            _sampleChannel = new SampleChannel(_waveProvider);
-            _sampleChannel.PreVolumeMeter += SampleChannelPreVolumeMeter;
-
-            if (HasAudioStream == null) return sf;
-            HasAudioStream?.Invoke(this, EventArgs.Empty);
-            HasAudioStream = null;
-
-            return sf;
-        }
-
-        void SampleChannelPreVolumeMeter(object sender, StreamVolumeEventArgs e)
-        {
-            var lc = LevelChanged;
-            lc?.Invoke(this, new LevelChangedEventArgs(e.MaxSampleValues));
-        }
-
-        private void SoundCallback(Sound soundData)
-        {
-            var da = DataAvailable;
-            if (da == null || _needsSetup) return;
-
-            try
-            {
-                var data = new byte[soundData.Count];
-                Marshal.Copy(soundData.SamplesData, data, 0, (int)soundData.Count);
-
-                if (_realChannels > 2)
+                var l = _size.Width * _size.Height * 4;
+                GC.AddMemoryPressure(l);
+                using (var mat = new Bitmap(_size.Width, _size.Height, _size.Width*4,
+                                    PixelFormat.Format32bppArgb,userdata))
                 {
-                    //resample audio to 2 channels
-                    data = ToStereo(data, _realChannels);
+                    var nfe = new NewFrameEventArgs(mat);
+                    NewFrame.Invoke(this, nfe);
                 }
-
-                _audioQueue.Enqueue(data);
-
-            }
-            catch (NullReferenceException)
-            {
-                //DataAvailable can be removed at any time
-            }
-            catch (Exception ex)
-            {
-                Logger.LogException(ex, "VLC Audio");
-            }
-        }
-
-        private static byte[] ToStereo(byte[] input, int fromChannels)
-        {
-            double ratio = fromChannels / 2d;
-            var newLen = Convert.ToInt32(input.Length / ratio);
-            var output = new byte[newLen];
-            int outputIndex = 0;
-            for (var n = 0; n < input.Length; n += (fromChannels * 2))
-            {
-                // copy in the first 16 bit sample
-                output[outputIndex++] = input[n];
-                output[outputIndex++] = input[n + 1];
-                output[outputIndex++] = input[n + 2];
-                output[outputIndex++] = input[n + 3];
-            }
-            return output;
-        }
-        #endregion
-
-        private void FrameCallback(Bitmap frame)
-        {
-            var nf = NewFrame;
-            if (nf == null || _abort.WaitOne(0) || !ShouldEmitFrame)
-            {
-                frame.Dispose();
-                return;
-            }
-            _videoQueue.Enqueue((Bitmap)frame.Clone());
-        }
-
-        #endregion
-
-        public void Seek(float percentage)
-        {
-            if (_mPlayer != null && _mPlayer.IsSeekable)
-            {
-                _mPlayer.Position = percentage;
-            }
-        }
-
-
-
-        private ConcurrentQueue<Bitmap> _videoQueue;
-        private ConcurrentQueue<byte[]> _audioQueue;
-
-        private void EventManager()
-        {
-            Bitmap frame;
-            while (!_abort.WaitOne(5) && !MainForm.ShuttingDown)
-            {
-                try
+                GC.RemoveMemoryPressure(l);
+                if (Seekable)
                 {
-                    var da = DataAvailable;
-                    var nf = NewFrame;
+                    Time = _mediaPlayer.Time;
+                    Duration = _mediaPlayer.Length;
+                }
+            }
+        }
+        private IntPtr LockVideo(IntPtr userdata, IntPtr planes)
+        {
+            Marshal.WriteIntPtr(planes, userdata);
+            return userdata;
+        }
 
-                    if (_videoQueue.TryDequeue(out frame))
+        private void UnlockVideo(IntPtr opaque, IntPtr picture, IntPtr planes)
+        {
+        }
+
+        private void CleanupVideo(ref IntPtr opaque)
+        {
+
+        }
+
+        private uint GetAlignedDimension(uint dimension, uint mod)
+        {
+            var modResult = dimension % mod;
+            if (modResult == 0)
+            {
+                return dimension;
+            }
+
+            return dimension + mod - (dimension % mod);
+        }
+        /// <summary>
+        /// Converts a 4CC string representation to its UInt32 equivalent
+        /// </summary>
+        /// <param name="fourCCString">The 4CC string</param>
+        /// <returns>The UInt32 representation of the 4cc</returns>
+        static void ToFourCC(string fourCCString, IntPtr destination)
+        {
+            if (fourCCString.Length != 4)
+            {
+                throw new ArgumentException("4CC codes must be 4 characters long", nameof(fourCCString));
+            }
+
+            var bytes = Encoding.ASCII.GetBytes(fourCCString);
+
+            for (var i = 0; i < 4; i++)
+            {
+                Marshal.WriteByte(destination, i, bytes[i]);
+            }
+        }
+
+        /// <summary>
+        /// Called by vlc when the video format is needed. This method allocats the picture buffers for vlc and tells it to set the chroma to RV32
+        /// </summary>
+        /// <param name="userdata">The user data that will be given to the <see cref="LockVideo"/> callback. It contains the pointer to the buffer</param>
+        /// <param name="chroma">The chroma</param>
+        /// <param name="width">The visible width</param>
+        /// <param name="height">The visible height</param>
+        /// <param name="pitches">The buffer width</param>
+        /// <param name="lines">The buffer height</param>
+        /// <returns>The number of buffers allocated</returns>
+        private uint VideoFormat(ref IntPtr userdata, IntPtr chroma, ref uint width, ref uint height, ref uint pitches, ref uint lines)
+        {
+            Debug.WriteLine("VideoFormat");
+            ToFourCC("RV32", chroma);
+
+            //Correct video width and height according to TrackInfo
+            _size = new Size((int)width, (int)height);
+            var md = _mediaPlayer.Media;
+            foreach (MediaTrack track in md.Tracks)
+            {
+                if (track.TrackType == TrackType.Video)
+                {
+                    var trackInfo = track.Data;
+                    if (trackInfo.Video.Width > 0 && trackInfo.Video.Height > 0)
                     {
-                        if (frame != null)
+                        width = trackInfo.Video.Width;
+                        height = trackInfo.Video.Height;
+                        _size = new Size((int)width, (int)height);
+                        if (trackInfo.Video.SarDen != 0)
                         {
-                            using (var b = (Bitmap)frame.Clone())
-                            {
-                                //new frame
-                                nf?.Invoke(this, new NewFrameEventArgs(b));
-                            }
+                            width = width * trackInfo.Video.SarNum / trackInfo.Video.SarDen;
                         }
                     }
 
-
-                    byte[] audio;
-                    if (!_audioQueue.TryDequeue(out audio)) continue;
-                    da?.Invoke(this, new DataAvailableEventArgs(audio));
-
-                    var sampleBuffer = new float[audio.Length];
-                    _sampleChannel.Read(sampleBuffer, 0, audio.Length);
-
-                    _waveProvider.AddSamples(audio, 0, audio.Length);
-
-                    if (WaveOutProvider != null && Listening)
-                    {
-                        WaveOutProvider.AddSamples(audio, 0, audio.Length);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogException(ex, "VLC");
+                    break;
                 }
             }
-            try
-            {
-                while (_videoQueue != null && _videoQueue.TryDequeue(out frame))
-                {
-                    frame?.Dispose();
-                }
-            }
-            catch
-            {
-                // ignored
-            }
+
+            pitches = this.GetAlignedDimension((uint)(width * 32) / 8, 32);
+            lines = this.GetAlignedDimension(height, 32);
+
+            var b = new byte[width * height * 32];
+            if (_imageData != null)
+                _imageData?.Free();
+            _imageData = GCHandle.Alloc(b, GCHandleType.Pinned);
+            userdata = ((GCHandle)_imageData).AddrOfPinnedObject();
+            return 1;
         }
-
-
-        private bool _disposed;
-        // Public implementation of Dispose pattern callable by consumers. 
+        #endregion
         public void Dispose()
         {
             Dispose(true);
         }
 
-        // Protected implementation of Dispose pattern. 
         protected virtual void Dispose(bool disposing)
         {
+            Debug.WriteLine("DISPOSE");
             if (_disposed)
                 return;
 
             if (disposing)
             {
-                try
-                {
-                    _mFactory?.Dispose();
-                }
-                catch
-                {
-                    // ignored
-                }
+                _mediaPlayer?.Dispose();
+                _libVLC?.Dispose();
+                _imageData?.Free();
             }
 
             // Free any unmanaged objects here. 
             //
             _disposed = true;
+        }
+
+        //VLC Threading
+        private ConcurrentQueue<string> _commands = new ConcurrentQueue<string>();
+
+
+        private void Init()
+        {
+            _mediaPlayer?.Dispose();
+
+            _videoFormat = VideoFormat;
+            _lockCB = LockVideo;
+            _unlockCB = UnlockVideo;
+            _displayCB = DisplayVideo;
+            _cleanupVideoCB = CleanupVideo;
+
+            _audioSetup = AudioSetup;
+            _processAudio = ProcessAudio;
+            _cleanupAudio = CleanupAudio;
+            _pauseAudio = PauseAudio;
+            _resumeAudio = ResumeAudio;
+            _flushAudio = FlushAudio;
+            _drainAudio = DrainAudio;
+            string overrideURL = null;
+
+            if (_camera != null)
+            {
+                switch (_camera.Camobject.settings.sourceindex)
+                {
+                    case 9:
+                        var od = _camera.ONVIFDevice;
+                        if (od != null)
+                        {
+                            var ep = od.StreamEndpoint;
+                            if (ep != null)
+                            {
+                                var u = ep.Uri.Uri;
+                                overrideURL = u;
+                            }
+                        }
+                        break;
+                }
+            }
+
+            FromType ftype = FromType.FromLocation;
+            Seekable = false;
+            try
+            {
+                var p = Path.GetFullPath(overrideURL ?? Source);
+                Seekable = !string.IsNullOrEmpty(p);
+                if (Seekable)
+                    ftype = FromType.FromPath;
+            }
+            catch (Exception)
+            {
+                Seekable = false;
+            }
+            using (var media = new Media(LibVLC, overrideURL ?? Source, ftype))
+            {
+
+                
+                Duration = Time = 0;
+
+                foreach (var opt in _options)
+                {
+                    media.AddOption(opt);
+                }
+
+                _mediaPlayer = new MediaPlayer(media);
+                if (!_isAudio)
+                {
+                    _mediaPlayer.SetVideoFormatCallbacks(_videoFormat, _cleanupVideoCB);
+                    _mediaPlayer.SetVideoCallbacks(_lockCB, _unlockCB, _displayCB);
+                }
+                if (!_ignoreAudio)
+                {
+                    _mediaPlayer.SetAudioFormatCallback(_audioSetup, _cleanupAudio);
+                    _mediaPlayer.SetAudioCallbacks(_processAudio, _pauseAudio, _resumeAudio, _flushAudio, _drainAudio);
+                }
+
+                _mediaPlayer.EncounteredError += (sender, e) =>
+                {
+                    ErrorHandler?.Invoke("VLC Error");
+                    _res = ReasonToFinishPlaying.DeviceLost;
+                    _quit = true;
+                };
+
+                _mediaPlayer.EndReached += (sender, e) =>
+                {
+                    _res = ReasonToFinishPlaying.DeviceLost;
+                    _quit = true;
+                };
+
+                _mediaPlayer.Stopped += (sender, e) =>
+                {
+                    _quit = true;
+                };
+            }
+            _mediaPlayer.Play();
+        }
+
+        private void Cleanup()
+        {
+            Debug.WriteLine("CLEANUP");
+            _connecting = false;
+            IsRunning = false;
+            _quit = false;
+
+            PlayingFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
+            AudioFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
+
+        }
+
+        private void SampleChannelPreVolumeMeter(object sender, StreamVolumeEventArgs e)
+        {
+            LevelChanged?.Invoke(this, new LevelChangedEventArgs(e.MaxSampleValues));
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Net.Mail;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Collections.Concurrent;
 
 namespace iSpyApplication
 {
@@ -46,6 +47,15 @@ namespace iSpyApplication
 
             return resultStringBuilder.ToString();
 
+        }
+
+        public static void Clear<T>(this ConcurrentQueue<T> queue)
+        {
+            T item;
+            while (queue.TryDequeue(out item))
+            {
+                // do nothing
+            }
         }
 
         public static Uri SetPort(this Uri uri, int newPort)

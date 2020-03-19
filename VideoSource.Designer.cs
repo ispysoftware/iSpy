@@ -84,7 +84,6 @@ namespace iSpyApplication
             this.flowLayoutPanel11 = new System.Windows.Forms.FlowLayoutPanel();
             this.cmbVLCURL = new System.Windows.Forms.ComboBox();
             this.button6 = new System.Windows.Forms.Button();
-            this.btnGetStreamSize = new System.Windows.Forms.Button();
             this.linkLabel5 = new System.Windows.Forms.LinkLabel();
             this.label16 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
@@ -674,7 +673,7 @@ namespace iSpyApplication
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(6);
-            this.tabPage6.Size = new System.Drawing.Size(192, 74);
+            this.tabPage6.Size = new System.Drawing.Size(725, 288);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "VLC (H264)";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -686,7 +685,7 @@ namespace iSpyApplication
             this.flowLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowLayoutPanel12.Location = new System.Drawing.Point(6, 233);
             this.flowLayoutPanel12.Name = "flowLayoutPanel12";
-            this.flowLayoutPanel12.Size = new System.Drawing.Size(163, 25);
+            this.flowLayoutPanel12.Size = new System.Drawing.Size(713, 25);
             this.flowLayoutPanel12.TabIndex = 59;
             // 
             // label40
@@ -716,7 +715,7 @@ namespace iSpyApplication
             this.pnlVLC.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlVLC.Location = new System.Drawing.Point(6, 6);
             this.pnlVLC.Name = "pnlVLC";
-            this.pnlVLC.Size = new System.Drawing.Size(163, 227);
+            this.pnlVLC.Size = new System.Drawing.Size(713, 227);
             this.pnlVLC.TabIndex = 56;
             this.pnlVLC.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlVLC_Paint);
             // 
@@ -742,7 +741,7 @@ namespace iSpyApplication
             this.tlpVLC.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 90F));
             this.tlpVLC.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tlpVLC.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tlpVLC.Size = new System.Drawing.Size(163, 227);
+            this.tlpVLC.Size = new System.Drawing.Size(713, 227);
             this.tlpVLC.TabIndex = 58;
             // 
             // label21
@@ -788,7 +787,6 @@ namespace iSpyApplication
             // 
             this.flowLayoutPanel11.Controls.Add(this.cmbVLCURL);
             this.flowLayoutPanel11.Controls.Add(this.button6);
-            this.flowLayoutPanel11.Controls.Add(this.btnGetStreamSize);
             this.flowLayoutPanel11.Controls.Add(this.linkLabel5);
             this.flowLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel11.Location = new System.Drawing.Point(63, 0);
@@ -816,20 +814,10 @@ namespace iSpyApplication
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
-            // btnGetStreamSize
-            // 
-            this.btnGetStreamSize.Location = new System.Drawing.Point(342, 3);
-            this.btnGetStreamSize.Name = "btnGetStreamSize";
-            this.btnGetStreamSize.Size = new System.Drawing.Size(104, 23);
-            this.btnGetStreamSize.TabIndex = 58;
-            this.btnGetStreamSize.Text = "Get Video Size";
-            this.btnGetStreamSize.UseVisualStyleBackColor = true;
-            this.btnGetStreamSize.Click += new System.EventHandler(this.Button4Click);
-            // 
             // linkLabel5
             // 
             this.linkLabel5.AutoSize = true;
-            this.linkLabel5.Location = new System.Drawing.Point(455, 6);
+            this.linkLabel5.Location = new System.Drawing.Point(345, 6);
             this.linkLabel5.Margin = new System.Windows.Forms.Padding(6);
             this.linkLabel5.Name = "linkLabel5";
             this.linkLabel5.Size = new System.Drawing.Size(29, 13);
@@ -1519,7 +1507,7 @@ namespace iSpyApplication
             this.tabPage10.Controls.Add(this.splitter1);
             this.tabPage10.Location = new System.Drawing.Point(4, 22);
             this.tabPage10.Name = "tabPage10";
-            this.tabPage10.Size = new System.Drawing.Size(725, 288);
+            this.tabPage10.Size = new System.Drawing.Size(192, 74);
             this.tabPage10.TabIndex = 9;
             this.tabPage10.Text = "ONVIF";
             this.tabPage10.UseVisualStyleBackColor = true;
@@ -1529,7 +1517,7 @@ namespace iSpyApplication
             this.onvifWizard1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.onvifWizard1.Location = new System.Drawing.Point(3, 0);
             this.onvifWizard1.Name = "onvifWizard1";
-            this.onvifWizard1.Size = new System.Drawing.Size(722, 288);
+            this.onvifWizard1.Size = new System.Drawing.Size(189, 74);
             this.onvifWizard1.TabIndex = 59;
             this.onvifWizard1.Load += new System.EventHandler(this.onvifWizard1_Load);
             // 
@@ -1537,7 +1525,7 @@ namespace iSpyApplication
             // 
             this.splitter1.Location = new System.Drawing.Point(0, 0);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(3, 288);
+            this.splitter1.Size = new System.Drawing.Size(3, 74);
             this.splitter1.TabIndex = 58;
             this.splitter1.TabStop = false;
             // 
@@ -1890,7 +1878,6 @@ namespace iSpyApplication
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Button btnGetStreamSize;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.TextBox txtDecodeKey;
         private System.Windows.Forms.Label label22;

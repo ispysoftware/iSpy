@@ -72,7 +72,7 @@ namespace iSpyApplication
         private void FindCameras_Load(object sender, EventArgs e)
         {
             LastConfig.PromptSave = false;
-            _vlc = VlcHelper.VlcInstalled;
+            _vlc = VlcHelper.VLCAvailable;
             llblDownloadVLC.Text = LocRm.GetString("DownloadVLC");
             llblDownloadVLC.Visible = !_vlc;
             btnBack.Enabled = false;
