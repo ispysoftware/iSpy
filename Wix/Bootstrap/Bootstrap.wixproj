@@ -85,15 +85,14 @@
       PostBuildMacros;
     </PostBuildEventDependsOn>
     <PostBuildEvent>
-      call "$(SolutionDir)Wix\Burn_$(ConfigurationName).bat"
       if "$(ConfigurationName)"=="Release" (
-        call "$(SolutionDir)signing\Wix_iSpyBurn.bat"
-        if "$(PlatformName)"=="x64" (
-          powershell Compress-Archive -Path "$(TargetDir)%2a" -DestinationPath "$(SolutionDir)Builds\iSpy64_@(VersionNumber).zip" -Force
-        ) else (
-          powershell Compress-Archive -Path "$(TargetDir)%2a" -DestinationPath "$(SolutionDir)Builds\iSpy_@(VersionNumber).zip" -Force
-        )
-        echo "Built $(PlatformName) zipped installer in Builds directory v@(VersionNumber)"
+      call "$(SolutionDir)signing\Burn_$(Configuration).bat"
+      if "$(PlatformName)"=="x64" (
+      powershell Compress-Archive -Path "$(TargetDir)iSpySetup.exe", "$(TargetDir)engine.exe" -DestinationPath "$(SolutionDir)Builds\iSpy64_@(VersionNumber).zip" -Force
+      ) else (
+      powershell Compress-Archive -Path "$(TargetDir)iSpySetup.exe", "$(TargetDir)engine.exe" -DestinationPath "$(SolutionDir)Builds\iSpy_@(VersionNumber).zip" -Force
+      )
+      echo "Built $(PlatformName) zipped installer in Builds directory v@(VersionNumber)"
       )
     </PostBuildEvent>
   </PropertyGroup>

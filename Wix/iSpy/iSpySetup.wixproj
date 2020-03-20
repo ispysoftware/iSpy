@@ -58,7 +58,7 @@
   <Import Project="$(WixTargetsPath)" />
   <PropertyGroup>
     <PostBuildEvent>if "$(ConfigurationName)" == "Release" (
-    call "$(SolutionDir)signing\Wix_iSpy$(PlatformName)Setup.bat"
+    call "$(SolutionDir)signing\Wix_iSpy$(PlatformName)Setup.bat" &amp; exit 0
 )</PostBuildEvent>
   </PropertyGroup>
   <!--
