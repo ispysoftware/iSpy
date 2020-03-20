@@ -42,6 +42,7 @@ namespace iSpyApplication.Utilities
             {
                 using (RegistryKey rk = Registry.LocalMachine.OpenSubKey("SOFTWARE\\VideoLAN\\VLC", RegistryKeyPermissionCheck.ReadSubTree, RegistryRights.QueryValues))
                 {
+
                     var v = Version.Parse(rk.GetValue("Version").ToString());
                     var dir = rk.GetValue("InstallDir") as string;
                     if (v.CompareTo(MinVersion) >= 0)
@@ -49,11 +50,13 @@ namespace iSpyApplication.Utilities
                         Logger.LogMessage("Found VLC in " + dir + " (v" + v + ")", "VLCHelper");
                         VLCLocationAutoDetect = dir;
                     }
+                    else
+                        Logger.LogError("VLC version unsupported. Please ensure v" + MinVersion + "+ is installed");
                 }
             }
             catch (Exception ex)
             {
-                Logger.LogError("Failed looking in registry for VLC location");
+                Logger.LogError("Couldn't find VLC");
                 VlcHelper.VLCLocationAutoDetect = null;
                 
             }

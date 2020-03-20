@@ -91,11 +91,11 @@ namespace iSpyApplication.Sources.Video
                                 Core.Initialize(VlcHelper.VLCLocation);
                                 _coreInitialized = true;
                             }
-                            catch (VLCException vlcex)
+                            catch(Exception ex)
                             {
-                                Logger.LogException(vlcex);
+                                Logger.LogException(ex);
                                 _failedLoad = true;
-                                throw new ApplicationException("VLC not found (v3). Set location in settings.");
+                                throw new ApplicationException("VLC (v" + VlcHelper.MinVersion + "+) failed to initialise. Set location in settings.");
                             }
                         }
                     }
@@ -114,7 +114,7 @@ namespace iSpyApplication.Sources.Video
                 {
                     Logger.LogException(ex, "VLC Setup");
                     _failedLoad = true;
-                    throw new ApplicationException("VLC not found (v3). Set location in settings.");
+                    throw new ApplicationException("VLC not found (v"+VlcHelper.MinVersion+"+). Set location in settings.");
                 }
                 //_libVLC.Log += _libVLC_Log;
                 //GC.KeepAlive(_libVLC);
@@ -302,18 +302,8 @@ namespace iSpyApplication.Sources.Video
         private int AudioSetup(ref IntPtr opaque, ref IntPtr format, ref uint rate, ref uint channels)
         {
             Debug.WriteLine("AUDIO SETUP");
-            channels = 1;
-            rate = (uint)22050;
-            //Task.Run(EmitAudio);
-
-            //read format
-            //byte[] fmt = new byte[4];
-            //Marshal.Copy(format, fmt, 0, 4);
-            //var str = Encoding.ASCII.GetString(fmt);
-            //var audioFormat = Encoding.ASCII.GetBytes("S16N");
-            //_formatPtr = Marshal.AllocHGlobal(audioFormat.Length);
-            //Marshal.Copy(audioFormat, 0, _formatPtr, 4);
-            //format = _formatPtr;
+            channels = (uint)RecordingFormat.Channels;
+            rate = (uint)RecordingFormat.SampleRate;
             return 0;
 
         }
@@ -401,7 +391,7 @@ namespace iSpyApplication.Sources.Video
         #region Vlc video callbacks
         private void DisplayVideo(IntPtr userdata, IntPtr picture)
         {
-            if (!IsRunning || _quit) return;
+            if (!IsRunning || _quit || _isAudio) return;
             _lastFrame = DateTime.UtcNow;
             _connecting = false;
             if (ShouldEmitFrame)
@@ -606,11 +596,9 @@ namespace iSpyApplication.Sources.Video
                 }
 
                 _mediaPlayer = new MediaPlayer(media);
-                if (!_isAudio)
-                {
-                    _mediaPlayer.SetVideoFormatCallbacks(_videoFormat, _cleanupVideoCB);
-                    _mediaPlayer.SetVideoCallbacks(_lockCB, _unlockCB, _displayCB);
-                }
+                _mediaPlayer.SetVideoFormatCallbacks(_videoFormat, _cleanupVideoCB);
+                _mediaPlayer.SetVideoCallbacks(_lockCB, _unlockCB, _displayCB);
+                
                 if (!_ignoreAudio)
                 {
                     _mediaPlayer.SetAudioFormatCallback(_audioSetup, _cleanupAudio);

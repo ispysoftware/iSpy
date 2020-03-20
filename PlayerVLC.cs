@@ -43,20 +43,23 @@ namespace iSpyApplication
              _titleText = titleText;
              chkRepeatAll.Checked = MainForm.VLCRepeatAll;
 
-            try
-            {
-                videoView1.MediaPlayer = new MediaPlayer(LibVLC);
-            }
-            catch(Exception ex)
-            {
-                Logger.LogException(ex, "VLC");
-                Close();
-                return;
-            }
+            
+            videoView1.MediaPlayer = new MediaPlayer(LibVLC);
+            
             videoView1.MediaPlayer.PositionChanged += MediaPlayer_PositionChanged;
             videoView1.MediaPlayer.TimeChanged += MediaPlayer_TimeChanged; ;
             videoView1.MediaPlayer.EndReached += EventsMediaEnded;
             videoView1.MediaPlayer.Stopped+= EventsPlayerStopped;
+
+            try
+            {
+                trackBar2.Value = videoView1.MediaPlayer.Volume;
+                tbSpeed.Value = Convert.ToInt32(videoView1.MediaPlayer.Rate * 10);
+            }
+            catch(Exception ex)
+            {
+                Logger.LogException(ex, "Media player init");
+            }
 
         }
 
@@ -283,6 +286,8 @@ namespace iSpyApplication
             lock (MF.flowPreview.Controls)
             {
                 var lb = (from Control c in MF.flowPreview.Controls select c as PreviewBox into pb where pb != null && pb.Selected select pb).ToList();
+                if (lb.Count==0)
+                    lb = (from Control c in MF.flowPreview.Controls select c as PreviewBox into pb where pb != null select pb).ToList();
                 btnNext.Enabled = btnPrevious.Enabled = lb.Count > 1;
                 for (int i = lb.Count-1; i >-1 ; i--)
                 {

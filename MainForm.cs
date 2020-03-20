@@ -852,7 +852,7 @@ namespace iSpyApplication
                     Logger.LogException(ex,"Play with VLC");
                     Conf.PlaybackMode = (int) Enums.PlaybackMode.Default;
                     MessageBox.Show(
-                        "Could not start VLC. Check you have the right version installed. Using default player instead");
+                        "Could not start VLC. Check you have the right version ("+VlcHelper.MinVersion+"+) installed. Using default player instead");
                     return;
                 }
 
