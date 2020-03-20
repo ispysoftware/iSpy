@@ -4,7 +4,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>3.10</ProductVersion>
-    <ProjectGuid>833f6888-a557-48a9-83a8-fa6d0bf691a3</ProjectGuid>
+    <ProjectGuid>{833f6888-a557-48a9-83a8-fa6d0bf691a3}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
     <OutputName>iSpySetup</OutputName>
     <OutputType>Bundle</OutputType>
@@ -62,17 +62,40 @@
     <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DefineConstants>Debug</DefineConstants>
     <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
+  <Target Name="PostBuildMacros">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetDir)../../../../bin/$(PlatformName)/$(ConfigurationName)/iSpy.exe ">
+      <Output TaskParameter="Assemblies" ItemName="Targets" />
+    </GetAssemblyIdentity>
+    <ItemGroup>
+      <VersionNumber Include="$([System.String]::Copy('%(Targets.Version)').Replace('.','_'))" />
+    </ItemGroup>
+  </Target>
   <PropertyGroup>
-    <PostBuildEvent>call "$(SolutionDir)signing\Wix_iSpyBurn.bat"</PostBuildEvent>
+    <PostBuildEventDependsOn>
+      $(PostBuildEventDependsOn);
+      PostBuildMacros;
+    </PostBuildEventDependsOn>
+    <PostBuildEvent>
+      call "$(SolutionDir)Wix\Burn_$(ConfigurationName).bat"
+      if "$(ConfigurationName)"=="Release" (
+        call "$(SolutionDir)signing\Wix_iSpyBurn.bat"
+        if "$(PlatformName)"=="x64" (
+          powershell Compress-Archive -Path "$(TargetDir)%2a" -DestinationPath "$(SolutionDir)Builds\iSpy64_@(VersionNumber).zip" -Force
+        ) else (
+          powershell Compress-Archive -Path "$(TargetDir)%2a" -DestinationPath "$(SolutionDir)Builds\iSpy_@(VersionNumber).zip" -Force
+        )
+        echo "Built $(PlatformName) zipped installer in Builds directory v@(VersionNumber)"
+      )
+    </PostBuildEvent>
   </PropertyGroup>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.

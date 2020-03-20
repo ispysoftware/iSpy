@@ -2968,6 +2968,8 @@
     </PreBuildEvent>
     <PostBuildEvent>xcopy "$(ProjectDir)dlls\$(PlatformName)\*.*" "$(ProjectDir)$(OutDir)" /Y
 if "$(ConfigurationName)" == "Release" (
+    del $(ProjectDir)$(OutDir)*.pdb"
+    del "$(ProjectDir)$(OutDir)*.vshost.exe"
     call "$(SolutionDir)signing\iSpy.bat"
 )</PostBuildEvent>
   </PropertyGroup>

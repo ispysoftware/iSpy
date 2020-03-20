@@ -52,7 +52,6 @@
       <ComponentGroupRef Id="commands" />
       <ComponentGroupRef Id="audio" />
       <ComponentGroupRef Id="video" />
-      <ComponentGroupRef Id="VLC"/>
       <ComponentRef Id="ApplicationShortcut" />
       <ComponentRef Id="ApplicationShortcutDesktop" />
     </Feature>
@@ -220,8 +219,11 @@
       <Component Win64="$(var.Win64)" Id="Component64" Guid="{5278D2A1-F218-4D52-A762-34678BBDDAF3}">
         <File Id="NSpeex.dll" Source="$(var.OutputDir)\NSpeex.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Win64="$(var.Win64)" Id="Component67" Guid="{20E437C6-492D-4012-88BC-2BB4F292371E}">
-        <File Id="nVLC.dll" Source="$(var.OutputDir)\nVLC.dll" KeyPath="yes" Checksum="yes" />
+      <Component Win64="$(var.Win64)" Id="Component191" Guid="{20E437C6-492D-4012-88BC-2BB4F292371E}">
+        <File Id="libVLCSharp.dll" Source="$(var.OutputDir)\libVLCSharp.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Win64="$(var.Win64)" Id="Component190" Guid="{A69865B8-1261-459A-9BEE-84AAF61B3F8E}">
+        <File Id="libVLCSharp.WinForms.dll" Source="$(var.OutputDir)\libVLCSharp.WinForms.dll" KeyPath="yes" Checksum="yes" />
       </Component>
       <Component Win64="$(var.Win64)" Id="Component73" Guid="{76C2C908-ABFF-42BB-B3E6-E81E75FB652A}">
         <File Id="Renci.SshNet.dll" Source="$(var.OutputDir)\Renci.SshNet.dll" KeyPath="yes" Checksum="yes" />
@@ -491,11 +493,6 @@
     <ComponentGroup Id="commands" Directory="Commands">
       <Component Win64="$(var.Win64)" Id="Component189" Guid="{8ED14B16-827A-46C2-BD8A-4906F40FBBE4}">
         <File Id="example.bat" Source="$(var.OutputDir)\Commands\example.bat" KeyPath="yes" Checksum="yes" />
-      </Component>
-    </ComponentGroup>
-    <ComponentGroup Id="VLC" Directory="VLC">
-      <Component Win64="$(var.Win64)" Id="Component133" Guid="{1292fcac-862f-4a3c-be6e-f42af2565cc1}">
-        <File Id="VLC_readme.txt" Source="$(var.OutputDir)\VLC\readme.txt" KeyPath="yes" Checksum="yes" />
       </Component>
     </ComponentGroup>
   </Fragment>
