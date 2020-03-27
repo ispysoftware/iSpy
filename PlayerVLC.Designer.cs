@@ -166,9 +166,9 @@ namespace iSpyApplication
             this.btnPrevious.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btnPrevious.Location = new System.Drawing.Point(271, 3);
             this.btnPrevious.Name = "btnPrevious";
-            this.btnPrevious.Size = new System.Drawing.Size(28, 23);
+            this.btnPrevious.Size = new System.Drawing.Size(23, 23);
             this.btnPrevious.TabIndex = 23;
-            this.btnPrevious.Text = "< |";
+            this.btnPrevious.Text = "<";
             this.btnPrevious.UseVisualStyleBackColor = true;
             this.btnPrevious.Click += new System.EventHandler(this.btnPrevious_Click);
             // 
@@ -176,11 +176,11 @@ namespace iSpyApplication
             // 
             this.btnNext.AutoSize = true;
             this.btnNext.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnNext.Location = new System.Drawing.Point(305, 3);
+            this.btnNext.Location = new System.Drawing.Point(300, 3);
             this.btnNext.Name = "btnNext";
-            this.btnNext.Size = new System.Drawing.Size(28, 23);
+            this.btnNext.Size = new System.Drawing.Size(23, 23);
             this.btnNext.TabIndex = 24;
-            this.btnNext.Text = "| >";
+            this.btnNext.Text = ">";
             this.btnNext.UseVisualStyleBackColor = true;
             this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
             // 
@@ -189,7 +189,7 @@ namespace iSpyApplication
             this.chkRepeatAll.AutoSize = true;
             this.chkRepeatAll.Checked = true;
             this.chkRepeatAll.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkRepeatAll.Location = new System.Drawing.Point(339, 6);
+            this.chkRepeatAll.Location = new System.Drawing.Point(329, 6);
             this.chkRepeatAll.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.chkRepeatAll.Name = "chkRepeatAll";
             this.chkRepeatAll.Size = new System.Drawing.Size(58, 17);
