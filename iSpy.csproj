@@ -2970,7 +2970,7 @@
 if "$(ConfigurationName)" == "Release" (
     del $(ProjectDir)$(OutDir)*.pdb"
     del "$(ProjectDir)$(OutDir)*.vshost.exe"
-    call "$(SolutionDir)signing\iSpy.bat"
+    call "$(SolutionDir)signing\iSpy$(PlatformName).bat"
 )</PostBuildEvent>
   </PropertyGroup>
   <Import Project="packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('packages\SharpDX.2.6.3\build\SharpDX.targets')" />
