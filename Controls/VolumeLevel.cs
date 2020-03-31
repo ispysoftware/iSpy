@@ -467,8 +467,11 @@ namespace iSpyApplication.Controls
                     if (value && AudioSource!=null)
                     {
                         AudioSource.Listening = true; //(creates the waveoutprovider referenced below)
-                        WaveOut.Init(AudioSource.WaveOutProvider);
-                        WaveOut.Play();
+                        if (AudioSource.WaveOutProvider != null)
+                        {
+                            WaveOut.Init(AudioSource.WaveOutProvider);
+                            WaveOut.Play();
+                        }
                         
                     }
                     else

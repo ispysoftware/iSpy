@@ -539,8 +539,8 @@ namespace iSpyApplication.Sources.Video
                 ffmpeg.av_init_packet(&packet);
                 if (_audioCodecContext != null && buffer == null)
                 {
-                    buffer = new byte[_audioCodecContext->sample_rate * 2];
-                    tbuffer = new byte[_audioCodecContext->sample_rate * 2];
+                    buffer = new byte[_audioCodecContext->sample_rate * _audioCodecContext->channels];
+                    tbuffer = new byte[OutFormat.SampleRate * 2];
                 }
 
                 if (Log("AV_READ_FRAME", ffmpeg.av_read_frame(_formatContext, &packet))) break;
@@ -570,6 +570,7 @@ namespace iSpyApplication.Sources.Video
                             fixed (byte* bPtr = &tbuffer[0])
                             {
                                 outPtrs[0] = bPtr;
+                                outPtrs[1] = bPtr;
                                 var af = ffmpeg.av_frame_alloc();
                                 ffmpeg.avcodec_send_packet(_audioCodecContext, &packet);
                                 do
@@ -586,13 +587,16 @@ namespace iSpyApplication.Sources.Video
                                                 //need to do this here as send_packet can change channel layout and throw an exception below
                                                 initSWR();
                                             }
-                                            var dat = af->data[0];
-                                        
-                                            numSamplesOut = ffmpeg.swr_convert(_swrContext,
+                                            fixed (byte** inbufs = new byte*[_audioCodecContext->channels])
+                                            {
+                                                for (uint i = 0; i < _audioCodecContext->channels; i++)
+                                                    inbufs[i] = af->data[i];
+                                                numSamplesOut = ffmpeg.swr_convert(_swrContext,
                                                 outPtrs,
-                                                _audioCodecContext->sample_rate,
-                                                &dat,
+                                                OutFormat.SampleRate,
+                                                inbufs,
                                                 af->nb_samples);
+                                            }
                                         }
                                         catch (Exception ex)
                                         {
