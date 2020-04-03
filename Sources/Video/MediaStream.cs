@@ -309,7 +309,6 @@ namespace iSpyApplication.Sources.Video
                 }
                 ffmpeg.av_dict_set_int(&options, "buffer_size", BUFSIZE, 0);
             }
-            //ffmpeg.av_dict_set_int(&options, "rtbufsize", BUFSIZE, 0);
 
             var lo = _options.Split(Environment.NewLine.ToCharArray());
             foreach (var nv in lo)
@@ -527,7 +526,7 @@ namespace iSpyApplication.Sources.Video
 
             var audioInited = false;
             var videoInited = false;
-            byte[] buffer = null, tbuffer = null;
+            byte[] ourBuffer = null, ffmpegBuffer = null;
             var dstData = new byte_ptrArray4();
             var dstLinesize = new int_array4();
             BufferedWaveProvider waveProvider = null;
@@ -537,10 +536,10 @@ namespace iSpyApplication.Sources.Video
             do
             {
                 ffmpeg.av_init_packet(&packet);
-                if (_audioCodecContext != null && buffer == null)
+                if (_audioCodecContext != null && ourBuffer == null)
                 {
-                    buffer = new byte[_audioCodecContext->sample_rate * _audioCodecContext->channels];
-                    tbuffer = new byte[OutFormat.SampleRate * 2];
+                    ourBuffer = new byte[OutFormat.AverageBytesPerSecond];
+                    ffmpegBuffer = new byte[Math.Max(48000 * 4, _audioCodecContext->sample_rate * 4)];//4 = handle fltp
                 }
 
                 if (Log("AV_READ_FRAME", ffmpeg.av_read_frame(_formatContext, &packet))) break;
@@ -567,7 +566,7 @@ namespace iSpyApplication.Sources.Video
                         var s = 0;
                         fixed (byte** outPtrs = new byte*[32])
                         {
-                            fixed (byte* bPtr = &tbuffer[0])
+                            fixed (byte* bPtr = &ffmpegBuffer[0])
                             {
                                 outPtrs[0] = bPtr;
                                 outPtrs[1] = bPtr;
@@ -608,7 +607,7 @@ namespace iSpyApplication.Sources.Video
                                         if (numSamplesOut > 0)
                                         {
                                             var l = numSamplesOut * 2 * OutFormat.Channels;
-                                            Buffer.BlockCopy(tbuffer, 0, buffer, s, l);
+                                            Buffer.BlockCopy(ffmpegBuffer, 0, ourBuffer, s, l);
                                             s += l;
                                         }
                                         else
@@ -623,7 +622,7 @@ namespace iSpyApplication.Sources.Video
                                 if (s > 0)
                                 {
                                     var ba = new byte[s];
-                                    Buffer.BlockCopy(buffer, 0, ba, 0, s);
+                                    Buffer.BlockCopy(ourBuffer, 0, ba, 0, s);
 
                                     if (!audioInited)
                                     {
