@@ -116,7 +116,7 @@ namespace iSpyApplication.Sources.Video
                     _failedLoad = true;
                     throw new ApplicationException("VLC not found (v"+VlcHelper.MinVersion+"+). Set location in settings.");
                 }
-                //_libVLC.Log += _libVLC_Log;
+                _libVLC.Log += _libVLC_Log;
                 //GC.KeepAlive(_libVLC);
                 return _libVLC;
             }

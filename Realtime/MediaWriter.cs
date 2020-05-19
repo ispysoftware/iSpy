@@ -295,8 +295,11 @@ namespace iSpyApplication.Realtime
                     for (var i = j - 1; i >= 0; i--)
                     {
                         var stream = _formatContext->streams[i];
-                        if (stream != null && stream->codec != null && stream->codec->codec != null)
+                        if (stream != null && stream->codec != null)
                         {
+                            if (stream->codecpar != null && stream->codecpar->extradata_size > 0)
+                                ffmpeg.av_free(stream->codecpar->extradata);
+
                             stream->discard = AVDiscard.AVDISCARD_ALL;
                             ffmpeg.av_freep(&stream);
                         }
@@ -804,6 +807,18 @@ namespace iSpyApplication.Realtime
 
             _videoStream->time_base.num = _videoCodecContext->time_base.num;
             _videoStream->time_base.den = _videoCodecContext->time_base.den;
+
+            if (_videoCodecContext->extradata_size > 0)
+            {
+                _videoStream->codecpar->extradata_size = _videoCodecContext->extradata_size;
+                _videoStream->codecpar->extradata = (byte*)ffmpeg.av_malloc((ulong)_videoCodecContext->extradata_size + ffmpeg.AV_INPUT_BUFFER_PADDING_SIZE);
+
+                var j = 0;
+                while (j++ < _videoCodecContext->extradata_size)
+                {
+                    *(_videoStream->codecpar->extradata + j) = *(_videoCodecContext->extradata + j);
+                }
+            }
         }
 
         private void OpenAudio()
