@@ -26,7 +26,7 @@ namespace iSpyApplication.Controls
             chkWed.Text = LocRm.GetString("DOWWed");
             chkThu.Text = LocRm.GetString("DOWThu");
             chkFri.Text = LocRm.GetString("DOWFri");
-            chkSat.Text = LocRm.GetString("DOWMat");
+            chkSat.Text = LocRm.GetString("DOWSat");
             chkSun.Text = LocRm.GetString("DOWSun");
         }
 

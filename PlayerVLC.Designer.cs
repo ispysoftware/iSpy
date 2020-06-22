@@ -36,7 +36,6 @@ namespace iSpyApplication
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.vNav = new iSpyApplication.Controls.VideoNavigator();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tbSpeed = new System.Windows.Forms.TrackBar();
             this.trackBar2 = new System.Windows.Forms.TrackBar();
@@ -50,6 +49,7 @@ namespace iSpyApplication
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.videoView1 = new LibVLCSharp.WinForms.VideoView();
+            this.vNav = new iSpyApplication.Controls.VideoNavigator();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -88,7 +88,7 @@ namespace iSpyApplication
             this.tableLayoutPanel1.Controls.Add(this.vNav, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 467);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 462);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
@@ -96,18 +96,6 @@ namespace iSpyApplication
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(594, 87);
             this.tableLayoutPanel1.TabIndex = 26;
-            // 
-            // vNav
-            // 
-            this.vNav.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.vNav.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.vNav.Location = new System.Drawing.Point(0, 0);
-            this.vNav.Margin = new System.Windows.Forms.Padding(0);
-            this.vNav.Name = "vNav";
-            this.vNav.Padding = new System.Windows.Forms.Padding(0, 0, 5, 5);
-            this.vNav.Size = new System.Drawing.Size(594, 50);
-            this.vNav.TabIndex = 22;
-            this.vNav.Value = 0;
             // 
             // flowLayoutPanel1
             // 
@@ -240,15 +228,27 @@ namespace iSpyApplication
             this.videoView1.Location = new System.Drawing.Point(0, 24);
             this.videoView1.MediaPlayer = null;
             this.videoView1.Name = "videoView1";
-            this.videoView1.Size = new System.Drawing.Size(594, 443);
+            this.videoView1.Size = new System.Drawing.Size(594, 438);
             this.videoView1.TabIndex = 0;
             this.videoView1.Text = "videoView1";
+            // 
+            // vNav
+            // 
+            this.vNav.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.vNav.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.vNav.Location = new System.Drawing.Point(0, 0);
+            this.vNav.Margin = new System.Windows.Forms.Padding(0);
+            this.vNav.Name = "vNav";
+            this.vNav.Padding = new System.Windows.Forms.Padding(0, 0, 5, 5);
+            this.vNav.Size = new System.Drawing.Size(594, 50);
+            this.vNav.TabIndex = 22;
+            this.vNav.Value = 0;
             // 
             // PlayerVLC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(594, 554);
+            this.ClientSize = new System.Drawing.Size(594, 549);
             this.Controls.Add(this.videoView1);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.tableLayoutPanel1);
