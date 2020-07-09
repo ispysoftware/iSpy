@@ -580,11 +580,10 @@ namespace iSpyApplication.Sources.Video
                 _mediaPlayer.TimeChanged += _mediaPlayer_TimeChanged;
                 _mediaPlayer.EnableHardwareDecoding = false;
 
-                if (!_ignoreAudio)
-                {
-                    _mediaPlayer.SetAudioFormatCallback(_audioSetup, _cleanupAudio);
-                    _mediaPlayer.SetAudioCallbacks(_processAudio, _pauseAudio, _resumeAudio, _flushAudio, _drainAudio);
-                }
+                
+                _mediaPlayer.SetAudioFormatCallback(_audioSetup, _cleanupAudio);
+                _mediaPlayer.SetAudioCallbacks(_processAudio, _pauseAudio, _resumeAudio, _flushAudio, _drainAudio);
+
 
                 _mediaPlayer.EncounteredError += (sender, e) =>
                 {
