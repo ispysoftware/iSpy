@@ -180,6 +180,20 @@
     <DefineConstants>TRACE</DefineConstants>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <ItemGroup Condition="'$(Platform)' == 'x64'">
+    <Reference Include="Interop.NETWORKLIST, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>DLLS\x64\Interop.NETWORKLIST.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Platform)' == 'x86'">
+    <Reference Include="Interop.NETWORKLIST, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>DLLS\x86\Interop.NETWORKLIST.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="AForge, Version=2.2.3.0, Culture=neutral, PublicKeyToken=c1db6ff4eaa06aeb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -345,16 +359,6 @@
     <Reference Include="Zlib.Portable, Version=1.11.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\Zlib.Portable.1.11.0\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="Interop.NETWORKLIST, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64" Condition="'$(Platform)' == 'x64'">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>DLLS\x64\Interop.NETWORKLIST.dll</HintPath>
-    </Reference>
-    <Reference Include="Interop.NETWORKLIST, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86" Condition="'$(Platform)' == 'x86'">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>DLLS\x86\Interop.NETWORKLIST.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -2951,8 +2955,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\x86\" />
-    <Folder Include="DLLS\x64\" />
-    <Folder Include="DLLS\x86\" />
     <Folder Include="WebServerRoot\Media\Audio\" />
     <Folder Include="WebServerRoot\Media\Video\" />
   </ItemGroup>

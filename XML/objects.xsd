@@ -73,6 +73,7 @@
                                                     <xs:element name="tagsnv" type="xs:string"/>
                                                     <xs:element name="desktoparea" type="xs:string"/>
                                                     <xs:element name="vlcargs" type="xs:string"/>
+                                                    <xs:element name="prefer_tcp" type="xs:boolean" default="true"/>
                                                     <xs:element name="ptzusername">
                                                       <xs:simpleType>
                                                         <xs:restriction base="xs:string">

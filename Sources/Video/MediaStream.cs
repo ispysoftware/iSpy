@@ -33,6 +33,7 @@ namespace iSpyApplication.Sources.Video
 
         private readonly AVInputFormat* _inputFormat;
         private readonly string _modeRTSP = "udp";
+        private bool _preferTCP = true;
         private readonly string _options = "";
         private readonly objectsCamera _source;
 
@@ -83,6 +84,7 @@ namespace iSpyApplication.Sources.Video
             _userAgent = _source.settings.useragent;
             _headers = _source.settings.headers;
             _modeRTSP = Helper.RTSPMode(_source.settings.rtspmode);
+            _preferTCP = _source.settings.prefer_tcp;
             _useGPU = _source.settings.useGPU;
             _ignoreAudio = _source.settings.ignoreaudio;
         }
@@ -265,9 +267,10 @@ namespace iSpyApplication.Sources.Video
             }
 
             AVDictionary* options = null;
+            string prefix="";
             if (_inputFormat == null)
             {
-                var prefix = vss.ToLower().Substring(0, vss.IndexOf(":", StringComparison.Ordinal));
+                prefix = vss.ToLower().Substring(0, vss.IndexOf(":", StringComparison.Ordinal));
                 ffmpeg.av_dict_set_int(&options, "rw_timeout", _timeoutMicroSeconds, 0);
                 ffmpeg.av_dict_set_int(&options, "tcp_nodelay", 1, 0);
                 switch (prefix)
@@ -290,11 +293,15 @@ namespace iSpyApplication.Sources.Video
                         ffmpeg.av_dict_set_int(&options, "stimeout", _timeoutMicroSeconds, 0);
                         if (!string.IsNullOrEmpty(_userAgent))
                             ffmpeg.av_dict_set(&options, "user_agent", _userAgent, 0);
+
                         if (!string.IsNullOrEmpty(_modeRTSP))
                         {
                             ffmpeg.av_dict_set(&options, "rtsp_transport", _modeRTSP, 0);
+                            ffmpeg.av_dict_set(&options, "overrun_nonfatal", "1", 0);
                         }
-                        ffmpeg.av_dict_set(&options, "rtsp_flags", "prefer_tcp", 0);
+
+                        if (_preferTCP)
+                            ffmpeg.av_dict_set(&options, "rtsp_flags", "prefer_tcp", 0);
                         break;
                     default:
                         ffmpeg.av_dict_set_int(&options, "timeout", _timeoutMicroSeconds, 0);
@@ -353,7 +360,28 @@ namespace iSpyApplication.Sources.Video
                 var t = _timeoutMicroSeconds;
                 _timeoutMicroSeconds = Math.Max(_timeoutMicroSeconds, 15000000);
 
-                Throw("OPEN_INPUT", ffmpeg.avformat_open_input(&pFormatContext, vss, _inputFormat, &options));
+                try
+                {
+                    Throw("OPEN_INPUT", ffmpeg.avformat_open_input(&pFormatContext, vss, _inputFormat, &options));
+
+                    _source.settings.prefer_tcp = _preferTCP;
+                }
+                catch (Exception ex)
+                {
+                    switch (prefix)
+                    {
+                        case "rtsp":
+                        case "rtmp":
+                            //fix for cameras that are asked for tcp transport and return udp
+                            if (_preferTCP && ex.Message.ToLowerInvariant().Contains("invalid data"))
+                            {
+                                _preferTCP = false;
+                                Logger.LogMessage("Switched off prefer_tcp and retrying..", "open");
+                            }
+                            break;
+                    }
+                    throw ex;
+                }
                 _formatContext = pFormatContext;
 
                 SetupFormat();
