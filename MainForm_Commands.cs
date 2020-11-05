@@ -26,11 +26,11 @@ namespace iSpyApplication
             {
                 Invoke(new Delegates.RunCheckJoystick(CheckJoystick));
             }
-            catch(System.InvalidOperationException ioe)
+            catch(InvalidOperationException)
             {
                 //ignore - window not available
             }
-            catch(System.Exception ex)
+            catch(Exception ex)
             {
                 Logger.LogException(ex, "Check Joystick");
             }
