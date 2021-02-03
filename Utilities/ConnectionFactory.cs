@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -192,6 +193,7 @@ namespace iSpyApplication.Utilities
                         stream.Write(co.data, 0, co.data.Length);
                     }
                 }
+                Debug.WriteLine(request.Address.ToString());
                 request.BeginGetResponse(FinishRequest, myRequestState);
             }
             catch (Exception ex)

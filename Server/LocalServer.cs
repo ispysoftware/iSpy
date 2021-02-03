@@ -2837,7 +2837,7 @@ namespace iSpyApplication.Server
 
                         strChecked = "";
 
-                        if (!cw.Camobject.detector.recordondetect && !cw.Camobject.detector.recordondetect)
+                        if (!cw.Camobject.detector.recordondetect)
                             strChecked = "checked=\"checked\"";
 
                         html += "<tr><td>" + LocRm.GetString("NoRecord") +
