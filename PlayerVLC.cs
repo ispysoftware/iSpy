@@ -243,7 +243,12 @@ namespace iSpyApplication
 
         private void Player_FormClosing(object sender, FormClosingEventArgs e)
         {
-            
+            videoView1.MediaPlayer.Media.Dispose();
+            videoView1.MediaPlayer.Media = null;
+            videoView1.MediaPlayer?.Dispose();
+            videoView1.MediaPlayer = null;
+            videoView1.Dispose();
+            videoView1 = null;
         }
 
         private void tbSpeed_Scroll(object sender, EventArgs e)
