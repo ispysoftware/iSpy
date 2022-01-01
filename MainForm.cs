@@ -1382,6 +1382,33 @@ namespace iSpyApplication
             _houseKeepingTimer.Start();
         }
 
+        public void ShowGridViewRemote(string index)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Delegates.ExternalCommandDelegate(ShowGridViewRemote), index);
+                return;
+            }
+
+            int ind = Convert.ToInt32(index);
+            var cg = Conf.GridViews.ToList()[ind];
+            if (cg != null)
+            {
+                if (_views.Count==0)
+                {
+                    var gv = new GridView(this, ref cg);
+                    gv.Show();
+                    gv.BringToFront();
+                    gv.Focus();
+                    _views.Add(gv);
+                    return;
+                }
+                _views[0].Reinit(ref cg);
+                _views[0].BringToFront();
+                _views[0].Focus();
+            }
+
+        }
         internal void ShowGridView(string name)
         {
             configurationGrid cg = Conf.GridViews.FirstOrDefault(p => p.name == name);

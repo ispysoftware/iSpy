@@ -9,15 +9,17 @@ namespace iSpyApplication
 {
     public partial class GridView : Form
     {
-        private readonly Controls.GridView _gv;
-        private readonly configurationGrid _layout;
+        private Controls.GridView _gv;
+        private configurationGrid _layout;
         public configurationGrid Cg;
         private PersistWindowState _mWindowState;
+        private MainForm _mainForm;
 
         public GridView(MainForm parent, ref configurationGrid layout)
         {
+            _mainForm = parent;
             InitializeComponent();
-            _gv = new Controls.GridView(parent, ref layout, this);
+            _gv = new Controls.GridView(_mainForm, ref layout, this);
             _gv.KeyDown += GridView_KeyDown;
             Controls.Add(_gv);
             _gv.Dock = DockStyle.Fill;
@@ -33,6 +35,21 @@ namespace iSpyApplication
 
             RenderResources();
 
+        }
+
+        public void Reinit(ref configurationGrid layout)
+        {
+            Controls.Remove(_gv);
+            _gv.Dispose();
+
+            _gv = new Controls.GridView(_mainForm, ref layout, this);
+            _gv.KeyDown += GridView_KeyDown;
+            Controls.Add(_gv);
+
+            _gv.Dock = DockStyle.Fill;
+            _layout = layout;
+            Cg = layout;
+            Text = _gv.Text;
         }
 
         private void RenderResources()

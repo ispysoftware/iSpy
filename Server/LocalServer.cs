@@ -2432,6 +2432,13 @@ namespace iSpyApplication.Server
                     }
                     resp = "OK";
                     break;
+                case "showgridview":
+                    {
+                        string index = GetVar(sRequest, "index");
+                        MainForm.InstanceReference.ShowGridViewRemote(index);
+                        resp = "OK";
+                    }
+                    break;
                 case "getgrabs":
                     sd = GetVar(sRequest, "startdate");
                     ed = GetVar(sRequest, "enddate");
