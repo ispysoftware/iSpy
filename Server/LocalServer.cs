@@ -2432,10 +2432,88 @@ namespace iSpyApplication.Server
                     }
                     resp = "OK";
                     break;
+                case "editgridview":
+                    {
+                        string index = GetVar(sRequest, "index");
+                        var cids = GetVar(sRequest, "ids").Split(',').Where(x => int.TryParse(x, out _)).Select(int.Parse).ToList();
+                        int ind = Convert.ToInt32(index);
+                        var cg = MainForm.Conf.GridViews.ToList()[ind];
+                        int cols = cg.Columns;
+                        int rows = cg.Rows;
+
+                        if (cg != null)
+                        {
+                            var gi = new List<configurationGridGridItem>();
+                            int j = 0;
+                            foreach(var id in cids)
+                            {
+                                if (id > 0)
+                                {
+                                    gi.Add(new configurationGridGridItem() { GridIndex = j, CycleDelay = 4, Item = new configurationGridGridItemItem[] { new configurationGridGridItemItem() { ObjectID = id, TypeID = 2 } } });
+                                }
+                                j++;
+                            }
+                            cg.GridItem = gi.ToArray();
+                            MainForm.Conf.GridViews[ind] = cg;
+                        }
+
+                        MainForm.InstanceReference.ShowGridViewRemote(index);
+                        resp = "OK";
+                    }
+                    break;
                 case "showgridview":
                     {
                         string index = GetVar(sRequest, "index");
                         MainForm.InstanceReference.ShowGridViewRemote(index);
+                        resp = "OK";
+                    }
+                    break;
+                case "setresize":
+                    {
+                        var cw = MainForm.InstanceReference.GetCameraWindow(oid);
+                        bool resize = GetVar(sRequest, "resize") != "false";
+                        if (cw != null)
+                        {
+                            if (cw.Camobject.settings.resize != resize)
+                            {
+                                cw.Camobject.settings.resize = resize;
+                                cw.Restart();
+                            }
+                        }
+                        resp = "OK";
+                    }
+                    break;
+                case "enablegridcameras":
+                    {
+                        string index = GetVar(sRequest, "index");
+                        var cids = GetVar(sRequest, "ids").Split(',').Where(x => int.TryParse(x, out _)).Select(int.Parse).ToList();
+                        int ind = Convert.ToInt32(index);
+                        var cg = MainForm.Conf.GridViews.ToList()[ind];
+                        int cols = cg.Columns;
+                        int rows = cg.Rows;
+
+                        if (cg != null)
+                        {
+                            foreach(var gi in cg.GridItem)
+                            {
+                                if (gi.Item != null && gi.Item.Length > 0)
+                                {
+                                    foreach (var i in gi.Item)
+                                    {
+                                        CameraWindow cw = MainForm.InstanceReference.GetCameraWindow(i.ObjectID);
+                                        if (cw != null)
+                                        {
+                                            if (cids.Contains(i.ObjectID))
+                                            {
+                                                cw.Enable();
+                                            }
+                                            else
+                                                cw.Disable();
+                                        }
+                                    }
+                                }
+                            }
+                        }
                         resp = "OK";
                     }
                     break;

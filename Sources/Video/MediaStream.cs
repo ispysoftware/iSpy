@@ -11,6 +11,7 @@ using iSpyApplication.Utilities;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System.Runtime.ExceptionServices;
+using System.IO;
 
 namespace iSpyApplication.Sources.Video
 {
@@ -30,6 +31,11 @@ namespace iSpyApplication.Sources.Video
         private readonly string _cookies = "";
         private readonly string _headers = "";
         private Size _finalSize;
+        private bool isFile;
+        private bool _checkSleep = false;
+        private long _firstTimestamp;
+        internal AutoResetEvent _clock;
+        private DateTime _start;
 
         private readonly AVInputFormat* _inputFormat;
         private readonly string _modeRTSP = "udp";
@@ -250,7 +256,7 @@ namespace iSpyApplication.Sources.Video
         {
             Stop();
         }
-
+        
         private void DoStart()
         {
             var vss = Source;
@@ -264,6 +270,21 @@ namespace iSpyApplication.Sources.Video
                 CleanUp();
                 _starting = false;
                 return;
+            }
+
+            try
+            {
+                isFile = File.Exists(Source);
+            }
+            catch
+            {
+                isFile = false;
+            }
+
+            if (isFile)
+            {
+                _res = ReasonToFinishPlaying.EndOfStreamReached;
+                _checkSleep = true;
             }
 
             AVDictionary* options = null;
@@ -560,7 +581,8 @@ namespace iSpyApplication.Sources.Video
             BufferedWaveProvider waveProvider = null;
             sampleChannel = null;
             var packet = new AVPacket();
-
+            _firstTimestamp = 0;
+            _clock = new AutoResetEvent(false);
             do
             {
                 ffmpeg.av_init_packet(&packet);
@@ -579,6 +601,7 @@ namespace iSpyApplication.Sources.Video
                 var da = DataAvailable;
 
                 _lastPacket = DateTime.UtcNow;
+                long pts = packet.pts;
 
                 var ret = -11; //EAGAIN
                 if (_audioStream != null && packet.stream_index == _audioStream->index && _audioCodecContext != null && !_ignoreAudio)
@@ -697,6 +720,7 @@ namespace iSpyApplication.Sources.Video
                         ret = ffmpeg.avcodec_receive_frame(_videoCodecContext, vf);
                         if (ret == 0 && ef)
                         {
+                            pts = vf->best_effort_timestamp;
                             AVPixelFormat srcFmt;
                             if (_hwDeviceCtx != null)
                             {
@@ -748,6 +772,8 @@ namespace iSpyApplication.Sources.Video
                         }
                         ffmpeg.av_frame_free(&vf);
                     } while (ret == 0);
+                    
+                    CheckSleep(packet, pts, _videoStream);
                 }
 
                 if (nf != null && _videoStream != null)
@@ -758,12 +784,11 @@ namespace iSpyApplication.Sources.Video
                     }
 
                 ffmpeg.av_packet_unref(&packet);
-                if (ret == -11)
-                    Thread.Sleep(10);
             } while (!_abort && !MainForm.ShuttingDown);
 
             NewFrame?.Invoke(this, new NewFrameEventArgs(null));
-
+            _clock?.Dispose();
+            _clock = null;
             CleanUp();
         }
 
@@ -870,6 +895,38 @@ namespace iSpyApplication.Sources.Video
             AudioFinished?.Invoke(this, new PlayingFinishedEventArgs(_res));
         }
 
+        
+
+        public void CheckSleep(AVPacket packet, long pts, AVStream* refStream)
+        {
+            if (packet.stream_index == refStream->index)
+            {
+                if (pts > 0)
+                {
+                    if (_firstTimestamp == 0)
+                    {
+                        _start = DateTime.UtcNow;
+                        _firstTimestamp = pts;
+                    }
+
+                    if (!_checkSleep)
+                    {
+                        _clock.WaitOne(10); //don't hammer it
+                        return;
+                    }
+
+                    var ratio = (Convert.ToDouble(refStream->time_base.num) / Convert.ToDouble(refStream->time_base.den)) * 1000;
+                    var ptsbase = pts * ratio;
+                    var ptsref = _firstTimestamp * ratio;
+
+                    var ms = (DateTime.UtcNow - _start).TotalMilliseconds;
+                    int msSleep = (int)Math.Max(0, ((ptsbase - ptsref) / 1) - ms);
+                    
+                    if (msSleep > 0)
+                        _clock.WaitOne(msSleep);
+                }
+            }
+        }
         private void SampleChannelPreVolumeMeter(object sender, StreamVolumeEventArgs e)
         {
             LevelChanged?.Invoke(this, new LevelChangedEventArgs(e.MaxSampleValues));
