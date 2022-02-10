@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace iSpyApplication
 {
@@ -35,5 +37,12 @@ namespace iSpyApplication
         {
             SetWindowPos(hwnd, HWND_TOP, 0, 0, ScreenX, ScreenY, SWP_SHOWWINDOW);
         }
+
+        public static void SetWinFullScreen(IntPtr hwnd, string displayName)
+        {
+            var screen = Screen.AllScreens.Where(s => s.DeviceName == displayName).DefaultIfEmpty(Screen.PrimaryScreen).First();
+            SetWindowPos(hwnd, HWND_TOP, screen.Bounds.Location.X, screen.Bounds.Location.Y, screen.Bounds.Width, screen.Bounds.Height, SWP_SHOWWINDOW);
+        }
+
     }
 }

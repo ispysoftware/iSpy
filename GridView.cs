@@ -31,7 +31,8 @@ namespace iSpyApplication
                              {
                                  _mWindowState?.Dispose();
                              };
-            _mWindowState = new PersistWindowState { Parent = this, RegistryPath = @"Software\ispy\grid_" + _layout.name };
+            if (!layout.FullScreen)
+                _mWindowState = new PersistWindowState { Parent = this, RegistryPath = @"Software\ispy\grid_" + _layout.name };
 
             RenderResources();
 
@@ -85,7 +86,7 @@ namespace iSpyApplication
             {
                 WindowState = FormWindowState.Maximized;
                 FormBorderStyle = FormBorderStyle.None;
-                WinApi.SetWinFullScreen(Handle);
+                WinApi.SetWinFullScreen(Handle, _layout.Display);
             }
             else
             {
