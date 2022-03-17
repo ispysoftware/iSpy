@@ -10,7 +10,7 @@ namespace iSpyApplication
     public partial class GridView : Form
     {
         private Controls.GridView _gv;
-        private configurationGrid _layout;
+        internal configurationGrid _layout;
         public configurationGrid Cg;
         private PersistWindowState _mWindowState;
         private MainForm _mainForm;

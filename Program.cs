@@ -207,6 +207,7 @@ internal static class Program
             ServicePointManager.ServerCertificateValidationCallback += ValidateRemoteCertificate;
             ServicePointManager.Expect100Continue = false;
             ServicePointManager.DefaultConnectionLimit = 1000;
+            //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             FfmpegMutex = new Mutex();
             

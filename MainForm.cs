@@ -1394,18 +1394,27 @@ namespace iSpyApplication
             var cg = Conf.GridViews.ToList()[ind];
             if (cg != null)
             {
-                if (_views.Count==0)
+                var view = _views.FirstOrDefault(p => p.Cg == cg);
+                if (view != null && !view.IsDisposed)
                 {
-                    var gv = new GridView(this, ref cg);
-                    gv.Show();
-                    gv.BringToFront();
-                    gv.Focus();
-                    _views.Add(gv);
+                    view.Reinit(ref cg);
+                    view.Show();
+                    view.BringToFront();
+                    view.Focus();
                     return;
                 }
-                _views[0].Reinit(ref cg);
-                _views[0].BringToFront();
-                _views[0].Focus();
+                if (view != null)
+                    _views.Remove(view);
+
+                
+                var gv = new GridView(this, ref cg);
+                gv.Show();
+                gv.BringToFront();
+                gv.Focus();
+                _views.Add(gv);
+                return;
+                
+               
             }
 
         }

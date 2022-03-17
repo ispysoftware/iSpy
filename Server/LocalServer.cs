@@ -15,6 +15,7 @@ using System.Net.Security;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Security.Authentication;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -145,9 +146,19 @@ namespace iSpyApplication.Server
 
         public string StartServer()
         {
-            bool ssl = MainForm.Conf.SSLEnabled;
-            if (ssl && !string.IsNullOrEmpty(MainForm.Conf.SSLCertificate))
+            bool ssl = false;
+            if (!string.IsNullOrEmpty(MainForm.Conf.SSLCertificate))
                 X509.LoadCertificate(MainForm.Conf.SSLCertificate);
+            else
+            {
+                if (ssl)
+                {
+                    bool b;
+                    var ip = WsWrapper.ExternalIPv4(true, out b);
+                    if (b)
+                        X509.CreateCertificate(ip);
+                }
+            }
 
             string message = "";
             try
@@ -574,14 +585,15 @@ namespace iSpyApplication.Server
                     mySocket.ReceiveTimeout = mySocket.SendTimeout = 4000;
                     try
                     {
-                        if (MainForm.Conf.SSLEnabled && X509.SslCertificate != null)
+                        if (X509.SslCertificate != null)
                         {
                             req.RestartableStream = new RestartableReadStream(req.TcpClient.GetStream());
                             req.Stream = new SslStream(req.RestartableStream, true, ClientValidationCallback);
                             try
                             {
                                 ((SslStream) req.Stream).BeginAuthenticateAsServer(X509.SslCertificate,
-                                    MainForm.Conf.SSLClientRequired, SslProtocols.Default,
+                                    true, SslProtocols.Tls12,
+                                    //MainForm.Conf.SSLClientRequired, SslProtocols.Default,
                                     MainForm.Conf.SSLCheckRevocation, OnAuthenticateAsServer, req);
                             }
                             catch
