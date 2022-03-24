@@ -36,9 +36,12 @@ namespace iSpyApplication.Controls
             {
                 if (ddlScheduleCommand.SelectedIndex > -1)
                 {
-                    var cmd = ddlScheduleCommand.SelectedItem.ToString();
+                    var commandItem = (MainForm.ListItem)ddlScheduleCommand.SelectedItem;
+
+                    var cmd = commandItem.ToString();
+                    var tkn = commandItem.Value.ToString();
                     var time = dtpSchedulePTZ.Value;
-                    var s = new objectsCameraPtzscheduleEntry { command = cmd, time = time };
+                    var s = new objectsCameraPtzscheduleEntry { command = cmd, token = tkn,  time = time };
                     List<objectsCameraPtzscheduleEntry> scheds = CameraControl.Camobject.ptzschedule.entries.ToList();
                     scheds.Add(s);
                     CameraControl.Camobject.ptzschedule.entries = scheds.ToArray();
@@ -136,7 +139,7 @@ namespace iSpyApplication.Controls
             if (CameraControl.Camobject.ptz == -5)
             {
                 foreach (var preset in CameraControl.PTZ.ONVIFPresets)
-                    ddlScheduleCommand.Items.Add(new MainForm.ListItem(preset.Name, preset.Name));
+                    ddlScheduleCommand.Items.Add(new MainForm.ListItem(preset.Name, preset.token));
             }
             if (ddlScheduleCommand.Items.Count > 0)
                 ddlScheduleCommand.SelectedIndex = 0;

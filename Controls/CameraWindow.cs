@@ -1888,7 +1888,7 @@ namespace iSpyApplication.Controls
                     else
                     {
                         Calibrating = true;
-                        PTZ.SendPTZCommand(entry.command);
+                        PTZ.SendPTZCommand(entry.token);
                     }
                 }
             }
