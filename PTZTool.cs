@@ -65,7 +65,7 @@ namespace iSpyApplication
                                 ddlExtended.Items.Add(new ListItem(LocRm.GetString("SelectCommand"), ""));
                                 foreach(var cmd in CameraControl.PTZ.ONVIFPresets)
                                 {
-                                    ddlExtended.Items.Add(new ListItem(cmd.Name, cmd.Name));
+                                    ddlExtended.Items.Add(new ListItem(cmd.Name, cmd.token ));
                                 }
                                 pnlController.Enabled = true;
                                 break;

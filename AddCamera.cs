@@ -1569,7 +1569,7 @@ namespace iSpyApplication
             if (lbExtended.SelectedIndex > -1)
             {
                 var li = ((ListItem) lbExtended.SelectedItem);
-                SendPtzCommand(li.Name);
+                SendPtzCommand(li.Value);
             }
         }
 

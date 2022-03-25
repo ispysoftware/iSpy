@@ -201,7 +201,7 @@ namespace iSpyApplication.Sources.Video
 
             if (IsRunning) return;
             IsRunning = true;
-            Task.Run(DoStart);
+            Task.Run(new Action(DoStart));
         }
 
         private void DoStart() {

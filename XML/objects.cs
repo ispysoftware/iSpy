@@ -3810,6 +3810,8 @@ public partial class objectsCameraPtzscheduleEntry {
     
     private System.DateTime timeField;
     
+    private string tokenField;
+    
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
     public string command {
@@ -3821,6 +3823,21 @@ public partial class objectsCameraPtzscheduleEntry {
         }
     }
     
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string token
+    {
+        get
+        {
+            return this.tokenField;
+        }
+        set
+        {
+            this.tokenField = value;
+        }
+    }
+
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
     public System.DateTime time {
