@@ -1230,8 +1230,8 @@ namespace iSpyApplication.Server
             ParseMimeType(sRequestedFile, out sFileName, out sMimeType);
 
             sPhysicalFilePath = (sLocalDir + sRequestedFile).Replace("%20", " ").ToLower();
-
-            var bHasAuth = sPhysicalFilePath.EndsWith("crossdomain.xml") || CheckAuth(sPhysicalFilePath);
+            bool bHasAuth = sPhysicalFilePath == sLocalDir.ToLower() + "crossdomain.xml";
+            bHasAuth = bHasAuth || CheckAuth(sPhysicalFilePath);
 
 
             bServe = (sMimeType != "") && (bServe || (bHasAuth && bHasReferer));
@@ -1810,6 +1810,10 @@ namespace iSpyApplication.Server
                     {
                         try
                         {
+                            if (fn.Contains("../"))
+                            {
+                                throw new Exception("Request blocked (directory traversal)");
+                            }
                             string subdir = Helper.GetDirectory(otid, oid);
                             string filename = Helper.GetMediaDirectory(otid, oid);
                             switch (otid)
