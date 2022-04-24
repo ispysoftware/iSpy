@@ -15,7 +15,6 @@ using System.Net.Security;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Security.Authentication;
-using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -1834,14 +1833,14 @@ namespace iSpyApplication.Server
                             catch (Exception ex)
                             {
                                 Logger.LogException(ex, "Playback");
-                                MessageBox.Show(ex.Message);
+                                resp = ex.Message;
                             }
                             resp = "OK";
                         }
                         catch (Exception ex)
                         {
                             Logger.LogException(ex, "Server");
-                            return ex.Message;
+                            resp = ex.Message;
                         }
                     }
                     break;
