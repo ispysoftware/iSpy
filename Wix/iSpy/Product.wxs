@@ -168,9 +168,6 @@
       <Component Win64="$(var.Win64)" Id="Component34" Guid="{10173057-F98D-4581-8913-284BCE57D9B7}">
         <File Id="Google.Apis.PlatformServices.dll" Source="$(var.OutputDir)\Google.Apis.PlatformServices.dll" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Win64="$(var.Win64)" Id="Component38" Guid="{29F390C3-8C63-4E40-A155-AB18756766C9}">
-        <File Id="Google.Apis.YouTube.v3.dll" Source="$(var.OutputDir)\Google.Apis.YouTube.v3.dll" KeyPath="yes" Checksum="yes" />
-      </Component>
       <Component Win64="$(var.Win64)" Id="Component41" Guid="{3CD35CC0-FECA-43EC-9B29-8B09156FCD39}">
         <File Id="iSpy.exe" Source="$(var.OutputDir)\iSpy.exe" KeyPath="yes" Checksum="yes" />
         <File Id="ispy.ico" Source="$(var.OutputDir)\ispy.ico" Checksum="yes" />
