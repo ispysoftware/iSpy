@@ -83,11 +83,13 @@ namespace iSpyApplication
             bool bIPv6 = MainForm.Conf.IPMode == "IPv6";
             UISync.Execute(() => button2.Enabled = false);
 
-            
+            UISync.Execute(() => rtbOutput.Text +=
+                            NL + NL + "WARNING: Upcoming (April 2022) chrome web browser updates are likely to block access to iSpy (as it runs on http). If you can't access the portal try a different web browser (like FireFox). We highly recommend upgrading to our new platform Agent DVR which is unaffected by these new browser restrictions. You can load your iSpy config into Agent DVR and remote access is included under any subscription you may have for iSpy." + NL + NL + "See https://www.ispyconnect.com/userguide-agent-DVR.aspx#ispy for instructions."+NL+NL);
 
             string localserver = (MainForm.Conf.SSLEnabled?"https":"http")+"://" + MainForm.IPAddress + ":" + MainForm.Conf.LANPort;
+
+            UISync.Execute(() => rtbOutput.Text += $"Local iSpy Server: {localserver}{NL}");
             
-            UISync.Execute(() => rtbOutput.Text = $"Local iSpy Server: {localserver}{NL}");
             if (webports.IndexOf(","+MainForm.Conf.LANPort+",", StringComparison.Ordinal)==-1)
             {
                 UISync.Execute(() => rtbOutput.Text +=
@@ -353,7 +355,7 @@ namespace iSpyApplication
                                     UISync.Execute(() => rtbOutput.Text += "\t" + ip1 + NL);
                             }
                         }
-                        UISync.Execute(() => rtbOutput.Text += NL + NL + "Our new platform, Agent doesn't require port forwarding and should work anywhere with an internet connection: http://www.ispyconnect.com/download-agent.aspx");
+                        UISync.Execute(() => rtbOutput.Text += NL + NL + "Our new platform, Agent DVR doesn't require port forwarding and should work anywhere with an internet connection: http://www.ispyconnect.com/download.aspx");
                         UISync.Execute(() => rtbOutput.Text += NL + NL + "Please see the troubleshooting section here: http://www.ispyconnect.com/userguide-remote-access-troubleshooting.aspx");
 
                     }
@@ -367,7 +369,7 @@ namespace iSpyApplication
                         else
                         {
                             UISync.Execute(() => rtbOutput.Text +=
-                                "Success!" + NL + NL + "If you cannot access content locally please ensure 'Use LAN IP when available' is checked on " + MainForm.Webserver + "/account.aspx and also ensure you're using an up to date web browser (we recommend google Chrome)");
+                                "Success!" + NL + NL + "If you cannot access content locally please ensure 'Use LAN IP when available' is checked on " + MainForm.Webserver + "/account.aspx and also ensure you're using an up to date web browser.");
 
                             MainForm.Conf.Loopback = MainForm.LoopBack = true;
                         }
@@ -378,8 +380,8 @@ namespace iSpyApplication
                 {
                     UISync.Execute(() => rtbOutput.Text += NL +
                                       "Not subscribed - local access only. http://www.ispyconnect.com/subscribe.aspx");
-
                 }
+
             }
             UISync.Execute(() => rtbOutput.Text+=NL);
             Application.DoEvents();

@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29911.84
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iSpy", "iSpy.csproj", "{F4799C73-DEE9-48F2-B626-32149CC30976}"
 EndProject
@@ -20,8 +20,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WixCA", "Wix\WixCA\WixCA.csproj", "{27624167-C034-4349-B30F-CD18934D8737}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iSpyMonitor", "iSpyMonitor\iSpyMonitor.csproj", "{949FACB4-C156-4EFE-93B4-654CA8794DE5}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webrtc", "D:\Projects\pixiv\src\sdk\dotnet\webrtc\webrtc.csproj", "{99F347CC-8526-4CC0-9E64-F2AAF2066782}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,18 +81,6 @@ Global
 		{949FACB4-C156-4EFE-93B4-654CA8794DE5}.Release|x64.ActiveCfg = Release|x86
 		{949FACB4-C156-4EFE-93B4-654CA8794DE5}.Release|x86.ActiveCfg = Release|x86
 		{949FACB4-C156-4EFE-93B4-654CA8794DE5}.Release|x86.Build.0 = Release|x86
-		{99F347CC-8526-4CC0-9E64-F2AAF2066782}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99F347CC-8526-4CC0-9E64-F2AAF2066782}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99F347CC-8526-4CC0-9E64-F2AAF2066782}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{99F347CC-8526-4CC0-9E64-F2AAF2066782}.Debug|x64.Build.0 = Debug|Any CPU
-		{99F347CC-8526-4CC0-9E64-F2AAF2066782}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{99F347CC-8526-4CC0-9E64-F2AAF2066782}.Debug|x86.Build.0 = Debug|Any CPU
-		{99F347CC-8526-4CC0-9E64-F2AAF2066782}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99F347CC-8526-4CC0-9E64-F2AAF2066782}.Release|Any CPU.Build.0 = Release|Any CPU
-		{99F347CC-8526-4CC0-9E64-F2AAF2066782}.Release|x64.ActiveCfg = Release|Any CPU
-		{99F347CC-8526-4CC0-9E64-F2AAF2066782}.Release|x64.Build.0 = Release|Any CPU
-		{99F347CC-8526-4CC0-9E64-F2AAF2066782}.Release|x86.ActiveCfg = Release|Any CPU
-		{99F347CC-8526-4CC0-9E64-F2AAF2066782}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
