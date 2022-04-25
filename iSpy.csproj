@@ -2987,12 +2987,6 @@
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\OnvifServices\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="D:\Projects\pixiv\src\sdk\dotnet\webrtc\webrtc.csproj">
-      <Project>{99f347cc-8526-4cc0-9e64-f2aaf2066782}</Project>
-      <Name>webrtc</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
