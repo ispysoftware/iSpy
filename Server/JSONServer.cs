@@ -503,16 +503,16 @@ namespace iSpyApplication.Server
                                     else
                                         message = LocRm.GetString("Failed", lc);
                                     break;
-                                case "youtube":
-                                    {
-                                        if (YouTubeUploader.Authorise(code))
-                                        {
-                                            message = LocRm.GetString("Authorised", lc);
-                                        }
-                                        else
-                                            message = LocRm.GetString("Failed", lc);
-                                    }
-                                    break;
+                                //case "youtube":
+                                //    {
+                                //        if (YouTubeUploader.Authorise(code))
+                                //        {
+                                //            message = LocRm.GetString("Authorised", lc);
+                                //        }
+                                //        else
+                                //            message = LocRm.GetString("Failed", lc);
+                                //    }
+                                //    break;
                             }
                         }
 
@@ -1696,13 +1696,13 @@ namespace iSpyApplication.Server
                     }
                     break;
                 //post commands
-                case "uploadyoutube":
-                    {
-                        var d = getJSONObject(sBuffer);
-                        t = YouTubeUploader.Upload(oid, Helper.GetFullPath(ot, oid) + d.files[0].name, out success);
-                        resp = "{\"action\":\"" + cmd + "\",\"status\":\"" + (success ? "ok" : "Upload Failed ("+t.JsonSafe()+")") + "\"}";
-                    }
-                    break;
+                //case "uploadyoutube":
+                //    {
+                //        var d = getJSONObject(sBuffer);
+                //        t = YouTubeUploader.Upload(oid, Helper.GetFullPath(ot, oid) + d.files[0].name, out success);
+                //        resp = "{\"action\":\"" + cmd + "\",\"status\":\"" + (success ? "ok" : "Upload Failed ("+t.JsonSafe()+")") + "\"}";
+                //    }
+                //    break;
                 case "uploadcloud":
                     {
                         var d = getJSONObject(sBuffer);

@@ -1229,8 +1229,7 @@ namespace iSpyApplication.Server
             ParseMimeType(sRequestedFile, out sFileName, out sMimeType);
 
             sPhysicalFilePath = (sLocalDir + sRequestedFile).Replace("%20", " ").ToLower();
-            bool bHasAuth = sPhysicalFilePath == sLocalDir.ToLower() + "crossdomain.xml";
-            bHasAuth = bHasAuth || CheckAuth(sPhysicalFilePath);
+            bool bHasAuth = sRequestedFile.ToLower() == "crossdomain.xml" || CheckAuth(sPhysicalFilePath);
 
 
             bServe = (sMimeType != "") && (bServe || (bHasAuth && bHasReferer));
@@ -1887,12 +1886,12 @@ namespace iSpyApplication.Server
                     }
                     resp = "OK";
                     break;
-                case "uploadyoutube":
-                {
-                    bool b;
-                    resp = YouTubeUploader.Upload(oid, Helper.GetFullPath(otid, oid) + fn, out b) + ",OK";
-                }
-                    break;
+                //case "uploadyoutube":
+                //{
+                //    bool b;
+                //    resp = YouTubeUploader.Upload(oid, Helper.GetFullPath(otid, oid) + fn, out b) + ",OK";
+                //}
+                //    break;
                 case "uploadcloud":
                 {
                     bool b;

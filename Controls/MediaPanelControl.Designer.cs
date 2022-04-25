@@ -30,11 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.mpcbDelete = new iSpyApplication.Controls.MediaPanelControlButton();
             this.mpcbSelect = new iSpyApplication.Controls.MediaPanelControlButton();
+            this.mpcbDelete = new iSpyApplication.Controls.MediaPanelControlButton();
             this.mpcbArchive = new iSpyApplication.Controls.MediaPanelControlButton();
             this.mpcbCloud = new iSpyApplication.Controls.MediaPanelControlButton();
-            this.mpcbYouTube = new iSpyApplication.Controls.MediaPanelControlButton();
             this.mpcbFilter = new iSpyApplication.Controls.MediaPanelControlButton();
             this.mpcbMerge = new iSpyApplication.Controls.MediaPanelControlButton();
             this.mpcbPrevious = new iSpyApplication.Controls.MediaPanelControlButton();
@@ -42,11 +41,10 @@
             this.mpcbNext = new iSpyApplication.Controls.MediaPanelControlButton();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.flowLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.mpcbDelete)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mpcbSelect)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mpcbDelete)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mpcbArchive)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mpcbCloud)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mpcbYouTube)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mpcbFilter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mpcbMerge)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mpcbPrevious)).BeginInit();
@@ -61,7 +59,6 @@
             this.flowLayoutPanel1.Controls.Add(this.mpcbDelete);
             this.flowLayoutPanel1.Controls.Add(this.mpcbArchive);
             this.flowLayoutPanel1.Controls.Add(this.mpcbCloud);
-            this.flowLayoutPanel1.Controls.Add(this.mpcbYouTube);
             this.flowLayoutPanel1.Controls.Add(this.mpcbFilter);
             this.flowLayoutPanel1.Controls.Add(this.mpcbMerge);
             this.flowLayoutPanel1.Controls.Add(this.mpcbPrevious);
@@ -73,19 +70,6 @@
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(314, 30);
             this.flowLayoutPanel1.TabIndex = 1;
-            // 
-            // mpcbDelete
-            // 
-            this.mpcbDelete.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.mpcbDelete.Image = null;
-            this.mpcbDelete.Location = new System.Drawing.Point(30, 0);
-            this.mpcbDelete.Margin = new System.Windows.Forms.Padding(0);
-            this.mpcbDelete.Name = "mpcbDelete";
-            this.mpcbDelete.Offset = new System.Drawing.Point(30, 0);
-            this.mpcbDelete.Size = new System.Drawing.Size(30, 30);
-            this.mpcbDelete.TabIndex = 8;
-            this.mpcbDelete.TabStop = false;
-            this.mpcbDelete.Click += new System.EventHandler(this.mpcbDelete_Click);
             // 
             // mpcbSelect
             // 
@@ -99,6 +83,19 @@
             this.mpcbSelect.TabIndex = 7;
             this.mpcbSelect.TabStop = false;
             this.mpcbSelect.Click += new System.EventHandler(this.mpcbSelect_Click);
+            // 
+            // mpcbDelete
+            // 
+            this.mpcbDelete.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.mpcbDelete.Image = null;
+            this.mpcbDelete.Location = new System.Drawing.Point(30, 0);
+            this.mpcbDelete.Margin = new System.Windows.Forms.Padding(0);
+            this.mpcbDelete.Name = "mpcbDelete";
+            this.mpcbDelete.Offset = new System.Drawing.Point(30, 0);
+            this.mpcbDelete.Size = new System.Drawing.Size(30, 30);
+            this.mpcbDelete.TabIndex = 8;
+            this.mpcbDelete.TabStop = false;
+            this.mpcbDelete.Click += new System.EventHandler(this.mpcbDelete_Click);
             // 
             // mpcbArchive
             // 
@@ -126,24 +123,11 @@
             this.mpcbCloud.TabStop = false;
             this.mpcbCloud.Click += new System.EventHandler(this.mpcbCloud_Click);
             // 
-            // mpcbYouTube
-            // 
-            this.mpcbYouTube.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.mpcbYouTube.Image = null;
-            this.mpcbYouTube.Location = new System.Drawing.Point(120, 0);
-            this.mpcbYouTube.Margin = new System.Windows.Forms.Padding(0);
-            this.mpcbYouTube.Name = "mpcbYouTube";
-            this.mpcbYouTube.Offset = new System.Drawing.Point(240, 0);
-            this.mpcbYouTube.Size = new System.Drawing.Size(30, 30);
-            this.mpcbYouTube.TabIndex = 15;
-            this.mpcbYouTube.TabStop = false;
-            this.mpcbYouTube.Click += new System.EventHandler(this.mpcbYouTube_Click);
-            // 
             // mpcbFilter
             // 
             this.mpcbFilter.Cursor = System.Windows.Forms.Cursors.Hand;
             this.mpcbFilter.Image = null;
-            this.mpcbFilter.Location = new System.Drawing.Point(150, 0);
+            this.mpcbFilter.Location = new System.Drawing.Point(120, 0);
             this.mpcbFilter.Margin = new System.Windows.Forms.Padding(0);
             this.mpcbFilter.Name = "mpcbFilter";
             this.mpcbFilter.Offset = new System.Drawing.Point(90, 0);
@@ -156,7 +140,7 @@
             // 
             this.mpcbMerge.Cursor = System.Windows.Forms.Cursors.Hand;
             this.mpcbMerge.Image = null;
-            this.mpcbMerge.Location = new System.Drawing.Point(180, 0);
+            this.mpcbMerge.Location = new System.Drawing.Point(150, 0);
             this.mpcbMerge.Margin = new System.Windows.Forms.Padding(0);
             this.mpcbMerge.Name = "mpcbMerge";
             this.mpcbMerge.Offset = new System.Drawing.Point(210, 0);
@@ -169,7 +153,7 @@
             // 
             this.mpcbPrevious.Cursor = System.Windows.Forms.Cursors.Hand;
             this.mpcbPrevious.Image = null;
-            this.mpcbPrevious.Location = new System.Drawing.Point(210, 0);
+            this.mpcbPrevious.Location = new System.Drawing.Point(180, 0);
             this.mpcbPrevious.Margin = new System.Windows.Forms.Padding(0);
             this.mpcbPrevious.Name = "mpcbPrevious";
             this.mpcbPrevious.Offset = new System.Drawing.Point(120, 0);
@@ -185,11 +169,11 @@
             this.lblPage.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPage.ForeColor = System.Drawing.Color.White;
-            this.lblPage.Location = new System.Drawing.Point(243, 4);
+            this.lblPage.Location = new System.Drawing.Point(213, 4);
             this.lblPage.Margin = new System.Windows.Forms.Padding(3, 4, 3, 0);
             this.lblPage.Name = "lblPage";
             this.lblPage.Padding = new System.Windows.Forms.Padding(3);
-            this.lblPage.Size = new System.Drawing.Size(38, 22);
+            this.lblPage.Size = new System.Drawing.Size(37, 22);
             this.lblPage.TabIndex = 5;
             this.lblPage.Text = "0 / 0";
             this.lblPage.Click += new System.EventHandler(this.lblPage_Click);
@@ -198,7 +182,7 @@
             // 
             this.mpcbNext.Cursor = System.Windows.Forms.Cursors.Hand;
             this.mpcbNext.Image = null;
-            this.mpcbNext.Location = new System.Drawing.Point(284, 0);
+            this.mpcbNext.Location = new System.Drawing.Point(253, 0);
             this.mpcbNext.Margin = new System.Windows.Forms.Padding(0);
             this.mpcbNext.Name = "mpcbNext";
             this.mpcbNext.Offset = new System.Drawing.Point(150, 0);
@@ -219,11 +203,10 @@
             this.Size = new System.Drawing.Size(314, 32);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.mpcbDelete)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mpcbSelect)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mpcbDelete)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mpcbArchive)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mpcbCloud)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mpcbYouTube)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mpcbFilter)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mpcbMerge)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mpcbPrevious)).EndInit();
@@ -246,6 +229,5 @@
         private MediaPanelControlButton mpcbNext;
         private MediaPanelControlButton mpcbCloud;
         private MediaPanelControlButton mpcbMerge;
-        private MediaPanelControlButton mpcbYouTube;
     }
 }

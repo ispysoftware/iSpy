@@ -2532,9 +2532,9 @@ namespace iSpyApplication
                         case "drive":
                             b = Drive.Authorise(auth.AuthCode);
                             break;
-                        case "youtube":
-                            b = YouTubeUploader.Authorise(auth.AuthCode);
-                            break;
+                        //case "youtube":
+                        //    b = YouTubeUploader.Authorise(auth.AuthCode);
+                        //    break;
                         case "dropbox":
                             b = Dropbox.Authorise(auth.AuthCode);
                             break;

@@ -462,31 +462,31 @@ namespace iSpyApplication
             
         }
 
-        internal void MediaUploadYouTube()
-        {
-            if (!Conf.Subscribed)
-            {
-                var ns = new NotSubscribed();
-                ns.ShowDialog(this);
-                return;
-            }
+        //internal void MediaUploadYouTube()
+        //{
+        //    if (!Conf.Subscribed)
+        //    {
+        //        var ns = new NotSubscribed();
+        //        ns.ShowDialog(this);
+        //        return;
+        //    }
 
-            string msg = "";
-            lock (ThreadLock)
-            {
-                for (int i = 0; i < flowPreview.Controls.Count; i++)
-                {
-                    var pb = flowPreview.Controls[i] as PreviewBox;
-                    if (pb != null && pb.Selected)
-                    {
-                        bool b;
-                        msg = YouTubeUploader.Upload(pb.Oid, pb.FileName, out b);
-                    }
-                }
-            }
-            if (msg != "")
-                MessageBox.Show(this, LocRm.GetString(msg));
-        }
+        //    string msg = "";
+        //    lock (ThreadLock)
+        //    {
+        //        for (int i = 0; i < flowPreview.Controls.Count; i++)
+        //        {
+        //            var pb = flowPreview.Controls[i] as PreviewBox;
+        //            if (pb != null && pb.Selected)
+        //            {
+        //                bool b;
+        //                msg = YouTubeUploader.Upload(pb.Oid, pb.FileName, out b);
+        //            }
+        //        }
+        //    }
+        //    if (msg != "")
+        //        MessageBox.Show(this, LocRm.GetString(msg));
+        //}
 
 
         internal void MergeMedia()
