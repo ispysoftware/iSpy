@@ -1229,6 +1229,7 @@ namespace iSpyApplication.Server
             ParseMimeType(sRequestedFile, out sFileName, out sMimeType);
 
             sPhysicalFilePath = (sLocalDir + sRequestedFile).Replace("%20", " ").ToLower();
+            
             bool bHasAuth = sRequestedFile.ToLower() == "crossdomain.xml" || CheckAuth(sPhysicalFilePath);
 
 
@@ -1808,26 +1809,35 @@ namespace iSpyApplication.Server
                     {
                         try
                         {
-                            if (fn.Contains("../"))
+
+                            if (fn.Contains("../") || fn.Contains(@"..\"))
                             {
                                 throw new Exception("Request blocked (directory traversal)");
                             }
+                            string d = Helper.GetMediaDirectory(otid, oid);
                             string subdir = Helper.GetDirectory(otid, oid);
-                            string filename = Helper.GetMediaDirectory(otid, oid);
+                            if (!File.Exists(fn))
+                                throw new Exception("File does not exist");
+
+                            var file = new FileInfo(fn);
+                            if (!file.DirectoryName.ToLower().StartsWith(d.ToLower()))
+                                throw new Exception("Request blocked (outside media directory)");
+
+                            
                             switch (otid)
                             {
                                 case 1:
-                                    filename = filename + "audio\\";
+                                    d = d + "audio\\";
                                     break;
                                 case 2:
-                                    filename = filename + "video\\";
+                                    d = d + "video\\";
                                     break;
                             }
-                            filename += subdir + @"\" + fn;
+                            d += subdir;
 
                             try
                             {
-                                Process.Start(filename);
+                                Process.Start(d + @"\" + fn);
                             }
                             catch (Exception ex)
                             {
