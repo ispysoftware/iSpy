@@ -2461,11 +2461,14 @@ namespace iSpyApplication.Server
                         var cids = GetVar(sRequest, "ids").Split(',').Where(x => int.TryParse(x, out _)).Select(int.Parse).ToList();
                         int ind = Convert.ToInt32(index);
                         var cg = MainForm.Conf.GridViews.ToList()[ind];
-                        int cols = cg.Columns;
-                        int rows = cg.Rows;
+
+                        int cols = Convert.ToInt32(Math.Ceiling(Math.Sqrt(cids.Count())));
+                        int rows = Convert.ToInt32(Math.Ceiling(cids.Count() / Convert.ToDouble(cols)));
 
                         if (cg != null)
                         {
+                            cg.Columns = cols;
+                            cg.Rows = rows;
                             var gi = new List<configurationGridGridItem>();
                             int j = 0;
                             foreach(var id in cids)
