@@ -199,6 +199,9 @@ namespace iSpyApplication
 
         void EventsMediaEnded(object sender, EventArgs e)
         {
+            if (chkRepeatAll.Checked)
+                Go(1);
+
             UISync.Execute(InitControls);
         }
 
@@ -302,8 +305,8 @@ namespace iSpyApplication
                         j = i - n;
                         if (j < 0)
                         {
-                            j = lb.Count - 1;
-                            break;
+                            //stop at the last movie
+                            return;
                         }
                         if (j >= lb.Count)
                             j = 0;

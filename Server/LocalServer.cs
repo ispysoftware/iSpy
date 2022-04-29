@@ -1809,7 +1809,6 @@ namespace iSpyApplication.Server
                     {
                         try
                         {
-
                             if (fn.Contains("../") || fn.Contains(@"..\"))
                             {
                                 throw new Exception("Request blocked (directory traversal)");
