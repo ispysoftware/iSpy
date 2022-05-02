@@ -231,7 +231,8 @@
                                                     <xs:element name="mode" type="xs:int" default="2"/>
                                                     <xs:element name="text" type="xs:string" default="www.ispyconnect.com"/>
                                                     <xs:element name="savelocal" type="xs:boolean" default="false"/>
-                                                    <xs:element name="quality" type="xs:int" />                                                    
+										
+													<xs:element name="quality" type="xs:int" />                                                    
                                                     <xs:element name="localfilename" type="xs:string" default="{0:yyyy-MM-dd_HH-mm-ss_fff}.jpg"/>
                                                 </xs:sequence>
                                             </xs:complexType>
@@ -248,7 +249,8 @@
                                             <xs:element name="mode" type="xs:int" default="2"/>
                                             <xs:element name="text" type="xs:string" default="www.ispyconnect.com"/>
                                             <xs:element name="quality" type="xs:int" />
-                                          </xs:sequence>
+											<xs:element name="motiontimeout" type="xs:int" default="0"/>
+										  </xs:sequence>
                                         </xs:complexType>
                                       </xs:element>
                                         <xs:element name="detector">
@@ -405,6 +407,7 @@
                                                                 <xs:element maxOccurs="unbounded" name="entry">
                                                                     <xs:complexType>
                                                                         <xs:attribute name="command" type="xs:string" use="required" />
+																		<xs:attribute name="token" type="xs:string" use="optional" default="" />
                                                                         <xs:attribute name="time" type="xs:dateTime" use="required" />
                                                                     </xs:complexType>
                                                                 </xs:element>

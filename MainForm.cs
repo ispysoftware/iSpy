@@ -1381,6 +1381,23 @@ namespace iSpyApplication
             _houseKeepingTimer.Start();
         }
 
+        public void CloseGridViewRemote(string index)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Delegates.ExternalCommandDelegate(CloseGridViewRemote), index);
+                return;
+            }
+
+            int ind = Convert.ToInt32(index);
+            var cg = Conf.GridViews.ToList()[ind];
+            if (cg != null)
+            {
+                var view = _views.FirstOrDefault(p => p.Cg == cg);
+                view?.Close();
+            }
+        }
+
         public void ShowGridViewRemote(string index)
         {
             if (InvokeRequired)

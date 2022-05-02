@@ -2494,6 +2494,13 @@ namespace iSpyApplication.Server
                         resp = "OK";
                     }
                     break;
+                case "closegridview":
+                    {
+                        string index = GetVar(sRequest, "index");
+                        MainForm.InstanceReference.CloseGridViewRemote(index);
+                        resp = "OK";
+                    }
+                    break;
                 case "setresize":
                     {
                         var cw = MainForm.InstanceReference.GetCameraWindow(oid);

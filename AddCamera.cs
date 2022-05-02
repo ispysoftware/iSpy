@@ -354,10 +354,11 @@ namespace iSpyApplication
             rdoSaveMotion.Checked = CameraControl.Camobject.savelocal.mode == 0;
             rdoSaveAlerts.Checked = CameraControl.Camobject.savelocal.mode == 1;
             rdoSaveInterval.Checked = CameraControl.Camobject.savelocal.mode == 2;
+            numMotionTimeout.Value = CameraControl.Camobject.savelocal.motiontimeout;
 
             txtUploadEvery.Enabled = rdoFTPInterval.Checked;
             numSaveInterval.Enabled = rdoSaveInterval.Checked;
-
+            
             
             
             LoadPTZs();
@@ -646,7 +647,8 @@ namespace iSpyApplication
             label56.Text = LocRm.GetString("Filename");
             label57.Text = label96.Text =LocRm.GetString("When");
             label58.Text = label99.Text = LocRm.GetString("Seconds");
-            
+            label100.Text = LocRm.GetString("json.motiontimeout");
+
             label60.Text = LocRm.GetString("Egimagesmycamimagejpg");
             label67.Text = LocRm.GetString("Images");
             label68.Text = LocRm.GetString("Interval");
@@ -951,6 +953,7 @@ namespace iSpyApplication
             double savemindelay = Convert.ToDouble(numSaveDelay.Value);
 
 
+            int motionTimeout = Convert.ToInt32(numMotionTimeout.Value);
             int timelapseframes = Convert.ToInt32(txtTimeLapseFrames.Value);
             int timelapsemovie = Convert.ToInt32(txtTimeLapse.Value);
             
@@ -1001,6 +1004,7 @@ namespace iSpyApplication
             CameraControl.Camobject.savelocal.text = txtSaveOverlay.Text;
             CameraControl.Camobject.savelocal.filename = txtLocalFilename.Text.Trim();
             CameraControl.Camobject.savelocal.enabled = chkLocalSaving.Checked;
+            CameraControl.Camobject.savelocal.motiontimeout = motionTimeout;
 
 
             CameraControl.Camobject.detector.processframeinterval = (int)numProcessInterval.Value;
