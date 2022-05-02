@@ -1667,6 +1667,7 @@ namespace iSpyApplication.Controls
             
         }
 
+
         private void CheckTimeLapse(double since)
         {
             if (Camobject.recorder.timelapseenabled)
@@ -1846,16 +1847,36 @@ namespace iSpyApplication.Controls
         }
         private void CheckSaveFrame()
         {
-            if (Camobject.savelocal.mode == 2 && Math.Abs(Camobject.savelocal.intervalnew) > double.Epsilon)
+            switch(Camobject.savelocal.mode)
             {
-                if (Camobject.savelocal.enabled)
-                {
-                    double d = (Helper.Now - _lastFrameSaved).TotalSeconds;
-                    if (d >= Camobject.savelocal.intervalnew && d > Camobject.savelocal.minimumdelay)   {
-                        SaveFrame();
+                case 2:
+                    if (Math.Abs(Camobject.savelocal.intervalnew) > double.Epsilon)
+                    {
+                        if (Camobject.savelocal.enabled)
+                        {
+                            double d = (Helper.Now - _lastFrameSaved).TotalSeconds;
+                            if (d >= Camobject.savelocal.intervalnew && d > Camobject.savelocal.minimumdelay)
+                            {
+                                SaveFrame();
+                            }
+                        }
                     }
-                }
+                    break;
+
+                case 0:
+                    if (Camobject.savelocal.enabled && Camobject.savelocal.motiontimeout > 0)
+                    {
+                        if (LastActivity > DateTime.UtcNow.AddSeconds(0 - Camobject.savelocal.motiontimeout))
+                        {
+                            if ((Helper.Now - _lastFrameSaved).TotalSeconds > Camobject.savelocal.minimumdelay)
+                            {
+                                SaveFrame();
+                            }
+                        }
+                    }
+                    break;
             }
+                
         }
 
         private void CheckPTZSchedule()
@@ -3511,7 +3532,6 @@ namespace iSpyApplication.Controls
                 {
                     _suspendPTZSchedule = true;
                 }
-
                 if (Camobject.ftp.mode == 0)
                 {
                     if (Camobject.ftp.enabled && Camobject.ftp.ready)
@@ -3523,7 +3543,7 @@ namespace iSpyApplication.Controls
                         }
                     }
                 }
-                if (Camobject.savelocal.mode == 0)
+                if (Camobject.savelocal.mode == 0 && Camobject.savelocal.motiontimeout == 0)
                 {
                     if (Camobject.savelocal.enabled)
                     {
@@ -3533,8 +3553,6 @@ namespace iSpyApplication.Controls
                         }
                     }
                 }
-                
-
             }
 
             if (sender is Camera)

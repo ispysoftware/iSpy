@@ -154,7 +154,8 @@
                 { "text": "Filename", "value": "", "type": "String", "bindto": "savelocal.filename", "help": "Example: {0:yyyy-MM-dd_HH-mm-ss_fff}.jpg or {C}.jpg" },
                 { "text": "Counter Max", "value": 0, "type": "Int32", "min": 1, "max": 9999999999, "bindto": "savelocal.countermax" },
                 { "text": "Interval", "value": 0, "type": "Decimal", "min": 1, "max": 9999999999, "bindto": "savelocal.intervalnew", "help": "When mode is interval saves a frame (s)" },
-                { "text": "Delay", "value": 0, "type": "Decimal", "min": 0, "max": 9999, "bindto": "savelocal.minimumdelay", "help": "When mode is motion or alert, minimum time between snapshots (s)" }
+                { "text": "Delay", "value": 0, "type": "Decimal", "min": 0, "max": 9999, "bindto": "savelocal.minimumdelay", "help": "When mode is motion or alert, minimum time between snapshots (s)" },
+                { "text": "Motion Timeout", "value": 0, "type": "Int32", "min": 0, "max": 60, "bindto": "savelocal.motiontimeout", "help": "Keeps saving images when motion ends" },
             ]
         },
         {
