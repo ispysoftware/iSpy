@@ -76,7 +76,7 @@ namespace iSpyApplication.Controls
                     var dtCurrent = si.time.AddSeconds(cr.Interval);
                     while (dtCurrent.TimeOfDay < dtUntil.TimeOfDay)
                     {
-                        s.Add(new objectsCameraPtzscheduleEntry { command = si.command, time = dtCurrent });
+                        s.Add(new objectsCameraPtzscheduleEntry { command = si.command, token = si.token, time = dtCurrent });
                         dtCurrent = dtCurrent.AddSeconds(cr.Interval);
                     }
                 }
