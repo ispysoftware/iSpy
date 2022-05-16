@@ -2283,7 +2283,8 @@ namespace iSpyApplication.Server
                                 pe = new objectsCameraPtzscheduleEntry
                                 {
                                     command = "",
-                                    time = new DateTime()
+                                    time = new DateTime(),
+                                    token = ""
                                 };
 
                                 PopulateObject(d, pe);
