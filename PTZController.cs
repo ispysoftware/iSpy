@@ -111,7 +111,7 @@ namespace iSpyApplication
             }
         }
 
-        internal bool DigitalPTZ = false; 
+        internal bool DigitalPTZ => _cameraControl.Camobject.ptz == -1;
 
 
         public PTZController(CameraWindow cameraControl)
