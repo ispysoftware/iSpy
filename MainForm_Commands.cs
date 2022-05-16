@@ -178,7 +178,8 @@ namespace iSpyApplication
                         }
 
                         var d = Math.Sqrt((x*x) + (y*y));
-                        if (d > 20)
+
+                        if (d > 2)  //20)
                         {
                             angle = Math.Atan2(y, x);
                         }
@@ -199,7 +200,7 @@ namespace iSpyApplication
                         }
 
                         cw.Calibrating = true;
-                        cw.PTZ.SendPTZDirection(angle);
+                        cw.PTZ.SendPTZDirection(angle, x, y);
                         if (!cw.PTZ.DigitalPTZ)
                             _needstop = _sentdirection = true;
                     }
