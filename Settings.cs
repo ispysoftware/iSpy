@@ -132,6 +132,7 @@ namespace iSpyApplication
             MainForm.Conf.SMSAlert = txtSMSBody.Text;
             MainForm.Conf.VLCFileCache = (int)numFileCache.Value;
             MainForm.Conf.Password_Protect_Startup = chkPasswordProtectOnStart.Checked;
+            MainForm.Conf.BrandPath = lblBrand.Text;
             SaveSMTPSettings();
 
             MainForm.Conf.ArchiveNew = txtArchive.Text.Trim();
@@ -333,6 +334,7 @@ namespace iSpyApplication
             chkMinimise.Checked = MainForm.Conf.MinimiseOnClose;
             chkSpeechRecognition.Checked = MainForm.Conf.SpeechRecognition;
             chkMinimiseToTray.Checked = MainForm.Conf.TrayOnMinimise;
+            lblBrand.Text = MainForm.Conf.BrandPath;
 
             if (chkMonitor.Checked && !MainForm.Conf.Monitor)
             {
@@ -1321,6 +1323,33 @@ namespace iSpyApplication
             {
                 MainForm.Conf.VLCLocation = folderBrowserDialog1.SelectedPath;
                 label69.Text = MainForm.Conf.VLCLocation;
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            using (var ofd = new OpenFileDialog())
+            {
+                ofd.InitialDirectory = _lastPath;
+                ofd.Filter = "Image Files|*.jpg;*.gif;*.bmp;*.png;*.jpeg";
+                if (ofd.ShowDialog(this) == DialogResult.OK)
+                {
+                    string fileName = ofd.FileName;
+                    try
+                    {
+                        var fi = new FileInfo(fileName);
+                        _lastPath = fi.DirectoryName;
+                    }
+                    catch
+                    {
+                    }
+
+
+                    if (fileName.Trim() != "")
+                    {
+                        lblBrand.Text = fileName;
+                    }
+                }
             }
         }
     }

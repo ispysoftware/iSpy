@@ -316,6 +316,8 @@ public partial class configuration {
     
     private int arrangeModeField;
     
+    private string brandPathField;
+    
     private configurationGPU gPUField;
     
     private configurationLogging loggingField;
@@ -408,6 +410,7 @@ public partial class configuration {
         this.tagsField = "";
         this.portMapperModeField = 2;
         this.arrangeModeField = 0;
+        this.brandPathField = "";
     }
     
     /// <remarks/>
@@ -1867,6 +1870,16 @@ public partial class configuration {
         }
         set {
             this.arrangeModeField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public string BrandPath {
+        get {
+            return this.brandPathField;
+        }
+        set {
+            this.brandPathField = value;
         }
     }
     

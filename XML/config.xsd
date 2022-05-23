@@ -149,6 +149,8 @@
         <xs:element name="Tags" type="xs:string" default=""/>
         <xs:element name="PortMapperMode" type="xs:int" default="2"/>
         <xs:element name="ArrangeMode" type="xs:int" default="0"/>
+		<xs:element name="BrandPath" type="xs:string" default=""/>
+		  
         <xsd:element name="GPU">
           <xsd:complexType>
             <xsd:attribute name="nVidia" type="xsd:boolean" default="false" />

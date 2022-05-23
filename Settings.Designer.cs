@@ -84,6 +84,10 @@ namespace iSpyApplication
             this.lblPriority = new System.Windows.Forms.Label();
             this.ddlPriority = new System.Windows.Forms.ComboBox();
             this.chkPasswordProtectOnStart = new System.Windows.Forms.CheckBox();
+            this.label68 = new System.Windows.Forms.Label();
+            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            this.button4 = new System.Windows.Forms.Button();
+            this.label69 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnDetectColor = new System.Windows.Forms.Button();
@@ -237,11 +241,11 @@ namespace iSpyApplication
             this.llblHelp = new System.Windows.Forms.LinkLabel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.tmrJSUpdate = new System.Windows.Forms.Timer(this.components);
-            this.label68 = new System.Windows.Forms.Label();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.button4 = new System.Windows.Forms.Button();
-            this.label69 = new System.Windows.Forms.Label();
-            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label70 = new System.Windows.Forms.Label();
+            this.flowLayoutPanel10 = new System.Windows.Forms.FlowLayoutPanel();
+            this.button5 = new System.Windows.Forms.Button();
+            this.lblBrand = new System.Windows.Forms.Label();
             this.tcTabs.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -252,6 +256,7 @@ namespace iSpyApplication
             ((System.ComponentModel.ISupportInitialize)(this.tbOpacity)).BeginInit();
             this.flowLayoutPanel9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numMediaPanelItems)).BeginInit();
+            this.flowLayoutPanel4.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -293,7 +298,7 @@ namespace iSpyApplication
             ((System.ComponentModel.ISupportInitialize)(this.numKeepLogs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxLogSize)).BeginInit();
             this.flowLayoutPanel2.SuspendLayout();
-            this.flowLayoutPanel4.SuspendLayout();
+            this.flowLayoutPanel10.SuspendLayout();
             this.SuspendLayout();
             // 
             // label3
@@ -449,10 +454,12 @@ namespace iSpyApplication
             this.tableLayoutPanel1.Controls.Add(this.chkPasswordProtectOnStart, 1, 5);
             this.tableLayoutPanel1.Controls.Add(this.label68, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel4, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label70, 1, 19);
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel10, 2, 19);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(6, 6);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 19;
+            this.tableLayoutPanel1.RowCount = 20;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -472,7 +479,8 @@ namespace iSpyApplication
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(840, 553);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(840, 586);
             this.tableLayoutPanel1.TabIndex = 65;
             // 
             // ddlLanguage
@@ -1009,6 +1017,48 @@ namespace iSpyApplication
             this.chkPasswordProtectOnStart.TabIndex = 91;
             this.chkPasswordProtectOnStart.Text = "Password protect on start";
             this.chkPasswordProtectOnStart.UseVisualStyleBackColor = true;
+            // 
+            // label68
+            // 
+            this.label68.AutoSize = true;
+            this.label68.Location = new System.Drawing.Point(274, 8);
+            this.label68.Margin = new System.Windows.Forms.Padding(6, 8, 6, 0);
+            this.label68.Name = "label68";
+            this.label68.Size = new System.Drawing.Size(71, 13);
+            this.label68.TabIndex = 92;
+            this.label68.Text = "VLC Location";
+            // 
+            // flowLayoutPanel4
+            // 
+            this.flowLayoutPanel4.Controls.Add(this.button4);
+            this.flowLayoutPanel4.Controls.Add(this.label69);
+            this.flowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(401, 0);
+            this.flowLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(439, 33);
+            this.flowLayoutPanel4.TabIndex = 93;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(3, 3);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(33, 23);
+            this.button4.TabIndex = 2;
+            this.button4.Text = "...";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click_1);
+            // 
+            // label69
+            // 
+            this.label69.AutoSize = true;
+            this.label69.Location = new System.Drawing.Point(45, 6);
+            this.label69.Margin = new System.Windows.Forms.Padding(6);
+            this.label69.Name = "label69";
+            this.label69.Size = new System.Drawing.Size(41, 13);
+            this.label69.TabIndex = 3;
+            this.label69.Text = "label69";
+            this.label69.Click += new System.EventHandler(this.label69_Click);
             // 
             // tabPage1
             // 
@@ -2834,47 +2884,46 @@ namespace iSpyApplication
             this.tmrJSUpdate.Enabled = true;
             this.tmrJSUpdate.Tick += new System.EventHandler(this.tmrJSUpdate_Tick);
             // 
-            // label68
+            // label70
             // 
-            this.label68.AutoSize = true;
-            this.label68.Location = new System.Drawing.Point(274, 8);
-            this.label68.Margin = new System.Windows.Forms.Padding(6, 8, 6, 0);
-            this.label68.Name = "label68";
-            this.label68.Size = new System.Drawing.Size(71, 13);
-            this.label68.TabIndex = 92;
-            this.label68.Text = "VLC Location";
+            this.label70.AutoSize = true;
+            this.label70.Location = new System.Drawing.Point(274, 561);
+            this.label70.Margin = new System.Windows.Forms.Padding(6, 8, 6, 0);
+            this.label70.Name = "label70";
+            this.label70.Size = new System.Drawing.Size(67, 13);
+            this.label70.TabIndex = 94;
+            this.label70.Text = "Brand Image";
             // 
-            // button4
+            // flowLayoutPanel10
             // 
-            this.button4.Location = new System.Drawing.Point(3, 3);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(33, 23);
-            this.button4.TabIndex = 2;
-            this.button4.Text = "...";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click_1);
+            this.flowLayoutPanel10.Controls.Add(this.button5);
+            this.flowLayoutPanel10.Controls.Add(this.lblBrand);
+            this.flowLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel10.Location = new System.Drawing.Point(401, 553);
+            this.flowLayoutPanel10.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel10.Name = "flowLayoutPanel10";
+            this.flowLayoutPanel10.Size = new System.Drawing.Size(439, 33);
+            this.flowLayoutPanel10.TabIndex = 95;
             // 
-            // label69
+            // button5
             // 
-            this.label69.AutoSize = true;
-            this.label69.Location = new System.Drawing.Point(45, 6);
-            this.label69.Margin = new System.Windows.Forms.Padding(6);
-            this.label69.Name = "label69";
-            this.label69.Size = new System.Drawing.Size(41, 13);
-            this.label69.TabIndex = 3;
-            this.label69.Text = "label69";
-            this.label69.Click += new System.EventHandler(this.label69_Click);
+            this.button5.Location = new System.Drawing.Point(3, 3);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(33, 23);
+            this.button5.TabIndex = 1;
+            this.button5.Text = "...";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // flowLayoutPanel4
+            // lblBrand
             // 
-            this.flowLayoutPanel4.Controls.Add(this.button4);
-            this.flowLayoutPanel4.Controls.Add(this.label69);
-            this.flowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(401, 0);
-            this.flowLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
-            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            this.flowLayoutPanel4.Size = new System.Drawing.Size(439, 33);
-            this.flowLayoutPanel4.TabIndex = 93;
+            this.lblBrand.AutoSize = true;
+            this.lblBrand.Location = new System.Drawing.Point(45, 6);
+            this.lblBrand.Margin = new System.Windows.Forms.Padding(6);
+            this.lblBrand.Name = "lblBrand";
+            this.lblBrand.Size = new System.Drawing.Size(45, 13);
+            this.lblBrand.TabIndex = 2;
+            this.lblBrand.Text = "lblBrand";
             // 
             // Settings
             // 
@@ -2907,6 +2956,8 @@ namespace iSpyApplication
             this.flowLayoutPanel9.ResumeLayout(false);
             this.flowLayoutPanel9.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numMediaPanelItems)).EndInit();
+            this.flowLayoutPanel4.ResumeLayout(false);
+            this.flowLayoutPanel4.PerformLayout();
             this.tabPage1.ResumeLayout(false);
             this.flowLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel3.PerformLayout();
@@ -2970,8 +3021,8 @@ namespace iSpyApplication
             ((System.ComponentModel.ISupportInitialize)(this.numMaxLogSize)).EndInit();
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
-            this.flowLayoutPanel4.ResumeLayout(false);
-            this.flowLayoutPanel4.PerformLayout();
+            this.flowLayoutPanel10.ResumeLayout(false);
+            this.flowLayoutPanel10.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -3190,5 +3241,9 @@ namespace iSpyApplication
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
+        private System.Windows.Forms.Label label70;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel10;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Label lblBrand;
     }
 }

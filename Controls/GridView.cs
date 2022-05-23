@@ -39,6 +39,7 @@ namespace iSpyApplication.Controls
         private List<GridViewConfig> _controls;
         private int _itemwidth;
         private int _itemheight;
+        private Bitmap _brandImage;
 
         private const int ButtonCount = 11;
         private Rectangle ButtonPanel
@@ -347,6 +348,19 @@ namespace iSpyApplication.Controls
             base.OnPaint(pe);
         }
 
+        private Rectangle ScaleRect(Image img, Rectangle r)
+        {
+            var ar = Convert.ToDouble(img.Width) / img.Height;
+            var w = Math.Min(img.Width, r.Width);
+            var h = Convert.ToInt32(w / ar);
+            if (h > r.Height)
+            {
+                h = r.Height;
+                w = Convert.ToInt32(h * ar);
+            }
+            return new Rectangle(r.Left + r.Width/2 - w/2,r.Top + r.Height/2 - h/2, w, h);
+        }
+
         private void DoPaint(PaintEventArgs pe)
         {
             Graphics gGrid = pe.Graphics;
@@ -404,14 +418,35 @@ namespace iSpyApplication.Controls
                         {
                             case 0:
                             {
+                                    if (!string.IsNullOrEmpty(MainForm.Conf.BrandPath))
+                                    {
+                                        if (_brandImage == null)
+                                        {
+                                            try
+                                            {
+                                                _brandImage = (Bitmap)Image.FromFile(MainForm.Conf.BrandPath);
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                Logger.LogException(ex,"Brand Image invalid - resetting");
+                                                MainForm.Conf.BrandPath = "";
+                                            }
+                                        }
+                                        if (_brandImage != null)
+                                            gGrid.DrawImage(_brandImage, ScaleRect(_brandImage, new Rectangle(r.Location, new Size(r.Width, r.Height-20))));
 
-                                string m = LocRm.GetString("AddObjects");
-                                int txtOffline = Convert.ToInt32(gGrid.MeasureString(m,
-                                                                                     Iconfont).Width);
+                                    }
+                                    else
+                                    {
+                                        //    gGrid.DrawImage()
+                                        string m = LocRm.GetString("AddObjects");
+                                        int txtOffline = Convert.ToInt32(gGrid.MeasureString(m,
+                                                                                             Iconfont).Width);
 
-                                gGrid.DrawString(m, Iconfont, OverlayBrush,
-                                                 x + _itemwidth / 2 - (txtOffline / 2),
-                                                 y + _itemheight / 2);
+                                        gGrid.DrawString(m, Iconfont, OverlayBrush,
+                                                         x + _itemwidth / 2 - (txtOffline / 2),
+                                                         y + _itemheight / 2);
+                                    }
                             }
                                 break;
                             case 1:
