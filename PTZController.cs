@@ -111,7 +111,7 @@ namespace iSpyApplication
             }
         }
 
-        internal bool DigitalPTZ => PTZSettings == null;
+        internal bool DigitalPTZ => _cameraControl.Camobject.ptz == -1;
 
 
         public PTZController(CameraWindow cameraControl)
@@ -163,7 +163,7 @@ namespace iSpyApplication
             _ptzSettings = null;
         }
 
-        public void SendPTZDirection(double angle)
+        public void SendPTZDirection(double angle, int xPos = 0, int yPos = 0)
         {
             if (_cameraControl.Camobject.settings.ptzrotate90)
             {
@@ -232,8 +232,8 @@ namespace iSpyApplication
                     if (cmd != Enums.PtzCommand.Stop)
                     {
                         //ignore - continuous
-                        if (_lastCommand == cmd)
-                            return;
+                        //if (_lastCommand == cmd)
+                        //    return;
                     }
                 }
                 switch (_cameraControl.Camobject.ptz)
@@ -254,7 +254,7 @@ namespace iSpyApplication
                         ProcessPelco(cmd, false);
                         return;
                     case -5://ONVIF
-                        ProcessOnvif(cmd);
+                        ProcessOnvif(cmd, xPos, yPos);
                         break;
                     case -6:
                         //none - ignore
@@ -370,7 +370,7 @@ namespace iSpyApplication
         }
 
 
-        public void SendPTZCommand(Enums.PtzCommand command)
+        public void SendPTZCommand(Enums.PtzCommand command, int x= 0, int y= 0)
         {
             if (_cameraControl.Camera == null)
                 return;
@@ -751,16 +751,49 @@ namespace iSpyApplication
 
         private Enums.PtzCommand _lastOnvifCommand = Enums.PtzCommand.Center;
         private DateTime _lastOnvifCommandSent = DateTime.MinValue;
+        private float _lastPanSpeed = 0.0f;
+        private float _lastTiltSpeed = 0.0f;
 
-        void ProcessOnvif(Enums.PtzCommand command)
+        void ProcessOnvif(Enums.PtzCommand command, int xPos=0, int yPos=0)
         {
+
+            var panSpeed = (float)0.5;
+            var tiltSpeed = (float)0.5;
+
             if (!_cameraControl.ONVIFConnected)
                 return;
 
-            if (command == _lastOnvifCommand && _lastOnvifCommandSent > DateTime.UtcNow.AddSeconds(-4))
+            if (xPos != 0)
+            {
+                xPos = Math.Abs(xPos);
+                if (xPos > 100)
+                    xPos = 100;
+                if (xPos < 0)
+                    xPos = 0;
+
+                panSpeed = (float)(0.5 * (1 + (Math.Tanh((xPos - 50)/ 20)) ));
+
+            }
+
+            if (yPos != 0)
+            {
+                yPos = Math.Abs(yPos);
+                if (yPos > 100)
+                    yPos = 100;
+                if (yPos < 0)
+                    yPos = 0;
+
+                tiltSpeed = (float)(0.5 * (1 + (Math.Tanh((yPos - 50) / 20))));
+            }
+
+            if (command == _lastOnvifCommand && _lastOnvifCommandSent > DateTime.UtcNow.AddSeconds(-4) &&
+                panSpeed == _lastPanSpeed && tiltSpeed == _lastTiltSpeed)
                 return;
             _lastOnvifCommand = command;
             _lastOnvifCommandSent = DateTime.UtcNow;
+            _lastPanSpeed = panSpeed;
+            _lastTiltSpeed = tiltSpeed;
+
 
             var od = _cameraControl?.ONVIFDevice;
             var ptz = od?.PTZ;
@@ -775,8 +808,8 @@ namespace iSpyApplication
                 try
                 {
                     _lastCommand = command;
-                    var panSpeed = (float)0.5;
-                    var tiltSpeed = (float)0.5;
+                    //var panSpeed = (float)0.5;
+                    //var tiltSpeed = (float)0.5;
                     var zoomSpeed = (float)1;
                     switch (command)
                     {
