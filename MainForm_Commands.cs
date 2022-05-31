@@ -638,6 +638,7 @@ namespace iSpyApplication
                     if (c is CameraWindow || c is VolumeLevel || c is FloorPlanControl)
                     {
                         _pnlCameras.Maximise(c);
+                        ShowHidePTZCommandButtons();
                     }
                     break;
                 case "delete":

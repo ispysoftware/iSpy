@@ -99,7 +99,6 @@
         <xs:element name="ViewController" type="xs:boolean" default="true"/>
         <xs:element name="LayoutMode" type="xs:int" default="0"/>
         <xs:element name="ShowPTZController" type="xs:boolean" default="false"/>
-        <xs:element name="ShowPTZCommandButtons" type="xs:boolean" default="false"/>
         <xs:element name="BigButtons" type="xs:boolean" default="false"/>
         <xs:element name="LockLayout" type="xs:boolean" default="false"/>
         <xs:element name="MediaPanelSize" type="xs:string" default=""/>
@@ -150,8 +149,6 @@
         <xs:element name="Tags" type="xs:string" default=""/>
         <xs:element name="PortMapperMode" type="xs:int" default="2"/>
         <xs:element name="ArrangeMode" type="xs:int" default="0"/>
-		<xs:element name="BrandPath" type="xs:string" default=""/>
-		  
         <xsd:element name="GPU">
           <xsd:complexType>
             <xsd:attribute name="nVidia" type="xsd:boolean" default="false" />

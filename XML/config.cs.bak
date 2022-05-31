@@ -37,9 +37,7 @@ public partial class configuration {
     private string motion_WSActivity_iSpyField;
     
     private bool enable_Error_ReportingField;
-
-    private bool is_silent_startup_CheckField;
-
+    
     private bool enable_Update_CheckField;
     
     private string password_Protect_PasswordField;
@@ -217,9 +215,7 @@ public partial class configuration {
     private int layoutModeField;
     
     private bool showPTZControllerField;
-
-    private bool showPTZCommandButtonsField;
-
+    
     private bool bigButtonsField;
     
     private bool lockLayoutField;
@@ -320,8 +316,6 @@ public partial class configuration {
     
     private int arrangeModeField;
     
-    private string brandPathField;
-    
     private configurationGPU gPUField;
     
     private configurationLogging loggingField;
@@ -366,7 +360,6 @@ public partial class configuration {
         this.viewControllerField = true;
         this.layoutModeField = 0;
         this.showPTZControllerField = false;
-        this.showPTZCommandButtonsField = false;
         this.bigButtonsField = false;
         this.lockLayoutField = false;
         this.mediaPanelSizeField = "";
@@ -415,7 +408,6 @@ public partial class configuration {
         this.tagsField = "";
         this.portMapperModeField = 2;
         this.arrangeModeField = 0;
-        this.brandPathField = "";
     }
     
     /// <remarks/>
@@ -487,20 +479,7 @@ public partial class configuration {
             this.enable_Error_ReportingField = value;
         }
     }
-
-    /// <remarks/>
-    public bool Is_Silent_Startup_Check
-    {
-        get
-        {
-            return this.is_silent_startup_CheckField;
-        }
-        set
-        {
-            this.is_silent_startup_CheckField = value;
-        }
-    }
-
+    
     /// <remarks/>
     public bool Enable_Update_Check {
         get {
@@ -1390,21 +1369,7 @@ public partial class configuration {
             this.showPTZControllerField = value;
         }
     }
-
-    /// <remarks/>
-    public bool ShowPTZCommandButtons
-    {
-        get
-        {
-            return this.showPTZCommandButtonsField;
-        }
-        set
-        {
-            this.showPTZCommandButtonsField = value;
-        }
-    }
-
-
+    
     /// <remarks/>
     public bool BigButtons {
         get {
@@ -1902,16 +1867,6 @@ public partial class configuration {
         }
         set {
             this.arrangeModeField = value;
-        }
-    }
-    
-    /// <remarks/>
-    public string BrandPath {
-        get {
-            return this.brandPathField;
-        }
-        set {
-            this.brandPathField = value;
         }
     }
     

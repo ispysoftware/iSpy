@@ -328,6 +328,7 @@ namespace iSpyApplication
         private ToolStripMenuItem _positionToolStripMenuItem;
         private FormWindowState _previousWindowState = FormWindowState.Normal;
         private PTZTool _ptzTool;
+        private PTZCommandButtons _ptzCommandButtons;
         private ToolStripMenuItem _recordNowToolStripMenuItem;
         private ToolStripMenuItem _remoteCommandsToolStripMenuItem;
         private ToolStripMenuItem _resetRecordingCounterToolStripMenuItem;
@@ -392,6 +393,7 @@ namespace iSpyApplication
         private MenuItem menuItem16;
         private MenuItem menuItem17;
         private MenuItem menuItem18;
+        private MenuItem menuItem52;
         private MenuItem menuItem19;
         private MenuItem menuItem2;
         private MenuItem menuItem20;
@@ -419,6 +421,7 @@ namespace iSpyApplication
         private ToolStripMenuItem otherVideoSourceToolStripMenuItem;
         private ToolStripMenuItem pTZControllerToolStripMenuItem;
         private ToolStripMenuItem pTZControllerToolStripMenuItem1;
+        private ToolStripMenuItem pTZCommandButtonsToolStripMenuItem;
         private ToolStripMenuItem pTZToolStripMenuItem;
         private Panel panel2;
         private ToolStripMenuItem pluginCommandsToolStripMenuItem;
@@ -1322,8 +1325,14 @@ namespace iSpyApplication
             pTZControllerToolStripMenuItem.Checked =
                 menuItem18.Checked = pTZControllerToolStripMenuItem1.Checked = Conf.ShowPTZController;
 
+            menuItem52.Checked = pTZCommandButtonsToolStripMenuItem.Checked =  Conf.ShowPTZCommandButtons;
+
+
             if (Conf.ShowPTZController && !SilentStartup)
                 ShowHidePTZTool();
+
+            if (Conf.ShowPTZCommandButtons && !SilentStartup)
+                ShowHidePTZCommandButtons();
 
 
             ListGridViews();
@@ -1751,6 +1760,7 @@ namespace iSpyApplication
             LocRm.SetString(menuItem17, "Left");
             LocRm.SetString(menuItem19, "Right");
             LocRm.SetString(menuItem18, "PTZController");
+            LocRm.SetString(menuItem52, "PTZCommandButtons");
             LocRm.SetString(tsslPerformance, "PerfTips");
             LocRm.SetString(menuItem21, "Optimised");
             LocRm.SetString(_menuItem29, "Current");
@@ -1781,6 +1791,7 @@ namespace iSpyApplication
                         _viewMediaOnAMobileDeviceToolStripMenuItem.Visible =
                             _menuItem25.Visible = _menuItem4.Visible = (Helper.HasFeature(Enums.Features.Web_Settings));
             menuItem18.Visible = (Helper.HasFeature(Enums.Features.PTZ));
+            menuItem52.Visible = pTZCommandButtonsToolStripMenuItem.Visible = (Helper.HasFeature(Enums.Features.PTZ));
             tsbPlugins.Visible = (Helper.HasFeature(Enums.Features.Plugins));
             _localCameraToolStripMenuItem.Visible = (Helper.HasFeature(Enums.Features.Source_Local));
             _iPCameraToolStripMenuItem.Visible =
@@ -1805,7 +1816,7 @@ namespace iSpyApplication
 
             _menuItem17.Visible = _menuItem18.Visible = menuItem17.Visible =
                 menuItem23.Visible =
-                    menuItem25.Visible = menuItem18.Visible = menuItem7.Visible = Helper.HasFeature(Enums.Features.Access_Media);
+                    menuItem25.Visible = menuItem18.Visible = menuItem52.Visible = pTZCommandButtonsToolStripMenuItem.Visible = menuItem7.Visible = Helper.HasFeature(Enums.Features.Access_Media);
 
             _toolStripDropDownButton2.Visible = _editToolStripMenuItem.Visible = _menuItem36.Visible = _menuItem31.Visible = Helper.HasFeature(Enums.Features.Edit);
             
@@ -3902,6 +3913,14 @@ namespace iSpyApplication
             }
         }
 
+        public void PTZCommandButtonsUpdate(CameraWindow cw)
+        {
+            if (_ptzCommandButtons != null)
+            {
+                _ptzCommandButtons.CameraControl = cw;
+            }
+        }
+
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
@@ -4209,6 +4228,57 @@ namespace iSpyApplication
             ShowHidePTZTool();
         }
 
+        private void pTZCommandButtonsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            pTZCommandButtonsToolStripMenuItem.Checked = !pTZCommandButtonsToolStripMenuItem.Checked;
+            menuItem52.Checked = pTZCommandButtonsToolStripMenuItem.Checked;
+            Conf.ShowPTZCommandButtons = pTZCommandButtonsToolStripMenuItem.Checked;
+            ShowHidePTZCommandButtons();
+        }
+
+
+        private void ShowHidePTZCommandButtons()
+        {
+            if (_ptzCommandButtons != null)
+            {
+                _ptzCommandButtons.Close();
+            }
+            else
+            {
+                if (pTZCommandButtonsToolStripMenuItem.Checked)
+                {
+                    _ptzCommandButtons = new PTZCommandButtons { Owner = this };
+                    _ptzCommandButtons.Show(this);
+                    _ptzCommandButtons.Closing += PTZCommandButtonsClosing;
+                    _ptzCommandButtons.CameraControl = null;
+
+                    bool noneFocused = true;
+                    for (int i = 0; i < _pnlCameras.Controls.Count; i++)
+                    {
+                        Control c = _pnlCameras.Controls[i];
+                        if (c.Focused && c is CameraWindow)
+                        {
+                            noneFocused = false;
+                            _ptzCommandButtons.CameraControl = (CameraWindow)c;
+                            break;
+                        }
+                    }
+
+                    // when returning from maximized video screen - no camera gets the focus; programmatically force _ptzCommandButtons to be opened
+                    if (noneFocused)
+                    {
+                        Control c = _pnlCameras.Controls[0];
+                        if (c is CameraWindow)
+                        {
+                            _ptzCommandButtons.CameraControl = (CameraWindow)c;
+                        }
+                    }
+                }
+                
+            }
+               
+
+        }
         private void ShowHidePTZTool()
         {
             bool bShow = true;
@@ -4237,6 +4307,12 @@ namespace iSpyApplication
                 menuItem18.Checked = pTZControllerToolStripMenuItem1.Checked = bShow;
             Conf.ShowPTZController = bShow;
         }
+
+        private void PTZCommandButtonsClosing(object sender, CancelEventArgs e)
+        {
+            _ptzCommandButtons = null;
+        }
+
 
         private void PTZToolClosing(object sender, CancelEventArgs e)
         {
@@ -4670,6 +4746,7 @@ namespace iSpyApplication
             this.menuItem23 = new System.Windows.Forms.MenuItem();
             this.menuItem14 = new System.Windows.Forms.MenuItem();
             this.menuItem18 = new System.Windows.Forms.MenuItem();
+            this.menuItem52 = new System.Windows.Forms.MenuItem();
             this.menuItem24 = new System.Windows.Forms.MenuItem();
             this.menuItem8 = new System.Windows.Forms.MenuItem();
             this._menuItem9 = new System.Windows.Forms.MenuItem();
@@ -4769,6 +4846,7 @@ namespace iSpyApplication
             this._takePhotoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pTZToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pTZControllerToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.pTZCommandButtonsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._listenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tagsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -4942,6 +5020,7 @@ namespace iSpyApplication
             this.menuItem23,
             this.menuItem14,
             this.menuItem18,
+            this.menuItem52,
             this.menuItem24,
             this.menuItem8});
             this._menuItem16.Text = "&View";
@@ -5241,14 +5320,20 @@ namespace iSpyApplication
             this.menuItem18.Text = "PTZ Controller";
             this.menuItem18.Click += new System.EventHandler(this.menuItem18_Click);
             // 
+            // menuItem52
+            // 
+            this.menuItem52.Index = 21;
+            this.menuItem52.Text = "PTZ Command Buttons";
+            this.menuItem52.Click += new System.EventHandler(this.pTZCommandButtonsToolStripMenuItem_Click);
+            // 
             // menuItem24
             // 
-            this.menuItem24.Index = 21;
+            this.menuItem24.Index = 22;
             this.menuItem24.Text = "-";
             // 
             // menuItem8
             // 
-            this.menuItem8.Index = 22;
+            this.menuItem8.Index = 23;
             this.menuItem8.Text = "Always on Top";
             this.menuItem8.Click += new System.EventHandler(this.alwaysOnTopToolStripMenuItem1_Click);
             // 
@@ -6083,6 +6168,13 @@ namespace iSpyApplication
             this.pTZControllerToolStripMenuItem1.Size = new System.Drawing.Size(150, 22);
             this.pTZControllerToolStripMenuItem1.Text = "PTZ Controller";
             this.pTZControllerToolStripMenuItem1.Click += new System.EventHandler(this.pTZControllerToolStripMenuItem1_Click);
+            // 
+            // pTZCommandButtonsToolStripMenuItem
+            // 
+            this.pTZCommandButtonsToolStripMenuItem.Name = "pTZCommandButtonsToolStripMenuItem";
+            this.pTZCommandButtonsToolStripMenuItem.Size = new System.Drawing.Size(179, 26);
+            this.pTZCommandButtonsToolStripMenuItem.Text = "PTZ Command Buttons";
+            this.pTZCommandButtonsToolStripMenuItem.Click += new System.EventHandler(this.pTZCommandButtonsToolStripMenuItem_Click);
             // 
             // _listenToolStripMenuItem
             // 

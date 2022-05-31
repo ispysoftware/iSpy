@@ -1295,7 +1295,6 @@ namespace iSpyApplication.Controls
         protected override void OnGotFocus(EventArgs e)
         {
             MainForm.InstanceReference.PTZToolUpdate(this);
-            MainForm.InstanceReference.PTZCommandButtonsUpdate(this);
             MainForm.InstanceReference.LastFocussedControl = this;
             _requestRefresh = true;
             base.OnGotFocus(e);

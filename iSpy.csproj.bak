@@ -1,0 +1,3014 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F4799C73-DEE9-48F2-B626-32149CC30976}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>ispy.ico</ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>iSpy</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>iSpyApplication</RootNamespace>
+    <StartupObject>Program</StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <PublishUrl>ftp://216.119.95.247/hosting/ispy/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.3.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <PlatformTarget>x64</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <FileAlignment>4096</FileAlignment>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\iSpy.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>BasicCorrectnessRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisRuleDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <Optimize>false</Optimize>
+    <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <FileAlignment>4096</FileAlignment>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\iSpy.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;c:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>233F35CC31FF4D02C2C1B6729641FF7C82CFD2A3</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>iSpyApplication_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(Platform)' == 'x64'">
+    <Reference Include="Interop.NETWORKLIST, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>DLLS\x64\Interop.NETWORKLIST.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Platform)' == 'x86'">
+    <Reference Include="Interop.NETWORKLIST, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>DLLS\x86\Interop.NETWORKLIST.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="AForge, Version=2.2.3.0, Culture=neutral, PublicKeyToken=c1db6ff4eaa06aeb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLLS\AForge.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Imaging, Version=2.5.3.0, Culture=neutral, PublicKeyToken=ba8ddea9676ca48b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLLS\AForge.Imaging.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Math, Version=2.2.3.0, Culture=neutral, PublicKeyToken=abba2e25397ee8c9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLLS\AForge.Math.dll</HintPath>
+    </Reference>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.5.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>packages\BouncyCastle.1.8.5\lib\BouncyCastle.Crypto.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FFmpeg.AutoGen, Version=4.2.2.1, Culture=neutral, PublicKeyToken=9b7632533a381715, processorArchitecture=MSIL">
+      <HintPath>packages\FFmpeg.AutoGen.4.2.2.1\lib\net45\FFmpeg.AutoGen.dll</HintPath>
+    </Reference>
+    <Reference Include="FlickrNet, Version=3.26.0.0, Culture=neutral, PublicKeyToken=2491df59efa5d132, processorArchitecture=MSIL">
+      <HintPath>packages\FlickrNet.3.26.0\lib\net20\FlickrNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis, Version=1.44.1.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.1.44.1\lib\net45\Google.Apis.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Auth, Version=1.44.1.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.Auth.1.44.1\lib\net45\Google.Apis.Auth.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.44.1.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.Auth.1.44.1\lib\net45\Google.Apis.Auth.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Core, Version=1.44.1.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.Core.1.44.1\lib\net45\Google.Apis.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Drive.v3, Version=1.44.1.1888, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.Drive.v3.1.44.1.1888\lib\net45\Google.Apis.Drive.v3.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.PlatformServices, Version=1.44.1.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>packages\Google.Apis.1.44.1\lib\net45\Google.Apis.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.NATUPNPLib">
+      <HintPath>DLLS\Interop.NATUPNPLib.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.NETCONLib">
+      <HintPath>DLLS\Interop.NETCONLib.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.NetFwTypeLib">
+      <HintPath>DLLS\Interop.NetFwTypeLib.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="LibVLCSharp, Version=3.6.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\LibVLCSharp.3.6.6\lib\net471\LibVLCSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="LibVLCSharp.WinForms, Version=3.6.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\LibVLCSharp.WinForms.3.6.6\lib\net40\LibVLCSharp.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>packages\log4net.2.0.14\lib\net45\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Kinect, Version=1.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLLS\Microsoft.Kinect.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop, Version=1.0.168.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NAudio, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLLS\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio.Lame, Version=1.0.3.3048, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLLS\NAudio.Lame.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NSpeex">
+      <HintPath>DLLS\NSpeex.dll</HintPath>
+    </Reference>
+    <Reference Include="Renci.SshNet">
+      <HintPath>DLLS\Renci.SshNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Renderers">
+      <HintPath>DLLS\Renderers.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=107.3.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>packages\RestSharp.107.3.0\lib\netstandard2.0\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>packages\SharpDX.4.2.0\lib\net45\SharpDX.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpDX.DirectInput, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>packages\SharpDX.DirectInput.4.2.0\lib\net45\SharpDX.DirectInput.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Channels" />
+    <Reference Include="System.ServiceModel.Discovery" />
+    <Reference Include="System.Speech" />
+    <Reference Include="System.Text.Encodings.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Text.Encodings.Web.6.0.0\lib\net461\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Text.Json.5.0.0\lib\net461\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <Reference Include="Windows7ToolStripRenderer">
+      <HintPath>DLLS\Windows7ToolStripRenderer.dll</HintPath>
+    </Reference>
+    <Reference Include="xiApi.NET">
+      <HintPath>DLLS\xiApi.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="Zlib.Portable, Version=1.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)packages\Zlib.Portable.1.11.0\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddFloorPlan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddFloorPlan.Designer.cs">
+      <DependentUpon>AddFloorPlan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddRemoteCommand.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddRemoteCommand.Designer.cs">
+      <DependentUpon>AddRemoteCommand.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CameraDiscovery\CameraScanner.cs" />
+    <Compile Include="CameraDiscovery\URLDiscovery.cs" />
+    <Compile Include="Cloud\Box.cs" />
+    <Compile Include="Cloud\CloudGateway.cs" />
+    <Compile Include="Cloud\Drive.cs" />
+    <Compile Include="Cloud\Dropbox.cs" />
+    <Compile Include="Cloud\Flickr.cs" />
+    <Compile Include="Cloud\OneDrive.cs" />
+    <Compile Include="Cloud\YouTubeUploader.cs" />
+    <Compile Include="CommandButtons.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CommandButtons.Designer.cs">
+      <DependentUpon>CommandButtons.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Authorizer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\Authorizer.Designer.cs">
+      <DependentUpon>Authorizer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AutoCompleteTextbox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ColorSlider.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\HuePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ONVIFWizard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ONVIFWizard.Designer.cs">
+      <DependentUpon>ONVIFWizard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\PTZUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PTZUI.Designer.cs">
+      <DependentUpon>PTZUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ScheduleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ScheduleEditor.Designer.cs">
+      <DependentUpon>ScheduleEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ScheduleEntryEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\ScheduleEntryEditor.Designer.cs">
+      <DependentUpon>ScheduleEntryEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ScheduleRow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ScheduleRow.Designer.cs">
+      <DependentUpon>ScheduleRow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TagEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\TagEditor.Designer.cs">
+      <DependentUpon>TagEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TagEntry.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\TagEntry.Designer.cs">
+      <DependentUpon>TagEntry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FindObject.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FindObject.Designer.cs">
+      <DependentUpon>FindObject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Importer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Importer.Designer.cs">
+      <DependentUpon>Importer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Onvif\Behaviour\CustomAddressHeader.cs" />
+    <Compile Include="Onvif\Behaviour\CustomEndpointBehavior.cs" />
+    <Compile Include="Onvif\Behaviour\CustomMessageInspector.cs" />
+    <Compile Include="Onvif\ConnectionParameters.cs" />
+    <Compile Include="Onvif\ConnectionStateInfo.cs" />
+    <Compile Include="Onvif\Discovery.cs" />
+    <Compile Include="Onvif\IOnvifClientFactory.cs" />
+    <Compile Include="Onvif\MulticastCapabilitiesBindingElement.cs" />
+    <Compile Include="Onvif\NetworkCredentialExtensions.cs" />
+    <Compile Include="Onvif\OnvifClientFactory.cs" />
+    <Compile Include="Onvif\ONVIFDevice.cs" />
+    <Compile Include="Onvif\Security\DigestSecurityHeader.cs" />
+    <Compile Include="Onvif\Security\SecurityToken.cs" />
+    <Compile Include="PlayerVLC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PlayerVLC.Designer.cs">
+      <DependentUpon>PlayerVLC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PTZConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PTZConfig.Designer.cs">
+      <DependentUpon>PTZConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Realtime\MediaWriter.cs" />
+    <Compile Include="Server\Conf.cs" />
+    <Compile Include="Server\ConnectionOption.cs" />
+    <Compile Include="Server\HTTPRequest.cs" />
+    <Compile Include="Server\JSONServer.cs" />
+    <Compile Include="Server\NetworkDeviceList.cs" />
+    <Compile Include="Server\RestartableStream.cs" />
+    <Compile Include="Server\Scanner.cs" />
+    <Compile Include="Server\SourceItem.cs" />
+    <Compile Include="Server\WebSocketConnection.cs" />
+    <Compile Include="Server\WebSocketServer.cs" />
+    <Compile Include="Server\X509.cs" />
+    <Compile Include="Service References\OnvifServices\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Sources\Audio\AudioReader.cs" />
+    <Compile Include="Sources\Audio\talk\TalkAmcrest.cs" />
+    <Compile Include="Sources\Audio\talk\TalkDoorbird.cs" />
+    <Compile Include="Sources\Audio\talk\TalkFoscam.cs" />
+    <Compile Include="Sources\Audio\talk\WaveFormatConverter.cs" />
+    <Compile Include="Sources\Video\FFmpegBase.cs" />
+    <Compile Include="Sources\Video\MediaStream.cs" />
+    <Compile Include="Sources\Video\Tokeniser.cs" />
+    <Compile Include="Sources\Video\VideoBase.cs" />
+    <Compile Include="TagConfigure.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TagConfigure.Designer.cs">
+      <DependentUpon>TagConfigure.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\ConnectionFactory.cs" />
+    <Compile Include="Controls\ActionEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ActionEditor.Designer.cs">
+      <DependentUpon>ActionEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AddCommandButton.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\AddCommandButton.Designer.cs">
+      <DependentUpon>AddCommandButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AlertEventRow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\AlertEventRow.Designer.cs">
+      <DependentUpon>AlertEventRow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AlertSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\AlertSettings.Designer.cs">
+      <DependentUpon>AlertSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AppLoop.cs" />
+    <Compile Include="Controls\CameraWindow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\CommandButtonControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\CommandButtonControl.Designer.cs">
+      <DependentUpon>CommandButtonControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CopyTo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\CopyTo.Designer.cs">
+      <DependentUpon>CopyTo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DirectoryEventRow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DirectoryEventRow.Designer.cs">
+      <DependentUpon>DirectoryEventRow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EditCommandButton.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\EditCommandButton.Designer.cs">
+      <DependentUpon>EditCommandButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Filter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\Filter.Designer.cs">
+      <DependentUpon>Filter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FishEyeCorrect.cs" />
+    <Compile Include="Controls\FlowLayoutPanelTransparent.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\FolderSelectDialog.cs" />
+    <Compile Include="Controls\FTPConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\FTPConfig.Designer.cs">
+      <DependentUpon>FTPConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FTPEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FTPEditor.Designer.cs">
+      <DependentUpon>FTPEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GraphicsHelper.cs" />
+    <Compile Include="Controls\GridViewCamera.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\GridViewCamera.Designer.cs">
+      <DependentUpon>GridViewCamera.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GridViewCustom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\GridViewCustom.Designer.cs">
+      <DependentUpon>GridViewCustom.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GridViewItem.cs" />
+    <Compile Include="Controls\GridViewModeConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\GridViewModeConfig.Designer.cs">
+      <DependentUpon>GridViewModeConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\IntervalConfig.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\IntervalConfig.Designer.cs">
+      <DependentUpon>IntervalConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ISpyControl.cs" />
+    <Compile Include="Controls\jaxis.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\jaxis.Designer.cs">
+      <DependentUpon>jaxis.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\jbutton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\jbutton.Designer.cs">
+      <DependentUpon>jbutton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MediaDirectoryConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\MediaDirectoryConfig.Designer.cs">
+      <DependentUpon>MediaDirectoryConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MediaDirectoryEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MediaDirectoryEditor.Designer.cs">
+      <DependentUpon>MediaDirectoryEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MediaPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\MediaPanel.Designer.cs">
+      <DependentUpon>MediaPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MediaPanelControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MediaPanelControl.Designer.cs">
+      <DependentUpon>MediaPanelControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MediaPanelControlButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ParamConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\ParamConfig.Designer.cs">
+      <DependentUpon>ParamConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PermissionsForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PermissionsForm.Designer.cs">
+      <DependentUpon>PermissionsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PiPConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\PiPConfig.Designer.cs">
+      <DependentUpon>PiPConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PiPSelector.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\PiPSelector.Designer.cs">
+      <DependentUpon>PiPSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PTZScheduler.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\PTZScheduler.Designer.cs">
+      <DependentUpon>PTZScheduler.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PTZTracking.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\PTZTracking.Designer.cs">
+      <DependentUpon>PTZTracking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Reflector.cs" />
+    <Compile Include="Controls\SelectObjects.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\SelectObjects.Designer.cs">
+      <DependentUpon>SelectObjects.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ServerEventRow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ServerEventRow.Designer.cs">
+      <DependentUpon>ServerEventRow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TextToSpeech.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\TextToSpeech.Designer.cs">
+      <DependentUpon>TextToSpeech.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ThreadSafeCommand.cs" />
+    <Compile Include="Controls\VideoPlayback.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Delegates.cs" />
+    <Compile Include="DirectShow\CameraControlProperty.cs" />
+    <Compile Include="DirectShow\FilterInfo.cs" />
+    <Compile Include="DirectShow\FilterInfoCollection.cs" />
+    <Compile Include="DirectShow\Internals\IAMCameraControl.cs" />
+    <Compile Include="DirectShow\Internals\IAMCrossbar.cs" />
+    <Compile Include="DirectShow\Internals\IAMStreamConfig.cs" />
+    <Compile Include="DirectShow\Internals\IAMVfwCompressDialogs.cs" />
+    <Compile Include="DirectShow\Internals\IAMVideoControl.cs" />
+    <Compile Include="DirectShow\Internals\IAMVideoProcAmp.cs" />
+    <Compile Include="DirectShow\Internals\IBaseFilter.cs" />
+    <Compile Include="DirectShow\Internals\ICaptureGraphBuilder2.cs" />
+    <Compile Include="DirectShow\Internals\ICreateDevEnum.cs" />
+    <Compile Include="DirectShow\Internals\IEnumFilters.cs" />
+    <Compile Include="DirectShow\Internals\IEnumPins.cs" />
+    <Compile Include="DirectShow\Internals\IFileSourceFilter.cs" />
+    <Compile Include="DirectShow\Internals\IFilterGraph.cs" />
+    <Compile Include="DirectShow\Internals\IFilterGraph2.cs" />
+    <Compile Include="DirectShow\Internals\IGraphBuilder.cs" />
+    <Compile Include="DirectShow\Internals\IMediaControl.cs" />
+    <Compile Include="DirectShow\Internals\IMediaEventEx.cs" />
+    <Compile Include="DirectShow\Internals\IMediaFilter.cs" />
+    <Compile Include="DirectShow\Internals\IPersist.cs" />
+    <Compile Include="DirectShow\Internals\IPin.cs" />
+    <Compile Include="DirectShow\Internals\IPropertyBag.cs" />
+    <Compile Include="DirectShow\Internals\IReferenceClock.cs" />
+    <Compile Include="DirectShow\Internals\ISampleGrabber.cs" />
+    <Compile Include="DirectShow\Internals\ISampleGrabberCB.cs" />
+    <Compile Include="DirectShow\Internals\ISpecifyPropertyPages.cs" />
+    <Compile Include="DirectShow\Internals\IVideoWindow.cs" />
+    <Compile Include="DirectShow\Internals\Structures.cs" />
+    <Compile Include="DirectShow\Internals\Tools.cs" />
+    <Compile Include="DirectShow\Internals\Uuids.cs" />
+    <Compile Include="DirectShow\PhysicalConnectorType.cs" />
+    <Compile Include="DirectShow\Uuids.cs" />
+    <Compile Include="DirectShow\VideoCapabilities.cs" />
+    <Compile Include="DirectShow\VideoInput.cs" />
+    <Compile Include="EncDec.cs" />
+    <Compile Include="Events.cs" />
+    <Compile Include="Features.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Features.Designer.cs">
+      <DependentUpon>Features.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GridViewManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GridViewManager.Designer.cs">
+      <DependentUpon>GridViewManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Joystick\JoystickDevice.cs" />
+    <Compile Include="Kinect\ConfigureTripWires.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Kinect\ConfigureTripWires.Designer.cs">
+      <DependentUpon>ConfigureTripWires.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AngleSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\AngleSelector.designer.cs">
+      <DependentUpon>AngleSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AreaSelector.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\AreaSelector.Designer.cs">
+      <DependentUpon>AreaSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CameraMicSource.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CameraMicSource.Designer.cs">
+      <DependentUpon>CameraMicSource.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigureSeconds.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigureSeconds.Designer.cs">
+      <DependentUpon>ConfigureSeconds.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigureProcessor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigureProcessor.Designer.cs">
+      <DependentUpon>ConfigureProcessor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigureTimestamp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigureTimestamp.Designer.cs">
+      <DependentUpon>ConfigureTimestamp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigureObjectCount.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigureObjectCount.Designer.cs">
+      <DependentUpon>ConfigureObjectCount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigureRepeat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigureRepeat.Designer.cs">
+      <DependentUpon>ConfigureRepeat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ClipboardTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ClipboardTextBox.Designer.cs">
+      <DependentUpon>ClipboardTextBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Ranger.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Ranger.designer.cs">
+      <DependentUpon>Ranger.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="downloader.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="downloader.Designer.cs">
+      <DependentUpon>downloader.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FileOperations.cs" />
+    <Compile Include="GridView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GridView.Designer.cs">
+      <DependentUpon>GridView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Kinect\DepthLine.cs" />
+    <Compile Include="Kinect\EditDepthLine.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Kinect\EditDepthLine.Designer.cs">
+      <DependentUpon>EditDepthLine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Kinect\TripWireEditor.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="LayoutItem.cs" />
+    <Compile Include="Mailer.cs" />
+    <Compile Include="MainForm_Commands.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm_Configuration.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm_Media.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Merger.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Merger.Designer.cs">
+      <DependentUpon>Merger.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MicrophoneSourceAdvanced.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MicrophoneSourceAdvanced.Designer.cs">
+      <DependentUpon>MicrophoneSourceAdvanced.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MimeTypes.cs" />
+    <Compile Include="NotSubscribed.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NotSubscribed.Designer.cs">
+      <DependentUpon>NotSubscribed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pager.Designer.cs">
+      <DependentUpon>Pager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pelco\D.cs" />
+    <Compile Include="Pelco\P.cs" />
+    <Compile Include="Pelco\PelcoConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pelco\PelcoConfig.Designer.cs">
+      <DependentUpon>PelcoConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Prompt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Prompt.Designer.cs">
+      <DependentUpon>Prompt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PTZController.cs" />
+    <Compile Include="PTZTool.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PTZTool.Designer.cs">
+      <DependentUpon>PTZTool.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RestartableStream.cs" />
+    <Compile Include="SerializableFont.cs" />
+    <Compile Include="Server\LocalServer.cs" />
+    <Compile Include="ShareCamera.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ShareCamera.Designer.cs">
+      <DependentUpon>ShareCamera.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Sources\Audio\AudioEvents.cs" />
+    <Compile Include="Sources\Audio\AudioSynth.cs" />
+    <Compile Include="Sources\Audio\CodecList.cs" />
+    <Compile Include="Sources\Audio\codecs\AcmChatCodec.cs" />
+    <Compile Include="Sources\Audio\codecs\ALawChatCodec.cs" />
+    <Compile Include="Sources\Audio\codecs\G722ChatCodec.cs" />
+    <Compile Include="Sources\Audio\codecs\Gsm610ChatCodec.cs" />
+    <Compile Include="Sources\Audio\codecs\INetworkChatCodec.cs" />
+    <Compile Include="Sources\Audio\codecs\MicrosoftAdpcmChatCodec.cs" />
+    <Compile Include="Sources\Audio\codecs\MuLawChatCodec.cs" />
+    <Compile Include="Sources\Audio\codecs\SpeexChatCodec.cs" />
+    <Compile Include="Sources\Audio\codecs\TrueSpeechChatCodec.cs" />
+    <Compile Include="Sources\Audio\codecs\UncompressedPcmChatCodec.cs" />
+    <Compile Include="Sources\Audio\g711audio.cs" />
+    <Compile Include="Sources\Audio\GainHelper.cs" />
+    <Compile Include="Sources\Audio\IAudioSource.cs" />
+    <Compile Include="Sources\Audio\ISupportsAudio.cs" />
+    <Compile Include="Sources\Audio\SampleAggregator.cs" />
+    <Compile Include="Sources\Audio\SpeechStreamer.cs" />
+    <Compile Include="Sources\Audio\SpeechSynth.cs" />
+    <Compile Include="Sources\Audio\streams\AudioInStream.cs" />
+    <Compile Include="Sources\Audio\streams\DirectStream.cs" />
+    <Compile Include="Sources\Audio\streams\iSpyServerStream.cs" />
+    <Compile Include="Sources\Audio\streams\LocalDeviceStream.cs" />
+    <Compile Include="Sources\Audio\streams\MP3Stream.cs" />
+    <Compile Include="Sources\Audio\streams\WavStream.cs" />
+    <Compile Include="Sources\Audio\streams\WebStream.cs" />
+    <Compile Include="Sources\Audio\talk\ITalkTarget.cs" />
+    <Compile Include="Sources\Audio\talk\TalkAxis.cs" />
+    <Compile Include="Sources\Audio\talk\TalkDeviceStream.cs" />
+    <Compile Include="Sources\Audio\talk\TalkHelper.cs" />
+    <Compile Include="Sources\Audio\talk\TalkHelperStream.cs" />
+    <Compile Include="Sources\Audio\talk\TalkIPWebcamAndroid.cs" />
+    <Compile Include="Sources\Audio\talk\TalkiSpyServer.cs" />
+    <Compile Include="Sources\Audio\talk\TalkLocal.cs" />
+    <Compile Include="Sources\Audio\talk\TalkNetworkKinect.cs" />
+    <Compile Include="Sources\Audio\VolumeWaveProvider16.cs" />
+    <Compile Include="Sources\PlayEvents.cs" />
+    <Compile Include="Sources\Video\CloneStream.cs" />
+    <Compile Include="Sources\Video\DesktopStream.cs" />
+    <Compile Include="Sources\Video\discovery\localdevice.cs" />
+    <Compile Include="Sources\Video\IVideoSource.cs" />
+    <Compile Include="Sources\Video\JPEGStream.cs" />
+    <Compile Include="Sources\Video\KinectNetworkStream.cs" />
+    <Compile Include="Sources\Video\KinectStream.cs" />
+    <Compile Include="Sources\Video\MJPEGStream.cs" />
+    <Compile Include="Sources\Video\VideoCaptureDevice.cs" />
+    <Compile Include="Sources\Video\VLCStream.cs" />
+    <Compile Include="Sources\Video\Ximea\CameraParameter.cs" />
+    <Compile Include="Sources\Video\Ximea\GpiMode.cs" />
+    <Compile Include="Sources\Video\Ximea\GpoMode.cs" />
+    <Compile Include="Sources\Video\Ximea\ImageFormat.cs" />
+    <Compile Include="Sources\Video\Ximea\Internal\ParameterType.cs" />
+    <Compile Include="Sources\Video\Ximea\Internal\XimeaAPI.cs" />
+    <Compile Include="Sources\Video\Ximea\Internal\XimeaImage.cs" />
+    <Compile Include="Sources\Video\Ximea\LedMode.cs" />
+    <Compile Include="Sources\Video\Ximea\TriggerSource.cs" />
+    <Compile Include="Sources\Video\Ximea\XimeaCamera.cs" />
+    <Compile Include="Sources\Video\Ximea\XimeaVideoSource.cs" />
+    <Compile Include="SSLConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SSLConfig.Designer.cs">
+      <DependentUpon>SSLConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\ConnectionOptions.cs" />
+    <Compile Include="Utilities\Logger.cs" />
+    <Compile Include="Utilities\NativeMethods.cs" />
+    <Compile Include="Utilities\NetworkBrowser.cs" />
+    <Compile Include="Utilities\ReadFullyStream.cs" />
+    <Compile Include="Utilities\RequestState.cs" />
+    <Compile Include="Utilities\ScreenArea.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\ScreenArea.Designer.cs">
+      <DependentUpon>ScreenArea.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\VLCHelper.cs" />
+    <Compile Include="VideoSourceAdvanced.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VideoSourceAdvanced.Designer.cs">
+      <DependentUpon>VideoSourceAdvanced.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\VolumeLevel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\VolumeLevel.Designer.cs">
+      <DependentUpon>VolumeLevel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FindCameras.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FindCameras.Designer.cs">
+      <DependentUpon>FindCameras.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GettingStarted.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GettingStarted.Designer.cs">
+      <DependentUpon>GettingStarted.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HSLFilteringForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\LayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ListNetworkComputers.cs" />
+    <Compile Include="MCRemote.cs" />
+    <Compile Include="NativeCalls.cs" />
+    <Compile Include="NetworkTroubleshooter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NetworkTroubleshooter.Designer.cs">
+      <DependentUpon>NetworkTroubleshooter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PreviewBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="QueueWithEvents.cs" />
+    <Compile Include="Screensaver.cs" />
+    <Compile Include="Controls\VideoNavigator.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\VideoNavigator.Designer.cs">
+      <DependentUpon>VideoNavigator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewController.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewController.Designer.cs">
+      <DependentUpon>ViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ViewControllerPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ByteArrayUtils.cs" />
+    <Compile Include="C2BPProcessor.cs" />
+    <Compile Include="Controls\Camera.cs" />
+    <Compile Include="AddCamera.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddCamera.Designer.cs">
+      <DependentUpon>AddCamera.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CheckPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CheckPassword.Designer.cs">
+      <DependentUpon>CheckPassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddMicrophone.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddMicrophone.Designer.cs">
+      <DependentUpon>AddMicrophone.cs</DependentUpon>
+    </Compile>
+    <Compile Include="C2BPComparers.cs" />
+    <Compile Include="LocRM.cs" />
+    <Compile Include="Firewall.cs" />
+    <Compile Include="Controls\FloorPlan.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\FloorPlan.Designer.cs">
+      <DependentUpon>FloorPlan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="extensions.cs" />
+    <Compile Include="ftp.cs" />
+    <Compile Include="Helper.cs" />
+    <Compile Include="LayoutEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LayoutEditor.Designer.cs">
+      <DependentUpon>LayoutEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MicrophoneSource.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MicrophoneSource.Designer.cs">
+      <DependentUpon>MicrophoneSource.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NewVersion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Enums.cs" />
+    <Compile Include="Controls\PersistForm.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RemoteCommands.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RemoteCommands.Designer.cs">
+      <DependentUpon>RemoteCommands.cs</DependentUpon>
+    </Compile>
+    <Compile Include="upnp.cs" />
+    <Compile Include="VideoSource.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VideoSource.Designer.cs">
+      <DependentUpon>VideoSource.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="VirtualDeviceManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VirtualDeviceManager.Designer.cs">
+      <DependentUpon>VirtualDeviceManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vision\BlobCountingObjectsProcessing.cs" />
+    <Compile Include="Vision\CustomFrameColorDifferenceDetector.cs" />
+    <Compile Include="Vision\CustomFrameDifferenceDetector.cs" />
+    <Compile Include="Vision\GridMotionAreaProcessing.cs" />
+    <Compile Include="Vision\IMotionDetector.cs" />
+    <Compile Include="Vision\IMotionProcessing.cs" />
+    <Compile Include="Vision\MotionAreaHighlighting.cs" />
+    <Compile Include="Vision\MotionBorderHighlighting.cs" />
+    <Compile Include="Vision\MotionDetector.cs" />
+    <Compile Include="Vision\SimpleBackgroundModelingDetector.cs" />
+    <Compile Include="Vision\SimpleColorBackgroundModelingDetector.cs" />
+    <Compile Include="Vision\Tools.cs" />
+    <Compile Include="Vision\TwoFramesColorDifferenceDetector.cs" />
+    <Compile Include="Vision\TwoFramesDifferenceDetector.cs" />
+    <Compile Include="Web References\iSpyWS\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\Reporting\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Webservices.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Webservices.Designer.cs">
+      <DependentUpon>Webservices.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="WinAPI.cs" />
+    <Compile Include="WSWrapper.cs" />
+    <Compile Include="X509.cs" />
+    <Compile Include="XML\config.cs">
+      <DependentUpon>config.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XML\filelist.cs">
+      <DependentUpon>FileList.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XML\objects.cs">
+      <DependentUpon>objects.xsd</DependentUpon>
+      <SubType>code</SubType>
+    </Compile>
+    <Compile Include="XML\ptz2.cs">
+      <DependentUpon>PTZ2.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XML\Sources.cs">
+      <DependentUpon>Sources.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="XML\Translations.cs">
+      <DependentUpon>Translations.xsd</DependentUpon>
+    </Compile>
+    <Content Include="backgrounds\FloorPlan_House.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="backgrounds\FloorPlan_House2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="backgrounds\FloorPlan_Planet.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="chk.png" />
+    <Content Include="Commands\example.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Merge Modules\Microsoft_VC100_CRT_x64.msm" />
+    <None Include="packages.config" />
+    <None Include="README.md" />
+    <None Include="redist\Windows6.0-KB942288-v2-x64.msu" />
+    <None Include="redist\Windows6.0-KB942288-v2-x86.msu" />
+    <None Include="Resources\cam_connecting.png" />
+    <None Include="Resources\cam_offline.png" />
+    <None Include="Resources\cam_removed.png" />
+    <None Include="Resources\checkbox_off.png" />
+    <None Include="Resources\arrow.bmp" />
+    <None Include="DLLS\AForge.dll" />
+    <None Include="DLLS\AForge.Imaging.dll" />
+    <None Include="DLLS\AForge.Math.dll" />
+    <None Include="DLLS\Interop.NATUPNPLib.dll" />
+    <None Include="DLLS\Interop.NETCONLib.dll" />
+    <None Include="DLLS\Interop.NetFwTypeLib.dll" />
+    <None Include="DLLS\Microsoft.Kinect.dll" />
+    <None Include="DLLS\NAudio.dll" />
+    <None Include="DLLS\NAudio.Lame.dll" />
+    <None Include="DLLS\NSpeex.dll" />
+    <None Include="DLLS\Renci.SshNet.dll" />
+    <None Include="DLLS\Renderers.dll" />
+    <None Include="DLLS\Windows7ToolStripRenderer.dll" />
+    <None Include="DLLS\xiApi.NET.dll" />
+    <Content Include="Masks\demo_mask.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="redist\WindowsServer2003-KB942288-v4-x64.exe" />
+    <Content Include="redist\WindowsServer2003-KB942288-v4-x86.exe" />
+    <Content Include="redist\WindowsXP-KB942288-v3-x86.exe" />
+    <None Include="Service References\OnvifServices\configuration91.svcinfo" />
+    <None Include="Service References\OnvifServices\configuration.svcinfo" />
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AddScopesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AnalyticsEngine.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AnalyticsEngineControl.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AnalyticsEngineInput.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AnalyticsModuleConfigOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AnalyticsStateInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ArrayOfFileProgress.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AudioDecoderConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AudioDecoderConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AudioEncoderConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AudioEncoderConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AudioOutput.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AudioOutputConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AudioOutputConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AudioSource.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AudioSourceConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.AudioSourceConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.BackupFile.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.BinaryData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ByeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities10.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities11.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities12.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities2.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities3.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities4.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities5.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities6.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities7.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities8.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Capabilities9.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Certificate.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CertificateInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CertificateStatus.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CodingCapabilities.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Config.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ConfigOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ContinuousMoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreateAnalyticsEngineControlResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreateAnalyticsEngineInputsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreateAnalyticsModulesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreateCertificateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreateOSDResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreatePaneConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreatePullPointResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreatePullPointResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreatePullPointSubscriptionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreateRecordingJobResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreateRulesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.CreateUsersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DeleteAnalyticsEngineInputsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DeleteAnalyticsModulesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DeleteCertificatesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DeleteDot1XConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DeleteGeoLocationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DeleteOSDResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DeletePaneConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DeleteRulesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DeleteUsersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DestroyPullPointResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DestroyPullPointResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DeviceServiceCapabilities.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DigitalInput.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DigitalInputConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DiscoveryMode.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DNSInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Dot11AvailableNetworks.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Dot11Capabilities.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Dot11Status.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Dot1XConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.DynamicDNSInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.EndpointReferenceType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.EndpointReferenceType1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ExportRecordedDataResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.FindEventResultList.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.FindEventsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.FindMetadataResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.FindMetadataResultList.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.FindPTZPositionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.FindPTZPositionResultList.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.FindRecordingResultList.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.FindRecordingsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAnalyticsDeviceStreamUriResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAnalyticsEngineControlsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAnalyticsEngineInputsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAnalyticsEnginesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAnalyticsModuleOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAnalyticsModulesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioDecoderConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioEncoderConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioOutputConfigurationOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioOutputConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioOutputConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioOutputsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioOutputsResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioSourceConfigurationOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioSourceConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioSourceConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioSourcesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetAudioSourcesResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCACertificatesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCapabilitiesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCertificateInformationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCertificatesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCertificatesStatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCompatibleAudioDecoderConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCompatibleAudioEncoderConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCompatibleAudioOutputConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCompatibleAudioSourceConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCompatibleConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCompatibleMetadataConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCompatibleVideoAnalyticsConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCompatibleVideoEncoderConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCompatibleVideoSourceConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCurrentMessageResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetCurrentMessageResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetDeviceInformationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetDigitalInputsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetDisplayOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetDot11CapabilitiesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetDot1XConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetDPAddressesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetEndpointReferenceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetEventPropertiesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetEventSearchResultsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetExportRecordedDataStateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetGeoLocationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetGuaranteedNumberOfVideoEncoderInstancesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetLayoutResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetMediaAttributesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetMessagesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetMessagesResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetMetadataConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetMetadataSearchResultsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetNetworkInterfacesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetNetworkProtocolsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetNodesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetOSDOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetOSDResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetOSDsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetPaneConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetPaneConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetPkcs10RequestResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetPresetsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetPresetsResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetPresetToursResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetProfilesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetPTZPositionSearchResultsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetReceiversResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetRecordingJobsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetRecordingJobsResponseItem.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetRecordingSearchResultsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetRecordingsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetRecordingsResponseItem.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetRelayOutputOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetRelayOutputsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetRelayOutputsResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetReplayUriResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetRuleOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetRulesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetScopesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetSerialPortsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetServicesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetStorageConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetSystemBackupResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetSystemUrisResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetSystemUrisResponseExtension.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetUsersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoAnalyticsConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoEncoderConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoOutputConfigurationOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoOutputConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoOutputsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoSourceConfigurationOptionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoSourceConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoSourceConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoSourceModesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoSourcesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetVideoSourcesResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.GetWsdlUrlResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.HelloResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.HostnameInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ImagingOptions20.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ImagingPreset.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ImagingSettings20.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ImagingStatus20.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.IPAddressFilter.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Layout.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.LayoutOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.LoadCACertificatesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.LoadCertificatesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.LoadCertificateWithPrivateKeyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.LocationEntity.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.MediaAttributes.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.MediaUri.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.MetadataConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.MetadataConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ModifyAnalyticsModulesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ModifyRulesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.MoveOptions20.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.NetworkGateway.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.NetworkHost.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.NetworkInterface.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.NetworkProtocol.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.NetworkZeroConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.NotificationMessageHolderType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.NTPInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.OSDConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.OSDConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PaneConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PauseSubscriptionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PauseSubscriptionResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PresetTour.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ProbeMatchType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ProbeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Profile.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PTZConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PTZConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PTZNode.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PTZPreset.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PTZPresetTourOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PTZStatus.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.PullMessagesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Receiver.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ReceiverStateInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RecordingConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RecordingInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RecordingJobConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RecordingJobStateInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RecordingOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RecordingSummary.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RelayOutput.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RelayOutputOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RemoteUser.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RemoveScopesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RenewResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RenewResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ReplayConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.RestoreSystemResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ResumeSubscriptionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ResumeSubscriptionResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.ScanAvailableDot11NetworksResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Scope.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SearchState.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SeekResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SendReceiveSerialCommandResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SerialData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SerialPort.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SerialPortConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SerialPortConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.Service.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetAudioOutputConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetAudioSourceConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetCertificatesStatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetDigitalInputConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetDNSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetDPAddressesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetDynamicDNSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetGeoLocationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetHostnameResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetLayoutResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetNetworkDefaultGatewayResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetNetworkProtocolsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetNTPResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetOSDResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetPaneConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetPaneConfigurationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetPresetResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetRecordingJobConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetRelayOutputStateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetScopesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetUserResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetVideoOutputConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SetVideoSourceConfigurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.StartFirmwareUpgradeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.StartSystemRestoreResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.StopExportRecordedDataResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.StorageConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SubscribeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SubscribeResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SupportedAnalyticsModules.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SupportedRules.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SupportInformation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SystemDateTime.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SystemLog.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.SystemLogUri.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.TopicSetType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.TrackConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.UnsubscribeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.UnsubscribeResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.User.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.VideoAnalyticsConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.VideoEncoderConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.VideoEncoderConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.VideoOutput.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.VideoOutputConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.VideoOutputConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.VideoSource.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.VideoSourceConfiguration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.VideoSourceConfigurationOptions.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\iSpyApplication.OnvifServices.VideoSourceMode.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OnvifServices\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="sounds\alsationxsiberian_bark.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sounds\alsation_bark.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sounds\cairnterrierbark.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sounds\intruder.mp3" />
+    <Content Include="sounds\rottweiler_bark.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sounds\spanielgrowlbark.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lgpl-3.0.txt" />
+    <Content Include="license.txt" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\ispy.png" />
+    <None Include="Resources\VLC-logo.png" />
+    <None Include="Resources\listen.png" />
+    <None Include="Resources\Offline.bmp" />
+    <None Include="Resources\camoff.png" />
+    <None Include="Resources\camloading.png" />
+    <None Include="Resources\camoff.gif" />
+    <None Include="Resources\camloading.gif" />
+    <None Include="Resources\camremoved.gif" />
+    <None Include="Resources\camloading.jpg" />
+    <None Include="Resources\camoff.jpg" />
+    <None Include="Resources\camremoved.jpg" />
+    <None Include="Resources\remove.png" />
+    <None Include="Resources\reset.jpg" />
+    <None Include="Resources\restore.png" />
+    <None Include="Resources\fullscreen.png" />
+    <None Include="Resources\move.gif" />
+    <None Include="Resources\move.png" />
+    <None Include="Resources\schedule.png" />
+    <None Include="Resources\edit.png" />
+    <None Include="Resources\switchoff.jpg" />
+    <None Include="Resources\mobile.png" />
+    <None Include="Resources\switchoff.png" />
+    <None Include="Resources\switchon.gif" />
+    <None Include="Resources\icon_listen.png" />
+    <None Include="Resources\icon_off.png" />
+    <None Include="Resources\icon_on.png" />
+    <None Include="Resources\icon_record.png" />
+    <None Include="Resources\icon_recordoff.png" />
+    <None Include="Resources\icon_recordstop.png" />
+    <None Include="Resources\icon_settings.png" />
+    <None Include="Resources\icon_connect.png" />
+    <None Include="Resources\icon_listenoff.png" />
+    <None Include="Resources\icon_listenstop.png" />
+    <None Include="Resources\icon_photo.png" />
+    <None Include="Resources\ispylogo.png" />
+    <None Include="Resources\ispy1.png" />
+    <None Include="Resources\ipcam.png" />
+    <None Include="Resources\plugin.png" />
+    <None Include="Resources\smartisp.png" />
+    <None Include="Resources\checkbox.png" />
+    <None Include="Resources\icons\01 Computer.png" />
+    <None Include="Resources\icons\02 Network.png" />
+    <None Include="Resources\icons\03 Control Panel.png" />
+    <None Include="Resources\icons\04 EMail.png" />
+    <None Include="Resources\icons\05 Folder.png" />
+    <None Include="Resources\icons\06 Picture.png" />
+    <None Include="Resources\icons\07 Video.png" />
+    <None Include="Resources\icons\08 Music.png" />
+    <None Include="Resources\icons\09 Hard Drive.png" />
+    <None Include="Resources\icons\10 Desktop.png" />
+    <None Include="Resources\icons\11 Trash Empty.png" />
+    <None Include="Resources\icons\12 Trash Full.png" />
+    <None Include="Resources\icons\13 Shut Down.png" />
+    <None Include="Resources\icons\14 Reboot.png" />
+    <None Include="Resources\icons\15 Firefox.png" />
+    <None Include="Resources\icons\16 Photoshop.png" />
+    <None Include="Resources\icons\17 ICQ.png" />
+    <None Include="Resources\icons\18 Steam.png" />
+    <None Include="Resources\icons\19 Download Program.png" />
+    <None Include="Resources\icons\20 Avast!.png" />
+    <None Include="Resources\icons\21 Darkfix.png" />
+    <None Include="Resources\icons\22 Help And Support.png" />
+    <None Include="Resources\icons\23 Default.png" />
+    <None Include="Resources\icons\24 Text Document.png" />
+    <None Include="Resources\icons\25 JetAudio.png" />
+    <None Include="Resources\icons\26 Custom.png" />
+    <None Include="Resources\icons\27 Run.png" />
+    <Content Include="Plugins\readme.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\icon_pointer.png" />
+    <Content Include="sounds\airhorn.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sounds\alarm.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sounds\doorbell.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sounds\police.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sounds\pop.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sounds\wiggle.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Service References\OnvifServices\analytics.wsdl" />
+    <None Include="Service References\OnvifServices\analyticsdevice.wsdl" />
+    <None Include="Service References\OnvifServices\b-2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OnvifServices\bf-2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OnvifServices\common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OnvifServices\deviceio.wsdl" />
+    <None Include="Service References\OnvifServices\devicemgmt.wsdl" />
+    <None Include="Service References\OnvifServices\display.wsdl" />
+    <None Include="Service References\OnvifServices\event-vs.wsdl" />
+    <None Include="Service References\OnvifServices\ImagingService.wsdl" />
+    <None Include="Service References\OnvifServices\include.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OnvifServices\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OnvifServices\item1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OnvifServices\media.wsdl" />
+    <None Include="Service References\OnvifServices\onvif.wsdl" />
+    <None Include="Service References\OnvifServices\onvif.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OnvifServices\PTZService.wsdl" />
+    <None Include="Service References\OnvifServices\r-2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OnvifServices\receiver.wsdl" />
+    <None Include="Service References\OnvifServices\recording.wsdl" />
+    <None Include="Service References\OnvifServices\remotediscovery.wsdl" />
+    <None Include="Service References\OnvifServices\replay.wsdl" />
+    <None Include="Service References\OnvifServices\search.wsdl" />
+    <None Include="Service References\OnvifServices\t-1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OnvifServices\ws-addr.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OnvifServices\WS-BaseNotification.wsdl" />
+    <None Include="Service References\OnvifServices\ws-discovery.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OnvifServices\WS-Resource.wsdl" />
+    <None Include="Service References\OnvifServices\xml.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OnvifServices\xmlmime.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Supporting\iSpyServerSetup.msi" />
+    <None Include="System.Xml.XmlAttribute.datasource" />
+    <None Include="System.Xml.XmlElement.datasource" />
+    <None Include="Web References\iSpyWS\ispysecure.disco" />
+    <Content Include="Supporting\iSpyMonitor.exe" />
+    <Content Include="WebServerRoot\notfound.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="XML\config.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="XML\FileList.xml" />
+    <Content Include="XML\objects.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="XML\PTZ2.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="XML\Sources.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="XML\Translations.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\PTZ_Controller.png" />
+    <None Include="Resources\listenoff.png" />
+    <None Include="Resources\youtube_icon_sm.png" />
+    <None Include="Resources\listen.gif" />
+    <None Include="Resources\listenoff.gif" />
+    <None Include="Resources\48_iphone.png" />
+    <None Include="Resources\command-prompt-icon.png" />
+    <None Include="Resources\terminal.png" />
+    <None Include="Resources\Command Prompt.png" />
+    <None Include="Resources\icon-layout-128.png" />
+    <None Include="Resources\video_icon.png" />
+    <None Include="Resources\video.png" />
+    <None Include="Resources\webpage.png" />
+    <None Include="Resources\snapshot.png" />
+    <None Include="Resources\Play-Normal-icon.png" />
+    <None Include="Resources\add.png" />
+    <None Include="Resources\network_mic.png" />
+    <Content Include="WebServerRoot\log.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddCamera.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AddCamera.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddFloorPlan.resx">
+      <DependentUpon>AddFloorPlan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddRemoteCommand.resx">
+      <DependentUpon>AddRemoteCommand.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CommandButtons.resx">
+      <DependentUpon>CommandButtons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ActionEditor.resx">
+      <DependentUpon>ActionEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\AddCommandButton.resx">
+      <DependentUpon>AddCommandButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\AlertEventRow.resx">
+      <DependentUpon>AlertEventRow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\AlertSettings.resx">
+      <DependentUpon>AlertSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Authorizer.resx">
+      <DependentUpon>Authorizer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CameraWindow.resx">
+      <DependentUpon>CameraWindow.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CommandButtonControl.resx">
+      <DependentUpon>CommandButtonControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CopyTo.resx">
+      <DependentUpon>CopyTo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DirectoryEventRow.resx">
+      <DependentUpon>DirectoryEventRow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EditCommandButton.resx">
+      <DependentUpon>EditCommandButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Filter.resx">
+      <DependentUpon>Filter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FTPConfig.resx">
+      <DependentUpon>FTPConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FTPEditor.resx">
+      <DependentUpon>FTPEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\GridViewCamera.resx">
+      <DependentUpon>GridViewCamera.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\GridViewCustom.resx">
+      <DependentUpon>GridViewCustom.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\GridViewModeConfig.resx">
+      <DependentUpon>GridViewModeConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\IntervalConfig.resx">
+      <DependentUpon>IntervalConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\jaxis.resx">
+      <DependentUpon>jaxis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\jbutton.resx">
+      <DependentUpon>jbutton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MediaDirectoryConfig.resx">
+      <DependentUpon>MediaDirectoryConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MediaDirectoryEditor.resx">
+      <DependentUpon>MediaDirectoryEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MediaPanelControl.resx">
+      <DependentUpon>MediaPanelControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ONVIFWizard.resx">
+      <DependentUpon>ONVIFWizard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ParamConfig.resx">
+      <DependentUpon>ParamConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PermissionsForm.resx">
+      <DependentUpon>PermissionsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PiPConfig.resx">
+      <DependentUpon>PiPConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PiPSelector.resx">
+      <DependentUpon>PiPSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PTZScheduler.resx">
+      <DependentUpon>PTZScheduler.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PTZTracking.resx">
+      <DependentUpon>PTZTracking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PTZUI.resx">
+      <DependentUpon>PTZUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ScheduleEditor.resx">
+      <DependentUpon>ScheduleEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ScheduleEntryEditor.resx">
+      <DependentUpon>ScheduleEntryEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ScheduleRow.resx">
+      <DependentUpon>ScheduleRow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SelectObjects.resx">
+      <DependentUpon>SelectObjects.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ServerEventRow.resx">
+      <DependentUpon>ServerEventRow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TagEditor.resx">
+      <DependentUpon>TagEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TagEntry.resx">
+      <DependentUpon>TagEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TextToSpeech.resx">
+      <DependentUpon>TextToSpeech.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\VideoPlayback.resx">
+      <DependentUpon>VideoPlayback.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Features.resx">
+      <DependentUpon>Features.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FindObject.resx">
+      <DependentUpon>FindObject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GridViewManager.resx">
+      <DependentUpon>GridViewManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Importer.resx">
+      <DependentUpon>Importer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Kinect\ConfigureTripWires.resx">
+      <DependentUpon>ConfigureTripWires.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\AngleSelector.resx">
+      <DependentUpon>AngleSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CameraMicSource.resx">
+      <DependentUpon>CameraMicSource.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CheckPassword.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CheckPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddMicrophone.resx">
+      <DependentUpon>AddMicrophone.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigureProcessor.resx">
+      <DependentUpon>ConfigureProcessor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigureTimestamp.resx">
+      <DependentUpon>ConfigureTimestamp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigureObjectCount.resx">
+      <DependentUpon>ConfigureObjectCount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigureRepeat.resx">
+      <DependentUpon>ConfigureRepeat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Ranger.resx">
+      <DependentUpon>Ranger.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\GridView.resx">
+      <DependentUpon>GridView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="downloader.resx">
+      <DependentUpon>downloader.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GridView.resx">
+      <DependentUpon>GridView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Kinect\EditDepthLine.resx">
+      <DependentUpon>EditDepthLine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Merger.resx">
+      <DependentUpon>Merger.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MicrophoneSourceAdvanced.resx">
+      <DependentUpon>MicrophoneSourceAdvanced.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NotSubscribed.resx">
+      <DependentUpon>NotSubscribed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pager.resx">
+      <DependentUpon>Pager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pelco\PelcoConfig.resx">
+      <DependentUpon>PelcoConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerVLC.resx">
+      <DependentUpon>PlayerVLC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Prompt.resx">
+      <DependentUpon>Prompt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PTZConfig.resx">
+      <DependentUpon>PTZConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PTZTool.resx">
+      <DependentUpon>PTZTool.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ShareCamera.resx">
+      <DependentUpon>ShareCamera.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SSLConfig.resx">
+      <DependentUpon>SSLConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TagConfigure.resx">
+      <DependentUpon>TagConfigure.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\ScreenArea.resx">
+      <DependentUpon>ScreenArea.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VideoSourceAdvanced.resx">
+      <DependentUpon>VideoSourceAdvanced.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\VolumeLevel.resx">
+      <DependentUpon>VolumeLevel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FindCameras.resx">
+      <DependentUpon>FindCameras.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GettingStarted.resx">
+      <DependentUpon>GettingStarted.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HSLFilteringForm.resx">
+      <DependentUpon>HSLFilteringForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkTroubleshooter.resx">
+      <DependentUpon>NetworkTroubleshooter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FloorPlan.resx">
+      <DependentUpon>FloorPlan.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigureSeconds.resx">
+      <DependentUpon>ConfigureSeconds.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayoutEditor.resx">
+      <DependentUpon>LayoutEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MicrophoneSource.resx">
+      <DependentUpon>MicrophoneSource.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RemoteCommands.resx">
+      <DependentUpon>RemoteCommands.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\VideoNavigator.resx">
+      <DependentUpon>VideoNavigator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewController.resx">
+      <DependentUpon>ViewController.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VideoSource.resx">
+      <DependentUpon>VideoSource.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VirtualDeviceManager.resx">
+      <DependentUpon>VirtualDeviceManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Webservices.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Webservices.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Content Include="App.ico" />
+    <Content Include="detected.png" />
+    <Content Include="ispy.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="nothing.png" />
+    <None Include="Web References\iSpyWS\ispysecure.wsdl" />
+    <None Include="Web References\Reporting\reporting.disco">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="WebServerRoot\api\api.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\editaction.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\editaudiosource.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\editcamera.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\editftp.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\editmicrophone.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\editpelco.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\editptzschedule.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\editschedule.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\editstorage.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\editvideosource.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\settings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\showactions.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\showptzschedule.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\showschedule.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\audio\0.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\audio\1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\audio\2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\audio\3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\audio\4.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\audio\5.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\0.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\10.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\12.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\4.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\5.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\6.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\7.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\8.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\api\sources\video\9.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="XML\config.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XML\FileList.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XML\objects.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XML\PTZ2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XML\Sources.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="XML\Translations.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="WebServerRoot\data\mime.dat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\LAN.gif" />
+    <None Include="Resources\LAN.png" />
+    <None Include="Resources\startrec.png" />
+    <None Include="Resources\iphone-icon_256.png" />
+    <None Include="Resources\FloorPlan.bmp" />
+    <None Include="Resources\floorplan.jpg" />
+    <None Include="Resources\floorplan.png" />
+    <None Include="Resources\fp_cam_alert.png" />
+    <None Include="Resources\fp_cam_offline.png" />
+    <None Include="Resources\fp_cam_online.png" />
+    <None Include="Resources\fp_mic_alert.png" />
+    <None Include="Resources\fp_mic_offline.png" />
+    <None Include="Resources\fp_mic_online.png" />
+    <Content Include="WebServerRoot\favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="XML\Log.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebServerRoot\crossdomain.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Controls\AreaSelector.resx">
+      <DependentUpon>AreaSelector.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewVersion.resx">
+      <DependentUpon>NewVersion.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\1.gif" />
+    <EmbeddedResource Include="Resources\2.gif" />
+    <EmbeddedResource Include="Resources\3.gif" />
+    <EmbeddedResource Include="Resources\4.gif" />
+    <EmbeddedResource Include="Resources\5.gif" />
+    <EmbeddedResource Include="Resources\6.gif" />
+    <EmbeddedResource Include="Resources\7.gif" />
+    <EmbeddedResource Include="Resources\8.gif" />
+    <EmbeddedResource Include="Resources\9.gif" />
+    <Content Include="Resources\active.gif" />
+    <None Include="Resources\unlock.gif" />
+    <None Include="Resources\camera.png" />
+    <None Include="Resources\Mic.png" />
+    <None Include="Resources\Connected.png" />
+    <None Include="Resources\Help.png" />
+    <None Include="Resources\settings.png" />
+    <None Include="Resources\logo.png" />
+    <None Include="Resources\mainback.png" />
+    <None Include="Resources\settings.gif" />
+    <None Include="Resources\inactive.gif" />
+    <None Include="Resources\help.gif" />
+    <None Include="Resources\files.gif" />
+    <None Include="Resources\edit.gif" />
+    <None Include="Resources\delete.gif" />
+    <None Include="Resources\addmic.gif" />
+    <None Include="Resources\addcam.gif" />
+    <None Include="Resources\web.gif" />
+    <None Include="Web References\iSpyWS\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\Reporting\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\Reporting\reporting.wsdl">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="https://www.ispyconnect.com/webservices/ispysecure.asmx">
+      <UrlBehavior>Static</UrlBehavior>
+      <RelPath>Web References\iSpyWS\</RelPath>
+      <UpdateFromURL>https://www.ispyconnect.com/webservices/ispysecure.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>iSpy_iSpyWS_iSpy</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://www.ispyconnect.com/Webservices/reporting.asmx">
+      <UrlBehavior>Static</UrlBehavior>
+      <RelPath>Web References\Reporting\</RelPath>
+      <UpdateFromURL>http://www.ispyconnect.com/Webservices/reporting.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>motion_Reporting_Reporting</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\x86\" />
+    <Folder Include="WebServerRoot\Media\Audio\" />
+    <Folder Include="WebServerRoot\Media\Video\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\OnvifServices\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>xcopy "$(ProjectDir)dlls\$(PlatformName)\*.*" "$(ProjectDir)$(OutDir)" /Y
+if "$(ConfigurationName)" == "Release" (
+    del $(ProjectDir)$(OutDir)*.pdb"
+    del "$(ProjectDir)$(OutDir)*.vshost.exe"
+    call "$(SolutionDir)signing\iSpy$(PlatformName).bat"
+)</PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('packages\SharpDX.2.6.3\build\SharpDX.targets')" />
+  <Import Project="packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <Import Project="..\packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('..\packages\SharpDX.2.6.3\build\SharpDX.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+  </Target>
+</Project>

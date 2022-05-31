@@ -98,7 +98,6 @@
   <ViewController>false</ViewController>
   <LayoutMode>0</LayoutMode>
   <ShowPTZController>false</ShowPTZController>
-  <ShowPTZCommandButtons>false</ShowPTZCommandButtons>
   <BigButtons>false</BigButtons>
   <LockLayout>false</LockLayout>
   <MediaPanelSize></MediaPanelSize>
