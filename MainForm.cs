@@ -7049,8 +7049,24 @@ namespace iSpyApplication
                 cmdButtons.Dispose();
             }
 
+            int x = Conf.CommandButtonsLocationX;
+            int y = Conf.CommandButtonsLocationY;
+            
             cmdButtons = new CommandButtons();
+            cmdButtons.FormClosing += cmdButtonsFormClosing;
+            if (x != -1 && y != -1)
+            {
+                cmdButtons.StartPosition = FormStartPosition.Manual;
+                cmdButtons.Location = new Point (x, y);
+            }
+            
             cmdButtons.Show(this);
+        }
+
+        private void cmdButtonsFormClosing(object sender, CancelEventArgs e)
+        {
+            Conf.CommandButtonsLocationX = cmdButtons.Location.X;
+            Conf.CommandButtonsLocationY = cmdButtons.Location.Y;
         }
     }
 }

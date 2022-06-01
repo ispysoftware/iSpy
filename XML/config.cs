@@ -321,7 +321,11 @@ public partial class configuration {
     private int arrangeModeField;
     
     private string brandPathField;
-    
+
+    private int commandButtonsLocationX;
+
+    private int commandButtonsLocationY;
+
     private configurationGPU gPUField;
     
     private configurationLogging loggingField;
@@ -416,8 +420,37 @@ public partial class configuration {
         this.portMapperModeField = 2;
         this.arrangeModeField = 0;
         this.brandPathField = "";
+        this.commandButtonsLocationX = -1;
+        this.commandButtonsLocationY = -1;
     }
-    
+
+
+    /// <remarks/>
+    public int CommandButtonsLocationX
+    {
+        get
+        {
+            return this.commandButtonsLocationX;
+        }
+        set
+        {
+            this.commandButtonsLocationX = value;
+        }
+    }
+
+    /// <remarks/>
+    public int CommandButtonsLocationY
+    {
+        get
+        {
+            return this.commandButtonsLocationY;
+        }
+        set
+        {
+            this.commandButtonsLocationY = value;
+        }
+    }
+
     /// <remarks/>
     public string WSUsername {
         get {

@@ -99,6 +99,8 @@
   <LayoutMode>0</LayoutMode>
   <ShowPTZController>false</ShowPTZController>
   <ShowPTZCommandButtons>false</ShowPTZCommandButtons>
+  <CommandButtonsLocationX>-1</CommandButtonsLocationX>
+  <CommandButtonsLocationY>-1</CommandButtonsLocationY>
   <BigButtons>false</BigButtons>
   <LockLayout>false</LockLayout>
   <MediaPanelSize></MediaPanelSize>
