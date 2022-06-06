@@ -468,6 +468,14 @@ namespace iSpyApplication
             };
             lcom.Add(cmd);
 
+            cmd = new objectsCommand
+            {
+                command = "ispy SHUTDOWNCOMPUTER",
+                id = 11,
+                name = "cmd_ShutdownComputer",
+            };
+            lcom.Add(cmd);
+
             if (Helper.HasFeature(Enums.Features.Save_Frames))
             {
 

@@ -326,6 +326,10 @@ public partial class configuration {
 
     private int commandButtonsLocationY;
 
+    private int commandButtonsWidth;
+
+    private int commandButtonsHeight;
+
     private configurationGPU gPUField;
     
     private configurationLogging loggingField;
@@ -424,6 +428,32 @@ public partial class configuration {
         this.commandButtonsLocationY = -1;
     }
 
+    /// <remarks/>
+    public int CommandButtonsHeight
+    {
+        get
+        {
+            return this.commandButtonsHeight;
+        }
+        set
+        {
+            this.commandButtonsHeight = value;
+        }
+    }
+
+
+    /// <remarks/>
+    public int CommandButtonsWidth
+    {
+        get
+        {
+            return this.commandButtonsWidth;
+        }
+        set
+        {
+            this.commandButtonsWidth = value;
+        }
+    }
 
     /// <remarks/>
     public int CommandButtonsLocationX

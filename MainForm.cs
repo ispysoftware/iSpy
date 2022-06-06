@@ -7051,7 +7051,10 @@ namespace iSpyApplication
 
             int x = Conf.CommandButtonsLocationX;
             int y = Conf.CommandButtonsLocationY;
-            
+            int height = Conf.CommandButtonsHeight;
+            int width = Conf.CommandButtonsWidth;
+
+
             cmdButtons = new CommandButtons();
             cmdButtons.FormClosing += cmdButtonsFormClosing;
             if (x != -1 && y != -1)
@@ -7059,7 +7062,13 @@ namespace iSpyApplication
                 cmdButtons.StartPosition = FormStartPosition.Manual;
                 cmdButtons.Location = new Point (x, y);
             }
-            
+
+            if (height != -1 && width != -1)
+            {
+                cmdButtons.Height = height;
+                cmdButtons.Width = width;
+            }
+
             cmdButtons.Show(this);
         }
 
@@ -7067,6 +7076,8 @@ namespace iSpyApplication
         {
             Conf.CommandButtonsLocationX = cmdButtons.Location.X;
             Conf.CommandButtonsLocationY = cmdButtons.Location.Y;
+            Conf.CommandButtonsHeight = cmdButtons.Height;
+            Conf.CommandButtonsWidth = cmdButtons.Width;
         }
     }
 }
