@@ -10,7 +10,7 @@ namespace iSpyApplication
     {
         private bool _loaded;
         private CameraWindow _cameraControl;
-        private Dictionary<string, string> presetDictionary = new Dictionary<string, string>();
+
         public CameraWindow CameraControl
         {
             get { return _cameraControl; }
@@ -23,13 +23,6 @@ namespace iSpyApplication
                 this.pnlController.Controls.Clear();
                 
 
-                //ddlExtended.Items.Clear();
-                presetDictionary.Clear();
-                //if (_cameraControl == null)
-                //{
-                //    ddlExtended.Items.Add(new ListItem(LocRm.GetString("ClickCamera"),""));
-                //    ddlExtended.SelectedIndex = 0;
-                //}
 
                 pnlController.Enabled = false;
                 if (value != null && value.IsEnabled)
@@ -84,13 +77,11 @@ namespace iSpyApplication
                                     this.Size = new System.Drawing.Size(this.pnlController.Size.Width + 133, 110);
                                     this.pnlController.Size = new System.Drawing.Size(this.pnlController.Size.Width + 133, 110);
 
-                                    KeyValuePair<string, string> pair = new KeyValuePair<string, string>(cmd.Name, cmd.token);
-                                    presetDictionary.Add(pair.Key, pair.Value);
                                     Button b = new Button();
                                     b.Left = basex;
                                     b.Top = basey;
                                     b.Size = new System.Drawing.Size(100, 50); 
-                                    b.Name = cmd.Name;
+                                    b.Name = cmd.token;
                                     b.Text = cmd.Name;
                                     b.Click += new EventHandler(b_dynamicButton_Click);
                                     this.pnlController.Controls.Add(b);
@@ -127,8 +118,7 @@ namespace iSpyApplication
             if (_loaded && CameraControl != null)
             {
                 Button presetButton = (Button)sender;
-                var presetValue = presetDictionary.FirstOrDefault(x => x.Key == presetButton.Name).Value;
-                CameraControl.PTZ.SendPTZCommand(presetValue);
+                CameraControl.PTZ.SendPTZCommand(presetButton.Name);
             }
         }
 
