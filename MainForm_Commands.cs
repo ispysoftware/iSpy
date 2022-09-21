@@ -179,7 +179,7 @@ namespace iSpyApplication
 
                         var d = Math.Sqrt((x*x) + (y*y));
 
-                        if (d > 2)  //20)
+                        if (d > 10)  //20)
                         {
                             angle = Math.Atan2(y, x);
                         }
