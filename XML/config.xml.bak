@@ -99,8 +99,6 @@
   <LayoutMode>0</LayoutMode>
   <ShowPTZController>false</ShowPTZController>
   <ShowPTZCommandButtons>false</ShowPTZCommandButtons>
-  <CommandButtonsHeight>-1</CommandButtonsHeight>
-  <CommandButtonsWidth>-1</CommandButtonsWidth>
   <CommandButtonsLocationX>-1</CommandButtonsLocationX>
   <CommandButtonsLocationY>-1</CommandButtonsLocationY>
   <BigButtons>false</BigButtons>

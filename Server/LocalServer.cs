@@ -1516,6 +1516,17 @@ namespace iSpyApplication.Server
                 case "shutdown":
                     (new Thread(() => MainForm.InstanceReference.ExternalClose())).Start();
                     break;
+                case "shutdowncomputer":
+                    if (MessageBox.Show("Are you sure? ( Pressing OK will shutdown computer!! )", "Shutdown", MessageBoxButtons.OKCancel) ==
+                    System.Windows.Forms.DialogResult.Cancel)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Process.Start("shutdown", "/s /t 10");
+                    }
+                    break;
                 case "recordonalerton":
                     if (otid == 1)
                     {

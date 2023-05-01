@@ -179,7 +179,7 @@ namespace iSpyApplication
 
                         var d = Math.Sqrt((x*x) + (y*y));
 
-                        if (d > 2)  //20)
+                        if (d > 10)  //20)
                         {
                             angle = Math.Atan2(y, x);
                         }
@@ -468,6 +468,14 @@ namespace iSpyApplication
             };
             lcom.Add(cmd);
 
+            cmd = new objectsCommand
+            {
+                command = "ispy SHUTDOWNCOMPUTER",
+                id = 11,
+                name = "cmd_ShutdownComputer",
+            };
+            lcom.Add(cmd);
+
             if (Helper.HasFeature(Enums.Features.Save_Frames))
             {
 
@@ -638,6 +646,7 @@ namespace iSpyApplication
                     if (c is CameraWindow || c is VolumeLevel || c is FloorPlanControl)
                     {
                         _pnlCameras.Maximise(c);
+                        ShowHidePTZCommandButtons();
                     }
                     break;
                 case "delete":

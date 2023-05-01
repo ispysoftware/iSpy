@@ -98,8 +98,6 @@
         <xs:element name="StopSavingOnStorageLimit" type="xs:boolean" default="false"/>
         <xs:element name="ViewController" type="xs:boolean" default="true"/>
         <xs:element name="LayoutMode" type="xs:int" default="0"/>
-        <xs:element name="CommandButtonsHeight" type="xs:int" default="-1"/>
-        <xs:element name="CommandButtonsWidth" type="xs:int" default="-1"/>
         <xs:element name="CommandButtonsLocationX" type="xs:int" default="-1"/>
         <xs:element name="CommandButtonsLocationY" type="xs:int" default="-1"/>
         <xs:element name="ShowPTZController" type="xs:boolean" default="false"/>

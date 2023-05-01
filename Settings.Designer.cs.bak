@@ -482,7 +482,11 @@ namespace iSpyApplication
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+<<<<<<< Updated upstream
             this.tableLayoutPanel1.Size = new System.Drawing.Size(840, 586);
+=======
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(840, 553);
+>>>>>>> Stashed changes
             this.tableLayoutPanel1.TabIndex = 65;
             // 
             // chkIsSilentOnStartup
@@ -3256,10 +3260,13 @@ namespace iSpyApplication
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
+<<<<<<< Updated upstream
         private System.Windows.Forms.Label label70;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel10;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Label lblBrand;
+=======
         private System.Windows.Forms.CheckBox chkIsSilentOnStartup;
+>>>>>>> Stashed changes
     }
 }

@@ -83,8 +83,6 @@ namespace iSpyApplication
             MainForm.Conf.Enable_Update_Check = chkCheckForUpdates.Checked;
             MainForm.Conf.Enable_Password_Protect = chkPasswordProtect.Checked;
 
-            MainForm.Conf.Is_Silent_Startup_Check = chkIsSilentOnStartup.Checked;
-
             MainForm.Conf.NoActivityColor = btnNoDetectColor.BackColor.ToRGBString();
             MainForm.Conf.ActivityColor = btnDetectColor.BackColor.ToRGBString();
             MainForm.Conf.TrackingColor = btnColorTracking.BackColor.ToRGBString();
@@ -134,7 +132,6 @@ namespace iSpyApplication
             MainForm.Conf.SMSAlert = txtSMSBody.Text;
             MainForm.Conf.VLCFileCache = (int)numFileCache.Value;
             MainForm.Conf.Password_Protect_Startup = chkPasswordProtectOnStart.Checked;
-            MainForm.Conf.BrandPath = lblBrand.Text;
             SaveSMTPSettings();
 
             MainForm.Conf.ArchiveNew = txtArchive.Text.Trim();
@@ -181,31 +178,15 @@ namespace iSpyApplication
             MainForm.Conf.Language = lang;
             if (chkStartup.Checked)
             {
-                if (chkIsSilentOnStartup.Checked)
+                try
                 {
-                    try
-                    {
-                        _rkApp = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
-                        _rkApp?.SetValue("iSpy", "\"" + Application.ExecutablePath + "\" -silent", RegistryValueKind.String);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                        Logger.LogException(ex);
-                    }
+                    _rkApp = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+                    _rkApp?.SetValue("iSpy", "\"" + Application.ExecutablePath + "\" -silent", RegistryValueKind.String);
                 }
-                else
+                catch (Exception ex)
                 {
-                    try
-                    {
-                        _rkApp = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
-                        _rkApp?.SetValue("iSpy", "\"" + Application.ExecutablePath + "\" ", RegistryValueKind.String);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                        Logger.LogException(ex);
-                    }
+                    MessageBox.Show(ex.Message);
+                    Logger.LogException(ex);
                 }
             }
             else
@@ -352,7 +333,6 @@ namespace iSpyApplication
             chkMinimise.Checked = MainForm.Conf.MinimiseOnClose;
             chkSpeechRecognition.Checked = MainForm.Conf.SpeechRecognition;
             chkMinimiseToTray.Checked = MainForm.Conf.TrayOnMinimise;
-            lblBrand.Text = MainForm.Conf.BrandPath;
 
             if (chkMonitor.Checked && !MainForm.Conf.Monitor)
             {
@@ -550,10 +530,7 @@ namespace iSpyApplication
             chkEnableLogging.Checked = MainForm.Conf.Logging.Enabled;
             numMaxLogSize.Value = MainForm.Conf.Logging.FileSize;
             numKeepLogs.Value = MainForm.Conf.Logging.KeepDays;
-
-            chkIsSilentOnStartup.Checked = MainForm.Conf.Is_Silent_Startup_Check;
-
-
+            
             _loaded = true;
         }
 
@@ -584,7 +561,6 @@ namespace iSpyApplication
             chkPasswordProtect.Text = LocRm.GetString("PasswordProtectWhenMinimi");
             chkShowGettingStarted.Text = LocRm.GetString("ShowGettingStarted");
             chkStartup.Text = LocRm.GetString("RunOnStartupthisUserOnly");
-            chkIsSilentOnStartup.Text = LocRm.GetString("IsSILENTOnStartupthisUserOnly");
             chkAutoSchedule.Text = LocRm.GetString("AutoApplySchedule");
             chkPasswordProtectOnStart.Text = LocRm.GetString("PasswordProtectOnStart");
             
@@ -1345,33 +1321,6 @@ namespace iSpyApplication
             {
                 MainForm.Conf.VLCLocation = folderBrowserDialog1.SelectedPath;
                 label69.Text = MainForm.Conf.VLCLocation;
-            }
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            using (var ofd = new OpenFileDialog())
-            {
-                ofd.InitialDirectory = _lastPath;
-                ofd.Filter = "Image Files|*.jpg;*.gif;*.bmp;*.png;*.jpeg";
-                if (ofd.ShowDialog(this) == DialogResult.OK)
-                {
-                    string fileName = ofd.FileName;
-                    try
-                    {
-                        var fi = new FileInfo(fileName);
-                        _lastPath = fi.DirectoryName;
-                    }
-                    catch
-                    {
-                    }
-
-
-                    if (fileName.Trim() != "")
-                    {
-                        lblBrand.Text = fileName;
-                    }
-                }
             }
         }
     }

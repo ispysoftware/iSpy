@@ -506,6 +506,12 @@
     <Compile Include="PlayerVLC.Designer.cs">
       <DependentUpon>PlayerVLC.cs</DependentUpon>
     </Compile>
+    <Compile Include="PTZCommandButtons.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PTZCommandButtons.Designer.cs">
+      <DependentUpon>PTZCommandButtons.cs</DependentUpon>
+    </Compile>
     <Compile Include="PTZConfig.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -3723,7 +3723,6 @@ namespace iSpyApplication
         private void CameraControlDoubleClick(object sender, EventArgs e)
         {
             _pnlCameras.Maximise(sender);
-            ShowHidePTZCommandButtons();
         }
 
         #endregion
