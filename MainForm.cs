@@ -4287,10 +4287,13 @@ namespace iSpyApplication
                     // when returning from maximized video screen - no camera gets the focus; programmatically force _ptzCommandButtons to be opened
                     if (noneFocused)
                     {
-                        Control c = _pnlCameras.Controls[0];
-                        if (c is CameraWindow)
-                        {
-                            _ptzCommandButtons.CameraControl = (CameraWindow)c;
+                        if( _pnlCameras.Controls.Count > 0 )
+                        { 
+                            Control c = _pnlCameras.Controls[0];
+                            if (c is CameraWindow)
+                            {
+                                _ptzCommandButtons.CameraControl = (CameraWindow)c;
+                            }
                         }
                     }
 
