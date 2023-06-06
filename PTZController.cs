@@ -189,8 +189,6 @@ namespace iSpyApplication
                 }
             }
 
-
-
             if (PTZSettings == null)
             {
                 var cmd = Enums.PtzCommand.Stop;
@@ -754,8 +752,23 @@ namespace iSpyApplication
         private float _lastPanSpeed = 0.0f;
         private float _lastTiltSpeed = 0.0f;
 
+        private float getPTSpeed(MainForm.JoystickSensitivityProfile_E joystickSensitivityProfile, int position)
+        {
+           
+            if (joystickSensitivityProfile == MainForm.JoystickSensitivityProfile_E.High_JoystickSensitivity)
+            {
+                return (float)(position * 0.005);
+            }
+            else 
+            {
+                return (float)(0.5 * (1 + (Math.Tanh((position - 50) / 20))));
+            }
+        }
+
+
         void ProcessOnvif(Enums.PtzCommand command, int xPos=0, int yPos=0)
         {
+            MainForm.JoystickSensitivityProfile_E jsh = MainForm.InstanceReference.JoystickSensitivityProfile;
 
             var panSpeed = (float)0.5;
             var tiltSpeed = (float)0.5;
@@ -771,8 +784,8 @@ namespace iSpyApplication
                 if (xPos < 0)
                     xPos = 0;
 
-                panSpeed = (float)(0.5 * (1 + (Math.Tanh((xPos - 50)/ 20)) ));
-
+                 //panSpeed = (float)(0.5 * (1 + (Math.Tanh((xPos - 50)/ 20)) ));
+                 panSpeed = getPTSpeed(jsh, xPos);
             }
 
             if (yPos != 0)
@@ -783,7 +796,8 @@ namespace iSpyApplication
                 if (yPos < 0)
                     yPos = 0;
 
-                tiltSpeed = (float)(0.5 * (1 + (Math.Tanh((yPos - 50) / 20))));
+                //tiltSpeed = (float)(0.5 * (1 + (Math.Tanh((yPos - 50) / 20))));
+                tiltSpeed = getPTSpeed(jsh, yPos);
             }
 
             if (command == _lastOnvifCommand && _lastOnvifCommandSent > DateTime.UtcNow.AddSeconds(-4) &&

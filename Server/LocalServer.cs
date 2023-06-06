@@ -1513,6 +1513,12 @@ namespace iSpyApplication.Server
                     }
                     resp = "OK";
                     break;
+                case "joysticksensitivitydefault":
+                    MainForm.InstanceReference.JoystickSensitivityProfile = MainForm.JoystickSensitivityProfile_E.Default_JoystickSensitivity;
+                    break;
+                case "joysticksensitivityhigh":
+                    MainForm.InstanceReference.JoystickSensitivityProfile = MainForm.JoystickSensitivityProfile_E.High_JoystickSensitivity;
+                    break;
                 case "shutdown":
                     (new Thread(() => MainForm.InstanceReference.ExternalClose())).Start();
                     break;

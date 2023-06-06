@@ -171,7 +171,9 @@ namespace iSpyApplication
             this.jbutton8 = new iSpyApplication.Controls.jbutton();
             this.label38 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.labelJButtn10 = new System.Windows.Forms.Label();
             this.jbutton9 = new iSpyApplication.Controls.jbutton();
+            this.jbutton10 = new iSpyApplication.Controls.jbutton();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.label26 = new System.Windows.Forms.Label();
             this.ddlJoystick = new System.Windows.Forms.ComboBox();
@@ -1811,9 +1813,11 @@ namespace iSpyApplication
             this.tblJoystick.Controls.Add(this.btnCenterAxes, 1, 3);
             this.tblJoystick.Controls.Add(this.label37, 0, 9);
             this.tblJoystick.Controls.Add(this.jbutton8, 1, 9);
-            this.tblJoystick.Controls.Add(this.label38, 1, 13);
+            this.tblJoystick.Controls.Add(this.label38, 1, 14);
             this.tblJoystick.Controls.Add(this.label9, 0, 12);
             this.tblJoystick.Controls.Add(this.jbutton9, 1, 12);
+            this.tblJoystick.Controls.Add(this.labelJButtn10, 0, 13);
+            this.tblJoystick.Controls.Add(this.jbutton10, 1, 13);
             this.tblJoystick.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tblJoystick.Location = new System.Drawing.Point(3, 34);
             this.tblJoystick.Name = "tblJoystick";
@@ -2075,7 +2079,7 @@ namespace iSpyApplication
             // label38
             // 
             this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(156, 409);
+            this.label38.Location = new System.Drawing.Point(156, 440);
             this.label38.Margin = new System.Windows.Forms.Padding(6);
             this.label38.Name = "label38";
             this.label38.Size = new System.Drawing.Size(340, 13);
@@ -2101,6 +2105,26 @@ namespace iSpyApplication
             this.jbutton9.Name = "jbutton9";
             this.jbutton9.Size = new System.Drawing.Size(688, 23);
             this.jbutton9.TabIndex = 38;
+            // 
+            // labelJButtn10
+            // 
+            this.labelJButtn10.AutoSize = true;
+            this.labelJButtn10.Location = new System.Drawing.Point(6, 378);
+            this.labelJButtn10.Margin = new System.Windows.Forms.Padding(6);
+            this.labelJButtn10.Name = "labelJButtn10";
+            this.labelJButtn10.Size = new System.Drawing.Size(52, 13);
+            this.labelJButtn10.TabIndex = 37;
+            this.labelJButtn10.Text = "PT Speed Profile";
+            // 
+            // jbutton10
+            // 
+            this.jbutton10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.jbutton10.ID = 0;
+            this.jbutton10.Location = new System.Drawing.Point(154, 407);
+            this.jbutton10.Margin = new System.Windows.Forms.Padding(4);
+            this.jbutton10.Name = "jbutton10";
+            this.jbutton10.Size = new System.Drawing.Size(688, 23);
+            this.jbutton10.TabIndex = 38;
             // 
             // tableLayoutPanel8
             // 
@@ -3184,6 +3208,8 @@ namespace iSpyApplication
         private Controls.MediaDirectoryEditor mediaDirectoryEditor1;
         private System.Windows.Forms.Label label9;
         private Controls.jbutton jbutton9;
+        private Controls.jbutton jbutton10;
+        private System.Windows.Forms.Label labelJButtn10;
         private System.Windows.Forms.TabPage tabPage11;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.ListBox lbPlugins;

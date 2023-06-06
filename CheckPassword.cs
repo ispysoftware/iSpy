@@ -33,6 +33,26 @@ namespace iSpyApplication
             Close();
         }
 
+        private void DoCheckPassword(string userName)
+        {
+            var g = MainForm.Conf.Permissions.First(p => p.name == userName);
+            if (txtPassword.Text == EncDec.DecryptData(g.password, MainForm.Conf.EncryptCode))
+            {
+                if (MainForm.Group != g.name)
+                    MainForm.NeedsResourceUpdate = true;
+                MainForm.Group = g.name;
+                DialogResult = DialogResult.OK;
+                Logger.LogMessage("Login: " + g.name);
+                Close();
+                return;
+            }
+
+            DialogResult = DialogResult.Cancel;
+            MessageBox.Show(LocRm.GetString("PasswordIncorrect"), LocRm.GetString("Note"));
+
+            Close();
+        }
+
         private void CheckPasswordLoad(object sender, EventArgs e)
         {
             txtPassword.Focus();

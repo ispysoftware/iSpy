@@ -11,6 +11,13 @@ namespace iSpyApplication
         private bool _loaded;
         private CameraWindow _cameraControl;
 
+        private bool _shouldDisplay = false;
+        public bool ShouldDisplay
+        {
+            get { return _shouldDisplay; }
+            
+        }
+
         public CameraWindow CameraControl
         {
             get { return _cameraControl; }
@@ -31,14 +38,6 @@ namespace iSpyApplication
                     {
                         
                         PTZSettings2Camera ptz = MainForm.PTZs.Single(p => p.id == CameraControl.Camobject.ptz);
-                        //ddlExtended.Items.Add(new ListItem(LocRm.GetString("SelectCommand"), ""));
-                        //if (ptz.ExtendedCommands != null && ptz.ExtendedCommands.Command!=null)
-                        //{
-                        //    foreach (var extcmd in ptz.ExtendedCommands.Command)
-                        //    {
-                        //        ddlExtended.Items.Add(new ListItem(extcmd.Name, extcmd.Value));
-                        //    }
-                        //}
                         pnlController.Enabled = true;
                     }
                     else
@@ -89,7 +88,16 @@ namespace iSpyApplication
                                     basex += 110;
                                     
                                 }
-                                pnlController.Enabled = true;
+                                if (CameraControl.PTZ.ONVIFPresets.Count() > 0)
+                                { 
+                                    pnlController.Enabled = true;
+                                    _shouldDisplay = true;
+                                }
+                                else
+                                {
+                                    pnlController.Enabled = false;
+                                    _shouldDisplay = false;
+                                }
                                 break;
                             case -6:
                                 //ddlExtended.Items.Add(new ListItem(LocRm.GetString("None"), ""));
@@ -98,9 +106,6 @@ namespace iSpyApplication
                         }
                     }
                     Text = "PTZ: "+CameraControl.Camobject.name;
-                    //ptzui1.CameraControl = value;
-                    //if (ddlExtended.Items.Count>0)
-                    //    ddlExtended.SelectedIndex = 0;
                 }
                 _loaded = true;
             }
@@ -119,21 +124,9 @@ namespace iSpyApplication
             {
                 Button presetButton = (Button)sender;
                 CameraControl.PTZ.SendPTZCommand(presetButton.Name);
+                this.pnlController.Focus(); //return the focus to the panel, so the onlostfocus and on gotfocus events shall be fired
             }
         }
-
-        //private void ddlExtended_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    if (_loaded && CameraControl!=null)
-        //    {
-        //        if (ddlExtended.SelectedIndex > 0)
-        //        {
-        //            var li = ((ListItem) ddlExtended.SelectedItem);
-        //            CameraControl.PTZ.SendPTZCommand(li.Value);
-        //            ddlExtended.SelectedIndex = 0;
-        //        }
-        //    }
-        //}
 
         private struct ListItem
         {
@@ -173,7 +166,5 @@ namespace iSpyApplication
             
 
         }
-
-
-        }
+    }
 }

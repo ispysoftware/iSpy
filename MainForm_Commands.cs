@@ -12,9 +12,23 @@ namespace iSpyApplication
 {
     partial class MainForm
     {
+        public enum JoystickSensitivityProfile_E 
+        {
+           Default_JoystickSensitivity,
+           High_JoystickSensitivity
+        }
+
         private JoystickDevice _jst;
         private readonly bool[] _buttonsLast = new bool[128];
         private bool _needstop, _sentdirection;
+
+        private JoystickSensitivityProfile_E _joystickSensitivityProfile = JoystickSensitivityProfile_E.Default_JoystickSensitivity;
+        public JoystickSensitivityProfile_E JoystickSensitivityProfile
+        {
+            get { return _joystickSensitivityProfile; }
+            set { _joystickSensitivityProfile = value; }
+        }
+
 
         void TmrJoystickElapsed(object sender, ElapsedEventArgs e)
         {
@@ -55,6 +69,15 @@ namespace iSpyApplication
                         vl = c as VolumeLevel;
                         break;
                     }
+                }
+
+                // when no camera window is focused - bind the physical joystick input to the last active camera, or else the joystick input is ignored until user actively chooses a camera window again;
+                // this is not user-friendly when user selects other gui windows such as PTZTool, PTZCommandButtons, and remotecommands window, and therefore moves the screen focus from the cameras, resulting in c.Focused = false for all _pnlCameras.Controls;
+                if (cw == null)
+                {
+                    Control c = GetActiveControl(out int tmp); 
+                    cw = c as CameraWindow;
+                    vl = c as VolumeLevel;
                 }
 
                 for (int i = 0; i < _jst.Buttons.Length; i++)
@@ -118,6 +141,11 @@ namespace iSpyApplication
                         if (j == Conf.Joystick.MaxMin)
                         {
                             ProcessKey("maxmin");
+                        }
+                        
+                        if (j == Conf.Joystick.PTSpeedProfile)
+                        {
+                            ProcessKey("ptspeedprofile");
                         }
 
                     }
@@ -476,6 +504,22 @@ namespace iSpyApplication
             };
             lcom.Add(cmd);
 
+            cmd = new objectsCommand
+            {
+                command = "ispy JOYSTICKSENSITIVITYDEFAULT",
+                id = 12,
+                name = "cmd_JoystickSensitivityDefault",
+            };
+            lcom.Add(cmd);
+
+            cmd = new objectsCommand
+            {
+                command = "ispy JOYSTICKSENSITIVITYHIGH",
+                id = 13,
+                name = "cmd_JoystickSensitivityHigh",
+            };
+            lcom.Add(cmd);
+
             if (Helper.HasFeature(Enums.Features.Save_Frames))
             {
 
@@ -549,7 +593,9 @@ namespace iSpyApplication
             int i = 0;
             foreach (Control c in _pnlCameras.Controls)
             {
-                if (c.Equals(LastFocussedControl))
+                ISpyControl isc = c as ISpyControl;
+
+                if (isc.Equals(LastFocussedControl))
                 {
                     index = i;
                     return c;
@@ -699,6 +745,20 @@ namespace iSpyApplication
                                     cw.Camera.Tags = null;
                             }
                         }
+                    }
+                    break;
+                case "ptspeedprofile":
+                    switch (MainForm.InstanceReference.JoystickSensitivityProfile)
+                    {
+                        case MainForm.JoystickSensitivityProfile_E.Default_JoystickSensitivity:
+                            MainForm.InstanceReference.JoystickSensitivityProfile = MainForm.JoystickSensitivityProfile_E.High_JoystickSensitivity;
+                            break;
+                        case MainForm.JoystickSensitivityProfile_E.High_JoystickSensitivity:
+                            MainForm.InstanceReference.JoystickSensitivityProfile = MainForm.JoystickSensitivityProfile_E.Default_JoystickSensitivity;
+                            break;
+                        default:
+                            MainForm.InstanceReference.JoystickSensitivityProfile = MainForm.JoystickSensitivityProfile_E.Default_JoystickSensitivity;
+                            break;
                     }
                     break;
             }
