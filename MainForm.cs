@@ -1821,9 +1821,12 @@ namespace iSpyApplication
                 menuItem25.Visible = menuItem18.Visible = menuItem52.Visible = pTZCommandButtonsToolStripMenuItem.Visible = menuItem7.Visible = Helper.HasFeature(Enums.Features.Access_Media);
 
             _menuItem18.Visible = Helper.HasFeature(Enums.Features.Access_Media) && Helper.HasFeature(Enums.Features.High_Level_User);
-            _menuItem31.Visible = menuItem28.Visible = Helper.HasFeature(Enums.Features.Edit) && Helper.HasFeature(Enums.Features.High_Level_User);
+            
+            //yv _menuItem31.Visible = menuItem28.Visible = Helper.HasFeature(Enums.Features.Edit) && Helper.HasFeature(Enums.Features.High_Level_User);
 
             _toolStripDropDownButton2.Visible = _editToolStripMenuItem.Visible = _menuItem36.Visible =  Helper.HasFeature(Enums.Features.Edit);
+
+            menuItem33.Visible = _exitFileItem.Visible = _menuItem19.Visible = _menuItem31.Visible = menuItem28.Visible = menuItem36.Visible = Helper.HasFeature(Enums.Features.View_File_Menu) && Helper.HasFeature(Enums.Features.High_Level_User); // yv
 
             this._toolStripDropDownButton1.DropDownItems.Clear();
             if (Helper.HasFeature(Enums.Features.View_Media))
@@ -1849,7 +1852,7 @@ namespace iSpyApplication
             menuItem38.Visible = menuItem15.Visible = Helper.HasFeature(Enums.Features.View_Layout_Options);
             menuItem4.Visible = statusBarToolStripMenuItem.Visible = Helper.HasFeature(Enums.Features.View_Status_Bar);
 
-            menuItem28.Visible = Helper.HasFeature(Enums.Features.Edit);
+            //yv menuItem28.Visible = Helper.HasFeature(Enums.Features.Edit);
 
             menuItem31.Text = LocRm.GetString("GridViews");
             menuItem32.Text = LocRm.GetString("Manage");
