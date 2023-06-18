@@ -1845,6 +1845,7 @@ namespace iSpyApplication
             if (!Helper.HasFeature(Enums.Features.Access_Media))
                 splitContainer1.Panel2Collapsed = true;
 
+            _resetSizeToolStripMenuItem.Visible = Helper.HasFeature(Enums.Features.High_Level_User);
 
             _menuItem26.Visible = tsslPerformance.Visible = tsslPRO.Visible = Helper.HasFeature(Enums.Features.View_Ispy_Links);
 

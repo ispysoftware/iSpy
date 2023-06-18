@@ -757,7 +757,7 @@ namespace iSpyApplication
            
             if (joystickSensitivityProfile == MainForm.JoystickSensitivityProfile_E.High_JoystickSensitivity)
             {
-                return (float)(position * 0.005);
+                return (float)(position * 0.0035);
             }
             else 
             {

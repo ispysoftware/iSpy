@@ -510,6 +510,7 @@ namespace iSpyApplication
             jbutton7.ID = MainForm.Conf.Joystick.Previous;
             jbutton8.ID = MainForm.Conf.Joystick.Stop;
             jbutton9.ID = MainForm.Conf.Joystick.MaxMin;
+            jbutton10.ID = MainForm.Conf.Joystick.PTSpeedProfile;
 
             jbutton1.GetInput += JbuttonGetInput;
             jbutton2.GetInput += JbuttonGetInput;

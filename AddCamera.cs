@@ -2621,5 +2621,10 @@ namespace iSpyApplication
         {
 
         }
+
+        private void linkLabel_OpenVRKbrd_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("osk.exe");
+        }
     }
 }

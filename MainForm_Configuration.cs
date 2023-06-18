@@ -3384,7 +3384,8 @@ namespace iSpyApplication
 
         private void LoadObjectList(string fileName)
         {
-            if (_cameras != null && (_cameras.Count > 0 || _microphones.Count > 0 || _floorplans.Count > 0))
+            // don't let a low-level user save his configuration as he might run over an existing .ispy file
+            if (_cameras != null && (_cameras.Count > 0 || _microphones.Count > 0 || _floorplans.Count > 0) && Helper.HasFeature(Enums.Features.High_Level_User))
             {
                 switch (
                     MessageBox.Show(this, LocRm.GetString("SaveObjectsFirst"), LocRm.GetString("Confirm"),

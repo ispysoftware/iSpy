@@ -271,6 +271,7 @@
             <xs:attribute name="Next" type="xs:int" default="0" />
             <xs:attribute name="Previous" type="xs:int" default="0" />
             <xs:attribute name="MaxMin" type="xs:int" default="0" />
+            <xs:attribute name="PTSpeedProfile" type="xs:int" default="0" />
           </xs:complexType>
         </xs:element>
         <xs:element name="MediaDirectories">
