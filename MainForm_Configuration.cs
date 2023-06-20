@@ -3382,6 +3382,38 @@ namespace iSpyApplication
             }
         }
 
+        private void LoadConfiguration(string fileName)
+        {
+            var s = new XmlSerializer(typeof(configuration));
+            bool loaded = false;
+            lock (ThreadLock)
+            {
+                using (var fs = new FileStream(fileName, FileMode.Open))
+                {
+                    try
+                    {
+                        using (TextReader reader = new StreamReader(fs))
+                        {
+                            fs.Position = 0;
+                            _conf = (configuration)s.Deserialize(reader);
+
+                            if (!string.IsNullOrEmpty(_conf.ChosenGroupName))
+                            {
+                                _conf.ChosenGroupName = EncDec.DecryptData(_conf.ChosenGroupName, "582df37b-b7cc-43f7-a442-30a2b188a888");
+                            }
+
+                            loaded = true;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogException(ex);
+                    }
+                }
+            }
+        }
+
+
         private void LoadObjectList(string fileName)
         {
             // don't let a low-level user save his configuration as he might run over an existing .ispy file

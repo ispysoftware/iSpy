@@ -290,6 +290,7 @@ namespace iSpyApplication
         private MenuItem _menuItem2;
         private MenuItem _menuItem20;
         private MenuItem _menuItem21;
+        private MenuItem _menuItem40;
         private MenuItem _menuItem22;
         private MenuItem _menuItem23;
         private MenuItem _menuItem24;
@@ -1654,6 +1655,7 @@ namespace iSpyApplication
             _menuItem2.Text = LocRm.GetString("help");
             _menuItem20.Text = viewLogFileToolStripMenuItem.Text = LocRm.GetString("Logfile");
             _menuItem21.Text = LocRm.GetString("openObjectList");
+            _menuItem40.Text = LocRm.GetString("OpenConfiguration");
             _menuItem22.Text = LocRm.GetString("LogFiles");
             _menuItem23.Text = LocRm.GetString("audiofiles");
             menuItem29.Text = LocRm.GetString("Archive");
@@ -3085,6 +3087,33 @@ namespace iSpyApplication
             }
         }
 
+        private void MenuItem_40_Click(object sender, EventArgs e)
+        {
+            using (var ofd = new OpenFileDialog())
+            {
+                ofd.InitialDirectory = _lastPath;
+                ofd.Filter = "XML Files (*.xml)|*.xml";
+                if (ofd.ShowDialog(this) == DialogResult.OK)
+                {
+                    string fileName = ofd.FileName;
+                    try
+                    {
+                        var fi = new FileInfo(fileName);
+                        _lastPath = fi.DirectoryName;
+                    }
+                    catch
+                    {
+                    }
+
+
+                    if (fileName.Trim() != "")
+                    {
+                        LoadConfiguration(fileName.Trim());
+                    }
+                }
+            }
+        }
+        
         private void ToolStripMenuItem1Click(object sender, EventArgs e)
         {
             if (ContextTarget is CameraWindow)
@@ -4301,14 +4330,14 @@ namespace iSpyApplication
                         }
                     }
 
-                    if (_ptzCommandButtons.ShouldDisplay)
-                    {
-                        _ptzCommandButtons.Visible = true;
-                    }
-                    else
-                    {
-                        _ptzCommandButtons.Visible = false;
-                    }
+                    //if (_ptzCommandButtons.ShouldDisplay)
+                    //{
+                    //    _ptzCommandButtons.Visible = true;
+                    //}
+                    //else
+                    //{
+                    //    _ptzCommandButtons.Visible = false;
+                    //}
                 }
                 
             }
@@ -4732,6 +4761,7 @@ namespace iSpyApplication
             this._fileItem = new System.Windows.Forms.MenuItem();
             this._menuItem19 = new System.Windows.Forms.MenuItem();
             this._menuItem21 = new System.Windows.Forms.MenuItem();
+            this._menuItem40 = new System.Windows.Forms.MenuItem();
             this.menuItem36 = new System.Windows.Forms.MenuItem();
             this.menuItem28 = new System.Windows.Forms.MenuItem();
             this._menuItem1 = new System.Windows.Forms.MenuItem();
@@ -4967,6 +4997,7 @@ namespace iSpyApplication
             this._fileItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this._menuItem19,
             this._menuItem21,
+            this._menuItem40,
             this.menuItem36,
             this.menuItem28,
             this._menuItem1,
@@ -4998,20 +5029,26 @@ namespace iSpyApplication
             this.menuItem28.Text = "Remove All Objects";
             this.menuItem28.Click += new System.EventHandler(this.menuItem28_Click);
             // 
+            // _menuItem40
+            // 
+            this._menuItem40.Index = 4;
+            this._menuItem40.Text = "&Open Configuration";
+            this._menuItem40.Click += new System.EventHandler(this.MenuItem_40_Click);
+            // 
             // _menuItem1
             // 
-            this._menuItem1.Index = 4;
+            this._menuItem1.Index = 5;
             this._menuItem1.Text = "-";
             // 
             // menuItem33
             // 
-            this.menuItem33.Index = 5;
+            this.menuItem33.Index = 6;
             this.menuItem33.Text = "Lock";
             this.menuItem33.Click += new System.EventHandler(this.menuItem33_Click);
             // 
             // _exitFileItem
             // 
-            this._exitFileItem.Index = 6;
+            this._exitFileItem.Index = 7;
             this._exitFileItem.Text = "E&xit";
             this._exitFileItem.Click += new System.EventHandler(this.ExitFileItemClick);
             // 

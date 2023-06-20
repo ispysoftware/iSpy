@@ -139,4 +139,5 @@
   <Permissions>
     <group name="Admin" featureset="1" password=""/>
   </Permissions>
+  <ChosenGroupName></ChosenGroupName>
 </configuration>
