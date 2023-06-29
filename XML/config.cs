@@ -346,6 +346,8 @@ public partial class configuration {
     
     private configurationGroup[] permissionsField;
     
+    private string chosenGroupNameField;
+
     public configuration() {
         this.wSPasswordEncryptedField = false;
         this.maxRecordingThreadsField = 4;
@@ -2061,6 +2063,19 @@ public partial class configuration {
             this.permissionsField = value;
         }
     }
+    
+    /// <remarks/>
+    public string ChosenGroupName
+    {
+        get
+        {
+            return this.chosenGroupNameField;
+        }
+        set
+        {
+            this.chosenGroupNameField = value;
+        }
+    }
 }
 
 /// <remarks/>
@@ -2764,7 +2779,9 @@ public partial class configurationJoystick {
     private int previousField;
     
     private int maxMinField;
-    
+
+    private int ptSpeedProfileField;
+
     public configurationJoystick() {
         this.idField = "";
         this.xAxisField = 0;
@@ -2785,6 +2802,7 @@ public partial class configurationJoystick {
         this.nextField = 0;
         this.previousField = 0;
         this.maxMinField = 0;
+        this.ptSpeedProfileField = 0;
     }
     
     /// <remarks/>
@@ -3014,6 +3032,21 @@ public partial class configurationJoystick {
             this.maxMinField = value;
         }
     }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    [System.ComponentModel.DefaultValueAttribute(0)]
+    public int PTSpeedProfile
+    {
+        get
+        {
+            return this.ptSpeedProfileField;
+        }
+        set
+        {
+            this.ptSpeedProfileField = value;
+        }
+    }
 }
 
 /// <remarks/>
@@ -3195,3 +3228,4 @@ public partial class configurationGroup {
         }
     }
 }
+

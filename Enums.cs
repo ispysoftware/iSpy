@@ -84,7 +84,13 @@ namespace iSpyApplication
             View_File_Menu =    8589934592,
             View_Ispy_Links =   17179869184,
             View_Status_Bar =   34359738368,
-            View_Layout_Options = 68719476736
+            View_Layout_Options = 68719476736,
+            Open_Web_Interface  = 137438953472,
+            View_Media          = 274877906944,
+            View_Media_on_mobile = 549755813888,
+            View_Files =           1099511627776,
+            High_Level_User =      2199023255552
+           
         }
 
     }

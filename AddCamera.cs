@@ -765,13 +765,25 @@ namespace iSpyApplication
 
             HideTab(tabPage3, Helper.HasFeature(Enums.Features.Motion_Detection));
             HideTab(tabPage2, Helper.HasFeature(Enums.Features.Alerts));
-            HideTab(tabPage4, Helper.HasFeature(Enums.Features.Recording));
+            HideTab(tabPage1, Helper.HasFeature(Enums.Features.High_Level_User));
+            HideTab(tabPage4, Helper.HasFeature(Enums.Features.Recording) & Helper.HasFeature(Enums.Features.High_Level_User));
             HideTab(tabPage8, Helper.HasFeature(Enums.Features.PTZ));
             HideTab(tabPage7, Helper.HasFeature(Enums.Features.Save_Frames));
             HideTab(tabPage10, Helper.HasFeature(Enums.Features.Save_Frames));
             HideTab(tabPage9, Helper.HasFeature(Enums.Features.Cloud) && Helper.HasFeature(Enums.Features.Web_Settings));
             HideTab(tabPage5, Helper.HasFeature(Enums.Features.Scheduling));
             HideTab(tabPage6, Helper.HasFeature(Enums.Features.Storage));
+
+            if (!Helper.HasFeature(Enums.Features.High_Level_User))
+            {
+                btnPTZTrack.Enabled = false;
+                llblEditPTZ.Enabled = false;
+            }
+            else 
+            {
+                btnPTZTrack.Enabled = true;
+                llblEditPTZ.Enabled = true;
+            }
 
             if (!Helper.HasFeature(Enums.Features.Web_Settings))
             {
@@ -2608,6 +2620,11 @@ namespace iSpyApplication
         private void scheduleEditor1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void linkLabel_OpenVRKbrd_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("osk.exe");
         }
     }
 }

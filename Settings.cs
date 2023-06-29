@@ -250,6 +250,7 @@ namespace iSpyApplication
                 MainForm.Conf.Joystick.Previous = jbutton7.ID;
                 MainForm.Conf.Joystick.Stop = jbutton8.ID;
                 MainForm.Conf.Joystick.MaxMin = jbutton9.ID;
+                MainForm.Conf.Joystick.PTSpeedProfile = jbutton10.ID;
             }
             else
                 MainForm.Conf.Joystick.id = "";
@@ -276,6 +277,7 @@ namespace iSpyApplication
             jbutton7.Reset();
             jbutton8.Reset();
             jbutton9.Reset();
+            jbutton10.Reset();
 
             if (sender!=null)
                 _curButton = (jbutton) sender;
@@ -508,6 +510,7 @@ namespace iSpyApplication
             jbutton7.ID = MainForm.Conf.Joystick.Previous;
             jbutton8.ID = MainForm.Conf.Joystick.Stop;
             jbutton9.ID = MainForm.Conf.Joystick.MaxMin;
+            jbutton10.ID = MainForm.Conf.Joystick.PTSpeedProfile;
 
             jbutton1.GetInput += JbuttonGetInput;
             jbutton2.GetInput += JbuttonGetInput;
@@ -518,6 +521,7 @@ namespace iSpyApplication
             jbutton7.GetInput += JbuttonGetInput;
             jbutton8.GetInput += JbuttonGetInput;
             jbutton9.GetInput += JbuttonGetInput;
+            jbutton10.GetInput += JbuttonGetInput;
 
             jaxis1.GetInput += JaxisGetInput;
             jaxis2.GetInput += JaxisGetInput;
@@ -696,6 +700,7 @@ namespace iSpyApplication
             tabPage11.Text = LocRm.GetString("Plugins");
             tabPage14.Text = LocRm.GetString("Logging");
             label9.Text = LocRm.GetString("MaximseAndRestore");
+            labelJButtn10.Text = LocRm.GetString("PTSpeedProfile");
             label60.Text = LocRm.GetString("SSLCertificate");
             //future
             chkSpeechRecognition.Visible = false;

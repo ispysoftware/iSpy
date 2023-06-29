@@ -290,6 +290,7 @@ namespace iSpyApplication
         private MenuItem _menuItem2;
         private MenuItem _menuItem20;
         private MenuItem _menuItem21;
+        private MenuItem _menuItem40;
         private MenuItem _menuItem22;
         private MenuItem _menuItem23;
         private MenuItem _menuItem24;
@@ -1334,7 +1335,6 @@ namespace iSpyApplication
             if (Conf.ShowPTZCommandButtons && !SilentStartup)
                 ShowHidePTZCommandButtons();
 
-
             ListGridViews();
 
             Conf.RunTimes++;
@@ -1622,7 +1622,7 @@ namespace iSpyApplication
             pTZScheduleOffToolStripMenuItem.Text = LocRm.GetString("PTZScheduleOff");
             openWebInterfaceToolStripMenuItem.Text = LocRm.GetString("OpenWebInterface");
             menuItem33.Text = LocRm.GetString("Lock");
-            
+
             _addCameraToolStripMenuItem.Text = LocRm.GetString("AddCamera");
             _addFloorPlanToolStripMenuItem.Text = LocRm.GetString("AddFloorplan");
             _addMicrophoneToolStripMenuItem.Text = LocRm.GetString("Addmicrophone");
@@ -1655,6 +1655,7 @@ namespace iSpyApplication
             _menuItem2.Text = LocRm.GetString("help");
             _menuItem20.Text = viewLogFileToolStripMenuItem.Text = LocRm.GetString("Logfile");
             _menuItem21.Text = LocRm.GetString("openObjectList");
+            _menuItem40.Text = LocRm.GetString("OpenConfiguration");
             _menuItem22.Text = LocRm.GetString("LogFiles");
             _menuItem23.Text = LocRm.GetString("audiofiles");
             menuItem29.Text = LocRm.GetString("Archive");
@@ -1736,7 +1737,7 @@ namespace iSpyApplication
             menuItem3.Text = LocRm.GetString("Fullscreen");
             alwaysOnTopToolStripMenuItem1.Text = LocRm.GetString("AlwaysOnTop");
             menuItem8.Text = LocRm.GetString("AlwaysOnTop");
-           
+
             _exitToolStripMenuItem.Text = LocRm.GetString("Exit");
 
             layoutToolStripMenuItem.Text = LocRm.GetString("Layout");
@@ -1752,7 +1753,7 @@ namespace iSpyApplication
             menuItem14.Text = viewControllerToolStripMenuItem.Text = LocRm.GetString("ViewController");
             menuItem28.Text = LocRm.GetString("RemoveAllObjects");
             menuItem40.Text = LocRm.GetString("Find");
-            
+
 
             LocRm.SetString(menuItem15, "ArrangeMedia");
             LocRm.SetString(menuItem22, "LockLayout");
@@ -1778,17 +1779,17 @@ namespace iSpyApplication
             tssbGridViews.Text = LocRm.GetString("GridViews");
             manageToolStripMenuItem.Text = LocRm.GetString("Manage");
             menuItem25.Text = LocRm.GetString("DefaultDeviceManager");
-            LocRm.SetString(menuItem37,"ChangeUser");
+            LocRm.SetString(menuItem37, "ChangeUser");
 
             _toolStripDropDownButton1.Visible = menuItem7.Visible = mediaPaneToolStripMenuItem.Visible = (Helper.HasFeature(Enums.Features.Access_Media));
-            
+            _viewMediaOnAMobileDeviceToolStripMenuItem.Visible = (Helper.HasFeature(Enums.Features.Access_Media) && Helper.HasFeature(Enums.Features.View_Media));
+            _viewMediaToolStripMenuItem.Visible = (Helper.HasFeature(Enums.Features.Access_Media) && Helper.HasFeature(Enums.Features.View_Media_on_mobile));
+
             _toolStripButton8.Visible =
                 _remoteCommandsToolStripMenuItem.Visible =
                     _menuItem35.Visible = (Helper.HasFeature(Enums.Features.Remote_Commands));
             _toolStripButton1.Visible =
-                _viewMediaToolStripMenuItem.Visible =
                     _menuItem3.Visible =
-                        _viewMediaOnAMobileDeviceToolStripMenuItem.Visible =
                             _menuItem25.Visible = _menuItem4.Visible = (Helper.HasFeature(Enums.Features.Web_Settings));
             menuItem18.Visible = (Helper.HasFeature(Enums.Features.PTZ));
             menuItem52.Visible = pTZCommandButtonsToolStripMenuItem.Visible = (Helper.HasFeature(Enums.Features.PTZ));
@@ -1814,17 +1815,39 @@ namespace iSpyApplication
             _toolStripButton4.Visible = Helper.HasFeature(Enums.Features.Settings);
             menuItem2.Visible = _menuItem20.Visible = _menuItem22.Visible = Helper.HasFeature(Enums.Features.Logs);
 
-            _menuItem17.Visible = _menuItem18.Visible = menuItem17.Visible =
-                menuItem23.Visible =
-                    menuItem25.Visible = menuItem18.Visible = menuItem52.Visible = pTZCommandButtonsToolStripMenuItem.Visible = menuItem7.Visible = Helper.HasFeature(Enums.Features.Access_Media);
+            _menuItem17.Visible = Helper.HasFeature(Enums.Features.View_Files);
 
-            _toolStripDropDownButton2.Visible = _editToolStripMenuItem.Visible = _menuItem36.Visible = _menuItem31.Visible = Helper.HasFeature(Enums.Features.Edit);
+            // _menuItem17.Visible =
+            menuItem17.Visible =
+            menuItem23.Visible =
+                menuItem25.Visible = menuItem18.Visible = menuItem52.Visible = pTZCommandButtonsToolStripMenuItem.Visible = menuItem7.Visible = Helper.HasFeature(Enums.Features.Access_Media);
+
+            _menuItem18.Visible = Helper.HasFeature(Enums.Features.Access_Media) && Helper.HasFeature(Enums.Features.High_Level_User);
             
+            //yv _menuItem31.Visible = menuItem28.Visible = Helper.HasFeature(Enums.Features.Edit) && Helper.HasFeature(Enums.Features.High_Level_User);
+
+            _toolStripDropDownButton2.Visible = _editToolStripMenuItem.Visible = _menuItem36.Visible =  Helper.HasFeature(Enums.Features.Edit);
+
+            menuItem33.Visible = _exitFileItem.Visible = _menuItem19.Visible = _menuItem31.Visible = menuItem28.Visible = menuItem36.Visible = Helper.HasFeature(Enums.Features.View_File_Menu) && Helper.HasFeature(Enums.Features.High_Level_User); // yv
+
+            this._toolStripDropDownButton1.DropDownItems.Clear();
+            if (Helper.HasFeature(Enums.Features.View_Media))
+            {
+                this._toolStripDropDownButton1.DropDownItems.Add(this._thruWebsiteToolStripMenuItem);
+            }
+            if (Helper.HasFeature(Enums.Features.View_Media_on_mobile))
+            {
+                this._toolStripDropDownButton1.DropDownItems.Add(this._onMobileDevicesToolStripMenuItem);
+            }
+            this._toolStripDropDownButton1.DropDownItems.Add(this.inExplorerToolStripMenuItem);
 
             _fileItem.Visible = menuItem5.Visible = fileMenuToolStripMenuItem.Visible = Helper.HasFeature(Enums.Features.View_File_Menu);
             _menuItem2.Visible = _menuItem24.Visible = _menuItem10.Visible = _menuItem38.Visible = _menuItem5.Visible = _menuItem27.Visible = _menuItem26.Visible = _menuItem30.Visible = Helper.HasFeature(Enums.Features.View_Ispy_Links);
+
             if (!Helper.HasFeature(Enums.Features.Access_Media))
                 splitContainer1.Panel2Collapsed = true;
+
+            _resetSizeToolStripMenuItem.Visible = Helper.HasFeature(Enums.Features.High_Level_User);
 
             _menuItem26.Visible = tsslPerformance.Visible = tsslPRO.Visible = Helper.HasFeature(Enums.Features.View_Ispy_Links);
 
@@ -1832,7 +1855,7 @@ namespace iSpyApplication
             menuItem38.Visible = menuItem15.Visible = Helper.HasFeature(Enums.Features.View_Layout_Options);
             menuItem4.Visible = statusBarToolStripMenuItem.Visible = Helper.HasFeature(Enums.Features.View_Status_Bar);
 
-            menuItem28.Visible = Helper.HasFeature(Enums.Features.Edit);
+            //yv menuItem28.Visible = Helper.HasFeature(Enums.Features.Edit);
 
             menuItem31.Text = LocRm.GetString("GridViews");
             menuItem32.Text = LocRm.GetString("Manage");
@@ -1840,7 +1863,7 @@ namespace iSpyApplication
             tagsToolStripMenuItem.Text = LocRm.GetString("Tags");
             ShowHideMediaPane();
             mediaPanelControl1.RenderResources();
-            
+
         }
 
         private void HouseKeepingTimerElapsed(object sender, ElapsedEventArgs e)
@@ -2456,6 +2479,7 @@ namespace iSpyApplication
             }
             else
             {
+                _locked = true;
                 _previousWindowState = WindowState;
                 if (Conf.AutoLayout)
                     _pnlCameras.LayoutObjects(0, 0);
@@ -2890,7 +2914,7 @@ namespace iSpyApplication
             }
             _addCameraToolStripMenuItem.Visible =
                 _addFloorPlanToolStripMenuItem.Visible =
-                    _addMicrophoneToolStripMenuItem.Visible = Helper.HasFeature(Enums.Features.Edit);
+                    _addMicrophoneToolStripMenuItem.Visible = (Helper.HasFeature(Enums.Features.Edit) & Helper.HasFeature(Enums.Features.High_Level_User) );
         }
 
         public static void StartBrowser(string url)
@@ -3063,6 +3087,33 @@ namespace iSpyApplication
             }
         }
 
+        private void MenuItem_40_Click(object sender, EventArgs e)
+        {
+            using (var ofd = new OpenFileDialog())
+            {
+                ofd.InitialDirectory = _lastPath;
+                ofd.Filter = "XML Files (*.xml)|*.xml";
+                if (ofd.ShowDialog(this) == DialogResult.OK)
+                {
+                    string fileName = ofd.FileName;
+                    try
+                    {
+                        var fi = new FileInfo(fileName);
+                        _lastPath = fi.DirectoryName;
+                    }
+                    catch
+                    {
+                    }
+
+
+                    if (fileName.Trim() != "")
+                    {
+                        LoadConfiguration(fileName.Trim());
+                    }
+                }
+            }
+        }
+        
         private void ToolStripMenuItem1Click(object sender, EventArgs e)
         {
             if (ContextTarget is CameraWindow)
@@ -4239,9 +4290,11 @@ namespace iSpyApplication
 
         private void ShowHidePTZCommandButtons()
         {
+            bool bShow = true;
             if (_ptzCommandButtons != null)
             {
                 _ptzCommandButtons.Close();
+                bShow = false;
             }
             else
             {
@@ -4267,17 +4320,30 @@ namespace iSpyApplication
                     // when returning from maximized video screen - no camera gets the focus; programmatically force _ptzCommandButtons to be opened
                     if (noneFocused)
                     {
-                        Control c = _pnlCameras.Controls[0];
-                        if (c is CameraWindow)
-                        {
-                            _ptzCommandButtons.CameraControl = (CameraWindow)c;
+                        if( _pnlCameras.Controls.Count > 0 )
+                        { 
+                            Control c = _pnlCameras.Controls[0];
+                            if (c is CameraWindow)
+                            {
+                                _ptzCommandButtons.CameraControl = (CameraWindow)c;
+                            }
                         }
                     }
+
+                    //if (_ptzCommandButtons.ShouldDisplay)
+                    //{
+                    //    _ptzCommandButtons.Visible = true;
+                    //}
+                    //else
+                    //{
+                    //    _ptzCommandButtons.Visible = false;
+                    //}
                 }
                 
             }
-               
 
+            pTZCommandButtonsToolStripMenuItem.Checked = menuItem52.Checked = bShow;
+            Conf.ShowPTZCommandButtons = bShow;
         }
         private void ShowHidePTZTool()
         {
@@ -4310,7 +4376,10 @@ namespace iSpyApplication
 
         private void PTZCommandButtonsClosing(object sender, CancelEventArgs e)
         {
+            pTZCommandButtonsToolStripMenuItem.Checked = menuItem52.Checked = false;
+            Conf.ShowPTZCommandButtons = false;
             _ptzCommandButtons = null;
+
         }
 
 
@@ -4692,6 +4761,7 @@ namespace iSpyApplication
             this._fileItem = new System.Windows.Forms.MenuItem();
             this._menuItem19 = new System.Windows.Forms.MenuItem();
             this._menuItem21 = new System.Windows.Forms.MenuItem();
+            this._menuItem40 = new System.Windows.Forms.MenuItem();
             this.menuItem36 = new System.Windows.Forms.MenuItem();
             this.menuItem28 = new System.Windows.Forms.MenuItem();
             this._menuItem1 = new System.Windows.Forms.MenuItem();
@@ -4927,6 +4997,7 @@ namespace iSpyApplication
             this._fileItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this._menuItem19,
             this._menuItem21,
+            this._menuItem40,
             this.menuItem36,
             this.menuItem28,
             this._menuItem1,
@@ -4958,20 +5029,26 @@ namespace iSpyApplication
             this.menuItem28.Text = "Remove All Objects";
             this.menuItem28.Click += new System.EventHandler(this.menuItem28_Click);
             // 
+            // _menuItem40
+            // 
+            this._menuItem40.Index = 4;
+            this._menuItem40.Text = "&Open Configuration";
+            this._menuItem40.Click += new System.EventHandler(this.MenuItem_40_Click);
+            // 
             // _menuItem1
             // 
-            this._menuItem1.Index = 4;
+            this._menuItem1.Index = 5;
             this._menuItem1.Text = "-";
             // 
             // menuItem33
             // 
-            this.menuItem33.Index = 5;
+            this.menuItem33.Index = 6;
             this.menuItem33.Text = "Lock";
             this.menuItem33.Click += new System.EventHandler(this.menuItem33_Click);
             // 
             // _exitFileItem
             // 
-            this._exitFileItem.Index = 6;
+            this._exitFileItem.Index = 7;
             this._exitFileItem.Text = "E&xit";
             this._exitFileItem.Click += new System.EventHandler(this.ExitFileItemClick);
             // 
@@ -5893,7 +5970,7 @@ namespace iSpyApplication
             this._uSbCamerasAndMicrophonesOnOtherToolStripMenuItem.Click += new System.EventHandler(this.USbCamerasAndMicrophonesOnOtherToolStripMenuItemClick);
             // 
             // _toolStripDropDownButton1
-            // 
+            //
             this._toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._thruWebsiteToolStripMenuItem,
             this._onMobileDevicesToolStripMenuItem,
@@ -7027,10 +7104,11 @@ namespace iSpyApplication
 
         private void ctxtMnu_Opening(object sender, CancelEventArgs e)
         {
-            _deleteToolStripMenuItem.Visible = _editToolStripMenuItem.Visible = Helper.HasFeature(Enums.Features.Edit);
-            _viewMediaOnAMobileDeviceToolStripMenuItem.Visible =
-                _viewMediaToolStripMenuItem.Visible =
-                    _showFilesToolStripMenuItem.Visible = Helper.HasFeature(Enums.Features.Access_Media);
+            _viewMediaOnAMobileDeviceToolStripMenuItem.Visible = (Helper.HasFeature(Enums.Features.Access_Media) && Helper.HasFeature(Enums.Features.View_Media));
+            _viewMediaToolStripMenuItem.Visible = (Helper.HasFeature(Enums.Features.Access_Media) && Helper.HasFeature(Enums.Features.View_Media_on_mobile));
+            _editToolStripMenuItem.Visible = Helper.HasFeature(Enums.Features.Edit);
+            _deleteToolStripMenuItem.Visible = (Helper.HasFeature(Enums.Features.Edit) & Helper.HasFeature(Enums.Features.High_Level_User)) ;
+            _showFilesToolStripMenuItem.Visible = Helper.HasFeature(Enums.Features.Access_Media);
             tagsToolStripMenuItem.Visible = Tags.Any();
         }
 

@@ -181,6 +181,12 @@ namespace iSpyApplication
                             {
                                 fs.Position = 0;
                                 _conf = (configuration)s.Deserialize(reader);
+
+                                if (!string.IsNullOrEmpty(_conf.ChosenGroupName))
+                                {
+                                    _conf.ChosenGroupName = EncDec.DecryptData(_conf.ChosenGroupName, "582df37b-b7cc-43f7-a442-30a2b188a888"); 
+                                }
+                                
                                 loaded = true;
                             }
                         }
@@ -311,6 +317,20 @@ namespace iSpyApplication
                 }
                 
                 Group = _conf.Permissions.First().name;
+                if (_conf.ChosenGroupName == null)
+                {
+                    Group = _conf.Permissions.First().name;
+                }
+                else 
+                {
+                    try
+                    {
+                        Group = (MainForm.Conf.Permissions.First(p => p.name == _conf.ChosenGroupName)).name;
+                    }
+                    catch (Exception ex)
+                    { }
+                }
+                    
 
                 if (_conf.Logging == null)
                 {
@@ -3344,9 +3364,13 @@ namespace iSpyApplication
                             _conf.WSPassword = "";
                             _conf.WSPasswordEncrypted = false;
                         }
+
+                        _conf.ChosenGroupName = EncDec.EncryptData(MainForm.Group, "582df37b-b7cc-43f7-a442-30a2b188a888");
+
                         s.Serialize(writer, Conf);
 
                         //revert to clear text for in memory lookups
+                        _conf.ChosenGroupName = MainForm.Group;
                         _conf.WSPassword = pwd;
                         File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
                     }
@@ -3358,9 +3382,42 @@ namespace iSpyApplication
             }
         }
 
+        private void LoadConfiguration(string fileName)
+        {
+            var s = new XmlSerializer(typeof(configuration));
+            bool loaded = false;
+            lock (ThreadLock)
+            {
+                using (var fs = new FileStream(fileName, FileMode.Open))
+                {
+                    try
+                    {
+                        using (TextReader reader = new StreamReader(fs))
+                        {
+                            fs.Position = 0;
+                            _conf = (configuration)s.Deserialize(reader);
+
+                            if (!string.IsNullOrEmpty(_conf.ChosenGroupName))
+                            {
+                                _conf.ChosenGroupName = EncDec.DecryptData(_conf.ChosenGroupName, "582df37b-b7cc-43f7-a442-30a2b188a888");
+                            }
+
+                            loaded = true;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogException(ex);
+                    }
+                }
+            }
+        }
+
+
         private void LoadObjectList(string fileName)
         {
-            if (_cameras != null && (_cameras.Count > 0 || _microphones.Count > 0 || _floorplans.Count > 0))
+            // don't let a low-level user save his configuration as he might run over an existing .ispy file
+            if (_cameras != null && (_cameras.Count > 0 || _microphones.Count > 0 || _floorplans.Count > 0) && Helper.HasFeature(Enums.Features.High_Level_User))
             {
                 switch (
                     MessageBox.Show(this, LocRm.GetString("SaveObjectsFirst"), LocRm.GetString("Confirm"),
@@ -3550,10 +3607,11 @@ namespace iSpyApplication
                     _listenToolStripMenuItem.Visible = false;
                     _recordNowToolStripMenuItem.Visible = false;
                     _takePhotoToolStripMenuItem.Visible = false;
-                    _viewMediaOnAMobileDeviceToolStripMenuItem.Visible = _viewMediaToolStripMenuItem.Visible = Helper.HasFeature(Enums.Features.Access_Media);
+                    _viewMediaOnAMobileDeviceToolStripMenuItem.Visible = ( Helper.HasFeature(Enums.Features.Access_Media) && Helper.HasFeature(Enums.Features.View_Media) );
+                    _viewMediaToolStripMenuItem.Visible = (Helper.HasFeature(Enums.Features.Access_Media) && Helper.HasFeature(Enums.Features.View_Media_on_mobile));
                     _applyScheduleToolStripMenuItem1.Visible = true;
                     _resetRecordingCounterToolStripMenuItem.Visible = true;
-                    openWebInterfaceToolStripMenuItem.Visible = cameraControl.SupportsWebInterface;
+                    openWebInterfaceToolStripMenuItem.Visible = cameraControl.SupportsWebInterface && (Helper.HasFeature(Enums.Features.Open_Web_Interface));
                     _resetRecordingCounterToolStripMenuItem.Text =
                         $"{LocRm.GetString("ResetRecordingCounter")} ({cameraControl.Camobject.newrecordingcount})";
                     pTZToolStripMenuItem.Visible = false;
@@ -3759,7 +3817,8 @@ namespace iSpyApplication
                     _resetRecordingCounterToolStripMenuItem.Visible = true;
                     _applyScheduleToolStripMenuItem1.Visible = true;
                     pTZToolStripMenuItem.Visible = false;
-                    _viewMediaOnAMobileDeviceToolStripMenuItem.Visible = _viewMediaToolStripMenuItem.Visible = Helper.HasFeature(Enums.Features.Access_Media);
+                    _viewMediaOnAMobileDeviceToolStripMenuItem.Visible = (Helper.HasFeature(Enums.Features.Access_Media) && Helper.HasFeature(Enums.Features.View_Media));
+                    _viewMediaToolStripMenuItem.Visible = (Helper.HasFeature(Enums.Features.Access_Media) && Helper.HasFeature(Enums.Features.View_Media_on_mobile));
                     _resetRecordingCounterToolStripMenuItem.Text =
                         $"{LocRm.GetString("ResetRecordingCounter")} ({volumeControl.Micobject.newrecordingcount})";
 
