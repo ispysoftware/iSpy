@@ -4330,20 +4330,10 @@ namespace iSpyApplication
                         }
                     }
 
-                    //if (_ptzCommandButtons.ShouldDisplay)
-                    //{
-                    //    _ptzCommandButtons.Visible = true;
-                    //}
-                    //else
-                    //{
-                    //    _ptzCommandButtons.Visible = false;
-                    //}
                 }
                 
             }
 
-            pTZCommandButtonsToolStripMenuItem.Checked = menuItem52.Checked = bShow;
-            Conf.ShowPTZCommandButtons = bShow;
         }
         private void ShowHidePTZTool()
         {
@@ -4376,10 +4366,7 @@ namespace iSpyApplication
 
         private void PTZCommandButtonsClosing(object sender, CancelEventArgs e)
         {
-            pTZCommandButtonsToolStripMenuItem.Checked = menuItem52.Checked = false;
-            Conf.ShowPTZCommandButtons = false;
             _ptzCommandButtons = null;
-
         }
 
 
