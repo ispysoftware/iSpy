@@ -1816,11 +1816,7 @@ namespace iSpyApplication
             menuItem2.Visible = _menuItem20.Visible = _menuItem22.Visible = Helper.HasFeature(Enums.Features.Logs);
 
             _menuItem17.Visible = Helper.HasFeature(Enums.Features.View_Files);
-
-            // _menuItem17.Visible =
-            menuItem17.Visible =
-            menuItem23.Visible =
-                menuItem25.Visible = menuItem18.Visible = menuItem52.Visible = pTZCommandButtonsToolStripMenuItem.Visible = menuItem7.Visible = Helper.HasFeature(Enums.Features.Access_Media);
+            menuItem23.Visible = menuItem25.Visible = menuItem18.Visible = menuItem52.Visible = pTZCommandButtonsToolStripMenuItem.Visible = menuItem7.Visible = Helper.HasFeature(Enums.Features.Access_Media);
 
             _menuItem18.Visible = Helper.HasFeature(Enums.Features.Access_Media) && Helper.HasFeature(Enums.Features.High_Level_User);
             
@@ -4329,15 +4325,6 @@ namespace iSpyApplication
                             }
                         }
                     }
-
-                    //if (_ptzCommandButtons.ShouldDisplay)
-                    //{
-                    //    _ptzCommandButtons.Visible = true;
-                    //}
-                    //else
-                    //{
-                    //    _ptzCommandButtons.Visible = false;
-                    //}
                 }
                 
             }
