@@ -121,7 +121,7 @@ namespace iSpyApplication.Pelco
 
         public byte[] Zone(uint deviceAddress, byte zone, Action action)
         {
-            if ((zone < 0x01) & (zone > 0x08))
+            if ((zone < 0x01) || (zone > 0x08))
                 throw new Exception("Zone should be between 0x01 and 0x08");
             var mAction = action == Action.Start ? (byte) 0x11 : (byte) 0x13;
 
@@ -169,7 +169,7 @@ namespace iSpyApplication.Pelco
 
             public static byte[] GetMessage(uint address, byte command1, byte command2, byte data1, byte data2)
             {
-                if ((address < 1) & (address > 256))
+                if ((address < 1) || (address > 256))
                     throw new Exception("Pelco D protocol supports 256 devices only");
 
                 Address = byte.Parse(address.ToString(CultureInfo.InvariantCulture));

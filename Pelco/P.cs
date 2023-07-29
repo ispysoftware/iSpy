@@ -121,7 +121,7 @@ namespace iSpyApplication.Pelco
 
         public byte[] Zone(uint deviceAddress, byte zone, Action action)
         {
-            if ((zone < 0x01) & (zone > 0x08))
+            if ((zone < 0x01) || (zone > 0x08))
                 throw new Exception("Zone value should be between 0x01 and 0x08 include");
             byte mAction;
             if (action == Action.Start)
