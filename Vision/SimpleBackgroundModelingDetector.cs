@@ -93,16 +93,19 @@ namespace iSpyApplication.Vision
 
         // suppress noise
         private bool _suppressNoise   = true;
-        private bool _keepObjectEdges;
+        private bool _keepObjectEdges = false;
 
         // threshold values
         private int _differenceThreshold    =  15;
         private int _differenceThresholdNeg = -15;
 
+        // morphing speed, do an update step each "_framesPerBackgroundUpdate" frames:
         private int _framesPerBackgroundUpdate = 2;
         private int _framesCounter;
+        // morphing speed, number of steps required for full update (higher value is slower morphing):
+        private byte _framesUpdateSteps = 50;   // 0 .. 255 where 0 is old behaviour.
 
-        private int _millisecondsPerBackgroundUpdate;
+        private int _millisecondsPerBackgroundUpdate = 0;
         private int _millisecondsLeftUnprocessed;
         private DateTime _lastTimeMeasurment;
 
@@ -388,7 +391,7 @@ namespace iSpyApplication.Vision
                 // pointers to background and current frames
                 byte* backFrame;
                 byte* currFrame;
-                int diff;
+                int diff, steps = _framesUpdateSteps;
 
                 // update background frame
                 if ( _millisecondsPerBackgroundUpdate == 0 )
@@ -401,16 +404,34 @@ namespace iSpyApplication.Vision
                         backFrame = (byte*) _backgroundFrame.ImageData.ToPointer( );
                         currFrame = (byte*) _motionFrame.ImageData.ToPointer( );
 
-                        for ( int i = 0; i < _frameSize; i++, backFrame++, currFrame++ )
+                        if ( steps == 0 )     // old behaviour
                         {
-                            diff = *currFrame - *backFrame;
-                            if ( diff > 0 )
+                            for ( int i = 0; i < _frameSize; i++, backFrame++, currFrame++ )
                             {
-                                ( *backFrame )++;
+                                diff = *currFrame - *backFrame;
+                                if ( diff > 0 )
+                                {
+                                    ( *backFrame )++;
+                                }
+                                else if ( diff < 0 )
+                                {
+                                    ( *backFrame )--;
+                                }
                             }
-                            else if ( diff < 0 )
+                        }
+                        else
+                        {
+                            for ( int i = 0; i < _frameSize; i++, backFrame++, currFrame++ )
                             {
-                                ( *backFrame )--;
+                                diff = *currFrame - *backFrame;
+                                if ( diff > 0 )
+                                {
+                                    ( *backFrame ) += (byte)((steps - 1 + diff) / steps);
+                                }
+                                else if ( diff < 0 )
+                                {
+                                    ( *backFrame ) -= (byte)((steps - 1 - diff) / steps);
+                                }
                             }
                         }
                     }
@@ -465,13 +486,15 @@ namespace iSpyApplication.Vision
                 if ( _suppressNoise )
                 {
                     // suppress noise and calculate motion amount
-                    AForge.SystemTools.CopyUnmanagedMemory( _tempFrame.ImageData, _motionFrame.ImageData, _frameSize );
-                    _erosionFilter.Apply( _tempFrame, _motionFrame );
+                    _erosionFilter.Apply( _motionFrame, _tempFrame );    // src -> dst
 
                     if ( _keepObjectEdges )
                     {
-                        AForge.SystemTools.CopyUnmanagedMemory( _tempFrame.ImageData, _motionFrame.ImageData, _frameSize );
-                        _dilatationFilter.Apply( _tempFrame, _motionFrame );
+                        _dilatationFilter.Apply( _tempFrame, _motionFrame );  // src -> dst
+                    }
+                    else
+                    {
+                        AForge.SystemTools.CopyUnmanagedMemory( _motionFrame.ImageData, _tempFrame.ImageData, _frameSize );  // dst <- src
                     }
                 }
 
